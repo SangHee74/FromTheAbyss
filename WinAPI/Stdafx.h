@@ -96,6 +96,12 @@ using namespace MY_UTIL;
 #define IMGR IMAGEMANAGER->render
 #define IMGFR IMAGEMANAGER->frameRender
 #define IMGAR IMAGEMANAGER->alphaRender
+//KEYMANAGER
+#define KEYOKD KEYMANAGER->isOnceKeyDown
+#define KEYOKU KEYMANAGER->isOnceKeyUp
+#define KEYSKD KEYMANAGER->isStayKeyDown
+#define KEYTOG KEYMANAGER->isToggleKey
+
 
 //#define FULLSCREEN
 
