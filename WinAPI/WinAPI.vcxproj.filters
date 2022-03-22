@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>API\GameNode</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>API</Filter>
+    </ClCompile>
+    <ClCompile Include="Stdafx.cpp">
+      <Filter>API\Stdafx</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>API\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>API\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>API\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>API\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextDataManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClass.cpp">
+      <Filter>API\ExamClass</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>API\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonSaveLoader.cpp">
+      <Filter>API\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>API\Json\code</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestSample.cpp">
+      <Filter>API\Json\code</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>API\Json\code</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonDataScene.cpp">
+      <Filter>API\ExamClass\noUse</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundScene.cpp">
+      <Filter>API\ExamClass\noUse</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>FromTheAbyss\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>API\ExamClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Save.cpp">
+      <Filter>FromTheAbyss\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>API\ExamClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Castle.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="Pub.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="Store.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>API\ExamClass</Filter>
+    </ClCompile>
+    <ClCompile Include="MainHall.cpp">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClCompile>
+    <ClCompile Include="Abyss.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>FromTheAbyss\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>API\Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameNode.h">
+      <Filter>API\GameNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonMacroFunction.h">
+      <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFunction.h">
+      <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>API\DesignPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
+      <Filter>API\Stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>API\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>API\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>API\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextDataManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>API\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClass.h">
+      <Filter>API\ExamClass</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonSaveLoader.h">
+      <Filter>API\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>API\Json\code</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestSample.h">
+      <Filter>API\Json\code</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>API\Json\code</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonDataScene.h">
+      <Filter>API\ExamClass\noUse</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundScene.h">
+      <Filter>API\ExamClass\noUse</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>FromTheAbyss\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>API\ExamClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Save.h">
+      <Filter>FromTheAbyss\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>API\ExamClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Castle.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="Pub.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="Store.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutorial.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckBox.h">
+      <Filter>API\ExamClass</Filter>
+    </ClInclude>
+    <ClInclude Include="MainHall.h">
+      <Filter>FromTheAbyss\Scene\Place</Filter>
+    </ClInclude>
+    <ClInclude Include="Abyss.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>FromTheAbyss\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>API\Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="API">
+      <UniqueIdentifier>{c4cbdbdf-a3f5-443c-a292-314b607bc0e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Utility">
+      <UniqueIdentifier>{41cc903a-8127-4ab3-aefa-95f747b36e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\DesignPattern">
+      <UniqueIdentifier>{ddfcb838-f3d6-435b-bb55-d794a3fddc43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Manager">
+      <UniqueIdentifier>{fd7088a5-c60e-496b-8bb8-16893861a2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame">
+      <UniqueIdentifier>{3659e94e-c15f-4f2a-a005-dd8f48d76e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Stdafx">
+      <UniqueIdentifier>{86133b6d-3090-4dfd-9207-7bd41a85c82f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Image">
+      <UniqueIdentifier>{8d922d20-6355-46b1-8bdb-4e7951c55ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\ExamClass">
+      <UniqueIdentifier>{ce243ada-8677-40d8-b61e-44530ea6d6b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Timer">
+      <UniqueIdentifier>{261a371e-90ab-4389-8e7a-00b2b3e90a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Animation">
+      <UniqueIdentifier>{2d83bac2-39e2-4d1b-8176-b19312f56e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Json">
+      <UniqueIdentifier>{c567fe51-0060-4933-a313-b2f839a7066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Json\Sckema">
+      <UniqueIdentifier>{fc2d7446-2e7d-47c1-83d9-52c29e3cd925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\GameNode">
+      <UniqueIdentifier>{67442a1c-806f-41ef-813c-0de14b734860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Json\code">
+      <UniqueIdentifier>{a4959739-8564-4076-8f7b-5e3f3d40fbc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\ExamClass\noUse">
+      <UniqueIdentifier>{c71332a2-75c7-465f-b4a3-7d652b8b08d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss">
+      <UniqueIdentifier>{59d5bee3-5116-483a-b659-ad55f413af55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Monster">
+      <UniqueIdentifier>{4119e0e1-7c3e-4fb9-9ca7-0a8a84b69522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Player">
+      <UniqueIdentifier>{e37c08ee-17d8-4ed4-993f-b210c3e3b6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene">
+      <UniqueIdentifier>{0d5c9d18-b90d-42e9-a15f-e76799dff182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place">
+      <UniqueIdentifier>{dfc1babf-5902-4449-93b7-66f4ca35d40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place\ABYSS">
+      <UniqueIdentifier>{01cfe9e3-ce8d-4030-8218-a32317f6931d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\Map">
+      <UniqueIdentifier>{5bc7d481-4c57-49bd-b9b6-8638a868ee8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\Map\Tool">
+      <UniqueIdentifier>{1bf81a9c-95c0-4a57-bec5-d0368345da28}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\MatricFunction.txt">
+      <Filter>API\Utility</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Character.json">
+      <Filter>API\Json\Sckema</Filter>
+    </None>
+    <None Include="Item.json">
+      <Filter>API\Json\Sckema</Filter>
+    </None>
+    <None Include="Quest.json">
+      <Filter>API\Json\Sckema</Filter>
+    </None>
+  </ItemGroup>
+</Project>
