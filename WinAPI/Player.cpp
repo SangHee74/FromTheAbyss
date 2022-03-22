@@ -5,8 +5,10 @@
 HRESULT Player::init(void)
 {
 
-	_pos.x = 230;//LSCENTER_X;
-	_pos.y = WINSIZE_Y - 140;
+	_pos.x = LSCENTER_X;
+	_pos.y = CENTER_Y;
+	w = IMG("p_idle_6")->getWidth();
+	h = IMG("p_idle_6")->getHeight();
 	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, IMG("p_idle_6")->getFrameWidth(), IMG("p_idle_6")->getFrameHeight());
 
 	_status.curHp = 100;
@@ -80,7 +82,12 @@ void Player::update(void)
 			IMG("p_run_6")->setFrameY(1);
 		}
 	
-		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, IMG("p_idle_6")->getFrameWidth(), IMG("p_idle_6")->getFrameHeight());
+
+		 // 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
+		 // w,h 안쓰니까 초점이 잘 안맞음
+		 w = IMG("p_idle_6")->getWidth();
+		 h = IMG("p_idle_6")->getHeight();
+		_rcPlayer = RectMakeCenter(_pos.x, _pos.y,w,h);
 	}
 }
 
@@ -93,20 +100,8 @@ void Player::render(void)
 		float left = _rcPlayer.left - _rcCamera.left;
 		float top = _rcPlayer.top - _rcCamera.top;
 
-
-		Rectangle(getMemDC(), left,top, left+ IMG("p_idle_6")->getWidth(), top+IMG("p_idle_6")->getHeight());
 		IMGR("p_idle_6", getMemDC(), left, top);
 
-		if(KEYOKD(VK_F4))
-		{
-		cout << "_rcPlayer X : " << _rcPlayer.left << " , _rcCamera X : " << _rcCamera.left << endl;
-		cout << "_rcPlayer Y : " << _rcPlayer.top << " , _rcCamera Y : " << _rcCamera.top << endl;
-		cout << "left : " << left << endl;
-		cout << "top : " << top << endl;
-
-		}
-
-		//IMGR("p_idle_6", getMemDC(), _pos.x, _pos.y);
 	}
 }
 

@@ -63,6 +63,7 @@ private:
 	ProgressBar* _UIBar;
 
 	POINT _pos;
+	int w, h; // юс╫ц
 
 	RECT _rcPlayer;
 	RECT _rcCamera;

@@ -47,6 +47,8 @@ HRESULT ImageClass::init(void)
 #pragma endregion
 
 	IMAGEMANAGER->addImage("Å×¸Ê", "Resources/testMap.bmp", 0, 0, 1280,960, MGT);
+	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 720*10, 720*10, MGT);
+
 #pragma region Player
 	IMAGEMANAGER->addImage("p_attacked", "Resources/Images/Player/p_attacked.bmp", 0, 0, 24 * MAGNI, 37 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("p_down", "Resources/Images/Player/p_down.bmp", 0, 0, 32 * MAGNI, 29 * MAGNI, MGT);

@@ -11,7 +11,7 @@
 //타일 속성
 enum groundType // 이동가능, 이동불가 지형
 { 
-	MOVE,UNMOVE
+	GROUND,WALL
 };
 
 enum tileStage // 스테이지 별 타일셋
@@ -27,6 +27,13 @@ class Tile
 public:
 	int x;
 	int y;
+	int fX;
+	int fY;
+	int nX;
+	int nY;
+
+	bool inTile;
 	groundType moveCheck;
+
 };
 

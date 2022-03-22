@@ -7,8 +7,8 @@ HRESULT Stage::init(void)
 	_player->init();
 
 	CAM->init();
-	CAM->setLimitsX(LSCENTER_X, IMG("Å×¸Ê")->getWidth());
-	CAM->setLimitsY(CENTER_Y, IMG("Å×¸Ê")->getHeight());
+	CAM->setLimitsX(LSCENTER_X, IMG("¸Ê2")->getWidth());
+	CAM->setLimitsY(CENTER_Y, IMG("¸Ê2")->getHeight());
 
 
 	_UIBar = new ProgressBar;
@@ -64,12 +64,7 @@ void Stage::render(void)
 		int cameraLeft = CAM->getScreenRect().left;
 		int cameraTop = CAM->getScreenRect().top;
 
-		if (KEYOKD(VK_F3))
-		{
-			cout << "Ä«¸Þ¶óX : " << cameraLeft << endl;
-		}
-
-		IMGR("Å×¸Ê", getMemDC(), 0, 0,
+		IMGR("¸Ê2", getMemDC(), 0, 0,
 			cameraLeft,
 			cameraTop,
 			CENTER_X, WINSIZE_Y);
