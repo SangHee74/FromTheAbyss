@@ -57,6 +57,9 @@ private:
 	WEAPONTYPE _weaponType;
 	tagPlayerStatus _status;
 
+	int _abyss;
+	int _stage;
+
 	ProgressBar* _UIBar;
 
 	POINT _pos;
@@ -89,6 +92,10 @@ public:
 	void setPlayerPosX(float x);
 	void setPlayerPosY(float y);
 
+	int getAbyss() { return this->_abyss; }
+	int getStage() { return this->_stage; }
+	void setAbyss(int num);
+	void setStage(int num);
 
 	bool getIsLeft() { return this->_isLeft; }
 	void setIsLeft(bool state) { _isLeft = state; }

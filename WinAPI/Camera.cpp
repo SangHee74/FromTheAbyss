@@ -24,6 +24,8 @@ void Camera::release(void)
 void Camera::update(void)
 {
 	_screen = RectMakeCenter(_trace.x, _trace.y, CENTER_X, WINSIZE_Y);
+
+
 }
 
 void Camera::render(void)

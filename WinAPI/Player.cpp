@@ -5,7 +5,7 @@
 HRESULT Player::init(void)
 {
 
-	_pos.x = 0;//LSCENTER_X;
+	_pos.x = 230;//LSCENTER_X;
 	_pos.y = WINSIZE_Y - 140;
 	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, IMG("p_idle_6")->getFrameWidth(), IMG("p_idle_6")->getFrameHeight());
 
@@ -24,6 +24,8 @@ HRESULT Player::init(void)
 	_status.iAgi = 10;
 	_status.iLuk = 10;
 
+	_abyss = 1;
+	_stage = 1;
 
 	_isLeft = false;
 	_isLive = true;
@@ -91,11 +93,17 @@ void Player::render(void)
 		float left = _rcPlayer.left - _rcCamera.left;
 		float top = _rcPlayer.top - _rcCamera.top;
 
+
+		Rectangle(getMemDC(), left,top, left+ IMG("p_idle_6")->getWidth(), top+IMG("p_idle_6")->getHeight());
 		IMGR("p_idle_6", getMemDC(), left, top);
 
-		if(KEYMANAGER->isToggleKey(VK_F4))
+		if(KEYOKD(VK_F4))
 		{
-		cout << "Ä«¸Þ¶ópos : " << cameraPos.x << " , " << cameraPos.y << endl;
+		cout << "_rcPlayer X : " << _rcPlayer.left << " , _rcCamera X : " << _rcCamera.left << endl;
+		cout << "_rcPlayer Y : " << _rcPlayer.top << " , _rcCamera Y : " << _rcCamera.top << endl;
+		cout << "left : " << left << endl;
+		cout << "top : " << top << endl;
+
 		}
 
 		//IMGR("p_idle_6", getMemDC(), _pos.x, _pos.y);
@@ -131,3 +139,14 @@ void Player::setCameraRect(RECT rc)
 {
 	_rcCamera = rc;
 }
+
+void Player::setAbyss(int num)
+{
+	_abyss = num;
+}
+
+void Player::setStage(int num)
+{
+	_stage = num;
+}
+

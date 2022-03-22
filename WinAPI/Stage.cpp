@@ -52,6 +52,7 @@ void Stage::update(void)
 
 	}
 
+	
 }
 
 void Stage::render(void)
@@ -63,13 +64,17 @@ void Stage::render(void)
 		int cameraLeft = CAM->getScreenRect().left;
 		int cameraTop = CAM->getScreenRect().top;
 
+		if (KEYOKD(VK_F3))
+		{
+			cout << "Ä«¸Þ¶óX : " << cameraLeft << endl;
+		}
+
 		IMGR("Å×¸Ê", getMemDC(), 0, 0,
 			cameraLeft,
 			cameraTop,
 			CENTER_X, WINSIZE_Y);
 
-//	IMGR("sub_map", getMemDC(),CENTER_X,0);
-
+	IMGR("sub_map", getMemDC(), CENTER_X,0);
 
 
 	_player->render();
