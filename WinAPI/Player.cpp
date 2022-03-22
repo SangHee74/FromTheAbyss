@@ -93,6 +93,11 @@ void Player::render(void)
 
 		IMGR("p_idle_6", getMemDC(), left, top);
 
+		if(KEYMANAGER->isToggleKey(VK_F4))
+		{
+		cout << "Ä«¸Þ¶ópos : " << cameraPos.x << " , " << cameraPos.y << endl;
+		}
+
 		//IMGR("p_idle_6", getMemDC(), _pos.x, _pos.y);
 	}
 }

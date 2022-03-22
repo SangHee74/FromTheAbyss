@@ -36,7 +36,7 @@ void Stage::update(void)
 	_player->setCameraRect(CAM->getScreenRect());
 	_player->update();
 
-	cout <<"Ä«¸Þ¶ópos : " <<  cameraPos.x  << " , " << cameraPos.y<< endl;
+	//cout <<"Ä«¸Þ¶ópos : " <<  cameraPos.x  << " , " << cameraPos.y<< endl;
 
 
 	_UIBar->update();
@@ -63,7 +63,7 @@ void Stage::render(void)
 		int cameraLeft = CAM->getScreenRect().left;
 		int cameraTop = CAM->getScreenRect().top;
 
-		IMAGEMANAGER->render("Å×¸Ê", getMemDC(), 0, 0,
+		IMGR("Å×¸Ê", getMemDC(), 0, 0,
 			cameraLeft,
 			cameraTop,
 			CENTER_X, WINSIZE_Y);
