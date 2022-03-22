@@ -20,6 +20,9 @@
 #include "Square.h"
 #include "Tutorial.h"
 #include "Castle.h"
+
+// ¸ÊÅø 
+#include "MapTool.h"
 #pragma endregion
 
 
@@ -47,7 +50,10 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("tutorial", new Tutorial);
 	SCENEMANAGER->addScene("castle", new Castle);
 
-	SCENEMANAGER->changeScene("stage");
+	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
+
+
+	SCENEMANAGER->changeScene("¸ÊÅø");
 
 
 	return S_OK;

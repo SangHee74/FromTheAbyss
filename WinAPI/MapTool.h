@@ -8,9 +8,12 @@ struct tagTempTile
 	float y;
 };
 
+
+// 현재 클릭된 타일을 저장
 struct tagSampleTile
 {
-
+	float x;
+	float y;
 };
 
 struct tagTilePos
@@ -25,25 +28,24 @@ class MapTool : public GameNode
 private:
 	Tile _tile[TILEMAX_X*TILEMAX_Y];
 	tagTempTile _tempTile;
-	//tagSampleTile _sampleTile;
+	tagSampleTile _sampleTile;
 	tagTilePos _tilePos;
 
 	// 맵툴 편집버튼
-	RECT _saveAbyss[4]; 
-	RECT _saveStage[4];
+	RECT _save; // 현재 어비스와 스테이지 정보로 
+	RECT _load; // 저장 또는 로드
 
-	RECT _open;
-	RECT _close;
 
-	POINT _pickingPt;
-	POINT _cameraPtMouse;
+	RECT _tileVeuw; // 타일셋 프리뷰 열기닫기
 
-	bool _brushOn;
-	bool _menuInpt;
-	bool _dragMode;
+	POINT _pickingPt; // 선택 pt영역(어떤 자리에 타일이 들어갈 지)
+	POINT _cameraPtMouse; // 카메라 보정한 마우스좌표
 
-	int _curAbyss;
-	int _curStage; 
+	bool _brushOn; // 스윽-드래그 해서 그리는 상태 온오프
+	bool _dragMode; // 드래그 모드 
+
+	int _curAbyss; // 현재 어비스 
+	int _curStage;  // 현재 스테이지 
 
 public:
 	MapTool() {}
@@ -67,6 +69,7 @@ public:
 
 	void save();
 	void load();
+	void imageRender();
 
 	void fill(); // 모든 타일 칠하기 
 

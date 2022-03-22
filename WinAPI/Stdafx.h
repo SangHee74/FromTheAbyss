@@ -103,9 +103,10 @@ using namespace MY_UTIL;
 #define KEYTOG KEYMANAGER->isToggleKey
 
 
+#define MAPTOOL
+
 //#define FULLSCREEN
-
-
+/*
 #ifdef FULLSCREEN
 #define WINSTART_X	 1920 // 모니터에 따라 다름 
 #define WINSTART_Y	 0
@@ -114,6 +115,14 @@ using namespace MY_UTIL;
 #define WINSIZE_X	 GetSystemMetrics(SM_CXSCREEN)
 #define WINSIZE_Y	 GetSystemMetrics(SM_CYSCREEN)
 #define WINSTYLE	 WS_POPUPWINDOW | WS_MAXWIZE
+*/
+
+#ifdef MAPTOOL
+#define WINSTART_X	 50
+#define WINSTART_Y	 20
+#define WINSIZE_X	 1280 // 1200
+#define WINSIZE_Y	 720 // 675
+#define WINSTYLE	 WS_CAPTION | WS_SYSMENU
 
 #else
 #define WINSTART_X	 100
