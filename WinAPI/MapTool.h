@@ -25,13 +25,16 @@ struct tagTilePos
 // 타일셋에서 선택한 타일을 담아둘 빈 타일
 struct tagTempTile 
 {
+	abyssType abyssType;
 	float x;
 	float y;
 };
 
 // 선택한 타일이 셋팅 될 샘플 타일
 // 우측에 셋팅.
-struct tagSampleTile
+// 몇번째 렉트에서 충돌하는지와
+// 
+struct tagSampleTile 
 {
 	RECT rc;
 	float frameX; // 프레임에서 몇번째 타일인지 
@@ -45,9 +48,11 @@ private:
 	tagTilePos _tilePos;
 	tagTempTile _tempTile;
 	tagSampleTile _sampleTile[SAMPLEMAX_X*SAMPLEMAX_Y];
+	Image* _selectTileView;
 
 	RECT _miniMap;
 	RECT _selectTile;
+	RECT _tileSlot;
 
 	// 맵툴 편집버튼
 	RECT _save; // 현재 어비스와 스테이지 정보로 
@@ -101,6 +106,7 @@ public:
 	void imageRender();
 	void infoUpdate();
 	void infoRender();
+	void sampleRender();
 
 	void fill(); // 모든 타일 칠하기 
 
