@@ -138,9 +138,9 @@ HRESULT ImageClass::init(void)
 #pragma region MapTool
 
 	// ¸ÊÅø 
-	IMAGEMANAGER->addFrameImage("abyss_tile1", "Resources/Images/MapTool/abyss1.bmp", 0, 0, 256*3, 192 * 3, 32, 24, MGT);
-	IMAGEMANAGER->addFrameImage("abyss_tile2", "Resources/Images/MapTool/abyss2.bmp", 0, 0, 256 * 3, 184 * 3, 32, 23, MGT);
-	IMAGEMANAGER->addFrameImage("abyss_tile3", "Resources/Images/MapTool/abyss3.bmp", 0, 0, 256 * 3, 184 * 3, 32, 23, MGT);
+	IMAGEMANAGER->addFrameImage("abyss_tile1", "Resources/Images/MapTool/abyss1.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
+	IMAGEMANAGER->addFrameImage("abyss_tile2", "Resources/Images/MapTool/abyss2.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
+	IMAGEMANAGER->addFrameImage("abyss_tile3", "Resources/Images/MapTool/abyss3.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
 	IMAGEMANAGER->addFrameImage("abyss_tile4", "Resources/Images/MapTool/abyss4.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
 	IMAGEMANAGER->addFrameImage("abyss_tile5", "Resources/Images/MapTool/abyss5.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
 	IMAGEMANAGER->addFrameImage("abyss_tile6", "Resources/Images/MapTool/abyss6.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
@@ -148,9 +148,13 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("abyss_tile8", "Resources/Images/MapTool/abyss8.bmp", 0, 0, 256 * 3, 192 * 3, 32, 24, MGT);
 	IMAGEMANAGER->addFrameImage("abyss_tile9", "Resources/Images/MapTool/abyss9.bmp", 0, 0, 256 * 3, 47  * 3, 6, 24, MGT);
 
+
+	IMAGEMANAGER->addImage("mBG", "Resources/Images/MapTool/bg.bmp", 0, 0, 1280, 720, MGT);
 	IMAGEMANAGER->addImage("mbg", "Resources/Images/MapTool/mbg.bmp", 0, 0, 320,720, MGT);
+
 	IMAGEMANAGER->addImage("loadB", "Resources/Images/MapTool/loadB.bmp", 0,0,100,50, MGT);
 	IMAGEMANAGER->addImage("saveB", "Resources/Images/MapTool/saveB.bmp", 0, 0, 100, 50, MGT);
+	IMAGEMANAGER->addImage("tileSetB", "Resources/Images/MapTool/tileSetB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("wallB", "Resources/Images/MapTool/wallB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("plusB", "Resources/Images/MapTool/plusB.bmp", 0, 0, 50, 50, MGT);
 	IMAGEMANAGER->addImage("minusB", "Resources/Images/MapTool/minusB.bmp", 0, 0, 50, 50, MGT);
