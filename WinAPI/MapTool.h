@@ -60,6 +60,8 @@ private:
 	RECT _selectTile;
 	RECT _tileSlot;
 
+	//테스트용 예은이변수
+	bool _isOpenTileList;
 	// 맵툴 편집버튼
 	RECT _save; // 현재 어비스와 스테이지 정보로 
 	RECT _load; // 저장 또는 로드

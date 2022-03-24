@@ -32,7 +32,7 @@ HRESULT MapTool::init(void)
 
 	_tilePos.x = 0;
 	_tilePos.y = 0;
-
+	_isOpenTileList = false;
 	// 저장할 데이터 타일 초기화
 	_tempTile.abyssType = NONE;
 	_tempTile.x = 0;
@@ -57,11 +57,18 @@ void MapTool::update(void)
 	if (KEYOKD(VK_LBUTTON))
 	{
 		selectSampleTile();
-		selectTile();
+		//selectTile();
 		infoUpdate();
 	}
-
-
+	//타일셋을 켰을 경우에
+	// 그 이후 타일셋을 '켯'고 그 후에 그림을 고른후에 그 그림을 저장?해준후
+	//타일안에서 마우스 왼쪽클릭을 하면
+	//그 타일에 고린 그림의 타일을 그려준다
+	//라고 해야함
+	//클릭으로 함수를 킬경우 한 프레임만 돌기때문에 시작할때 10개의 cout이 돈건 그때만 작동했던것
+	//함수키는 조건이 바꿔야함
+	
+	selectTile();
 
 }
 
@@ -72,11 +79,11 @@ void MapTool::render(void)
 	for(int i = 0 ; i < TILEMAX_X*TILEMAX_Y ; i++)
 	{
 		// 바닥타일그리기 
-	 rcMake(getMemDC(), _tile[i].rc);
+	// rcMake(getMemDC(), _tile[i].rc);
 
 	}
-	//tileRender();
-	//imageRender();
+	tileRender();
+	imageRender();
 	infoRender();
 
 }
@@ -92,9 +99,10 @@ void MapTool::createTileMap(int tileX, int tileY)
 		{
 			_tile[i * tileX + j ].pos.x = 200+j; // n번째 xy
 			_tile[i * tileX + j ].pos.y = 200+i;
-			_tile[i * tileX + j ].fX = 0;	 // frame xy = 0
-			_tile[i * tileX + j ].fY = 0; 
+			_tile[i * tileX + j ].fX = j;	 // frame xy = 0인데 인덱스를 위해 넣음===============================================
+			_tile[i * tileX + j ].fY = i; 
 			_tile[i * tileX + j].drawOn = false;
+			_tile[i * tileX + j].ptInRect = false;
 			_tile[i * tileX + j]._moveCheck = GROUND;
 			_tile[i * tileX + j]._abyssType = NONE;
 
@@ -126,19 +134,33 @@ void MapTool::createSampleTile()
 
 void MapTool::selectTile()
 {
-
-	for (int i = 0; i < TILEMAX_X; i++)
+	if (_sampleTileOn)
 	{
-		for (int j = 0; j < TILEMAX_Y; j++)
-		{
 
+		if (PtInRect(&_miniMap, _ptMouse));
+		{
+			//cout << "selectTile::MINIMAP TEST" << endl;
+		}
+		for (int i = 0; i < TILEMAX_X; i++)
+		{
+			for (int j = 0; j < TILEMAX_Y; j++)
+			{
 				//바닥타일 확인
-				if (PtInRect(&_tile[i * TILEMAX_X + j].rc, _ptMouse) );
+				if (PtInRect(&_tile[i * TILEMAX_X + j].rc, _ptMouse));
 				{
 					cout << "selectTile::PtInRect" << endl;
-					_tile[i * TILEMAX_X + j].fX = _tempTile.x;
-					_tile[i * TILEMAX_X + j].fY = _tempTile.y;
-					_tile[i * TILEMAX_X + j]._abyssType = _tempTile.abyssType;
+					{
+					
+						_tilePos.x = _tile[i * TILEMAX_X + j].fX;
+						_tilePos.y = _tile[i * TILEMAX_X + j].fY;
+
+						_tile[i * TILEMAX_X + j]._abyssType = _tempTile.abyssType;
+
+						_tile[i * TILEMAX_X + j].fX = _tempTile.x;
+						_tile[i * TILEMAX_X + j].fY = _tempTile.y;
+					}
+					//샘플타일처럼 이미지를 부르면 될거같음...
+
 
 					if (_wallOn)
 					{
@@ -150,11 +172,12 @@ void MapTool::selectTile()
 					}
 
 					_tile[i * TILEMAX_X + j].drawOn = true;
+					break;
 				}
-			
+
+			}
 		}
 	}
-	
 }
 
 // 빈 타일에 타일셋에서 고른 타일 저장 
@@ -170,7 +193,7 @@ void MapTool::selectSampleTile()
 				_tempTile.x = _sampleTile[i * SAMPLEMAX_X + j].frameX;
 				_tempTile.y = _sampleTile[i * SAMPLEMAX_X + j].frameY;
 
-				// 샘플타일 확인
+				// info에서 샘플타일 확인
 				_tileSlot.left = _sampleTile[i * SAMPLEMAX_X + j].rc.left;
 				_tileSlot.top = _sampleTile[i * SAMPLEMAX_X + j].rc.top;
 			}
@@ -208,6 +231,7 @@ void MapTool::infoUpdate()
 		if (PtInRect(&_tileViewButton, _ptMouse) && !_sampleTileOn)
 		{
 			_sampleTileOn = true;
+			
 		}
 		else if (PtInRect(&_tileViewButton, _ptMouse) && _sampleTileOn)
 		{
@@ -249,22 +273,7 @@ void MapTool::tileRender()
 				IMGFR("abyss_tile2", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
 					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
 			}
-			else if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS3)
-			{
-				IMGFR("abyss_tile3", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
-					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
-			}
-			else if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS4)
-			{
-				IMGFR("abyss_tile4", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
-					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
-			}
 
-			if (_tile[i * TILEMAX_X + j].ptInRect)
-			{
-				IMGR("tileS", getMemDC(), _tile[i * TILEMAX_X + j].pos.x*TILESIZE_X,
-					_tile[i * TILEMAX_X + j].pos.y*TILESIZE_Y);
-			}
 		}
 	}
 
@@ -286,6 +295,7 @@ void MapTool::imageRender()
 void MapTool::infoRender()
 {
 	char str[512];
+	char sNum[512];
 	SetTextColor(getMemDC(), RGB(0, 0, 0));
 
 	IMGR("mbg", getMemDC(), RSCENTER_X, 0);
@@ -300,8 +310,9 @@ void MapTool::infoRender()
 
 	sprintf_s(str, "베이스 타일 위치");
 	TextOut(getMemDC(), RSCENTER_X + 10, 240, str, strlen(str));
-	sprintf_s(str, "tile X : %d , Y : %d", _tilePos.x, _tilePos.y);
-	TextOut(getMemDC(), RSCENTER_X + 10, 260, str, strlen(str));
+
+	sprintf(sNum, "tile X : %d , Y : %d", (int)_tilePos.x, (int)_tilePos.y);//======================================float이라서 형변환
+	TextOut(getMemDC(), RSCENTER_X + 10, 260, sNum, strlen(sNum));
 
 
 	// 블럭 좌표 테스트
@@ -429,8 +440,10 @@ void MapTool::tilePosCheck()
 		{
 			if (PtInRect(&_tile[i * TILEMAX_X + j].rc, _ptMouse))
 			{
-				//_tilePos.x = _tile[i * TILEMAX_X + j].pos.x;
-				//_tilePos.y = _tile[i * TILEMAX_X + j].pos.y;
+				_tilePos.x = _tile[i * TILEMAX_X + j].fX; //======================================
+				_tilePos.y = _tile[i * TILEMAX_X + j].fY; //======================================
+				IMGR("tileS", getMemDC(), _tilePos.x, _tilePos.y);
+				
 				_tile[i * TILEMAX_X + j].ptInRect = true;
 
 				if (KEYOKD('A'))
@@ -445,6 +458,7 @@ void MapTool::tilePosCheck()
 			}
 			else _tile[i * TILEMAX_X + j].ptInRect = false;
 				
+
 		}
 	}
 }
