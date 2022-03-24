@@ -32,7 +32,7 @@ void TimeManager::render(HDC hdc)
 	char str[256];
 
 	SetBkMode(hdc, TRANSPARENT);
-	SetTextColor(hdc, RGB(255,255,255));
+	SetTextColor(hdc, RGB(0,0,255));
 
 	/*
 	// 타이머 중 프로그래머에게 필요한 정보(경과시간 ... 등을 확인하기 위해)

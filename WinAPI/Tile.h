@@ -22,6 +22,8 @@ public:
 	int fX; // frame X
 	int fY; // frame Y
 
+	bool drawOn;
+	bool ptInRect;
 	groundType _moveCheck;
 	abyssType _abyssType;
 };

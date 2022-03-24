@@ -52,7 +52,8 @@ void MapTool::update(void)
 	if (KEYOKD(VK_F2))  _guideOn = true; //_guide.flip();
 	if (KEYOKD(VK_F3))  _guideOn = false;
 
-	tilePosCheck();
+	// 프레임드랍
+	 tilePosCheck();
 	if (KEYOKD(VK_LBUTTON))
 	{
 		selectSampleTile();
@@ -60,13 +61,7 @@ void MapTool::update(void)
 		infoUpdate();
 	}
 
-	if (KEYOKD('A'))
-	{
-		cout << "셀렉타일 실행중" << endl;
-		cout << "프레임 x : " << _tile[19].fX << endl;
-		cout << "프레임 y : " << _tile[19].fY << endl;
-		cout << "어비스 : " << _tile[19]._abyssType << endl;
-	}
+
 
 }
 
@@ -74,8 +69,14 @@ void MapTool::render(void)
 {
 	IMGR("mBG",getMemDC());
 
-	tileRender();
-	imageRender();
+	for(int i = 0 ; i < TILEMAX_X*TILEMAX_Y ; i++)
+	{
+		// 바닥타일그리기 
+	 rcMake(getMemDC(), _tile[i].rc);
+
+	}
+	//tileRender();
+	//imageRender();
 	infoRender();
 
 }
@@ -89,21 +90,19 @@ void MapTool::createTileMap(int tileX, int tileY)
 	{
 		for (int j = 0; j < tileX; j++)
 		{
-			_tile[i * tileX + j ].pos.x = j; // n번째 xy
-			_tile[i * tileX + j ].pos.y = i;
+			_tile[i * tileX + j ].pos.x = 200+j; // n번째 xy
+			_tile[i * tileX + j ].pos.y = 200+i;
 			_tile[i * tileX + j ].fX = 0;	 // frame xy = 0
 			_tile[i * tileX + j ].fY = 0; 
-			
+			_tile[i * tileX + j].drawOn = false;
 			_tile[i * tileX + j]._moveCheck = GROUND;
 			_tile[i * tileX + j]._abyssType = NONE;
 
 			_tile[i * tileX + j].rc=
-				RectMake(0 + (j * TILESIZE_X), 0 + (i * TILESIZE_Y), TILESIZE_X, TILESIZE_Y);
+				RectMake( 0+ (j * TILESIZE_X), 0 + (i * TILESIZE_Y), TILESIZE_X, TILESIZE_Y);
 		}
 	}
 }
-
-
 
 // 타일셋에서 고르는 타일 확인용
 void MapTool::createSampleTile()
@@ -127,32 +126,38 @@ void MapTool::createSampleTile()
 
 void MapTool::selectTile()
 {
+
 	for (int i = 0; i < TILEMAX_X; i++)
 	{
 		for (int j = 0; j < TILEMAX_Y; j++)
 		{
-			//바닥타일 확인
-			if (PtInRect(&_tile[i * TILEMAX_X + j].rc,_ptMouse));
-			{
-				_tile[i * TILEMAX_X + j].fX = _tempTile.x;
-				_tile[i * TILEMAX_X + j].fY = _tempTile.y;
-				_tile[i * TILEMAX_X + j]._abyssType = _tempTile.abyssType;
 
-				if (_wallOn)
+				//바닥타일 확인
+				if (PtInRect(&_tile[i * TILEMAX_X + j].rc, _ptMouse) );
 				{
-					_tile[i * TILEMAX_X + j]._moveCheck = GROUND;
+					cout << "selectTile::PtInRect" << endl;
+					_tile[i * TILEMAX_X + j].fX = _tempTile.x;
+					_tile[i * TILEMAX_X + j].fY = _tempTile.y;
+					_tile[i * TILEMAX_X + j]._abyssType = _tempTile.abyssType;
+
+					if (_wallOn)
+					{
+						_tile[i * TILEMAX_X + j]._moveCheck = GROUND;
+					}
+					else
+					{
+						_tile[i * TILEMAX_X + j]._moveCheck = WALL;
+					}
+
+					_tile[i * TILEMAX_X + j].drawOn = true;
 				}
-				else
-				{
-					_tile[i * TILEMAX_X + j]._moveCheck = WALL;
-				}
-			}
+			
 		}
 	}
 	
 }
 
-// 타일셋에서 고른 타일 저장 
+// 빈 타일에 타일셋에서 고른 타일 저장 
 void MapTool::selectSampleTile()
 {
 	for (int i = 0; i < SAMPLEMAX_Y; ++i)
@@ -175,39 +180,40 @@ void MapTool::selectSampleTile()
 
 void MapTool::infoUpdate()
 {
-	if (PtInRect(&_plusButton[0], _ptMouse))
-	{
-		if (_curAbyss <= 8) _curAbyss++;
-	}
-	if (PtInRect(&_minusButton[0], _ptMouse))
-	{
-		if (_curAbyss > 1) _curAbyss--;
-	}
-	if (PtInRect(&_plusButton[1], _ptMouse))
-	{
-		if (_curStage <= 3) _curStage++;
-	}
-	if (PtInRect(&_minusButton[1], _ptMouse))
-	{
-		if (_curStage > 1) _curStage--;
-	}
-	if (PtInRect(&_save, _ptMouse))
-	{
-		save();
-	}
-	if (PtInRect(&_load, _ptMouse))
-	{
-		load();
-	}
-	if (PtInRect(&_tileViewButton, _ptMouse) && !_sampleTileOn)
-	{
-		_sampleTileOn = true;
-	}
-	else if (PtInRect(&_tileViewButton, _ptMouse) && _sampleTileOn)
-	{
-		_sampleTileOn = false;
-	}
 
+		if (PtInRect(&_plusButton[abyss], _ptMouse))
+		{
+			if (_curAbyss <= 8) _curAbyss++;
+		}
+		if (PtInRect(&_minusButton[0], _ptMouse))
+		{
+			if (_curAbyss > 1) _curAbyss--;
+		}
+		if (PtInRect(&_plusButton[1], _ptMouse))
+		{
+			if (_curStage <= 3) _curStage++;
+		}
+		if (PtInRect(&_minusButton[1], _ptMouse))
+		{
+			if (_curStage > 1) _curStage--;
+		}
+		if (PtInRect(&_save, _ptMouse))
+		{
+			save();
+		}
+		if (PtInRect(&_load, _ptMouse))
+		{
+			load();
+		}
+		if (PtInRect(&_tileViewButton, _ptMouse) && !_sampleTileOn)
+		{
+			_sampleTileOn = true;
+		}
+		else if (PtInRect(&_tileViewButton, _ptMouse) && _sampleTileOn)
+		{
+			_sampleTileOn = false;
+		}
+	
 }
 
 #pragma endregion
@@ -218,113 +224,63 @@ void MapTool::infoUpdate()
 void MapTool::tileRender()
 {
 
-	for (int i = 0; i < TILEMAX_X * TILEMAX_Y; ++i)
+	for (int i = 0; i < TILEMAX_Y; ++i)
 	{
-		//바닥타일 확인
-		rcMake(getMemDC(), _tile[TILEMAX_X * TILEMAX_Y].rc);
-		IMGR("tileS", getMemDC(), 1 + (_tilePos.x*TILESIZE_X), 1 + (_tilePos.y*TILESIZE_Y));
+		for (int j = 0; j < TILEMAX_X; ++j)
+		{
+
+			// 바닥타일 확인
+			rcMake(getMemDC(), _tile[i * TILEMAX_X + j].rc);
 
 
+			//IMGFR("abyss_tile1", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
+			//_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
 
-		// 어비스 타입 미저장으로 건너뛰기
-		//if (_tile[TILEMAX_X * TILEMAX_Y]._abyssType == NONE) continue;
-		 {
-			
-			switch (_curAbyss)
+
+			// 어비스 타입 미저장 건너뛰기
+			//if (_tile[i * TILEMAX_X + j]._abyssType == NONE) continue;
+			if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS1)
 			{
-			case 1:
-
-				IMGFR("abyss_tile1", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, 1, 0);
-				//IMGFR("abyss_tile1", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 2:
-				IMGFR("abyss_tile2", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, 1, 0);
-				//IMGFR("abyss_tile2", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 3:
-				IMGFR("abyss_tile3", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 4:
-				IMGFR("abyss_tile4", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 5:
-				IMGFR("abyss_tile5", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 6:
-				IMGFR("abyss_tile6", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 7:
-				IMGFR("abyss_tile7", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 8:
-				IMGFR("abyss_tile8", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
-			case 9:
-				IMGFR("abyss_tile9", getMemDC(), _tile[i].rc.left, _tile[i].rc.top, _tile[i].fX, _tile[i].fY);
-				break;
+				IMGFR("abyss_tile1", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
+					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
 			}
-			
+			else if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS2)
+			{
+				IMGFR("abyss_tile2", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
+					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
+			}
+			else if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS3)
+			{
+				IMGFR("abyss_tile3", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
+					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
+			}
+			else if (_tile[i * TILEMAX_X + j]._abyssType == ABYSS4)
+			{
+				IMGFR("abyss_tile4", getMemDC(), _tile[i * TILEMAX_X + j].rc.left, _tile[i * TILEMAX_X + j].rc.top,
+					_tile[i * TILEMAX_X + j].fX, _tile[i * TILEMAX_X + j].fY);
+			}
 
-
-
-
+			if (_tile[i * TILEMAX_X + j].ptInRect)
+			{
+				IMGR("tileS", getMemDC(), _tile[i * TILEMAX_X + j].pos.x*TILESIZE_X,
+					_tile[i * TILEMAX_X + j].pos.y*TILESIZE_Y);
+			}
 		}
 	}
+
 }
 
 void MapTool::imageRender()
 {
-	// 범위 밖 타일은 컨티뉴로 예외처리 할 것 
-	for (int i = 0; i < TILEMAX_X * TILEMAX_Y; ++i)
+	
+	//벽 타일 표시
+	if (_tile[0]._moveCheck == WALL)
 	{
-		// 어비스 타입 미저장으로 건너뛰기
-		if (_tile[TILEMAX_X * TILEMAX_Y]._abyssType == NONE) continue;
-		else {
-			/*
-			switch (_curAbyss)
-			{
-			case 1:
-				IMGFR("abyss_tile1", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 2:
-				IMGFR("abyss_tile2", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 3:
-				IMGFR("abyss_tile3", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 4:
-				IMGFR("abyss_tile4", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 5:
-				IMGFR("abyss_tile5", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 6:
-				IMGFR("abyss_tile6", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 7:
-				IMGFR("abyss_tile7", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 8:
-				IMGFR("abyss_tile8", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			case 9:
-				IMGFR("abyss_tile9", getMemDC(), _tile[i].pos.x, _tile[i].pos.y, _tile[i].fX, _tile[i].fY);
-				break;
-			}
-			*/
-			// 오브젝트를 그리려면 타일속성에 오브젝트 enum을 추가할까?
 
+	};
 
-				//벽 타일 표시
-			if (_tile[i]._moveCheck == WALL)
-			{
+		
 
-			};
-
-		}
-
-		IMGR("tileS", getMemDC(), 1 + (_tilePos.x*TILESIZE_X), 1 + (_tilePos.y*TILESIZE_Y));
-	}
 }
 
 void MapTool::infoRender()
@@ -347,10 +303,24 @@ void MapTool::infoRender()
 	sprintf_s(str, "tile X : %d , Y : %d", _tilePos.x, _tilePos.y);
 	TextOut(getMemDC(), RSCENTER_X + 10, 260, str, strlen(str));
 
-	//cout << _tilePos.x << "," << _tilePos.y << endl;
 
-	//일단 구현은 됬는데 드래그 표시를 어떻게해야하나... 고민중
-	//if (_push && _dragMode) Rectangle(getMemDC(), _dragRc);
+	// 블럭 좌표 테스트
+	int k = 0;
+	for (int i = 0; i < TILEMAX_Y; ++i)
+	{
+		for (int j = 0; j < TILEMAX_X; ++j)
+		{
+		
+			k = i * TILEMAX_X + j;
+
+			int x = _tile[k].pos.x-200;
+			int y = _tile[k].pos.y-200;
+
+			sprintf_s(str, "%d,%d", x,y);
+			TextOut(getMemDC(), _tile[k].pos.x+(24*j), _tile[k].pos.y+(24*i), str, strlen(str));
+		}
+	}
+	//cout << _tilePos.x << "," << _tilePos.y << endl;
 
 	//sprintf_s(str, "선택한 샘플 타일 위치");
 	//TextOut(getMemDC(), RSCENTER_X + 10, 290, str, strlen(str));
@@ -459,11 +429,22 @@ void MapTool::tilePosCheck()
 		{
 			if (PtInRect(&_tile[i * TILEMAX_X + j].rc, _ptMouse))
 			{
-				_tilePos.x = _tile[i * TILEMAX_X + j].pos.x;
-				_tilePos.y = _tile[i * TILEMAX_X + j].pos.y;
+				//_tilePos.x = _tile[i * TILEMAX_X + j].pos.x;
+				//_tilePos.y = _tile[i * TILEMAX_X + j].pos.y;
+				_tile[i * TILEMAX_X + j].ptInRect = true;
 
-
+				if (KEYOKD('A'))
+				{
+					cout << "현재 타일 --------------" << endl;
+					cout << "pos x : "	 << _tile[i * TILEMAX_X + j].pos.x << endl;
+					cout << "pos y : "	 << _tile[i * TILEMAX_X + j].pos.y << endl;
+					cout << "프레임 x : " << _tile[i * TILEMAX_X + j].fX << endl;
+					cout << "프레임 y : " << _tile[i * TILEMAX_X + j].fY << endl;
+					cout << "어비스 : "   << _tile[i * TILEMAX_X + j]._abyssType << endl;
+				}
 			}
+			else _tile[i * TILEMAX_X + j].ptInRect = false;
+				
 		}
 	}
 }

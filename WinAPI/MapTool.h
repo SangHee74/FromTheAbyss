@@ -3,8 +3,8 @@
 #include "Tile.h"
 
 //타일 사이즈
-#define TILESIZE_X 26
-#define TILESIZE_Y 26
+#define TILESIZE_X 24
+#define TILESIZE_Y 24
 
 //타일 갯수
 #define TILEMAX_X 10
@@ -40,11 +40,16 @@ struct tagSampleTile
 	int frameY;
 };
 
+enum a {
+	abyss, stage,a_end
+};
 class MapTool : public GameNode
 {
 private:
 
 	Tile _tile[TILEMAX_X*TILEMAX_Y];
+	vector<Tile> _vTile;
+	vector<Tile>::iterator _viTile;
 
 	tagTilePos _tilePos;
 	tagTempTile _tempTile;
@@ -59,8 +64,8 @@ private:
 	RECT _save; // 현재 어비스와 스테이지 정보로 
 	RECT _load; // 저장 또는 로드
 
-	RECT _plusButton[2]; // 0 : abyss, 1:stage
-	RECT _minusButton[2];
+	RECT _plusButton[a_end]; // 0 : abyss, 1:stage
+	RECT _minusButton[a_end];
 
 	RECT _tileViewButton; // 타일셋 프리뷰 열기닫기
 	RECT _wallOnButton; // 켜져있으면 벽속성 타일로 수정
