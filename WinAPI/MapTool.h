@@ -7,15 +7,15 @@
 #define TILESIZE_Y 26
 
 //타일 갯수
-#define TILEMAX_X 50
-#define TILEMAX_Y 50
+#define TILEMAX_X 10
+#define TILEMAX_Y 10
 
 //타일셋(샘플타일) 범위
 #define SAMPLEMAX_X 32
 #define SAMPLEMAX_Y 24
 
 
-// 타일 위치 
+// 타일 위치 (안내용)
 struct tagTilePos
 {
 	float x;
@@ -26,25 +26,26 @@ struct tagTilePos
 struct tagTempTile 
 {
 	abyssType abyssType;
-	float x;
-	float y;
+	int x;
+	int y;
 };
 
 // 선택한 타일이 셋팅 될 샘플 타일
 // 우측에 셋팅.
 // 몇번째 렉트에서 충돌하는지와
-// 
 struct tagSampleTile 
 {
 	RECT rc;
-	float frameX; // 프레임에서 몇번째 타일인지 
-	float frameY; 
+	int frameX; // 프레임에서 몇번째 타일인지 
+	int frameY;
 };
 
 class MapTool : public GameNode
 {
 private:
+
 	Tile _tile[TILEMAX_X*TILEMAX_Y];
+
 	tagTilePos _tilePos;
 	tagTempTile _tempTile;
 	tagSampleTile _sampleTile[SAMPLEMAX_X*SAMPLEMAX_Y];
@@ -61,18 +62,19 @@ private:
 	RECT _plusButton[2]; // 0 : abyss, 1:stage
 	RECT _minusButton[2];
 
-	RECT _tileView; // 타일셋 프리뷰 열기닫기
-	RECT _wallOn;
+	RECT _tileViewButton; // 타일셋 프리뷰 열기닫기
+	RECT _wallOnButton; // 켜져있으면 벽속성 타일로 수정
 
-	POINT _pickingPt; // 선택 pt영역(어떤 자리에 타일이 들어갈 지)
+	POINT _pickingPt;     // 선택 pt영역(어떤 자리에 타일이 들어갈 지)
 	POINT _cameraPtMouse; // 카메라 보정한 마우스좌표
 
-	bool _brushOn; // 스윽-드래그 해서 그리는 상태 온오프
+	bool _brushOn;  // 스윽-드래그 해서 그리는 상태 온오프
 	bool _dragMode; // 드래그 모드 
-	bool _tileOn; // 타일 셋 크기가 커서, 보이는지
-	bool _isWall;
-	bool _guideOn; 
-	bitset <1> _guide;
+	
+	bool _sampleTileOn;   // 샘플 타일셋 켜져있을 때
+	bool _guideOn;  //
+	bool _wallOn;
+	bool _tempTileOn; // 템프타일에 샘플타일 정보가 있는 상태  
 
 	int _curAbyss; // 현재 어비스 
 	int _curStage;  // 현재 스테이지 
@@ -87,34 +89,40 @@ public:
 	void render(void);
 
 public:
+	
+	// init()
+	void createTileMap(int tileX, int tileY); // 베이스 타일 생성
+	void createSampleTile();				  // 샘플 타일 생성
+	
+	// update()
+	void selectTile();						  // 베이스 타일 관련 업데이트 
+	void selectSampleTile();				  // 샘플 타일 관련 업데이트 
+	void infoUpdate();						  // 우측 인포창 업데이트
 
-	void createTileMap(int tileX, int tileY); // 베이스 타일
-	void createTile();						  // 타일 업데이트 
-	void createSampleTile();						  // 샘플 업데이트 
-	void selectSampleTile();
 
-	void tileRender(); // 세팅된 타일 렌더
-
-	void openCloseBrush(); // 브러쉬 크기 끄기
-	void menuInpt(); // 메뉴안에서는 타일 안찍히게
-	void dragPaint(); // 드래그 하면서 채우기
-	void tempDrag(); // 클릭한 포인트 담기
-	void dragOnOff(); // 드래그모드 온오프
-
+	// update() - function
+	void tilePosCheck();
+	void fill(int x, int y); // 현재 타일로 모든 타일 칠하기 
 	void save();
 	void load();
-	void imageRender();
-	void infoUpdate();
-	void infoRender();
-	void sampleRender();
 
-	void fill(); // 모든 타일 칠하기 
+
+	// render()
+	void tileRender();						 // 베이스 타일 렌더
+	void imageRender();		
+	void infoRender();		 // 맵툴 버튼 위치 등 인포
+	void sampleTileRender(); // infoRender 내 샘플타일셋 렌더
+
+	// 아직~~~~~~
+	void openCloseBrush(); // 브러쉬 크기 끄기
+	void menuInpt();	   // 메뉴안에서는 타일 안찍히게
+	void dragPaint();      // 드래그 하면서 채우기
+	void tempDrag();       // 클릭한 포인트 담기
+	void dragOnOff();      // 드래그모드 온오프
 
 	void cameraControl();
-	
-	inline POINT picking(long x, long y); // 피킹하는 함수
-
 	void numberInput();
+	inline POINT picking(long x, long y); // 피킹하는 함수
 
 };
 
