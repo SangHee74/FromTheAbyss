@@ -3,9 +3,7 @@
 
 HRESULT ImageClass::init(void)
 {
-	
 	//MAGNI :  WINSIZE_X/512   //magnification
-
 #pragma region BG
 	IMAGEMANAGER->addImage("title", "Resources/Images/BackGround/title.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("save", "Resources/Images/BackGround/save.bmp", WINSIZE_X, WINSIZE_Y);
@@ -77,8 +75,6 @@ HRESULT ImageClass::init(void)
 #pragma endregion
 
 #pragma region UI	
-
-
 	
 	IMAGEMANAGER->addImage("titleButton", "Resources/Images/Object/titleButton.bmp", RSCENTER_X, CENTER_Y, 98 * MAGNI, 30 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("nextButton", "Resources/Images/Object/nextButton.bmp", RSCENTER_X, CENTER_Y, 72 * MAGNI, 48 * MAGNI, MGT);
@@ -104,8 +100,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("stage1", "Resources/Images/Object/stage1.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("stage2", "Resources/Images/Object/stage2.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("stage3", "Resources/Images/Object/stage3.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
-
-
 
 
 	IMAGEMANAGER->addFrameImage("skill_att_Icon", "Resources/Images/Object/skill_att_Icon.bmp", 0, 0, 297 * MAGNI, 99 * MAGNI, 9, 3, MGT);
@@ -162,13 +156,16 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("mBG", "Resources/Images/MapTool/bg.bmp", 0, 0, 1280, 720, MGT);
 	IMAGEMANAGER->addImage("mbg", "Resources/Images/MapTool/mbg.bmp", 0, 0, 320,720, MGT);
 
-	IMAGEMANAGER->addImage("loadB", "Resources/Images/MapTool/loadB.bmp", 0,0,100,50, MGT);
-	IMAGEMANAGER->addImage("saveB", "Resources/Images/MapTool/saveB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("tileSetB", "Resources/Images/MapTool/tileSetB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("wallB", "Resources/Images/MapTool/wallB.bmp", 0, 0, 100, 50, MGT);
+	IMAGEMANAGER->addImage("fillB", "Resources/Images/MapTool/fillB.bmp", 0, 0, 100, 50, MGT);
+	IMAGEMANAGER->addImage("undoB", "Resources/Images/MapTool/undoB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("plusB", "Resources/Images/MapTool/plusB.bmp", 0, 0, 50, 50, MGT);
 	IMAGEMANAGER->addImage("minusB", "Resources/Images/MapTool/minusB.bmp", 0, 0, 50, 50, MGT);
+	IMAGEMANAGER->addImage("loadB", "Resources/Images/MapTool/loadB.bmp", 0,0,100,50, MGT);
+	IMAGEMANAGER->addImage("saveB", "Resources/Images/MapTool/saveB.bmp", 0, 0, 100, 50, MGT);
 
+	// 선택 타일 표시
 	IMAGEMANAGER->addImage("tileS", "Resources/Images/MapTool/tileSlot.bmp", 0, 0, 24, 24, MGT);
 
 	
