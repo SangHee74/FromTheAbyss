@@ -14,7 +14,7 @@ private:
 	bool _okBox;
 	
 #pragma region menu bit flags
-	unsigned char PubIdx;
+	unsigned char PubIdx = 1;
 
 	unsigned char welcome = 1 << 0;			// 0000 0001 
 	unsigned char pubMain = 1 << 1;			// 0000 0010

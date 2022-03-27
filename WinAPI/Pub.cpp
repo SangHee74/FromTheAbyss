@@ -3,8 +3,6 @@
 
 HRESULT Pub::init(void)
 {
-	PubIdx = 1;
-
 	for (int i = 0; i < 3; i++)
 	{
 		_menu[i] = RectMake(CENTER_X+(48)+(204*i),CENTER_Y-40,144,100);

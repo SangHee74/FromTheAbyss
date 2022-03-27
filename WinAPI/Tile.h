@@ -4,7 +4,7 @@
 //타일 속성
 enum groundType // 이동가능, 이동불가 지형
 { 
-	GROUND,WALL
+	GROUND,WALL,GROUND_END
 };
 
 enum  abyssType
@@ -22,8 +22,9 @@ public:
 	int fX; // frame X
 	int fY; // frame Y
 
+	bool onDraw;
 	bool ptInRect;
-	groundType _moveCheck;
 	abyssType _abyssType;
+	groundType _moveCheck;
 };
 

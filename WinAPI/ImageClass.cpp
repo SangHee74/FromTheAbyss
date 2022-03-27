@@ -153,20 +153,25 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("abyss_tile99", "Resources/Images/MapTool/abyss99.bmp", 0, 0, 3328 ,611, 6, 24, MGT);
 
 
-	IMAGEMANAGER->addImage("mBG", "Resources/Images/MapTool/bg.bmp", 0, 0, 1280, 720, MGT);
+	// 테스트용 
+	IMAGEMANAGER->addImage("mBG", "Resources/testMap2.bmp", 0, 0, 720 * 10, 720 * 10, MGT);
+	//IMAGEMANAGER->addImage("mBG", "Resources/Images/MapTool/bg.bmp", 0, 0, 1280, 720, MGT);
 	IMAGEMANAGER->addImage("mbg", "Resources/Images/MapTool/mbg.bmp", 0, 0, 320,720, MGT);
 
 	IMAGEMANAGER->addImage("tileSetB", "Resources/Images/MapTool/tileSetB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("wallB", "Resources/Images/MapTool/wallB.bmp", 0, 0, 100, 50, MGT);
+	IMAGEMANAGER->addImage("wallB_on", "Resources/Images/MapTool/wallB_on.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("fillB", "Resources/Images/MapTool/fillB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("undoB", "Resources/Images/MapTool/undoB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("plusB", "Resources/Images/MapTool/plusB.bmp", 0, 0, 50, 50, MGT);
 	IMAGEMANAGER->addImage("minusB", "Resources/Images/MapTool/minusB.bmp", 0, 0, 50, 50, MGT);
 	IMAGEMANAGER->addImage("loadB", "Resources/Images/MapTool/loadB.bmp", 0,0,100,50, MGT);
 	IMAGEMANAGER->addImage("saveB", "Resources/Images/MapTool/saveB.bmp", 0, 0, 100, 50, MGT);
+	IMAGEMANAGER->addImage("clearB", "Resources/Images/MapTool/clearB.bmp", 0, 0, 50, 50, MGT);
 
-	// 선택 타일 표시
+	// 타일 표시
 	IMAGEMANAGER->addImage("tileS", "Resources/Images/MapTool/tileSlot.bmp", 0, 0, 24, 24, MGT);
+	IMAGEMANAGER->addImage("wallMark", "Resources/Images/MapTool/wallMark.bmp", 0, 0, 24, 24, MGT);
 
 	
 

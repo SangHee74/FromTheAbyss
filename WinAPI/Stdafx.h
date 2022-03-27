@@ -103,7 +103,9 @@ using namespace MY_UTIL;
 #define KEYTOG KEYMANAGER->isToggleKey
 
 
+// 맵툴 사용 중 
 #define MAPTOOL
+#define mapTool
 
 //#define FULLSCREEN
 /*
@@ -118,10 +120,10 @@ using namespace MY_UTIL;
 */
 
 #ifdef MAPTOOL
-#define WINSTART_X	 50
+#define WINSTART_X	 30
 #define WINSTART_Y	 20
-#define WINSIZE_X	 1280 // 1200
-#define WINSIZE_Y	 720 // 675
+#define WINSIZE_X	 1480 // 1280
+#define WINSIZE_Y	 720 // 720
 #define WINSTYLE	 WS_CAPTION | WS_SYSMENU
 
 #else

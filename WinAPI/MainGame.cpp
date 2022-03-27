@@ -50,8 +50,8 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("tutorial", new Tutorial);
 	SCENEMANAGER->addScene("castle", new Castle);
 
-	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
+	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
 	SCENEMANAGER->changeScene("¸ÊÅø");
 
