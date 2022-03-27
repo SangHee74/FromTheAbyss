@@ -56,8 +56,10 @@ void Camera::setScreenRect(RECT screenRect)
 void Camera::setLimitsX(float leftLimit, float rightLimit)
 {
 #ifdef mapTool
+	int tempX;
+	tempX = (WINSIZE_X - 310)*0.5;
 	_leftLimit = leftLimit;
-	_rightLimit = rightLimit - 480;
+	_rightLimit = rightLimit - tempX;
 #else
     _leftLimit = leftLimit;
     _rightLimit = rightLimit - LSCENTER_X;

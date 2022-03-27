@@ -13,6 +13,19 @@ enum  abyssType
 	ABYSS6, ABYSS7, ABYSS8, ABYSS9,
 };
 
+struct tagTile
+{
+	RECT rc;
+	POINT pos; // n¹øÂ° x,y 
+	int fX; // frame X
+	int fY; // frame Y
+
+	bool onDraw;
+	bool ptInRect;
+	abyssType _abyssType;
+	groundType _moveCheck;
+};
+
 class Tile
 {
 public:
@@ -26,5 +39,9 @@ public:
 	bool ptInRect;
 	abyssType _abyssType;
 	groundType _moveCheck;
+
+public:
+	Tile() {}
+	~Tile() {}
 };
 

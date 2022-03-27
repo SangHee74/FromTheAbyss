@@ -38,9 +38,9 @@ struct tagTilePos
 };
 
 // undo 데이터 저장
-struct tagTileData
+struct tagTileStage
 {
-	Tile tile[TILEMAX_X*TILEMAX_Y];
+	tagTile tile[TILEMAX_X*TILEMAX_Y];
 };
 
 enum INFO
@@ -53,14 +53,30 @@ class MapTool : public GameNode
 private:
 
 	Tile _tile[TILEMAX_X*TILEMAX_Y];
-	stack<tagTileData> _sTile;
+	//tagTile _tile[TILEMAX_X*TILEMAX_Y];
+	vector<tagTile> _vTiles; //
+	vector<tagTile>::iterator _viTiles; //
+
+	stack<tagTileStage> _sTile;
+	tagTile _undoTile[TILEMAX_X*TILEMAX_Y];
+
 	tagTilePos _tilePos;
 	tagTempTile _tempTile;
 	tagSampleTile _sampleTile[SAMPLEMAX_X*SAMPLEMAX_Y];
+	
+	vector<tagTile> _vCurTile; // = TempTile
+
 	Image* _selectTileView;
+	Tile _minimapTile[TILEMAX_X*TILEMAX_Y];
+	Image* _minimapTileImg;
 
 	int _curAbyss;		  // 현재 어비스 
 	int _curStage;		  // 현재 스테이지 
+
+	// 드래그해서 범위타일 그리기 
+	int _startTileX, _startTileY;	 
+	int _endTileX, _endTileY;
+	int _countX, _countY;
 
 	// 카메라
 	POINT _curMapSize; // 카메라 리미트용
@@ -119,6 +135,7 @@ public:
 	void createCameraLimit();				  // 카메라-맵사이즈 업데이트
 	void createTileMap();					  // 좌측 베이스 타일 생성
 	void createSampleTile();				  // 우측 샘플 타일 생성
+	void createMiniMapTile();				  // 우측 미니맵 타일 생성
 
 	// update()
 	void selectTile();						  // 베이스 타일 관련 업데이트 
@@ -134,6 +151,11 @@ public:
 	void undo();
 	void save();
 	void load();
+	
+	void setCurTile(int x, int y) { this->_countX = x; this->_countY = y; }
+	void addCurTile(tagTile tile) { _vCurTile.push_back(tile); }
+	void clearCurTile() { _vCurTile.clear(); }
+
 	Tile tileDataSave(Tile tileValue);
 
 	// render()
