@@ -33,6 +33,8 @@ public:
 	void setX(int x) { _x = x; }
 	void setY(int y) { _y = y; }
 
+	void renderHpSpNumImg(int curHp, int curSp, int MaxHp, int MaxSp);
+
 
 	ProgressBar() {}
 	virtual ~ProgressBar() {}

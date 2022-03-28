@@ -6,14 +6,20 @@ enum PLAYERTYPE
 	ONE=1,TWO,THREE,FORE
 };
 
-enum WEAPONTYPE
+enum class WEAPONTYPE
 {
 	SWORD, AX, SPEAR, WAND, BOW
 };
 
+enum class PLAYERDIRECTION
+{
+	UP, DOWN, LEFT, RIGHT,
+	LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN,
+};
+
 enum class PLAYERSTATE
 {
-	IDLE,RUN,ATT,BEHIT,DIE
+	IDLE, MOVE, ATT, BEHIT, DIE,
 };
 
 struct tagInventory
@@ -55,6 +61,8 @@ private:
 	char _strName[128];
 	PLAYERTYPE _playerType;
 	WEAPONTYPE _weaponType;
+	PLAYERSTATE _playerState;
+	PLAYERDIRECTION _playerDirection;
 	tagPlayerStatus _status;
 	Image* _faceImg;
 
@@ -73,6 +81,9 @@ private:
 	bool _isLive;
 
 	int _speed;
+	int _tempFrameY;
+	int _tempFrameX;
+	int _tempCount;
 
 public:
 	Player() {}
@@ -86,6 +97,9 @@ public:
 	Image getPlayerSumImg() { return *(this->_faceImg); }
 	tagPlayerStatus getStatus() { return this->_status; }
 	void setStatus(tagPlayerStatus status) { _status = status;	}
+
+	PLAYERSTATE getPlayerState() { return this->_playerState; }
+	void setPlayerState();
 
 	RECT getPlayerRect();
 	void setCameraRect(RECT rc);

@@ -124,6 +124,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClCompile>
+    <ClCompile Include="AniClass.cpp">
+      <Filter>API\ExamClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -254,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClInclude>
+    <ClInclude Include="AniClass.h">
+      <Filter>API\ExamClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

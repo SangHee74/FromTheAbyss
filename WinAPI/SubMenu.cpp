@@ -26,6 +26,7 @@ HRESULT SubMenu::init(void)
 	_tapButton[TAP_TWO]   = RectMake(subX+(10* MAGNI), 75 * MAGNI,  14* MAGNI, 36* MAGNI);
 	_tapButton[TAP_THREE] = RectMake(subX+(10* MAGNI), 115* MAGNI, 14* MAGNI, 36* MAGNI);
 
+	_subMenuIdx = 0;
 
 	return S_OK;
 }
@@ -43,6 +44,20 @@ void SubMenu::update(void)
 		selectMenu();
 		selectTap();
 	}
+
+	if (KEYOKD('Q'))
+	{
+		_subMenuIdx--;
+		if (_subMenuIdx < 0) _subMenuIdx = 0;
+		selectMenu();
+	}
+	if (KEYOKD('W'))
+	{
+		_subMenuIdx++;
+		if (_subMenuIdx > 3) _subMenuIdx = 3;
+		selectMenu();
+	}
+
 }
 
 void SubMenu::render(void)
@@ -57,24 +72,26 @@ void SubMenu::render(void)
 
 void SubMenu::selectMenu()
 {
-	if (PtInRect(&_menuButton[SUB_ITEM], _ptMouse))
+	if (PtInRect(&_menuButton[SUB_ITEM], _ptMouse)|| _subMenuIdx ==0)
 	{
 		_subMenu.reset(); _subMenu.set(1);
 		_tapOn.reset();   _tapOn.set(1);
 	}
-	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse))
+	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse) || _subMenuIdx == 1)
 	{
 		_subMenu.reset(); _subMenu.set(2);
 		_tapOn.reset();   _tapOn.set(1);
 	}
-	if (PtInRect(&_menuButton[SUB_MAP], _ptMouse))
+	if (PtInRect(&_menuButton[SUB_MAP], _ptMouse) || _subMenuIdx == 2)
 	{
 		_subMenu.reset(); _subMenu.set(3);
 	}
-	if (PtInRect(&_menuButton[SUB_STATUS], _ptMouse))
+	if (PtInRect(&_menuButton[SUB_STATUS], _ptMouse) || _subMenuIdx == 3)
 	{
 		_subMenu.reset(); _subMenu.set(4);
 	}
+
+
 }
 
 void SubMenu::selectTap()
@@ -134,5 +151,6 @@ void SubMenu::renderTap()
 
 void SubMenu::renderStat()
 {
+	//_playerInfo->getStatus.
 	
 }

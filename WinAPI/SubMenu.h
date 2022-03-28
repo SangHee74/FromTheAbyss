@@ -22,6 +22,7 @@ private:
 	bitset<4> _tapOn = 0;
 	RECT _menuButton[SUB_END];
 	RECT _tapButton[TAP_END];
+	int _subMenuIdx;
 
 public:
 	SubMenu() {}

@@ -5,6 +5,7 @@ HRESULT Stage::init(void)
 {
 	_player = new Player();
 	_player->init();
+	
 
 	_subScreen = new SubMenu();
 	_subScreen->init();
@@ -16,7 +17,6 @@ HRESULT Stage::init(void)
 
 	_UIBar = new ProgressBar;
 	_UIBar->init(_player->getStatus().maxHp, _player->getStatus().maxSp);
-
 
 
 	return S_OK;
@@ -45,6 +45,8 @@ void Stage::update(void)
 	_player->setCameraRect(CAM->getScreenRect());
 	_player->update();
 
+
+	
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
@@ -76,5 +78,7 @@ void Stage::render(void)
 	_player->render();
 
 	_UIBar->render();
+	_UIBar->renderHpSpNumImg(_player->getStatus().curHp, _player->getStatus().curSp,
+		_player->getStatus().maxHp, _player->getStatus().maxSp);
 	_subScreen->render();
 }

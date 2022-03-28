@@ -93,8 +93,8 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Num_G", "Resources/Images/Object/Num_G.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_B", "Resources/Images/Object/Num_B.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_store", "Resources/Images/Object/Num_store.bmp", 0, 0, 90 , 10 , 10, 1, MGT);
-	//IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI.bmp",		  0, 0, 99 , 10 , 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
-	IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI2.bmp", 0, 0, 297, 30, 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
+	IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI2.bmp",      0, 0, 297, 30, 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
+	IMAGEMANAGER->addFrameImage("Num_UI2", "Resources/Images/Object/Num_UI.bmp",	  0, 0, 198 , 20 , 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
 
 	IMAGEMANAGER->addImage("abyss1", "Resources/Images/Object/abyss1.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("abyss2", "Resources/Images/Object/abyss2.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
