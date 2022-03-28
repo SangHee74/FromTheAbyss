@@ -53,7 +53,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
 
-	SCENEMANAGER->changeScene("¸ÊÅø");
+	SCENEMANAGER->changeScene("pub");
 
 
 	return S_OK;

@@ -56,6 +56,7 @@ private:
 	PLAYERTYPE _playerType;
 	WEAPONTYPE _weaponType;
 	tagPlayerStatus _status;
+	Image* _faceImg;
 
 	int _abyss;
 	int _stage;
@@ -82,6 +83,7 @@ public:
 	void update(void);
 	void render(void);
 
+	Image getPlayerSumImg() { return *(this->_faceImg); }
 	tagPlayerStatus getStatus() { return this->_status; }
 	void setStatus(tagPlayerStatus status) { _status = status;	}
 

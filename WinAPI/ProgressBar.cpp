@@ -42,8 +42,7 @@ void ProgressBar::render(void)
 	_hpBarCover->render(getMemDC(), _hpBarCover->getX(), _hpBarCover->getY());
 	_spBarCover->render(getMemDC(), _spBarCover->getX(), _spBarCover->getY());
 
-	//rcMake(getMemDC(), _hpRc);
-	//rcMake(getMemDC(), _spRc);
+
 
 	IMGFR("Num_UI", getMemDC(), 205, 14);
 	IMGFR("Num_UI", getMemDC(), 498, 14);

@@ -109,19 +109,19 @@
     <ClCompile Include="Player.cpp">
       <Filter>FromTheAbyss\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+      <Filter>FromTheAbyss\Tool</Filter>
     </ClCompile>
     <ClCompile Include="MapTool.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+      <Filter>FromTheAbyss\Tool</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
     <ClCompile Include="SubMenu.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -240,19 +240,19 @@
     <ClInclude Include="Player.h">
       <Filter>FromTheAbyss\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+      <Filter>FromTheAbyss\Tool</Filter>
     </ClInclude>
     <ClInclude Include="MapTool.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS\Map\Tool</Filter>
+      <Filter>FromTheAbyss\Tool</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>API\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SubMenu.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
   </ItemGroup>
@@ -323,7 +323,7 @@
     <Filter Include="FromTheAbyss\Scene\Place\ABYSS\Map">
       <UniqueIdentifier>{5bc7d481-4c57-49bd-b9b6-8638a868ee8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\Map\Tool">
+    <Filter Include="FromTheAbyss\Tool">
       <UniqueIdentifier>{1bf81a9c-95c0-4a57-bec5-d0368345da28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

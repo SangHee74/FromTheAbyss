@@ -4,6 +4,8 @@
 
 HRESULT Player::init(void)
 {
+	if(_playerType==ONE) _faceImg = IMG("p_sum_1R");
+
 
 	_pos.x = LSCENTER_X;
 	_pos.y = CENTER_Y;

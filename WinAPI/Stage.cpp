@@ -63,19 +63,15 @@ void Stage::update(void)
 
 void Stage::render(void)
 {
-	
+	int cameraLeft = CAM->getScreenRect().left;
+	int cameraTop = CAM->getScreenRect().top;
 
-	CAM->render();
+	IMGR("¸Ê2", getMemDC(), 0, 0,
+		cameraLeft,
+		cameraTop,
+		CENTER_X, WINSIZE_Y);
 
-		int cameraLeft = CAM->getScreenRect().left;
-		int cameraTop = CAM->getScreenRect().top;
-
-		IMGR("¸Ê2", getMemDC(), 0, 0,
-			cameraLeft,
-			cameraTop,
-			CENTER_X, WINSIZE_Y);
-
-
+	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
 	_player->render();
 

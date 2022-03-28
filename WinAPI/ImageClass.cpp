@@ -49,6 +49,8 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 720*10, 720*10, MGT);
 
 #pragma region Player
+	IMAGEMANAGER->addImage("p_sum_1R", "Resources/Images/Player/p_sum_1R.bmp", 0, 0, 40 * MAGNI , 40 * MAGNI, MGT);
+
 	IMAGEMANAGER->addImage("p_attacked", "Resources/Images/Player/p_attacked.bmp", 0, 0, 24 * MAGNI, 37 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("p_down", "Resources/Images/Player/p_down.bmp", 0, 0, 32 * MAGNI, 29 * MAGNI, MGT);
 
@@ -61,7 +63,7 @@ HRESULT ImageClass::init(void)
 
 	IMAGEMANAGER->addImage("p_idle_6", "Resources/Images/Player/p_idle_6.bmp", 0,0,24 * MAGNI, 46 * MAGNI, MGT);
 
-
+	
 #pragma endregion
 
 #pragma region object
