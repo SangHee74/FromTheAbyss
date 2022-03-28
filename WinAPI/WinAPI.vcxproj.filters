@@ -121,6 +121,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="SubMenu.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -248,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SubMenu.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

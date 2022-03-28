@@ -6,6 +6,9 @@ HRESULT Stage::init(void)
 	_player = new Player();
 	_player->init();
 
+	_subScreen = new SubMenu();
+	_subScreen->init();
+
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, IMG("¸Ê2")->getWidth());
 	CAM->setLimitsY(CENTER_Y, IMG("¸Ê2")->getHeight());
@@ -13,6 +16,9 @@ HRESULT Stage::init(void)
 
 	_UIBar = new ProgressBar;
 	_UIBar->init(_player->getStatus().maxHp, _player->getStatus().maxSp);
+
+
+
 	return S_OK;
 }
 
@@ -20,6 +26,9 @@ void Stage::release(void)
 {
 	_UIBar->release();
 	SAFE_DELETE(_UIBar);
+
+	_subScreen->release();
+	SAFE_DELETE(_subScreen);
 
 	_player->release();
 	SAFE_DELETE(_player);
@@ -36,9 +45,6 @@ void Stage::update(void)
 	_player->setCameraRect(CAM->getScreenRect());
 	_player->update();
 
-	//cout <<"Ä«¸Ş¶ópos : " <<  cameraPos.x  << " , " << cameraPos.y<< endl;
-
-
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
@@ -52,7 +58,7 @@ void Stage::update(void)
 
 	}
 
-	
+	_subScreen->update();
 }
 
 void Stage::render(void)
@@ -69,11 +75,10 @@ void Stage::render(void)
 			cameraTop,
 			CENTER_X, WINSIZE_Y);
 
-	IMGR("sub_map", getMemDC(), CENTER_X,0);
 
 
 	_player->render();
 
 	_UIBar->render();
-
+	_subScreen->render();
 }

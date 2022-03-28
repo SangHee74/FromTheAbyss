@@ -2,6 +2,7 @@
 #include "GameNode.h"
 #include "Player.h"
 #include "ProgressBar.h"
+#include "SubMenu.h"
 
 class Stage :public GameNode
 {
@@ -9,6 +10,8 @@ private:
 
 	Player* _player;
 	ProgressBar* _UIBar;
+	SubMenu* _subScreen;
+	
 
 public:
 

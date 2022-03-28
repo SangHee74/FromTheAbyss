@@ -178,6 +178,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Store.cpp" />
+    <ClCompile Include="SubMenu.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextDataManager.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Store.h" />
+    <ClInclude Include="SubMenu.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextDataManager.h" />
     <ClInclude Include="Tile.h" />
