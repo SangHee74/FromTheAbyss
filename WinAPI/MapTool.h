@@ -63,7 +63,7 @@ private:
 	tagTilePos _tilePos;
 	tagTempTile _tempTile;
 	tagSampleTile _sampleTile[SAMPLEMAX_X*SAMPLEMAX_Y];
-	
+
 	vector<tagTile> _vCurTile; // = TempTile
 
 	Image* _selectTileView;
@@ -72,9 +72,10 @@ private:
 
 	int _curAbyss;		  // 현재 어비스 
 	int _curStage;		  // 현재 스테이지 
+	int _curTileIndex;    // 현재 타일 
 
 	// 드래그해서 범위타일 그리기 
-	int _startTileX, _startTileY;	 
+	int _startTileX, _startTileY;
 	int _endTileX, _endTileY;
 	int _countX, _countY;
 
@@ -85,7 +86,7 @@ private:
 	int camTop;
 
 #pragma region info 관련
-	
+
 	RECT _sampleTileRect;
 	RECT _miniMap;
 	RECT _selectTile;
@@ -142,7 +143,7 @@ public:
 	void selectSampleTile();				  // 샘플 타일 관련 업데이트 
 	void infoUpdate();						  // 우측 인포창 업데이트
 	void camControl();
-	
+
 
 	// update() - function
 	void ptInTileCheck();					 // 바닥 타일에 마우스가 있는지 체크
@@ -151,7 +152,7 @@ public:
 	void undo();
 	void save();
 	void load();
-	
+
 	void setCurTile(int x, int y) { this->_countX = x; this->_countY = y; }
 	void addCurTile(tagTile tile) { _vCurTile.push_back(tile); }
 	void clearCurTile() { _vCurTile.clear(); }
