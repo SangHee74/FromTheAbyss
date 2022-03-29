@@ -35,6 +35,7 @@ HRESULT Player::init(void)
 
 	_isLeft = false;
 	_isLive = true;
+	_isRunnig = false;
 
 	_speed = 2;
 
@@ -53,16 +54,13 @@ void Player::update(void)
 	
 	if (_isLive)
 	{
-		
-		 if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !_isRunnig)
 		{
 			_isLeft = true;
 			_pos.x -= _speed;
 
 			_playerDirection = PLAYERDIRECTION::LEFT;
 			_playerState = PLAYERSTATE::MOVE;
-			IMG("p_run_9")->setFrameX(2);
-			IMG("p_run_9")->setFrameY(0);
 
 
 			if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -74,98 +72,82 @@ void Player::update(void)
 				_playerDirection = PLAYERDIRECTION::LEFTDOWN;
 			}
 		}
-		 if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !_isRunnig)
 		{
 			_isLeft = false;
 			_pos.x += _speed;
 
 			_playerDirection = PLAYERDIRECTION::RIGHT;
 			_playerState = PLAYERSTATE::MOVE;
-			IMG("p_run_9")->setFrameX(2);
-			IMG("p_run_9")->setFrameY(1);
+
 
 
 			if (KEYMANAGER->isStayKeyDown(VK_UP))
 			{
-				_playerDirection = PLAYERDIRECTION::LEFTUP;
+				_playerDirection = PLAYERDIRECTION::RIGHTUP;
 			}
 			if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 			{
 				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 			}
 		}
-		 if (KEYMANAGER->isStayKeyDown(VK_UP))
+		if (KEYMANAGER->isStayKeyDown(VK_UP) && !_isRunnig)
 		{
-			_isLeft = true;
 			_pos.y -= _speed;
 
 			_playerDirection = PLAYERDIRECTION::UP;
 			_playerState = PLAYERSTATE::MOVE;
 
-			IMG("p_run_12")->setFrameX(1);
-			IMG("p_run_12")->setFrameY(1);
 
-		//	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 			{
-			//	_playerDirection = PLAYERDIRECTION::RIGHTUP;
+				_playerDirection = PLAYERDIRECTION::LEFTUP;
 			}
-		//	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 			{
-			//	_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+				_playerDirection = PLAYERDIRECTION::RIGHTUP;
 			}
 		}
-		 if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN) && !_isRunnig)
 		{
-			_isLeft = true;
 			_pos.y += _speed;
 
 			_playerDirection = PLAYERDIRECTION::DOWN;
 			_playerState = PLAYERSTATE::MOVE;
 
-			IMG("p_run_6")->setFrameX(2);
-			IMG("p_run_6")->setFrameY(1);
 
-
-			//if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 			{
-				//_playerDirection = PLAYERDIRECTION::RIGHTUP;
+				_playerDirection = PLAYERDIRECTION::LEFTDOWN;
 			}
-			//if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 			{
-				//_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 			}
 		}
-	
-		 if (KEYOKU(VK_LEFT))
-		 {
-			// _playerDirection = PLAYERDIRECTION::LEFT;
-			 _playerState = PLAYERSTATE::IDLE;
-		 }
-		 if (KEYOKU(VK_RIGHT))
-		 {
-			 //_playerDirection = PLAYERDIRECTION::RIGHT;
-			 _playerState = PLAYERSTATE::IDLE;
-		 }
-		 if (KEYOKU(VK_UP))
-		 {
-			 //_playerDirection = PLAYERDIRECTION::UP;
-			 _playerState = PLAYERSTATE::IDLE;
-		 }
-		 if (KEYOKU(VK_DOWN))
-		 {
-			 //_playerDirection = PLAYERDIRECTION::DOWN;
-			 _playerState = PLAYERSTATE::IDLE;
-		 }
 
-		 // 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
-		 // w,h 안쓰니까 초점이 잘 안맞음
-		 w = IMG("p_idle_6")->getWidth();
-		 h = IMG("p_idle_6")->getHeight();
-		_rcPlayer = RectMakeCenter(_pos.x, _pos.y,w,h);
+		if ( KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
+		{
+			_isRunnig = false;
+			_playerState = PLAYERSTATE::IDLE;
+		}
+		if (KEYOKU(VK_RIGHT))
+		{
+			_isRunnig = false;
+			_playerState = PLAYERSTATE::IDLE;
+			_isLeft = false;
+		}
+
+		// 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
+		// w,h 안쓰니까 초점이 잘 안맞음
+		w = IMG("p_idle_6")->getWidth();
+		h = IMG("p_idle_6")->getHeight();
+		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
 
 	}
 	else  _playerState = PLAYERSTATE::DEAD;
 
+	if (this->_status.curHp <= 0) _isLive = false;
 
 	// 임시 카운트 - 프레임
 	if (_isLeft)
@@ -187,7 +169,6 @@ void Player::update(void)
 			if (_tempFrameX < 0) _tempFrameX = 3;
 		}
 	}
-
 }
 
 void Player::render(void)
@@ -200,9 +181,11 @@ void Player::render(void)
 	{
 		if (_playerState == PLAYERSTATE::IDLE)
 		{
-			IMGFR("p_idle_6", getMemDC(), left, top);
+			
+			IMGFR("p_idle", getMemDC(), left, top, static_cast<int>(_playerDirection), 1);
+
 		}
-		if (_playerState == PLAYERSTATE::MOVE)
+		else if (_playerState == PLAYERSTATE::MOVE)
 		{
 			if (_playerDirection == PLAYERDIRECTION::UP)
 			{
@@ -252,13 +235,6 @@ void Player::setPlayerPosY(float y)
 	_pos.y = y;
 }
 
-// 상태패턴이 상태 세팅
-void Player::setPlayerState(STATE* state)
-{
-	this->_pState = state;
-
-}
-
 RECT Player::getPlayerRect()
 {
 	return _rcPlayer;
@@ -279,7 +255,15 @@ void Player::setStage(int num)
 	_stage = num;
 }
 
+
 // 상태패턴
+// 상태 세팅
+void Player::setPlayerState(STATE* state)
+{
+	this->_pState = state;
+}
+
+// 행동 세팅
 void Player::idle()
 {
 	_pState->idle(this);

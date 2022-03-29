@@ -8,101 +8,121 @@ BeHitState* BeHitState::instance;
 
 
 // 대기
-IdleState * IdleState::GetInstance()
+IdleState* IdleState::GetInstance()
 {
-	//if (instance == nullptr) instance = new IdleState();
+	if (instance == nullptr) instance = new IdleState();
 	return instance;
 }
 
-void IdleState::idle(Player * player)
+void IdleState::idle(Player* player)
 {
 	cout << "IdleState::idle" << endl;
 
 }
 
-void IdleState::move(Player * player)
+void IdleState::move(Player* player)
 {
 	cout << "IdleState::move" << endl;
 
 }
 
-void IdleState::attack(Player * player)
+void IdleState::attack(Player* player)
 {
 	cout << "IdleState::attack" << endl;
 
 }
 
-// 이동
-MoveState * MoveState::GetInstance()
+void IdleState::beHit(Player* player)
 {
-	//if (instance == nullptr) instance = new MoveState();
+	cout << "IdleState::beHit" << endl;
+}
+
+// 이동
+MoveState* MoveState::GetInstance()
+{
+	if (instance == nullptr) instance = new MoveState();
 	return instance;
 }
 
-void MoveState::idle(Player * player)
+void MoveState::idle(Player* player)
 {
 	cout << "MoveState::idle" << endl;
 
 }
 
-void MoveState::move(Player * player)
+void MoveState::move(Player* player)
 {
 	cout << "MoveState::move" << endl;
 
 }
 
-void MoveState::attack(Player * player)
+void MoveState::attack(Player* player)
 {
 	cout << "MoveState::attack" << endl;
 
 }
 
-// 공격
-AttackState * AttackState::GetInstance()
+void MoveState::beHit(Player* player)
 {
-	//if (instance == nullptr) instance = new AttackState();
+	cout << "MoveState::beHit" << endl;
+}
+
+// 공격
+AttackState* AttackState::GetInstance()
+{
+	if (instance == nullptr) instance = new AttackState();
 	return instance;
 }
 
-void AttackState::idle(Player * player)
+void AttackState::idle(Player* player)
 {
 	cout << "AttackState::idle" << endl;
 
 }
 
-void AttackState::move(Player * player)
+void AttackState::move(Player* player)
 {
 	cout << "AttackState::move" << endl;
 
 }
 
-void AttackState::attack(Player * player)
+void AttackState::attack(Player* player)
 {
 	cout << "AttackState::attack" << endl;
 
 }
 
-// 피격
-BeHitState * BeHitState::GetInstance()
+void AttackState::beHit(Player* player)
 {
-	//if (instance == nullptr) instance = new BeHitState();
+	cout << "AttackState::beHit" << endl;
+}
+
+// 피격
+BeHitState* BeHitState::GetInstance()
+{
+	if (instance == nullptr) instance = new BeHitState();
 	return instance;
 }
 
-void BeHitState::idle(Player * player)
+void BeHitState::idle(Player* player)
 {
 	cout << "BeHitState::idle" << endl;
 
 }
 
-void BeHitState::move(Player * player)
+void BeHitState::move(Player* player)
 {
 	cout << "BeHitState::move" << endl;
 
 }
 
-void BeHitState::attack(Player * player)
+void BeHitState::attack(Player* player)
 {
 	cout << "BeHitState::attack" << endl;
 
+}
+
+void BeHitState::beHit(Player* player)
+{
+	cout << "BeHitState::beHit" << endl;
 }

@@ -28,6 +28,8 @@ public:
 	virtual void idle(Player* player);	 // 대기 중 대기 
 	virtual void move(Player* player);	 // 대기 중 이동 -> 상태변화
 	virtual void attack(Player* player); // 대기 중 공격 -> 상태변화
+	virtual void beHit(Player* player);	 // 대기 중 피격 -> 상태변화
+
 };
 
 // 이동 상태 
@@ -39,6 +41,7 @@ public:
 	virtual void idle(Player* player);	 // 이동 중 대기 -> 상태변화
 	virtual void move(Player* player);	 // 이동 중 이동
 	virtual void attack(Player* player); // 이동 중 공격 -> 상태변화
+	virtual void beHit(Player* player);  // 이동 중 피격 -> 상태변화
 };
 
 // 공격 상태 
@@ -50,6 +53,8 @@ public:
 	virtual void idle(Player* player);	 // 공격 중 대기 -> 상태변화
 	virtual void move(Player* player);	 // 공격 중 이동 -> 상태변화
 	virtual void attack(Player* player); // 공격 중 공격 
+	virtual void beHit(Player* player);  // 공격 중 피격 -> 상태변화
+
 };
 
 // 피격 상태 
@@ -61,4 +66,5 @@ public:
 	virtual void idle(Player* player);	 // 피격 중 대기 -> 상태변화
 	virtual void move(Player* player);	 // 피격 중 이동 -> 상태변화
 	virtual void attack(Player* player); // 피격 중 공격 -> 상태변화
+	virtual void beHit(Player* player);  // 피격 중 피격 
 };

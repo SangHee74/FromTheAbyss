@@ -58,10 +58,11 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_run_6", "Resources/Images/Player/p_run_6.bmp", 80 * MAGNI, 37 * MAGNI, 4, 1, MGT);
 	IMAGEMANAGER->addFrameImage("p_run_7", "Resources/Images/Player/p_run_7.bmp", 104 * MAGNI, 72 * MAGNI, 4, 2, MGT);
 	IMAGEMANAGER->addFrameImage("p_run_9", "Resources/Images/Player/p_run_9.bmp", 124 * MAGNI, 76 * MAGNI, 4, 2, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_11", "Resources/Images/Player/p_run_9.bmp", 108 * MAGNI, 82 * MAGNI, 4, 2, MGT);
+	IMAGEMANAGER->addFrameImage("p_run_11", "Resources/Images/Player/p_run_11.bmp", 108 * MAGNI, 82 * MAGNI, 4, 2, MGT);
 	IMAGEMANAGER->addFrameImage("p_run_12", "Resources/Images/Player/p_run_12.bmp", 80 * MAGNI, 42 * MAGNI, 4, 1, MGT);
 
 	IMAGEMANAGER->addImage("p_idle_6", "Resources/Images/Player/p_idle_6.bmp", 0,0,24 * MAGNI, 46 * MAGNI, MGT);
+	IMAGEMANAGER->addFrameImage("p_idle", "Resources/Images/Player/p_idle.bmp", 192 * MAGNI, 46 * MAGNI, 8,1, MGT);
 
 	
 #pragma endregion
