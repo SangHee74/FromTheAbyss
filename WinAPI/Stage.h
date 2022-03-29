@@ -12,6 +12,7 @@ private:
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
 	
+	int _alpha;
 
 public:
 

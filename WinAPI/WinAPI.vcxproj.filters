@@ -338,6 +338,9 @@
     <Filter Include="FromTheAbyss\Tool">
       <UniqueIdentifier>{1bf81a9c-95c0-4a57-bec5-d0368345da28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FromTheAbyss\Item">
+      <UniqueIdentifier>{f9e3b93f-7537-4007-af56-e405ba4c8483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\MatricFunction.txt">

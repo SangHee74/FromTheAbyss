@@ -82,6 +82,7 @@ private:
 	bool _isLeft;
 	bool _isLive;
 	bool _isRunnig;
+	bool _isAttacking;
 
 	int _speed;
 	int _tempFrameY;

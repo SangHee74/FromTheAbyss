@@ -134,11 +134,6 @@ Json::Value JsonSaveLoader::loadJsonFile(char* fileName)
 	Json::Reader reader;
 	Json::Value root;
 	
-	// 파서&파싱
-	// 파싱 : 특정 문서를 읽어 들여서 이를 다른 프로그램이나 서브 루틴이 사용할 수 있는 
-	// 내부의 표현 방식으로 변환 시켜주는 것.
-	// 파서 : 파싱을 해주는 프로세서
-
 	bool parsingRet = reader.parse(jsonStr, root);
 
 	if (!parsingRet)

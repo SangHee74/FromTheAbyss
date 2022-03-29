@@ -35,7 +35,7 @@ HRESULT Player::init(void)
 
 	_isLeft = false;
 	_isLive = true;
-	_isRunnig = false;
+	_isRunnig = _isAttacking = false;
 
 	_speed = 2;
 
@@ -126,7 +126,7 @@ void Player::update(void)
 			}
 		}
 
-		if ( KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
+		if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
 		{
 			_isRunnig = false;
 			_playerState = PLAYERSTATE::IDLE;
@@ -138,6 +138,17 @@ void Player::update(void)
 			_isLeft = false;
 		}
 
+		if (KEYMANAGER->isStayKeyDown('X') && !_isAttacking)
+		{
+			_playerState = PLAYERSTATE::ATT;
+		}
+		if (KEYOKU('X'))
+		{
+			_isAttacking = false;
+			_playerState = PLAYERSTATE::IDLE;
+		}
+
+
 		// 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
 		// w,h 안쓰니까 초점이 잘 안맞음
 		w = IMG("p_idle_6")->getWidth();
@@ -145,7 +156,13 @@ void Player::update(void)
 		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
 
 	}
-	else  _playerState = PLAYERSTATE::DEAD;
+	else
+	{
+		w = IMG("p_down")->getWidth();
+		h = IMG("p_down")->getHeight();
+		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
+		_playerState = PLAYERSTATE::DEAD;
+	}
 
 	if (this->_status.curHp <= 0) _isLive = false;
 
@@ -168,7 +185,15 @@ void Player::update(void)
 			_tempFrameX--;
 			if (_tempFrameX < 0) _tempFrameX = 3;
 		}
+
 	}
+	if (_isAttacking) // 공격시임시프레임
+	{
+		if (_tempCount % 15== 0)
+		_tempFrameX++;
+		if (_tempFrameX >= 2) _tempFrameX = 0;
+	}
+		
 }
 
 void Player::render(void)
@@ -209,10 +234,13 @@ void Player::render(void)
 			}
 
 		}
-
-
-
+		else if (_playerState == PLAYERSTATE::ATT)
+		{
+			IMGFR("p_att_ax_6", getMemDC(), left, top, _tempFrameX, _tempFrameY);
+		}
 	}
+	else IMGR("p_down", getMemDC(), left, top);
+
 }
 
 

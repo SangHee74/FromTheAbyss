@@ -18,6 +18,7 @@ HRESULT Stage::init(void)
 	_UIBar = new ProgressBar;
 	_UIBar->init(_player->getStatus().maxHp, _player->getStatus().maxSp);
 
+	_alpha;
 
 	return S_OK;
 }

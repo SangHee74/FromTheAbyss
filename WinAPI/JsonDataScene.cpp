@@ -30,10 +30,8 @@ void JsonDataScene::questPopUp()
 
 	// 빌드 전까지 메모리주소가 없기 때문에 불완전하다고 나온다.
 	// C++이 타입에 엄격하기 때문.
-	// 클래스 전방선언 -> 헤더파일인클루드로 해결
+	// 클래스 전방선언 -> 헤더파일인클루드 할 것
 
-	// 출력은 반복문 사용 하지 않는 것이 좋다. 
-	// 어떤 데이터가 안들어오는지 찾는게 번거롭기 때문에.
 	sprintf(str, "%s", node->getName().c_str());
 	TextOut(getMemDC(), 200, 150, str, strlen(str));
 
