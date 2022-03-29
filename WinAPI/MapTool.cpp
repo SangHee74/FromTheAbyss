@@ -93,12 +93,13 @@ void MapTool::update(void)
 	// 맵툴 기능
 	if (KEYOKD(VK_LBUTTON))
 	{
-
-		selectSampleTile();
-		selectTile();
 		infoUpdate();
 	}
-
+	if (KEYSKD(VK_LBUTTON))
+	{
+		selectSampleTile();
+		selectTile();
+	}
 	if (KEYOKU(VK_LBUTTON))
 	{
 		for (int i = 0; i < SAMPLEMAX_X*SAMPLEMAX_Y; ++i)
@@ -250,7 +251,7 @@ void MapTool::selectTile()
 
 void MapTool::selectSampleTile()
 {
-	if (_sampleTileOn)
+	if (_sampleTileOn && _ptMouse.x > 0 && _ptMouse.y > 0)
 	{
 
 		// 마우스 좌표로 검사할 타일 찾기
