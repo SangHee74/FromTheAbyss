@@ -127,6 +127,9 @@
     <ClCompile Include="AniClass.cpp">
       <Filter>API\ExamClass</Filter>
     </ClCompile>
+    <ClCompile Include="STATE.cpp">
+      <Filter>FromTheAbyss\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -260,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="AniClass.h">
       <Filter>API\ExamClass</Filter>
+    </ClInclude>
+    <ClInclude Include="STATE.h">
+      <Filter>FromTheAbyss\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

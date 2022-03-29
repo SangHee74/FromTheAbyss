@@ -19,7 +19,7 @@ enum class PLAYERDIRECTION
 
 enum class PLAYERSTATE
 {
-	IDLE, MOVE, ATT, BEHIT, DIE,
+	IDLE, MOVE, ATT, BEHIT, DEAD,
 };
 
 struct tagInventory
@@ -54,6 +54,7 @@ struct tagPlayerStatus
 	tagInventory tInven;
 };
 
+class STATE;
 
 class Player :public GameNode
 {
@@ -65,6 +66,7 @@ private:
 	PLAYERDIRECTION _playerDirection;
 	tagPlayerStatus _status;
 	Image* _faceImg;
+
 
 	int _abyss;
 	int _stage;
@@ -85,6 +87,9 @@ private:
 	int _tempFrameX;
 	int _tempCount;
 
+	// 상태패턴 관련 
+	STATE* _pState;
+
 public:
 	Player() {}
 	~Player() {}
@@ -98,8 +103,9 @@ public:
 	tagPlayerStatus getStatus() { return this->_status; }
 	void setStatus(tagPlayerStatus status) { _status = status;	}
 
+	// 상태패턴
 	PLAYERSTATE getPlayerState() { return this->_playerState; }
-	void setPlayerState();
+	void setPlayerState(STATE* state);
 
 	RECT getPlayerRect();
 	void setCameraRect(RECT rc);
@@ -118,5 +124,11 @@ public:
 	void setIsLeft(bool state) { _isLeft = state; }
 	bool getIsLive() { return this->_isLive; }
 	void setIsLive(bool state) { _isLive = state; }
+
+	// 상태패턴 함수(행동)
+	void idle();
+	void move();
+	void attack();
+	void beHit();
 };
 

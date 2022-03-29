@@ -103,7 +103,7 @@ using namespace MY_UTIL;
 #define KEYTOG KEYMANAGER->isToggleKey
 
 
-//#define MAPTOOL
+#define MAPTOOL
 
 //#define FULLSCREEN
 /*

@@ -1,5 +1,6 @@
 #include "Stdafx.h"
 #include "Player.h"
+#include "STATE.h"
 
 
 HRESULT Player::init(void)
@@ -104,13 +105,13 @@ void Player::update(void)
 			IMG("p_run_12")->setFrameX(1);
 			IMG("p_run_12")->setFrameY(1);
 
-			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		//	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 			{
-				_playerDirection = PLAYERDIRECTION::RIGHTUP;
+			//	_playerDirection = PLAYERDIRECTION::RIGHTUP;
 			}
-			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		//	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 			{
-				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+			//	_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 			}
 		}
 		 if (KEYMANAGER->isStayKeyDown(VK_DOWN))
@@ -125,13 +126,13 @@ void Player::update(void)
 			IMG("p_run_6")->setFrameY(1);
 
 
-			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+			//if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 			{
-				_playerDirection = PLAYERDIRECTION::RIGHTUP;
+				//_playerDirection = PLAYERDIRECTION::RIGHTUP;
 			}
-			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+			//if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 			{
-				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+				//_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 			}
 		}
 	
@@ -163,7 +164,7 @@ void Player::update(void)
 		_rcPlayer = RectMakeCenter(_pos.x, _pos.y,w,h);
 
 	}
-	else  _playerState = PLAYERSTATE::DIE;
+	else  _playerState = PLAYERSTATE::DEAD;
 
 
 	// 임시 카운트 - 프레임
@@ -251,9 +252,10 @@ void Player::setPlayerPosY(float y)
 	_pos.y = y;
 }
 
-void Player::setPlayerState()
+// 상태패턴이 상태 세팅
+void Player::setPlayerState(STATE* state)
 {
-
+	this->_pState = state;
 
 }
 
@@ -276,4 +278,26 @@ void Player::setStage(int num)
 {
 	_stage = num;
 }
+
+// 상태패턴
+void Player::idle()
+{
+	_pState->idle(this);
+}
+
+void Player::move()
+{
+	_pState->move(this);
+}
+
+void Player::attack()
+{
+	_pState->attack(this);
+}
+
+void Player::beHit()
+{
+	_pState->beHit(this);
+}
+
 
