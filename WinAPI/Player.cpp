@@ -37,6 +37,7 @@ HRESULT Player::init(void)
 	_isLeft = false;
 	_isLive = true;
 	_isRunnig = _isAttacking = false;
+	_isFrameImg = false;
 
 	_speed = 2;
 
@@ -66,36 +67,6 @@ void Player::update(void)
 
 	if (_isLive)
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !_isRunnig)
-		{
-
-		}
-
-
-		if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
-		{
-			_isRunnig = false;
-			_playerState = PLAYERSTATE::IDLE;
-		}
-		if (KEYOKU(VK_RIGHT))
-		{
-			_isRunnig = false;
-			_playerState = PLAYERSTATE::IDLE;
-			_isLeft = false;
-		}
-
-		if (KEYMANAGER->isStayKeyDown('X') && !_isAttacking)
-		{
-		//	_playerState = PLAYERSTATE::ATT;
-		}
-		if (KEYOKU('X'))
-		{
-			_isAttacking = false;
-			_playerState = PLAYERSTATE::IDLE;
-			//_pState->idle();
-		}
-
-
 		// 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
 		// w,h 안쓰니까 초점이 잘 안맞음
 		w = IMG("p_idle_6")->getWidth();
@@ -153,6 +124,11 @@ void Player::render(void)
 
 	if (_isLive)
 	{
+
+		//if(!_isFrameImg) _playerImg->render(getMemDC(), left, top);
+		//else _playerImg->frameRender(getMemDC(), left, top, _frameX, _frameY);
+
+
 		if (_playerState == PLAYERSTATE::IDLE)
 		{
 			
@@ -161,28 +137,7 @@ void Player::render(void)
 		}
 		else if (_playerState == PLAYERSTATE::MOVE)
 		{
-			/*
-			if (_playerDirection == PLAYERDIRECTION::UP)
-			{
-				IMGFR("p_run_12", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if (_playerDirection == PLAYERDIRECTION::DOWN)
-			{
-				IMGFR("p_run_6", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFT) || (_playerDirection == PLAYERDIRECTION::RIGHT))
-			{
-				IMGFR("p_run_9", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFTUP) || (_playerDirection == PLAYERDIRECTION::RIGHTUP))
-			{
-				IMGFR("p_run_11", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFTDOWN) || (_playerDirection == PLAYERDIRECTION::RIGHTDOWN))
-			{
-				IMGFR("p_run_7", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			*/
+		
 		}
 		else if (_playerState == PLAYERSTATE::ATT1)
 		{
@@ -349,6 +304,14 @@ void Player::stateInit()
 void Player::stateUpdate()
 {
 	_pStatePattern->stateUpdate(this);
+
+	
+	cout << "=======================================================================" << endl;
+	cout << " 여기서 업데이트 된 애들을 추가로 수정할까~~~~~~" << endl;
+	cout << "=======================================================================" << endl;
+
+
+
 }
 void Player::stateRelease()
 {

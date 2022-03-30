@@ -2,7 +2,6 @@
 #include "Stdafx.h"
 #include "MainGame.h"
 
-
 //==============
 //# 전역 변수 #
 //==============
@@ -97,11 +96,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	{
 		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) //
 		{
-			if (message.message == WM_QUIT) break;
-			{
-				TranslateMessage(&message);
-				DispatchMessage(&message);
-			}
+			if (message.message == WM_QUIT)
+				break;
+
+			TranslateMessage(&message);
+			DispatchMessage(&message);
 		}
 		else
 		{
@@ -111,13 +110,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		}
 	}
 
-	while (GetMessage(&message, 0, 0, 0))
-	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
-	}
-
 	_mg->release();
+	delete _mg;
+
 	//! 윈도우 클래스 등록 해제
 	UnregisterClass(WINNAME, hInstance);
 

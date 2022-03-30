@@ -168,6 +168,9 @@ void IdleState::stateInit(Player* player)
 void IdleState::stateUpdate(Player* player)
 {
 	cout << "IdleState::update" << endl;
+	player->setIsFrameImg(false);
+	player->setPlayerImg(IMG("p_Idle"));
+
 
 	if ((KEYMANAGER->isStayKeyDown(VK_LEFT)) || (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		|| (KEYMANAGER->isStayKeyDown(VK_UP)) || (KEYMANAGER->isStayKeyDown(VK_DOWN)))
@@ -179,8 +182,24 @@ void IdleState::stateUpdate(Player* player)
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
 		cout << "get Att1Instance!!!!!" << endl;
+		player->setIsAttacking(true);
 		SetPlayerState(player, Att1State::getInstance());
+	}
 
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+		cout << "get Skill1Instance!!!!!" << endl;
+		SetPlayerState(player, Skill1State::getInstance());
+	}
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		cout << "get Skill2Instance!!!!!!!!!!!!!!" << endl;
+		SetPlayerState(player, Skill2State::getInstance());
+	}
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+		cout << "get Skill3Instance!!!!!!!!!!!!!!!!!!" << endl;
+		SetPlayerState(player, Skill3State::getInstance());
 	}
 
 	if (player->getIsHit())
@@ -213,7 +232,10 @@ void MoveState::stateInit(Player * player)
 void MoveState::stateUpdate(Player * player)
 {
 	cout << "MoveState::update" << endl;
+	player->setIsFrameImg(false);
+	player->setPlayerImg(IMG("p_move"));
 
+#pragma region 방향키 입력받아 움직임
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !player->getIsRunning())
 	{
@@ -279,7 +301,85 @@ void MoveState::stateUpdate(Player * player)
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
+
+	if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
+	{
+		player->setIsRunning(false);
+		SetPlayerState(player, IdleState::getInstance());
+	}
+	if (KEYOKU(VK_RIGHT))
+	{
+		player->setIsRunning(false);
+		player->setIsLeft(false);
+		SetPlayerState(player, IdleState::getInstance());
+	}
 	
+#pragma endregion
+
+#pragma region 공격/스킬 등
+
+	if (KEYMANAGER->isStayKeyDown('X'))
+	{
+		cout << "get Att1Instance!!!!!" << endl;
+		player->setIsAttacking(true);
+		SetPlayerState(player, Att1State::getInstance());
+	}
+
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+		cout << "get Skill1Instance!!!!!" << endl;
+		SetPlayerState(player, Skill1State::getInstance());
+	}
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		cout << "get Skill2Instance!!!!!!!!!!!!!!" << endl;
+		SetPlayerState(player, Skill2State::getInstance());
+	}
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+		cout << "get Skill3Instance!!!!!!!!!!!!!!!!!!" << endl;
+		SetPlayerState(player, Skill3State::getInstance());
+	}
+
+	if (player->getIsHit())
+	{
+		cout << "맞음!" << endl;
+		SetPlayerState(player, BeHitState::getInstance());
+	}
+
+#pragma endregion 
+
+#pragma region 프레임 업데이트
+
+	PLAYERDIRECTION temp;
+	temp = player->getPlayerDirection();
+
+	switch (temp)
+	{
+		// Y프레임만 세팅
+	case PLAYERDIRECTION::UP:
+		break;
+	case PLAYERDIRECTION::DOWN:
+		break;
+	case PLAYERDIRECTION::LEFT:
+		break;
+	case PLAYERDIRECTION::RIGHT:
+		break;
+	case PLAYERDIRECTION::LEFTUP:
+		break;
+	case PLAYERDIRECTION::RIGHTUP:
+		break;
+	case PLAYERDIRECTION::LEFTDOWN:
+		break;
+	case PLAYERDIRECTION::RIGHTDOWN:
+		break;
+
+	}
+
+
+
+#pragma endregion
+
 }
 
 void MoveState::stateRelease(Player * player)
@@ -303,6 +403,8 @@ void BeHitState::stateInit(Player * player)
 
 void BeHitState::stateUpdate(Player * player)
 {
+	cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
+	// 맞으면 일정시간 무적
 }
 
 void BeHitState::stateRelease(Player * player)
@@ -321,6 +423,9 @@ void DeadState::stateInit(Player * player)
 
 void DeadState::stateUpdate(Player * player)
 {
+	// 쓰러진 이미지 보여준 후 타이틀로 이동
+	cout << "죽음;;;;;;;;;;;;;;;;;;;;;;;" << endl; 
+
 }
 
 void DeadState::stateRelease(Player * player)
@@ -341,6 +446,17 @@ void Att1State::stateInit(Player * player)
 
 void Att1State::stateUpdate(Player * player)
 {
+	cout << "1단 공격!!" << endl;
+	if (KEYMANAGER->isStayKeyDown('X') )
+	{
+		SetPlayerState(player, Att2State::getInstance());
+	}
+	if (KEYOKU('X') )// && 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
+	{
+		player->setIsAttacking(false);
+		SetPlayerState(player, IdleState::getInstance());
+	}
+
 }
 
 void Att1State::stateRelease(Player * player)
@@ -360,6 +476,17 @@ void Att2State::stateInit(Player * player)
 
 void Att2State::stateUpdate(Player * player)
 {
+
+	if (KEYMANAGER->isStayKeyDown('X') && player->getPlayerWeapon() != WEAPONTYPE::AX)
+	{
+		SetPlayerState(player, Att2State::getInstance());
+	}
+	if (KEYOKU('X'))// && 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
+	{
+		player->setIsAttacking(false);
+		SetPlayerState(player, IdleState::getInstance());
+	}
+
 }
 
 void Att2State::stateRelease(Player * player)
@@ -378,6 +505,12 @@ void Att3State::stateInit(Player * player)
 
 void Att3State::stateUpdate(Player * player)
 {
+
+	// if( 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
+	{
+		player->setIsAttacking(false);
+		SetPlayerState(player, IdleState::getInstance());
+	}
 }
 
 void Att3State::stateRelease(Player * player)

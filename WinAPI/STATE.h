@@ -2,7 +2,7 @@
 #include "Player.h"
 //#define STATEPATTERN
 
-
+// 해제 필요
 #ifdef STATEPATTERN
 
 class Player;
@@ -134,6 +134,10 @@ public:
 class STATE
 {
 public:
+	STATE() {}
+	virtual ~STATE() {}
+
+	int count;
 	// 상태패턴 함수
 	virtual void stateInit(Player* player)=0;
 	virtual void stateUpdate(Player* player)=0;

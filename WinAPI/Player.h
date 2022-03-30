@@ -8,7 +8,7 @@ enum PLAYERTYPE
 
 enum class WEAPONTYPE
 {
-	SWORD, AX //, SPEAR, WAND, BOW
+	SWORD, AX //, SPEAR, WAND
 };
 
 enum class PLAYERDIRECTION
@@ -88,6 +88,7 @@ private:
 	bool _isRunnig;
 	bool _isAttacking;
 	bool _isHit;
+	bool _isFrameImg;
 	
 
 	int _speed;
@@ -129,6 +130,8 @@ public:
 	//void setStatus(tagPlayerStatus status,int value) { status.curExp = value;	}
 	//오퍼레이터 필요
 
+	PLAYERDIRECTION getPlayerDirection() { return this->_playerDirection; }
+	int getPlayerDirectionWhitInt() { return static_cast<int>(this->_playerDirection); }
 	void setPlayerDirection(PLAYERDIRECTION state) { _playerDirection = state; }
 
 
@@ -147,6 +150,8 @@ public:
 	void setPlayerFrameX(int x) { _frameX = x; }
 	void setPlayerFrameY(int y) { _frameX = y; }
 	int getPlayerSpeed() { return this->_speed; }
+	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
+	Image* setPlayerImg(Image* image) { return this->_playerImg; }
 
 	int getAbyss() { return this->_abyss; }
 	int getStage() { return this->_stage; }
@@ -163,6 +168,8 @@ public:
 	void setIsAttacking(bool state) { _isAttacking = state; }
 	bool getIsHit() { return this->_isHit; }
 	void setIsHit(bool state) { _isHit = state; }
+	bool getIsFrameImg() { return this->_isFrameImg; }
+	void setIsFrameImg(bool state) { _isFrameImg = state; }
 
 
 };
