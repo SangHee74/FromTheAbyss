@@ -46,7 +46,6 @@ void Stage::update(void)
 	_player->setCameraRect(CAM->getScreenRect());
 	_player->update();
 
-
 	
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);

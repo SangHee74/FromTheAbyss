@@ -3,23 +3,23 @@
 
 enum PLAYERTYPE
 {
-	ONE=1,TWO,THREE,FORE
+	ONE//,TWO,THREE,FORE
 };
 
 enum class WEAPONTYPE
 {
-	SWORD, AX, SPEAR, WAND, BOW
+	SWORD, AX //, SPEAR, WAND, BOW
 };
 
 enum class PLAYERDIRECTION
 {
 	UP, DOWN, LEFT, RIGHT,
-	LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN,
+	LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN
 };
 
 enum class PLAYERSTATE
 {
-	IDLE, MOVE, ATT, BEHIT, DEAD,
+	IDLE, MOVE, ATT, BEHIT, DEAD
 };
 
 struct tagInventory
@@ -50,7 +50,7 @@ struct tagPlayerStatus
 	int iAgi; //속도
 	int iLuk; //크리
 
-	tagEquip tEquip[3];
+	tagEquip tEquip;
 	tagInventory tInven;
 };
 
@@ -62,19 +62,21 @@ private:
 	char _strName[128];
 	PLAYERTYPE _playerType;
 	WEAPONTYPE _weaponType;
-	PLAYERSTATE _playerState;
 	PLAYERDIRECTION _playerDirection;
+	PLAYERSTATE _playerState; // 플레이어 상태
+	STATE* _pStatePattern; // 상태패턴 이넘(상태) 
 	tagPlayerStatus _status;
 	Image* _faceImg;
+	Image* _weaponImg;
 
 
 	int _abyss;
 	int _stage;
 
-	ProgressBar* _UIBar;
-
 	POINT _pos;
 	int w, h; // 임시
+	int _frameX;
+	int _frameY;
 
 	RECT _rcPlayer;
 	RECT _rcCamera;
@@ -85,12 +87,10 @@ private:
 	bool _isAttacking;
 
 	int _speed;
-	int _tempFrameY;
+	int _tempFrameY; // 임시
 	int _tempFrameX;
 	int _tempCount;
 
-	// 상태패턴 관련 
-	STATE* _pState;
 
 public:
 	Player() {}
@@ -103,11 +103,20 @@ public:
 
 	Image getPlayerSumImg() { return *(this->_faceImg); }
 	tagPlayerStatus getStatus() { return this->_status; }
-	void setStatus(tagPlayerStatus status) { _status = status;	}
+	//void setStatus(tagPlayerStatus status,int value) { status.curExp = value;	}
+	//오퍼레이터 필요
+
+	void setPlayerDirection(PLAYERDIRECTION state)
+	{
+		_playerDirection = state;
+	}
 
 	// 상태패턴
-	PLAYERSTATE getPlayerState() { return this->_playerState; }
-	void setPlayerState(STATE* state);
+	void setState(PLAYERSTATE state);
+	void stateUpdate();
+	void stateRender();
+	//PLAYERSTATE getPlayerState() { return this->_playerState; }
+	//void setPlayerState(STATE* state);
 
 	RECT getPlayerRect();
 	void setCameraRect(RECT rc);
@@ -116,6 +125,10 @@ public:
 	float getPlayerPosY();
 	void setPlayerPosX(float x);
 	void setPlayerPosY(float y);
+	int getPlayerFrameX() { return this->_frameX; }
+	int getPlayerFrameY() { return this->_frameX; }
+	void setPlayerFrameX(int x) { _frameX = x; }
+	void setPlayerFrameY(int y) { _frameX = y; }
 
 	int getAbyss() { return this->_abyss; }
 	int getStage() { return this->_stage; }

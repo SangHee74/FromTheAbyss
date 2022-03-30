@@ -10,6 +10,17 @@
       "_gold": 1000,
       "_monsterName": "곰돌이",
       "_questStage": "1스테이지"
+    },
+    {
+      "_name": "스테이지2-몬스터 퇴치",
+      "_exp": 1500,
+      "_description": "몬스터 20마리 퇴치",
+      "_item": "보석10",
+      "_monster": 10,
+      "_questCheck": "섬멸",
+      "_gold": 3000,
+      "_monsterName": "토끼",
+      "_questStage": "2스테이지"
     }
   ]
 

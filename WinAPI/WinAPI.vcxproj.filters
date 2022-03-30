@@ -128,7 +128,7 @@
       <Filter>API\ExamClass</Filter>
     </ClCompile>
     <ClCompile Include="STATE.cpp">
-      <Filter>FromTheAbyss\Player</Filter>
+      <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,7 +265,7 @@
       <Filter>API\ExamClass</Filter>
     </ClInclude>
     <ClInclude Include="STATE.h">
-      <Filter>FromTheAbyss\Player</Filter>
+      <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +340,9 @@
     </Filter>
     <Filter Include="FromTheAbyss\Item">
       <UniqueIdentifier>{f9e3b93f-7537-4007-af56-e405ba4c8483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Player\STATE">
+      <UniqueIdentifier>{2b7d1599-898c-4ee6-bab5-d2df68860f1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

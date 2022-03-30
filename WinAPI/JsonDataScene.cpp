@@ -27,6 +27,7 @@ void JsonDataScene::questPopUp()
 	char str[256];
 	queue<Quest*>* temp = _questSample->getQuest();
 	Quest* node = temp->front();
+	
 
 	// 빌드 전까지 메모리주소가 없기 때문에 불완전하다고 나온다.
 	// C++이 타입에 엄격하기 때문.

@@ -52,8 +52,13 @@ void Player::update(void)
 {
 	_tempCount++;
 	
+
+	_pStatePattern->updateState();
+	stateUpdate();
+
 	if (_isLive)
 	{
+		/*
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !_isRunnig)
 		{
 			_isLeft = true;
@@ -125,6 +130,7 @@ void Player::update(void)
 				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 			}
 		}
+		*/
 
 		if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
 		{
@@ -140,12 +146,13 @@ void Player::update(void)
 
 		if (KEYMANAGER->isStayKeyDown('X') && !_isAttacking)
 		{
-			_playerState = PLAYERSTATE::ATT;
+		//	_playerState = PLAYERSTATE::ATT;
 		}
 		if (KEYOKU('X'))
 		{
 			_isAttacking = false;
 			_playerState = PLAYERSTATE::IDLE;
+			//_pState->idle();
 		}
 
 
@@ -166,6 +173,7 @@ void Player::update(void)
 
 	if (this->_status.curHp <= 0) _isLive = false;
 
+#pragma region 캐릭터 임시 카운트-프레임
 	// 임시 카운트 - 프레임
 	if (_isLeft)
 	{
@@ -193,7 +201,7 @@ void Player::update(void)
 		_tempFrameX++;
 		if (_tempFrameX >= 2) _tempFrameX = 0;
 	}
-		
+#pragma endregion
 }
 
 void Player::render(void)
@@ -263,6 +271,34 @@ void Player::setPlayerPosY(float y)
 	_pos.y = y;
 }
 
+void Player::setState(PLAYERSTATE state)
+{
+	// setState 함수 실행시 기존 상태를 우선 탈출하도록 설정했습니다
+	if (_pStatePattern)_pStatePattern->exitState();
+
+	_playerState = state;
+
+	// 각 상태에 따른 객체 생성
+	switch (_playerState)
+	{ 
+	case PLAYERSTATE::IDLE:
+		_pStatePattern = new Idle;	break;
+	}
+	_pStatePattern->linkMemberAdress(this);
+		// 각각의 상태에서 다른 상태로 옮길때 사용할 참조용 링크입니다
+
+	_pStatePattern->enterState();
+		// 위의 일련의 과정이 끝난 후 해당 상태에 돌입하게 했습니다
+}
+
+void Player::stateUpdate()
+{
+}
+
+void Player::stateRender()
+{
+}
+
 RECT Player::getPlayerRect()
 {
 	return _rcPlayer;
@@ -284,32 +320,45 @@ void Player::setStage(int num)
 }
 
 
-// 상태패턴
+// 상태 패턴
+#ifdef STATEPATTERN
 // 상태 세팅
-void Player::setPlayerState(STATE* state)
-{
-	this->_pState = state;
-}
+
+
 
 // 행동 세팅
+
+
+
+
+
+
+#else
+// 행동세팅
+void Player::setPlayerState(STATE* state)
+{
+	this->_pStatePattern = state;
+}
+// 상태 세팅
 void Player::idle()
 {
-	_pState->idle(this);
+	_pStatePattern->idle(this);
 }
 
 void Player::move()
 {
-	_pState->move(this);
+	_pStatePattern->move(this);
 }
 
 void Player::attack()
 {
-	_pState->attack(this);
+	_pStatePattern->attack(this);
 }
 
 void Player::beHit()
 {
-	_pState->beHit(this);
+	_pStatePattern->beHit(this);
 }
+#endif // STATEPATTERN
 
 

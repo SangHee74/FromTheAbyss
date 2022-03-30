@@ -5,7 +5,9 @@ enum ITEM_TYPE
 {
 	WEAPON = 1,
 	ARMOR,
-	ACCESARY
+	ACCESARY,
+	POTION,
+	SKILL
 
 };
 
