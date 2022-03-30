@@ -174,18 +174,6 @@ public:
 	virtual void stateRelease(Player* player); // 해제
 };
 
-// 공격 상태 - 무기타입에 따라 콤보 공격횟수가 달라진다.
-
-class AttackState : public STATE
-{
-	static AttackState* instance;
-public:
-	static AttackState* getInstance();
-
-	virtual void stateInit(Player* player);	  // 초기화
-	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
-};
 
 // 피격 상태 - 일정시간동안 움직일 수 없고, 키 입력이 없는 경우 대기한다.
 class BeHitState : public STATE
@@ -198,5 +186,91 @@ public:
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(Player* player); // 해제
 };
+
+// 다운 상태 - 일정시간동안 쓰러진 모션 후 타이틀로 돌아간다
+class DeadState : public STATE
+{
+	static DeadState* instance;
+public:
+	static DeadState* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+
+#pragma region 공격/스킬
+// 공격 상태 - 무기타입에 따라 콤보 공격횟수가 달라진다.
+class Att1State : public STATE
+{
+	static Att1State* instance;
+public:
+	static Att1State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+class Att2State : public STATE
+{
+	static Att2State* instance;
+public:
+	static Att2State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+class Att3State : public STATE
+{
+	static Att3State* instance;
+public:
+	static Att3State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+
+// 스킬 상태 - 장착한 스킬에 따라 달라진다.
+class Skill1State : public STATE
+{
+	static Skill1State* instance;
+public:
+	static Skill1State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+class Skill2State : public STATE
+{
+	static Skill2State* instance;
+public:
+	static Skill2State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+class Skill3State : public STATE
+{
+	static Skill3State* instance;
+public:
+	static Skill3State* getInstance();
+
+	virtual void stateInit(Player* player);	  // 초기화
+	virtual void stateUpdate(Player* player);  // 업데이트 
+	virtual void stateRelease(Player* player); // 해제
+};
+
+#pragma endregion 
+
 
 #endif // STATEPATTERN

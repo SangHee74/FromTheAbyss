@@ -87,6 +87,7 @@ private:
 	bool _isLive;
 	bool _isRunnig;
 	bool _isAttacking;
+	bool _isHit;
 	
 
 	int _speed;
@@ -160,5 +161,9 @@ public:
 	void setIsRunning(bool state) { _isRunnig = state; }
 	bool getIsAttacking() { return this->_isAttacking; }
 	void setIsAttacking(bool state) { _isAttacking = state; }
+	bool getIsHit() { return this->_isHit; }
+	void setIsHit(bool state) { _isHit = state; }
+
+
 };
 
