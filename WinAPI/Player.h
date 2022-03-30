@@ -19,7 +19,9 @@ enum class PLAYERDIRECTION
 
 enum class PLAYERSTATE
 {
-	IDLE, MOVE, ATT, BEHIT, DEAD
+	IDLE, MOVE, BEHIT, DEAD,
+	ATT1, ATT2, ATT3,
+	SKILL1,SKILL2,SKILL3
 };
 
 struct tagInventory
@@ -64,10 +66,10 @@ private:
 	WEAPONTYPE _weaponType;
 	PLAYERDIRECTION _playerDirection;
 	PLAYERSTATE _playerState; // 플레이어 상태
-	STATE* _pStatePattern; // 상태패턴 이넘(상태) 
 	tagPlayerStatus _status;
 	Image* _faceImg;
 	Image* _weaponImg;
+	Image* _playerImg;
 
 
 	int _abyss;
@@ -85,12 +87,32 @@ private:
 	bool _isLive;
 	bool _isRunnig;
 	bool _isAttacking;
+	
 
 	int _speed;
 	int _tempFrameY; // 임시
 	int _tempFrameX;
 	int _tempCount;
 
+public: // 상태패턴
+	STATE* _pStatePattern; // 상태패턴 이넘(상태) 
+
+#ifdef STATEPATTERN
+
+	void setState(PLAYERSTATE state);
+	void stateUpdate2();
+	void stateRender();
+	//PLAYERSTATE getPlayerState() { return this->_playerState; }
+
+#else
+	// 상태패턴 함수(행동)
+	void setPlayerState(STATE* state);
+
+	void stateInit();
+	void stateUpdate();
+	void stateRelease();
+
+#endif // STATEPATTERN
 
 public:
 	Player() {}
@@ -106,29 +128,24 @@ public:
 	//void setStatus(tagPlayerStatus status,int value) { status.curExp = value;	}
 	//오퍼레이터 필요
 
-	void setPlayerDirection(PLAYERDIRECTION state)
-	{
-		_playerDirection = state;
-	}
+	void setPlayerDirection(PLAYERDIRECTION state) { _playerDirection = state; }
 
-	// 상태패턴
-	void setState(PLAYERSTATE state);
-	void stateUpdate();
-	void stateRender();
-	//PLAYERSTATE getPlayerState() { return this->_playerState; }
-	//void setPlayerState(STATE* state);
 
-	RECT getPlayerRect();
+	RECT getPlayerRect() { return this->getPlayerRect(); }
 	void setCameraRect(RECT rc);
 
-	float getPlayerPosX();
-	float getPlayerPosY();
-	void setPlayerPosX(float x);
-	void setPlayerPosY(float y);
+	// 주소값 참조로 겟셋 동시에
+	//int& getPosY() { return _posY; }
+
+	int getPlayerPosX() { return this->_pos.x; }
+	int getPlayerPosY() { return this->_pos.y; }
+	void setPlayerPosX(float x) { _pos.x = x; }
+	void setPlayerPosY(float y) { _pos.y = y; }
 	int getPlayerFrameX() { return this->_frameX; }
 	int getPlayerFrameY() { return this->_frameX; }
 	void setPlayerFrameX(int x) { _frameX = x; }
 	void setPlayerFrameY(int y) { _frameX = y; }
+	int getPlayerSpeed() { return this->_speed; }
 
 	int getAbyss() { return this->_abyss; }
 	int getStage() { return this->_stage; }
@@ -139,11 +156,9 @@ public:
 	void setIsLeft(bool state) { _isLeft = state; }
 	bool getIsLive() { return this->_isLive; }
 	void setIsLive(bool state) { _isLive = state; }
-
-	// 상태패턴 함수(행동)
-	void idle();
-	void move();
-	void attack();
-	void beHit();
+	bool getIsRunning() { return this->_isRunnig; }
+	void setIsRunning(bool state) { _isRunnig = state; }
+	bool getIsAttacking() { return this->_isAttacking; }
+	void setIsAttacking(bool state) { _isAttacking = state; }
 };
 

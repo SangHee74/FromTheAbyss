@@ -123,13 +123,13 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT imessage, WPARAM wParam, LPARAM lPara
 	switch (imessage)
 	{
 	case WM_TIMER:
-		this->update();
+		//this->update();
 		break;
 	case WM_CREATE:  //»ý¼ºÀÚ
 		break;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		this->render();
+		//this->render();
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_MOUSEMOVE:
