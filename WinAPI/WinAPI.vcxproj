@@ -148,6 +148,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Castle.cpp" />
+    <ClCompile Include="CButtonState.cpp" />
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameNode.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="SoundScene.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="STATE+ATTACK.cpp" />
     <ClCompile Include="STATE.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,6 +202,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Castle.h" />
+    <ClInclude Include="CButtonState.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="CommonMacroFunction.h" />
     <ClInclude Include="FontManager.h" />

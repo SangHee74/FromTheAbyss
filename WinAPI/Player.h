@@ -1,14 +1,9 @@
 #pragma once
 #include "ProgressBar.h"
 
-enum PLAYERTYPE
-{
-	ONE//,TWO,THREE,FORE
-};
-
 enum class WEAPONTYPE
 {
-	SWORD, AX //, SPEAR, WAND
+	SWORD, AX, SPEAR//, WAND
 };
 
 enum class PLAYERDIRECTION
@@ -21,7 +16,7 @@ enum class PLAYERSTATE
 {
 	IDLE, MOVE, BEHIT, DEAD,
 	ATT1, ATT2, ATT3,
-	SKILL1,SKILL2,SKILL3
+	SKILL1, SKILL2, SKILL3
 };
 
 struct tagInventory
@@ -36,8 +31,8 @@ struct tagEquip
 
 struct tagPlayerStatus
 {
-	int curHp ;
-	int curSp ;
+	int curHp;
+	int curSp;
 	int curExp;
 	int maxHp;
 	int maxSp;
@@ -58,63 +53,62 @@ struct tagPlayerStatus
 
 class STATE;
 
+struct tagWeaponData
+{
+	float posX, posY;
+	RECT rc;
+	int frameX;
+	int frameY;
+
+	//RECT effectRc;
+};
+
 class Player :public GameNode
 {
 private:
 	char _strName[128];
-	PLAYERTYPE _playerType;
-	WEAPONTYPE _weaponType;
-	PLAYERDIRECTION _playerDirection;
+	WEAPONTYPE _weaponType; // 플레이어 무기타입
+	PLAYERDIRECTION _playerDirection; // 플레이어 방향
 	PLAYERSTATE _playerState; // 플레이어 상태
-	tagPlayerStatus _status;
-	Image* _faceImg;
-	Image* _weaponImg;
-	Image* _playerImg;
+	tagPlayerStatus _status; // 플레이어 스탯
+	tagWeaponData _playerWeapon; // 플레이어 무기+이펙트
+	Image* _faceImg;   // 플레이어 얼굴 이미지
+	Image* _weaponimage; // 무기
+	Image* _playerImg; // 플레이어
 
 
 	int _abyss;
 	int _stage;
 
 	POINT _pos;
-	int w, h; // 임시
+	RECT _rcPlayer;
 	int _frameX;
 	int _frameY;
+	int _width; // 이미지마다 맞춰줄 가로세로
+	int _height;
 
-	RECT _rcPlayer;
 	RECT _rcCamera;
 
-	bool _isLeft;
-	bool _isLive;
-	bool _isRunnig;
-	bool _isAttacking;
-	bool _isHit;
-	bool _isFrameImg;
-	
+	// 1 = true;
+	// 000001 : isLeft		// 0
+	// 000010 :	isRunnig	// 1
+	// 000100 : isAttack	// 2
+	// 001000 : isHit		// 3
+	// 010000 : isLive		// 4
+	// 100000 : 
+	bitset<6> _isStateCheck;
 
 	int _speed;
 	int _tempFrameY; // 임시
 	int _tempFrameX;
 	int _tempCount;
 
-public: // 상태패턴
-	STATE* _pStatePattern; // 상태패턴 이넘(상태) 
 
-#ifdef STATEPATTERN
+public:
+	STATE* _pStatePattern; // 상태패턴 
+	void setPlayerState(STATE* state); // 상태 업데이트
+	void stateUpdate(); // 상태패턴 업데이트
 
-	void setState(PLAYERSTATE state);
-	void stateUpdate2();
-	void stateRender();
-	//PLAYERSTATE getPlayerState() { return this->_playerState; }
-
-#else
-	// 상태패턴 함수(행동)
-	void setPlayerState(STATE* state);
-
-	void stateInit();
-	void stateUpdate();
-	void stateRelease();
-
-#endif // STATEPATTERN
 
 public:
 	Player() {}
@@ -134,12 +128,8 @@ public:
 	int getPlayerDirectionWhitInt() { return static_cast<int>(this->_playerDirection); }
 	void setPlayerDirection(PLAYERDIRECTION state) { _playerDirection = state; }
 
-
 	RECT getPlayerRect() { return this->getPlayerRect(); }
 	void setCameraRect(RECT rc);
-
-	// 주소값 참조로 겟셋 동시에
-	//int& getPosY() { return _posY; }
 
 	int getPlayerPosX() { return this->_pos.x; }
 	int getPlayerPosY() { return this->_pos.y; }
@@ -151,25 +141,16 @@ public:
 	void setPlayerFrameY(int y) { _frameX = y; }
 	int getPlayerSpeed() { return this->_speed; }
 	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
+	void setPlauerWeapon(tagWeaponData value) { _playerWeapon = value; }
 	Image* setPlayerImg(Image* image) { return this->_playerImg; }
+	
+	bitset<6> getIsStateCheck() { return this->_isStateCheck; }
+	unsigned int getIsStateCheck(int value) { return this->_isStateCheck[value]; }
 
 	int getAbyss() { return this->_abyss; }
 	int getStage() { return this->_stage; }
 	void setAbyss(int num);
 	void setStage(int num);
-
-	bool getIsLeft() { return this->_isLeft; }
-	void setIsLeft(bool state) { _isLeft = state; }
-	bool getIsLive() { return this->_isLive; }
-	void setIsLive(bool state) { _isLive = state; }
-	bool getIsRunning() { return this->_isRunnig; }
-	void setIsRunning(bool state) { _isRunnig = state; }
-	bool getIsAttacking() { return this->_isAttacking; }
-	void setIsAttacking(bool state) { _isAttacking = state; }
-	bool getIsHit() { return this->_isHit; }
-	void setIsHit(bool state) { _isHit = state; }
-	bool getIsFrameImg() { return this->_isFrameImg; }
-	void setIsFrameImg(bool state) { _isFrameImg = state; }
 
 
 };

@@ -1,5 +1,7 @@
 #include "Stdafx.h"
 #include "Stage.h"
+//#include "STATE.h"
+
 
 HRESULT Stage::init(void)
 {
@@ -33,6 +35,9 @@ void Stage::release(void)
 
 	_player->release();
 	SAFE_DELETE(_player);
+
+	//STATE::destroy();
+
 }
 
 void Stage::update(void)
