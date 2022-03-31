@@ -38,8 +38,10 @@ HRESULT Player::init(void)
 	_stage = 1;
 
 
+	// isLive on
 	_isStateCheck.reset();
-	_isStateCheck.set(5);
+	_isStateCheck.set(4);
+
 
 	_speed = 2;
 
@@ -63,6 +65,7 @@ void Player::update(void)
 {
 	_tempCount++;
 	
+	// state pattern update
 	stateUpdate();
 
 	
@@ -85,132 +88,11 @@ void Player::render(void)
 		_playerImg->frameRender(getMemDC(), left, top, _frameX, _frameY);
 	}
 
-	_playerWeapon.image->frameRender(getMemDC(),left,top+20, 1,1); 
+	// 프레임값 임시
+	_weaponimage->frameRender(getMemDC(),left,top+20, 1,1);
 	
 }
 
-
-#ifdef STATEPATTERN
-
-
-
-void Player::setState(PLAYERSTATE state)
-{
-	// setState 함수 실행시 기존 상태를 우선 탈출하도록 설정했습니다
-	if (_pStatePattern)_pStatePattern->exitState();
-
-	_playerState = state;
-
-	// 각 상태에 따른 객체 생성
-	switch (state)
-	{ 
-	case PLAYERSTATE::IDLE:
-		_pStatePattern = new Idle;	break;
-	case PLAYERSTATE::MOVE:
-		_pStatePattern = new Move;	break;
-	}
-	_pStatePattern->linkMemberAdress(this);
-		// 각각의 상태에서 다른 상태로 옮길때 사용할 참조용 링크
-
-	_pStatePattern->enterState();
-		// 위의 일련의 과정이 끝난 후 해당 상태에 돌입
-}
-
-
-//상태에 따라 이미지를 찾고 재생해주는 함수
-void Player::stateUpdate2()
-{
-	//_count++;
-	//if (_count % 5 == 0)
-	{
-		switch (_playerState)
-		{
-		case PLAYERSTATE::IDLE:
-			// 공격을 제외한 이미지는 방향에 따라 재생을 도와주는 인덱스 변수가 증가 혹은 감소하고,
-			_playerImg = IMG("p_idle");
-			_playerImg->setFrameY(1);
-			_playerImg->setFrameX(static_cast<int>(_playerDirection));
-			break;
-		case PLAYERSTATE::MOVE:
-
-
-			break;
-		}
-	}
-
-}
-
-void Player::stateRender()
-{
-	float left = _rcPlayer.left - _rcCamera.left;
-	float top = _rcPlayer.top - _rcCamera.top;
-
-	switch (_playerState)
-	{
-	case PLAYERSTATE::IDLE:
-		IMGFR("p_idle", getMemDC(),left,top, static_cast<int>(_playerDirection), 1);
-		//IMGFR("p_idle", getMemDC(), left, top, static_cast<int>(_playerDirection), 1);
-		break;
-	case PLAYERSTATE::MOVE:
-		if (_playerDirection == PLAYERDIRECTION::UP)
-		{
-			IMGFR("p_run_12", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
-		if (_playerDirection == PLAYERDIRECTION::DOWN)
-		{
-			IMGFR("p_run_6", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
-		if ((_playerDirection == PLAYERDIRECTION::LEFT) || (_playerDirection == PLAYERDIRECTION::RIGHT))
-		{
-			IMGFR("p_run_9", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
-		if ((_playerDirection == PLAYERDIRECTION::LEFTUP) || (_playerDirection == PLAYERDIRECTION::RIGHTUP))
-		{
-			IMGFR("p_run_11", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
-		if ((_playerDirection == PLAYERDIRECTION::LEFTDOWN) || (_playerDirection == PLAYERDIRECTION::RIGHTDOWN))
-		{
-			IMGFR("p_run_7", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
-
-	}
-}
-
-RECT Player::getPlayerRect()
-{
-	return _rcPlayer;
-}
-
-void Player::setCameraRect(RECT rc)
-{
-	_rcCamera = rc;
-}
-
-void Player::setAbyss(int num)
-{
-	_abyss = num;
-}
-
-void Player::setStage(int num)
-{
-	_stage = num;
-}
-
-
-// 상태 패턴
-
-// 상태 세팅
-
-
-
-// 행동 세팅
-
-
-
-
-
-
-#else
 
 
 
@@ -234,18 +116,31 @@ void Player::setStage(int num)
 void Player::setPlayerState(STATE* state)
 {
 	this->_pStatePattern = state;
+	_pStatePattern->stateInit(this);
+
+	
+
 }
 
 // 행동 세팅
 void Player::stateUpdate()
 {
-	_pStatePattern->stateInit(this);
 	_pStatePattern->stateUpdate(this);
 
 	_width = _playerImg->getWidth();
 	_height = _playerImg->getHeight();
 
 	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, _width, _height);
+
+	// 왼쪽은 상시 체크 
+	if (_playerDirection == PLAYERDIRECTION::LEFT      ||
+		_playerDirection == PLAYERDIRECTION::LEFTUP    ||
+		_playerDirection == PLAYERDIRECTION::LEFTDOWN  )
+	{
+		_isStateCheck.set(0);
+	}
+	else _isStateCheck.reset(0);
+
 
 
 #pragma region 캐릭터 임시 카운트-프레임
@@ -281,6 +176,6 @@ void Player::stateUpdate()
 
 }
 
-#endif // STATEPATTERN
+
 
 

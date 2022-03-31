@@ -1,151 +1,13 @@
 #include "Stdafx.h"
 #include "STATE.h"
-//#include "Player.h"
-
-#ifdef STATEPATTERN
 
 
-STATE::~STATE()
-{
-}
-
-
-
-
-void Idle::enterState()
-{
-	//상태에 들어오면 각 상태마다 초기화를 해줍니다 
-	//각각의 상태에 따라 이미지 재생을 위한 index를 초기화
-	//_p->setPlayerFrameX(0);
-	cout << "대기 : enterState " << endl;
-
-}
-
-void Idle::updateState()
-{
-	cout << "대기 : updateState " << endl;
-	count++;
-	// 30카운트가 지나면 저장한 값은 다시 0으로 초기화 됩니다
-	// 30카운트(0.5초)지나기 전 재입력하면 다음콤보 상태가 되게 해줬습니다
-	
-	POINT temp;
-
-	// 대기 -> 방향키 누르면 움직임
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-	{
-		temp.x = _p->getPlayerPosX() -_p->getPlayerSpeed();
-		_p->setPlayerPosX(temp.x);
-
-		_p->setState(PLAYERSTATE::MOVE);
-		_p->setPlayerDirection(PLAYERDIRECTION::LEFT);
-
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-	{
-		temp.x = _p->getPlayerPosX() + _p->getPlayerSpeed();
-		_p->setPlayerPosX(temp.x);
-
-		_p->setState(PLAYERSTATE::MOVE); 
-		_p->setPlayerDirection(PLAYERDIRECTION::RIGHT);
-
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
-	{
-		temp.y = _p->getPlayerPosY() - _p->getPlayerSpeed();
-		_p->setPlayerPosX(temp.y);
-
-		_p->setState(PLAYERSTATE::MOVE);
-		_p->setPlayerDirection(PLAYERDIRECTION::UP);
-
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-	{
-		temp.y = _p->getPlayerPosY() + _p->getPlayerSpeed();
-		_p->setPlayerPosX(temp.y);
-
-		_p->setState(PLAYERSTATE::MOVE);
-		_p->setPlayerDirection(PLAYERDIRECTION::DOWN);
-
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			_p->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
-		}
-	}
-	if (KEYMANAGER->isOnceKeyDown('X')) // 일반 공격
-	{
-		_p->setState(PLAYERSTATE::ATT1);
-	}
-}
-
-void Idle::exitState()
-{
-	cout << "대기 : exitState " << endl;
-
-	count = 0; // 상태를 탈출할때 대기모션용 카운트를 초기화하게 했습니다.
-}
-
-
-
-
-
-void Move::enterState()
-{
-	
-}
-
-void Move::updateState()
-{
-}
-
-void Move::exitState()
-{
-}
-
-
-
-
-
-
-
-
-
-#else
+// 대기, 이동, 피격, 죽음 상태
 IdleState* IdleState::instance;
 MoveState* MoveState::instance;
 BeHitState* BeHitState::instance;
 DeadState* DeadState::instance;
-OneHandWeaponCombo* OneHandWeaponCombo::instance;
-TwoHandWeaponCombo* TwoHandWeaponCombo::instance;
-SoulCapture* SoulCapture::instance;
-SpearStrike* SpearStrike::instance;
+
 
 
 // 대기
@@ -159,6 +21,7 @@ IdleState* IdleState::getInstance()
 void IdleState::stateInit(Player* player)
 {
 	cout << "IdleState::init" << endl;
+	player->getIsStateCheck().reset(2);
 
 	if (player->getPlayerWeapon() == WEAPONTYPE::SWORD)
 	{
@@ -174,49 +37,58 @@ void IdleState::stateInit(Player* player)
 void IdleState::stateUpdate(Player* player)
 {
 	cout << "IdleState::update" << endl;
-	player->setIsFrameImg(false);
-	player->setPlayerImg(IMG("p_Idle"));
 
-
-	if ((KEYMANAGER->isStayKeyDown(VK_LEFT)) || (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	// 공격이 아닐때 이동
+	if ( !(player->getIsStateCheck().test(2)) &&
+		(KEYMANAGER->isStayKeyDown(VK_LEFT)) || (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		|| (KEYMANAGER->isStayKeyDown(VK_UP)) || (KEYMANAGER->isStayKeyDown(VK_DOWN)))
 	{
-		cout << "get moveInstance!!!!!" << endl;
+		cout << "get moveInstance" << endl;
 		SetPlayerState(player, MoveState::getInstance());
 	}
 
+	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
-		cout << "get Att1Instance!!!!!" << endl;
-		player->setIsAttacking(true);
-		//if 한손무기면
-		SetPlayerState(player, OneHandWeaponCombo::getInstance());
-		// else 두손무기면
-		//SetPlayerState(player, TwoHandWeaponCombo1::getInstance());
+		cout << "get AttackInstance!" << endl;
 
+		if ((player->getPlayerWeapon() == WEAPONTYPE::SWORD) ||
+			(player->getPlayerWeapon() == WEAPONTYPE::AX))
+		{
+			SetPlayerState(player, OneHandWeaponCombo::getInstance());
+		}
+		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		{
+			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+		}
 	}
 
+	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
 		SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		
-		// if 창을 가지고 있는지
-		SetPlayerState(player, SpearStrike::getInstance());
+		// 창을 장착하고 있으면 스킬로
+		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		{
+			SetPlayerState(player, SpearStrike::getInstance());
+		}
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
 		cout << "get 3rd Skill Instance" << endl;
 	}
 
-	if (player->getIsHit())
-	{
+	// 피격
+	if (player->getIsStateCheck().test(3))
+	{ 
 		cout << "피격당함!" << endl;
 		SetPlayerState(player, BeHitState::getInstance());
 	}
 
+	// 죽음
 	if (player->getStatus().curHp <= 0)
 	{
 		SetPlayerState(player, DeadState::getInstance());
@@ -232,7 +104,6 @@ void IdleState::stateRelease()
 		delete instance;
 		instance = 0;
 	}
-
 }
 
 // 이동
@@ -245,20 +116,23 @@ MoveState* MoveState::getInstance()
 void MoveState::stateInit(Player * player)
 {
 	cout << "MoveState::init" << endl;
+	player->getIsStateCheck().set(1);
 
+	player->setPlayerImg(IMG("p_move"));
+
+
+	// Y프레임만 세팅
+	player->setPlayerFrameY(static_cast<int>(player->getPlayerDirection()));
+	
 }
 
 void MoveState::stateUpdate(Player * player)
 {
 	cout << "MoveState::update" << endl;
-	player->setIsFrameImg(false);
-	player->setPlayerImg(IMG("p_move"));
 
-#pragma region 방향키 입력받아 움직임
-
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !player->getIsRunning())
+	// 좌
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		//player->setIsLeft(true);
 		player->setPlayerPosX(player->getPlayerPosX() - player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::LEFT);
 
@@ -271,9 +145,9 @@ void MoveState::stateUpdate(Player * player)
 			player->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !player->getIsRunning())
+	// 우
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) )
 	{
-		//player->setIsLeft(false);
 		player->setPlayerPosX(player->getPlayerPosX() + player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::RIGHT);
 
@@ -286,7 +160,8 @@ void MoveState::stateUpdate(Player * player)
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP) && !player->getIsRunning())
+	// 위
+	if (KEYMANAGER->isStayKeyDown(VK_UP) )
 	{
 		player->setPlayerPosY(player->getPlayerPosY() - player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::UP);
@@ -294,16 +169,16 @@ void MoveState::stateUpdate(Player * player)
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			//player->setIsLeft(true);
 			player->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-		//	player->setIsLeft(false);
+			player->getIsStateCheck().reset(0);
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
 		}
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && !player->getIsRunning())
+	// 아래
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		player->setPlayerPosY(player->getPlayerPosY() + player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::DOWN);
@@ -311,96 +186,76 @@ void MoveState::stateUpdate(Player * player)
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			//player->setIsLeft(true);
 			player->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			//player->setIsLeft(false);
+			player->getIsStateCheck().reset(0);
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
 
+	//방향키 입력 종료
 	if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
 	{
-		player->setIsRunning(false);
+		player->getIsStateCheck().reset(1);
 		SetPlayerState(player, IdleState::getInstance());
 	}
 	if (KEYOKU(VK_RIGHT))
 	{
-		player->setIsRunning(false);
-		//player->setIsLeft(false);
+		player->getIsStateCheck().reset(1);
 		SetPlayerState(player, IdleState::getInstance());
 	}
-	
-#pragma endregion
 
-#pragma region 공격/스킬 등
-
+	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
-		cout << "get Att1Instance!!!!!" << endl;
-		player->setIsAttacking(true);
-		//if 한손무기면
-		SetPlayerState(player, OneHandWeaponCombo::getInstance());
-		// else 두손무기면
-		//SetPlayerState(player, TwoHandWeaponCombo1::getInstance());
+		cout << "get AttackInstance!" << endl;
 
+		if ((player->getPlayerWeapon() == WEAPONTYPE::SWORD) ||
+			(player->getPlayerWeapon() == WEAPONTYPE::AX))
+		{
+			SetPlayerState(player, OneHandWeaponCombo::getInstance());
+		}
+		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		{
+			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+		}
 	}
 
+	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
 		SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-
-		// if 창을 가지고 있는지
-		SetPlayerState(player, SpearStrike::getInstance());
+		// 창을 장착하고 있으면 스킬로
+		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		{
+			SetPlayerState(player, SpearStrike::getInstance());
+		}
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
 		cout << "get 3rd Skill Instance" << endl;
 	}
 
-	if (player->getIsHit())
+	// 피격
+	if (player->getIsStateCheck().test(3))
 	{
-		cout << "맞음!" << endl;
+		cout << "피격당함!" << endl;
 		SetPlayerState(player, BeHitState::getInstance());
 	}
 
-#pragma endregion 
-
-#pragma region 프레임 업데이트
-
-	PLAYERDIRECTION temp;
-	temp = player->getPlayerDirection();
-
-	switch (temp)
+	// 죽음
+	if (player->getStatus().curHp <= 0)
 	{
-		// Y프레임만 세팅
-	case PLAYERDIRECTION::UP:
-		break;
-	case PLAYERDIRECTION::DOWN:
-		break;
-	case PLAYERDIRECTION::LEFT:
-		break;
-	case PLAYERDIRECTION::RIGHT:
-		break;
-	case PLAYERDIRECTION::LEFTUP:
-		break;
-	case PLAYERDIRECTION::RIGHTUP:
-		break;
-	case PLAYERDIRECTION::LEFTDOWN:
-		break;
-	case PLAYERDIRECTION::RIGHTDOWN:
-		break;
-
+		SetPlayerState(player, DeadState::getInstance());
 	}
 
 
 
-#pragma endregion
 
 }
 
@@ -426,16 +281,41 @@ BeHitState* BeHitState::getInstance()
 
 void BeHitState::stateInit(Player * player)
 {
+	cout << "BeHitState::Init" << endl;
+	player->getIsStateCheck().set(3);
+
+	player->setPlayerImg(IMG("p_hit"));
+
+	// Y프레임만 세팅
+	if (player->getIsStateCheck().test(0))
+	{
+		player->setPlayerFrameY(0);
+	}
+	else player->setPlayerFrameY(1);
 }
 
 void BeHitState::stateUpdate(Player * player)
 {
 	cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
 	// 맞으면 일정시간 무적
+
+	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
+	if (player->getIsStateCheck().test(0))
+	{
+		player->setPlayerPosX(player->getPlayerPosX() + (player->getPlayerSpeed()*0.5));
+	}
+	else player->setPlayerPosX(player->getPlayerPosX() - (player->getPlayerSpeed()*0.5));
 }
 
 void BeHitState::stateRelease()
 {
+	cout << "BeHitState::release" << endl;
+
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 }
 
 DeadState * DeadState::getInstance()
@@ -446,6 +326,19 @@ DeadState * DeadState::getInstance()
 
 void DeadState::stateInit(Player * player)
 {
+
+	cout << "DeadState::init" << endl;
+	player->getIsStateCheck().reset(4);
+
+	player->setPlayerImg(IMG("p_down"));
+
+	// Y프레임만 세팅
+	if (player->getIsStateCheck().test(0))
+	{
+		player->setPlayerFrameY(0);
+	}
+	else player->setPlayerFrameY(1);
+
 }
 
 void DeadState::stateUpdate(Player * player)
@@ -457,110 +350,8 @@ void DeadState::stateUpdate(Player * player)
 
 void DeadState::stateRelease()
 {
-}
+	cout << "DeadState::release" << endl;
 
-
-// 공격
-OneHandWeaponCombo* OneHandWeaponCombo::getInstance()
-{
-	if (instance == nullptr) instance = new OneHandWeaponCombo();
-	return instance;
-}
-
-void OneHandWeaponCombo::stateInit(Player* player)
-{
-}
-
-void OneHandWeaponCombo::stateUpdate(Player* player)
-{
-	cout << "1단 공격!!" << endl;
-	if (KEYMANAGER->isStayKeyDown('X') )
-	{
-		// 2단 공격 실행
-
-	}
-	if (KEYOKU('X') )// && 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	{
-		player->setIsAttacking(false);
-		SetPlayerState(player, IdleState::getInstance());
-	}
-
-}
-
-void OneHandWeaponCombo::stateRelease()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
-}
-
-
-TwoHandWeaponCombo * TwoHandWeaponCombo::getInstance()
-{
-	if (instance == nullptr) instance = new TwoHandWeaponCombo();
-	return instance;
-}
-
-void TwoHandWeaponCombo::stateInit(Player * player)
-{
-}
-
-void TwoHandWeaponCombo::stateUpdate(Player * player)
-{
-}
-
-void TwoHandWeaponCombo::stateRelease()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
-}
-
-
-// 스킬 =========================================================
-SoulCapture* SoulCapture::getInstance()
-{
-	if (instance == nullptr) instance = new SoulCapture();
-	return instance;
-}
-
-void SoulCapture::stateInit(Player * player)
-{
-}
-
-void SoulCapture::stateUpdate(Player * player)
-{
-}
-
-void SoulCapture::stateRelease()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
-}
-
-SpearStrike * SpearStrike::getInstance()
-{
-	if (instance == nullptr) instance = new SpearStrike();
-	return instance;
-}
-
-void SpearStrike::stateInit(Player * player)
-{
-}
-
-void SpearStrike::stateUpdate(Player * player)
-{
-}
-
-void SpearStrike::stateRelease()
-{
 	if (instance)
 	{
 		delete instance;
@@ -570,4 +361,3 @@ void SpearStrike::stateRelease()
 
 
 
-#endif // STATEPATTERN

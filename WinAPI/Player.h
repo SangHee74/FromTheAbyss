@@ -3,7 +3,7 @@
 
 enum class WEAPONTYPE
 {
-	SWORD, AX //, SPEAR, WAND
+	SWORD, AX, SPEAR//, WAND
 };
 
 enum class PLAYERDIRECTION
@@ -95,12 +95,8 @@ private:
 	// 000100 : isAttack	// 2
 	// 001000 : isHit		// 3
 	// 010000 : isLive		// 4
-	// 100000 : playerImage = FrameImage // 5
+	// 100000 : 
 	bitset<6> _isStateCheck;
-	bitset<6> getIsCheck() { return this->_isStateCheck; }
-	unsigned int getIsCheck(int value) { return this->_isStateCheck[value]; }
-
-
 
 	int _speed;
 	int _tempFrameY; // 임시
@@ -108,22 +104,11 @@ private:
 	int _tempCount;
 
 
-#ifdef STATEPATTERN
-
-	void setState(PLAYERSTATE state);
-	void stateUpdate2();
-	void stateRender();
-	//PLAYERSTATE getPlayerState() { return this->_playerState; }
-
-#else
 public:
 	STATE* _pStatePattern; // 상태패턴 
 	void setPlayerState(STATE* state); // 상태 업데이트
 	void stateUpdate(); // 상태패턴 업데이트
 
-
-
-#endif // STATEPATTERN
 
 public:
 	Player() {}
@@ -156,7 +141,11 @@ public:
 	void setPlayerFrameY(int y) { _frameX = y; }
 	int getPlayerSpeed() { return this->_speed; }
 	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
+	void setPlauerWeapon(tagWeaponData value) { _playerWeapon = value; }
 	Image* setPlayerImg(Image* image) { return this->_playerImg; }
+	
+	bitset<6> getIsStateCheck() { return this->_isStateCheck; }
+	unsigned int getIsStateCheck(int value) { return this->_isStateCheck[value]; }
 
 	int getAbyss() { return this->_abyss; }
 	int getStage() { return this->_stage; }

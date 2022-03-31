@@ -133,6 +133,9 @@
     <ClCompile Include="CButtonState.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="STATE+ATTACK.cpp">
+      <Filter>FromTheAbyss\Player\STATE</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
