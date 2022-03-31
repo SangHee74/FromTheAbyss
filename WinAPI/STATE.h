@@ -2,7 +2,8 @@
 #include "Player.h"
 //#define STATEPATTERN
 
-// 해제 필요
+// 각 해제 필요
+
 #ifdef STATEPATTERN
 
 class Player;
@@ -137,11 +138,10 @@ public:
 	STATE() {}
 	virtual ~STATE() {}
 
-	int count;
 	// 상태패턴 함수
 	virtual void stateInit(Player* player)=0;
 	virtual void stateUpdate(Player* player)=0;
-	virtual void stateRelease(Player* player)=0;
+	virtual void stateRelease()=0;
 
 protected:
 
@@ -161,7 +161,7 @@ public:
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 
 };
 
@@ -175,7 +175,7 @@ public:
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
 
@@ -188,7 +188,7 @@ public:
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
 // 다운 상태 - 일정시간동안 쓰러진 모션 후 타이틀로 돌아간다
@@ -200,79 +200,59 @@ public:
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
 
-#pragma region 공격/스킬
+#pragma region attack
 // 공격 상태 - 무기타입에 따라 콤보 공격횟수가 달라진다.
-class Att1State : public STATE
+class OneHandWeaponCombo : public STATE
 {
-	static Att1State* instance;
+	static OneHandWeaponCombo* instance;
 public:
-	static Att1State* getInstance();
+	static OneHandWeaponCombo* getInstance();
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
-class Att2State : public STATE
+
+class TwoHandWeaponCombo : public STATE
 {
-	static Att2State* instance;
+	static TwoHandWeaponCombo* instance;
 public:
-	static Att2State* getInstance();
+	static TwoHandWeaponCombo* getInstance();
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
-class Att3State : public STATE
+#pragma region Skill
+
+class SoulCapture : public STATE
 {
-	static Att3State* instance;
+	static SoulCapture* instance;
 public:
-	static Att3State* getInstance();
+	static SoulCapture* getInstance();
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
-
-// 스킬 상태 - 장착한 스킬에 따라 달라진다.
-class Skill1State : public STATE
+class SpearStrike : public STATE
 {
-	static Skill1State* instance;
+	static SpearStrike* instance;
 public:
-	static Skill1State* getInstance();
+	static SpearStrike* getInstance();
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
+	virtual void stateRelease(); // 해제
 };
 
-class Skill2State : public STATE
-{
-	static Skill2State* instance;
-public:
-	static Skill2State* getInstance();
-
-	virtual void stateInit(Player* player);	  // 초기화
-	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
-};
-
-class Skill3State : public STATE
-{
-	static Skill3State* instance;
-public:
-	static Skill3State* getInstance();
-
-	virtual void stateInit(Player* player);	  // 초기화
-	virtual void stateUpdate(Player* player);  // 업데이트 
-	virtual void stateRelease(Player* player); // 해제
-};
 
 #pragma endregion 
 

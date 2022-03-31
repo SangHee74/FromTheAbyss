@@ -5,17 +5,20 @@
 
 HRESULT Player::init(void)
 {
-	if(_playerType==ONE) _faceImg = IMG("p_sum_1R");
+	_faceImg = IMG("p_face");
 	_playerState = PLAYERSTATE::IDLE;
 	_playerDirection = PLAYERDIRECTION::DOWN;
-
-
+	_weaponType = WEAPONTYPE::SWORD;
+	
+	_playerImg = IMG("p_idle_oneHand");
 	_pos.x = LSCENTER_X;
 	_pos.y = CENTER_Y;
-	w = IMG("p_idle_6")->getWidth();
-	h = IMG("p_idle_6")->getHeight();
-	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, IMG("p_idle_6")->getFrameWidth(), IMG("p_idle_6")->getFrameHeight());
+	_width = _playerImg->getWidth();
+	_height = _playerImg->getHeight();
+	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, _width, _height);
 
+
+	// 제이슨 로더에서 가져오면 좋을거같은데..
 	_status.curHp = 100;
 	_status.curSp = 100;
 	_status.curExp = 0;
@@ -34,10 +37,9 @@ HRESULT Player::init(void)
 	_abyss = 1;
 	_stage = 1;
 
-	_isLeft = false;
-	_isLive = true;
-	_isRunnig = _isAttacking = false;
-	_isFrameImg = false;
+
+	_isStateCheck.reset();
+	_isStateCheck.set(5);
 
 	_speed = 2;
 
@@ -54,65 +56,18 @@ HRESULT Player::init(void)
 
 void Player::release(void)
 {
+	_pStatePattern->stateRelease();
 }
 
 void Player::update(void)
 {
 	_tempCount++;
 	
-
-	//_pStatePattern->updateState();
-	//stateUpdate2();
 	stateUpdate();
 
-	if (_isLive)
-	{
-		// 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
-		// w,h 안쓰니까 초점이 잘 안맞음
-		w = IMG("p_idle_6")->getWidth();
-		h = IMG("p_idle_6")->getHeight();
-		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
+	
 
-	}
-	else
-	{
-		w = IMG("p_down")->getWidth();
-		h = IMG("p_down")->getHeight();
-		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
-		_playerState = PLAYERSTATE::DEAD;
-	}
 
-	if (this->_status.curHp <= 0) _isLive = false;
-
-#pragma region 캐릭터 임시 카운트-프레임
-	// 임시 카운트 - 프레임
-	if (_isLeft)
-	{
-		_tempFrameY = 0;
-	}
-	else _tempFrameY = 1;
-
-	if (_tempCount % 10 == 0)
-	{
-		if (_isLeft)
-		{
-			_tempFrameX++;
-			if (_tempFrameX >= 3) _tempFrameX = 0;
-		}
-		else
-		{
-			_tempFrameX--;
-			if (_tempFrameX < 0) _tempFrameX = 3;
-		}
-
-	}
-	if (_isAttacking) // 공격시임시프레임
-	{
-		if (_tempCount % 15== 0)
-		_tempFrameX++;
-		if (_tempFrameX >= 2) _tempFrameX = 0;
-	}
-#pragma endregion
 }
 
 void Player::render(void)
@@ -120,32 +75,18 @@ void Player::render(void)
 	float left = _rcPlayer.left - _rcCamera.left;
 	float top = _rcPlayer.top - _rcCamera.top;
 
-	//stateRender();
-
-	if (_isLive)
+	 
+	if (!_isStateCheck.test(5))
 	{
-
-		//if(!_isFrameImg) _playerImg->render(getMemDC(), left, top);
-		//else _playerImg->frameRender(getMemDC(), left, top, _frameX, _frameY);
-
-
-		if (_playerState == PLAYERSTATE::IDLE)
-		{
-			
-			IMGFR("p_idle", getMemDC(), left, top, static_cast<int>(_playerDirection), 1);
-
-		}
-		else if (_playerState == PLAYERSTATE::MOVE)
-		{
-		
-		}
-		else if (_playerState == PLAYERSTATE::ATT1)
-		{
-			IMGFR("p_att_ax_6", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-		}
+		_playerImg->render(getMemDC(), left, top);
 	}
-	else IMGR("p_down", getMemDC(), left, top);
+	else
+	{
+		_playerImg->frameRender(getMemDC(), left, top, _frameX, _frameY);
+	}
 
+	_playerWeapon.image->frameRender(getMemDC(),left,top+20, 1,1); 
+	
 }
 
 
@@ -292,32 +233,54 @@ void Player::setStage(int num)
 // 상태 세팅
 void Player::setPlayerState(STATE* state)
 {
-//	if (this->_pStatePattern) _pStatePattern->stateRelease(this);
 	this->_pStatePattern = state;
 }
 
 // 행동 세팅
-void Player::stateInit()
-{
-	_pStatePattern->stateInit(this);
-}
 void Player::stateUpdate()
 {
+	_pStatePattern->stateInit(this);
 	_pStatePattern->stateUpdate(this);
 
-	
-	cout << "=======================================================================" << endl;
-	cout << " 여기서 업데이트 된 애들을 추가로 수정할까~~~~~~" << endl;
-	cout << "=======================================================================" << endl;
+	_width = _playerImg->getWidth();
+	_height = _playerImg->getHeight();
 
+	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, _width, _height);
+
+
+#pragma region 캐릭터 임시 카운트-프레임
+	// 임시 카운트 - 프레임
+	if (_isStateCheck.test(0))
+	{
+		_tempFrameY = 0;
+	}
+	else _tempFrameY = 1;
+
+	if (_tempCount % 10 == 0)
+	{
+		if (_isStateCheck.test(0))
+		{
+			_tempFrameX++;
+			if (_tempFrameX >= 3) _tempFrameX = 0;
+		}
+		else
+		{
+			_tempFrameX--;
+			if (_tempFrameX < 0) _tempFrameX = 3;
+		}
+
+	}
+	if (_isStateCheck.test(2)) // 공격시임시프레임
+	{
+		if (_tempCount % 15 == 0)
+			_tempFrameX++;
+		if (_tempFrameX >= 2) _tempFrameX = 0;
+	}
+#pragma endregion
 
 
 }
-void Player::stateRelease()
-{
-	_pStatePattern->stateRelease(this);
 
-}
 #endif // STATEPATTERN
 
 

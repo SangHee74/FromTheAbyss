@@ -142,14 +142,10 @@ IdleState* IdleState::instance;
 MoveState* MoveState::instance;
 BeHitState* BeHitState::instance;
 DeadState* DeadState::instance;
-Att1State* Att1State::instance;
-Att2State* Att2State::instance;
-Att3State* Att3State::instance;
-Skill1State* Skill1State::instance;
-Skill2State* Skill2State::instance;
-Skill3State* Skill3State::instance;
-
-
+OneHandWeaponCombo* OneHandWeaponCombo::instance;
+TwoHandWeaponCombo* TwoHandWeaponCombo::instance;
+SoulCapture* SoulCapture::instance;
+SpearStrike* SpearStrike::instance;
 
 
 // 대기
@@ -163,6 +159,16 @@ IdleState* IdleState::getInstance()
 void IdleState::stateInit(Player* player)
 {
 	cout << "IdleState::init" << endl;
+
+	if (player->getPlayerWeapon() == WEAPONTYPE::SWORD)
+	{
+		player->setPlayerImg(IMG("p_idle_oneHand"));
+	}
+	else if (player->getPlayerWeapon() == WEAPONTYPE::AX)
+	{
+		player->setPlayerImg(IMG("p_idle_twoHand"));
+	}
+
 }
 
 void IdleState::stateUpdate(Player* player)
@@ -183,23 +189,26 @@ void IdleState::stateUpdate(Player* player)
 	{
 		cout << "get Att1Instance!!!!!" << endl;
 		player->setIsAttacking(true);
-		SetPlayerState(player, Att1State::getInstance());
+		//if 한손무기면
+		SetPlayerState(player, OneHandWeaponCombo::getInstance());
+		// else 두손무기면
+		//SetPlayerState(player, TwoHandWeaponCombo1::getInstance());
+
 	}
 
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		cout << "get Skill1Instance!!!!!" << endl;
-		SetPlayerState(player, Skill1State::getInstance());
+		SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		cout << "get Skill2Instance!!!!!!!!!!!!!!" << endl;
-		SetPlayerState(player, Skill2State::getInstance());
+		
+		// if 창을 가지고 있는지
+		SetPlayerState(player, SpearStrike::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-		cout << "get Skill3Instance!!!!!!!!!!!!!!!!!!" << endl;
-		SetPlayerState(player, Skill3State::getInstance());
+		cout << "get 3rd Skill Instance" << endl;
 	}
 
 	if (player->getIsHit())
@@ -208,11 +217,21 @@ void IdleState::stateUpdate(Player* player)
 		SetPlayerState(player, BeHitState::getInstance());
 	}
 
+	if (player->getStatus().curHp <= 0)
+	{
+		SetPlayerState(player, DeadState::getInstance());
+	}
+
 }
 
-void IdleState::stateRelease(Player* player)
+void IdleState::stateRelease()
 {
 	cout << "IdleState::release" << endl;
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 
 }
 
@@ -239,7 +258,7 @@ void MoveState::stateUpdate(Player * player)
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !player->getIsRunning())
 	{
-		player->setIsLeft(true);
+		//player->setIsLeft(true);
 		player->setPlayerPosX(player->getPlayerPosX() - player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::LEFT);
 
@@ -254,7 +273,7 @@ void MoveState::stateUpdate(Player * player)
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !player->getIsRunning())
 	{
-		player->setIsLeft(false);
+		//player->setIsLeft(false);
 		player->setPlayerPosX(player->getPlayerPosX() + player->getPlayerSpeed());
 		player->setPlayerDirection(PLAYERDIRECTION::RIGHT);
 
@@ -275,12 +294,12 @@ void MoveState::stateUpdate(Player * player)
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			player->setIsLeft(true);
+			//player->setIsLeft(true);
 			player->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			player->setIsLeft(false);
+		//	player->setIsLeft(false);
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
 		}
 	}
@@ -292,12 +311,12 @@ void MoveState::stateUpdate(Player * player)
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			player->setIsLeft(true);
+			//player->setIsLeft(true);
 			player->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			player->setIsLeft(false);
+			//player->setIsLeft(false);
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
@@ -310,7 +329,7 @@ void MoveState::stateUpdate(Player * player)
 	if (KEYOKU(VK_RIGHT))
 	{
 		player->setIsRunning(false);
-		player->setIsLeft(false);
+		//player->setIsLeft(false);
 		SetPlayerState(player, IdleState::getInstance());
 	}
 	
@@ -322,23 +341,26 @@ void MoveState::stateUpdate(Player * player)
 	{
 		cout << "get Att1Instance!!!!!" << endl;
 		player->setIsAttacking(true);
-		SetPlayerState(player, Att1State::getInstance());
+		//if 한손무기면
+		SetPlayerState(player, OneHandWeaponCombo::getInstance());
+		// else 두손무기면
+		//SetPlayerState(player, TwoHandWeaponCombo1::getInstance());
+
 	}
 
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		cout << "get Skill1Instance!!!!!" << endl;
-		SetPlayerState(player, Skill1State::getInstance());
+		SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		cout << "get Skill2Instance!!!!!!!!!!!!!!" << endl;
-		SetPlayerState(player, Skill2State::getInstance());
+
+		// if 창을 가지고 있는지
+		SetPlayerState(player, SpearStrike::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-		cout << "get Skill3Instance!!!!!!!!!!!!!!!!!!" << endl;
-		SetPlayerState(player, Skill3State::getInstance());
+		cout << "get 3rd Skill Instance" << endl;
 	}
 
 	if (player->getIsHit())
@@ -382,10 +404,15 @@ void MoveState::stateUpdate(Player * player)
 
 }
 
-void MoveState::stateRelease(Player * player)
+void MoveState::stateRelease()
 {
 	cout << "MoveState::release" << endl;
 
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 }
 
 
@@ -407,7 +434,7 @@ void BeHitState::stateUpdate(Player * player)
 	// 맞으면 일정시간 무적
 }
 
-void BeHitState::stateRelease(Player * player)
+void BeHitState::stateRelease()
 {
 }
 
@@ -428,28 +455,29 @@ void DeadState::stateUpdate(Player * player)
 
 }
 
-void DeadState::stateRelease(Player * player)
+void DeadState::stateRelease()
 {
 }
 
 
 // 공격
-Att1State* Att1State::getInstance()
+OneHandWeaponCombo* OneHandWeaponCombo::getInstance()
 {
-	if (instance == nullptr) instance = new Att1State();
+	if (instance == nullptr) instance = new OneHandWeaponCombo();
 	return instance;
 }
 
-void Att1State::stateInit(Player * player)
+void OneHandWeaponCombo::stateInit(Player* player)
 {
 }
 
-void Att1State::stateUpdate(Player * player)
+void OneHandWeaponCombo::stateUpdate(Player* player)
 {
 	cout << "1단 공격!!" << endl;
 	if (KEYMANAGER->isStayKeyDown('X') )
 	{
-		SetPlayerState(player, Att2State::getInstance());
+		// 2단 공격 실행
+
 	}
 	if (KEYOKU('X') )// && 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
 	{
@@ -459,117 +487,87 @@ void Att1State::stateUpdate(Player * player)
 
 }
 
-void Att1State::stateRelease(Player * player)
+void OneHandWeaponCombo::stateRelease()
 {
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 }
 
 
-Att2State * Att2State::getInstance()
+TwoHandWeaponCombo * TwoHandWeaponCombo::getInstance()
 {
-	if (instance == nullptr) instance = new Att2State();
+	if (instance == nullptr) instance = new TwoHandWeaponCombo();
 	return instance;
 }
 
-void Att2State::stateInit(Player * player)
+void TwoHandWeaponCombo::stateInit(Player * player)
 {
 }
 
-void Att2State::stateUpdate(Player * player)
+void TwoHandWeaponCombo::stateUpdate(Player * player)
 {
+}
 
-	if (KEYMANAGER->isStayKeyDown('X') && player->getPlayerWeapon() != WEAPONTYPE::AX)
+void TwoHandWeaponCombo::stateRelease()
+{
+	if (instance)
 	{
-		SetPlayerState(player, Att2State::getInstance());
-	}
-	if (KEYOKU('X'))// && 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	{
-		player->setIsAttacking(false);
-		SetPlayerState(player, IdleState::getInstance());
-	}
-
-}
-
-void Att2State::stateRelease(Player * player)
-{
-}
-
-Att3State * Att3State::getInstance()
-{
-	if (instance == nullptr) instance = new Att3State();
-	return instance;
-}
-
-void Att3State::stateInit(Player * player)
-{
-}
-
-void Att3State::stateUpdate(Player * player)
-{
-
-	// if( 프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	{
-		player->setIsAttacking(false);
-		SetPlayerState(player, IdleState::getInstance());
+		delete instance;
+		instance = 0;
 	}
 }
 
-void Att3State::stateRelease(Player * player)
-{
-}
 
 // 스킬 =========================================================
-Skill1State * Skill1State::getInstance()
+SoulCapture* SoulCapture::getInstance()
 {
-	if (instance == nullptr) instance = new Skill1State();
+	if (instance == nullptr) instance = new SoulCapture();
 	return instance;
 }
 
-void Skill1State::stateInit(Player * player)
+void SoulCapture::stateInit(Player * player)
 {
 }
 
-void Skill1State::stateUpdate(Player * player)
+void SoulCapture::stateUpdate(Player * player)
 {
 }
 
-void Skill1State::stateRelease(Player * player)
+void SoulCapture::stateRelease()
 {
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 }
 
-Skill2State * Skill2State::getInstance()
+SpearStrike * SpearStrike::getInstance()
 {
-	if (instance == nullptr) instance = new Skill2State();
+	if (instance == nullptr) instance = new SpearStrike();
 	return instance;
 }
 
-void Skill2State::stateInit(Player * player)
+void SpearStrike::stateInit(Player * player)
 {
 }
 
-void Skill2State::stateUpdate(Player * player)
+void SpearStrike::stateUpdate(Player * player)
 {
 }
 
-void Skill2State::stateRelease(Player * player)
+void SpearStrike::stateRelease()
 {
+	if (instance)
+	{
+		delete instance;
+		instance = 0;
+	}
 }
 
-Skill3State * Skill3State::getInstance()
-{
-	if (instance == nullptr) instance = new Skill3State();
-	return instance;
-}
 
-void Skill3State::stateInit(Player * player)
-{
-}
-
-void Skill3State::stateUpdate(Player * player)
-{
-}
-
-void Skill3State::stateRelease(Player * player)
-{
-}
 
 #endif // STATEPATTERN

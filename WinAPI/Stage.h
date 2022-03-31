@@ -15,7 +15,8 @@ private:
 	int _alpha;
 
 public:
-
+	Stage() {}
+	~Stage() {}
 	HRESULT init(void);
 	void release(void);
 	void update(void);

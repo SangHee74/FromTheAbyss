@@ -49,23 +49,44 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 720*10, 720*10, MGT);
 
 #pragma region Player
-	IMAGEMANAGER->addImage("p_sum_1R", "Resources/Images/Player/p_sum_1R.bmp", 0, 0, 40 * MAGNI , 40 * MAGNI, MGT);
 
-	IMAGEMANAGER->addImage("p_attacked", "Resources/Images/Player/p_attacked.bmp", 0, 0, 24 * MAGNI, 37 * MAGNI, MGT);
-	IMAGEMANAGER->addImage("p_down", "Resources/Images/Player/p_down.bmp", 0, 0, 32 * MAGNI, 29 * MAGNI, MGT);
+	IMAGEMANAGER->addFrameImage("p_down.bmp", "Resources/Images/Player/p_down.bmp", 30 * MAGNI, 100 * MAGNI, 1, 2, MGT);
+	IMAGEMANAGER->addFrameImage("p_hit.bmp", "Resources/Images/Player/p_hit.bmp", 30 * MAGNI, 100 * MAGNI, 1 , 2, MGT);
+	IMAGEMANAGER->addFrameImage("p_idle_oneHand", "Resources/Images/Player/p_idle_oneHand.bmp", 30 * MAGNI, 400 * MAGNI, 1, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_idle_twoHand", "Resources/Images/Player/p_idle_twoHand.bmp", 30 * MAGNI, 400 * MAGNI, 1, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_move", "Resources/Images/Player/p_move.bmp", 120 * MAGNI, 400 * MAGNI, 4,8, MGT);
+	IMAGEMANAGER->addFrameImage("p_oneHandCombo", "Resources/Images/Player/p_oneHandCombo.bmp", 60 * MAGNI, 400 * MAGNI, 6, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_twoHandCombo", "Resources/Images/Player/p_twoHandCombo.bmp", 60 * MAGNI, 400 * MAGNI, 4, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_skill_soulCapture", "Resources/Images/Player/p_skill_soulCapture.bmp", 90 * MAGNI, 400 * MAGNI, 3, 8, MGT);
 
-	IMAGEMANAGER->addFrameImage("p_att_ax_6", "Resources/Images/Player/p_att_ax_6.bmp", 48 * MAGNI, 38 * MAGNI, 2, 1, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_6", "Resources/Images/Player/p_run_6.bmp", 80 * MAGNI, 37 * MAGNI, 4, 1, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_7", "Resources/Images/Player/p_run_7.bmp", 104 * MAGNI, 72 * MAGNI, 4, 2, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_9", "Resources/Images/Player/p_run_9.bmp", 124 * MAGNI, 76 * MAGNI, 4, 2, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_11", "Resources/Images/Player/p_run_11.bmp", 108 * MAGNI, 82 * MAGNI, 4, 2, MGT);
-	IMAGEMANAGER->addFrameImage("p_run_12", "Resources/Images/Player/p_run_12.bmp", 80 * MAGNI, 42 * MAGNI, 4, 1, MGT);
+	IMAGEMANAGER->addFrameImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 76 * MAGNI, 4, 2, MGT);
 
-	IMAGEMANAGER->addImage("p_idle_6", "Resources/Images/Player/p_idle_6.bmp", 0,0,24 * MAGNI, 46 * MAGNI, MGT);
-	IMAGEMANAGER->addFrameImage("p_idle", "Resources/Images/Player/p_idle.bmp", 192 * MAGNI, 46 * MAGNI, 8,1, MGT);
 
 	
 #pragma endregion
+
+
+
+#pragma region enemy
+	IMAGEMANAGER->addFrameImage("Dionaea_attack", "Resources/Images/Monster/Dionaea_attack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Dionaea_hit", "Resources/Images/Monster/Dionaea_hit.bmp", 48 * MAGNI, 120 * MAGNI, 1, 2, MGT);
+	IMAGEMANAGER->addFrameImage("Dionaea_idle", "Resources/Images/Monster/Dionaea_idle.bmp", 48 * MAGNI, 240 * MAGNI, 1, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Dionaea_move", "Resources/Images/Monster/Dionaea_move.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
+	
+	IMAGEMANAGER->addFrameImage("evilEye_attack", "Resources/Images/Monster/evilEye_attack.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("evilEye_hit", "Resources/Images/Monster/evilEye_hit.bmp", 42 * MAGNI, 80 * MAGNI, 1, 2, MGT);
+	IMAGEMANAGER->addFrameImage("evilEye_idle", "Resources/Images/Monster/evilEye_idle.bmp", 42 * MAGNI, 160 * MAGNI, 1, 4, MGT);
+	IMAGEMANAGER->addFrameImage("evilEye_move", "Resources/Images/Monster/evilEye_move.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
+	
+	IMAGEMANAGER->addFrameImage("Kobold_attack", "Resources/Images/Monster/Kobold_attack.bmp", 84 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_hit", "Resources/Images/Monster/Kobold_hit.bmp", 40 * MAGNI, 84 * MAGNI, 1, 2, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_idle", "Resources/Images/Monster/Kobold_idle.bmp", 40 * MAGNI, 168 * MAGNI, 1, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_move", "Resources/Images/Monster/Kobold_move.bmp", 80 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+
+
+#pragma endregion
+
 
 #pragma region object
 	IMAGEMANAGER->addFrameImage("dropItem", "Resources/Images/Object/dropItem.bmp", 150 * MAGNI, 22 * MAGNI, 6, 1, MGT);
@@ -73,6 +94,10 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Inven_icon", "Resources/Images/Object/Inven_icon.bmp", 352 * MAGNI, 96 * MAGNI, 11, 3, MGT);
 
 	IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+
+	IMAGEMANAGER->addFrameImage("weapon_sword", "Resources/Images/Object/weapon_sword.bmp", 600 * MAGNI, 25 * MAGNI, 25, 1, MGT);
+	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 25 * MAGNI, 27, 1, MGT);
+
 
 
 #pragma endregion

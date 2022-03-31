@@ -149,6 +149,7 @@ using namespace MY_UTIL;
 #define SAFE_DELETE(p)			{if(p) {delete (p); (p) = nullptr;}}
 #define SAFE_DELETE_ARRAY(p)	{if(p) {delete[] (p); (p) = nullptr;}}
 #define SAFE_RELEASE(p)			{if(p) {(p)->release(); (p) = nullptr;}}
+//#define SAFE_DESTROY(p)	
 
 //=============
 // # 전역변수 #
