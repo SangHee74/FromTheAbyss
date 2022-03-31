@@ -52,8 +52,8 @@ class MapTool : public GameNode
 {
 private:
 
-	Tile _tile[TILEMAX_X*TILEMAX_Y];
-	//tagTile _tile[TILEMAX_X*TILEMAX_Y];
+	//Tile _tile[TILEMAX_X*TILEMAX_Y];
+	tagTile _tile[TILEMAX_X*TILEMAX_Y];
 	vector<tagTile> _vTiles; //
 	vector<tagTile>::iterator _viTiles; //
 
@@ -72,7 +72,11 @@ private:
 
 	int _curAbyss;		  // 현재 어비스 
 	int _curStage;		  // 현재 스테이지 
-	int _curTileIndex;    // 현재 타일 
+	int _curBaseTileIndex;    // 현재 타일 
+	int _beforeBaseTileIndex; // 이전 타일 
+	
+	int _curSampleTileIndex;    // 현재 타일 
+	int _beforeSampleTileIndex; // 이전 타일 
 
 	// 드래그해서 범위타일 그리기 
 	int _startTileX, _startTileY;
@@ -147,12 +151,13 @@ public:
 
 	// update() - function
 	void ptInTileCheck();					 // 바닥 타일에 마우스가 있는지 체크
-	void clear();									 // 모든 타일정보 삭제
-	void fill(int abyss, int x, int y);				 // 현재 타일로 모든 타일 칠하기 
+	void clear();							 // 모든 타일정보 삭제
+	void fill(int abyss, int x, int y);		 // 현재 타일로 모든 타일 칠하기 
 	void undo();
 	void save();
 	void load();
 
+	// 뭉텅이로 그리기 
 	void setCurTile(int x, int y) { this->_countX = x; this->_countY = y; }
 	void addCurTile(tagTile tile) { _vCurTile.push_back(tile); }
 	void clearCurTile() { _vCurTile.clear(); }

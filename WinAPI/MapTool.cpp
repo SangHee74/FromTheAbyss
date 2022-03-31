@@ -3,10 +3,12 @@
 int tempC = 0;
 HRESULT MapTool::init(void)
 {
+
 	// 기본 스테이지 1-1
 	_curAbyss = 1;
 	_curStage = 1;
-	_curTileIndex = -1;
+	_curBaseTileIndex = _beforeBaseTileIndex = -1;
+	_curSampleTileIndex = _beforeSampleTileIndex = -1;
 
 	_startTileX = _startTileY = _endTileX = _endTileY = _countX = _countY = 0;
 
@@ -88,7 +90,9 @@ void MapTool::update(void)
 	if (KEYSKD(VK_RIGHT)) _curPos.x += 4;
 
 	// 타일 위 마우스위치 체크 
+	_pickingPt = _cameraPtMouse;
 	ptInTileCheck();
+	_beforeBaseTileIndex = _curBaseTileIndex;
 
 	// 맵툴 기능
 	if (KEYOKD(VK_LBUTTON))
@@ -126,6 +130,7 @@ void MapTool::update(void)
 			//_tilePos.x = _tile[n].pos.x;
 			//_tilePos.y = _tile[n].pos.y;
 	}
+
 
 }
 
@@ -182,7 +187,7 @@ void MapTool::createSampleTile()
 			_sampleTile[i * SAMPLEMAX_X + j].frameY = i;
 
 			_sampleTile[i * SAMPLEMAX_X + j].rc =
-				RectMake(380 + (j*TILESIZE_X), 10 + (i*TILESIZE_Y), TILESIZE_X, TILESIZE_Y);
+				RectMake(WINSIZE_X - 900 + (j*TILESIZE_X), 10 + (i*TILESIZE_Y), TILESIZE_X, TILESIZE_Y);
 		}
 	}
 
@@ -251,7 +256,7 @@ void MapTool::selectTile()
 
 void MapTool::selectSampleTile()
 {
-	if (_sampleTileOn && _ptMouse.x > 0 && _ptMouse.y > 0)
+	if (_inSampleTile && _ptMouse.x > 0 && _ptMouse.y > 0)
 	{
 
 		// 마우스 좌표로 검사할 타일 찾기
@@ -261,15 +266,15 @@ void MapTool::selectSampleTile()
 		indexX = (_cameraPtMouse.x - (WINSIZE_X - 900)) / TILESIZE_X;
 		indexY = (_cameraPtMouse.y - 10) / TILESIZE_Y;
 
-		int n = indexX * indexY;
+		_curSampleTileIndex = indexY * TILEMAX_X + indexX;
 
 		_tempTile.abyssType = static_cast<abyssType>(_curAbyss);
-		_tempTile.x = _sampleTile[n].frameX;
-		_tempTile.y = _sampleTile[n].frameY;
+		_tempTile.x = _sampleTile[_curSampleTileIndex].frameX;
+		_tempTile.y = _sampleTile[_curSampleTileIndex].frameY;
 
 		// info에서 샘플타일 확인
-		_tileSlot.left = _sampleTile[n].rc.left;
-		_tileSlot.top = _sampleTile[n].rc.top;
+		_tileSlot.left = _sampleTile[_curSampleTileIndex].rc.left;
+		_tileSlot.top = _sampleTile[_curSampleTileIndex].rc.top;
 		cout << "index X : " << indexX << " , index Y :" << indexY << endl;
 		cout << "선택샘플타일슬롯 L : " << _tileSlot.left << endl;
 	}
@@ -458,15 +463,16 @@ void MapTool::tileRender()
 		if (_tile[i]._moveCheck == GROUND) continue;
 		else IMGR("wallMark", getMemDC(), _tile[i].rc.left - CAM->getScreenRect().left, _tile[i].rc.top - CAM->getScreenRect().top);
 
+
+
+		//rcMake(getMemDC(),_tile[_curBaseTileIndex].rc);
+		rcMake(getMemDC(), _tile[_beforeBaseTileIndex].rc);
+
 	}
 
+	// 검출 테스트 ===================================================================
 	for (int i = 0; i < TILEMAX_X*TILEMAX_Y; ++i)
 	{
-		if (i == 0 && tempC++ % 15 == 0) {
-			if (_tile[i].ptInRect)cout << "pt true" << endl;
-			else cout << "pt false" << endl;
-
-		}
 		// 바닥 타일 중 마우스가 위치한 타일
 		if (_tile[i].ptInRect)
 			IMGR("tileS", getMemDC(), _tile[i].rc.left - CAM->getScreenRect().left, _tile[i].rc.top - CAM->getScreenRect().top);
@@ -499,7 +505,6 @@ void MapTool::infoRender()
 	char str[2000];
 	SetTextColor(getMemDC(), RGB(0, 0, 0));
 
-	// 마우스 좌표 -> 나중에 카메라 좌표 반영된걸로 수정
 	sprintf_s(str, "ptMouse X : %d , Y : %d", _ptMouse.x, _ptMouse.y);
 	TextOut(getMemDC(), WINSIZE_X - 210, 210, str, strlen(str));
 
@@ -572,7 +577,7 @@ void MapTool::sampleTileRender()
 		if (_curAbyss == 9) IMGR("abyss_tile9", getMemDC(), WINSIZE_X - 900, 10);
 
 		// 샘플타일셋 내 선택타일 위치 빨간 테두리 표시 
-		IMGR("tileS", getMemDC(), _tileSlot.left - CAM->getScreenRect().left, _tileSlot.top - CAM->getScreenRect().top);
+		IMGR("tileS", getMemDC(), _tileSlot.left, _tileSlot.top );
 	}
 
 	// F2 가이드 On
@@ -587,6 +592,8 @@ void MapTool::sampleTileRender()
 				{
 					// 샘플타일셋의 rc위치 확인용
 					rcMake(getMemDC(), _sampleTile[i * SAMPLEMAX_X + j].rc);
+					IMGR("tileS", getMemDC(), _tileSlot.left - CAM->getScreenRect().left, _tileSlot.top - CAM->getScreenRect().top);
+
 				}
 			}
 		}
@@ -604,8 +611,8 @@ void MapTool::sampleTileRender()
 	else if (_tempTile.abyssType == 8) _selectTileView = IMG("abyss_tile88");
 	else _selectTileView = IMG("abyss_tile99");
 
-	_selectTileView->frameRender(getMemDC(), (_selectTile.left + 1) - CAM->getScreenRect().left,
-		(_selectTile.top + 1) - CAM->getScreenRect().top,
+	_selectTileView->frameRender(getMemDC(), (_selectTile.left + 1) ,
+		(_selectTile.top + 1) ,
 		_tempTile.x, _tempTile.y);
 
 }
@@ -615,23 +622,14 @@ void MapTool::sampleTileRender()
 #pragma region TileMap function
 void MapTool::ptInTileCheck()
 {
-	if (_sampleTileOn)
-	{
-		// 타일셋 켜져있고, 절대좌표에서 확인되면 타일체크 중
-		if (PtInRect(&_sampleTileRect, _ptMouse)) {
-			_inSampleTile = true;
-		}
-		else {
-			_inSampleTile = false;
-		};
-	}
+
 
 
 
 	// 마우스 좌표로 검사할 타일 찾기
 	int indexX;
 	int indexY;
-	int n;
+
 
 	if ((_cameraPtMouse.x >= 0 && _cameraPtMouse.x <= CAM->getScreenRect().right)
 		&& (_cameraPtMouse.y >= 0 && _cameraPtMouse.y <= CAM->getScreenRect().bottom))
@@ -639,40 +637,47 @@ void MapTool::ptInTileCheck()
 		indexX = _cameraPtMouse.x / TILESIZE_X;
 		indexY = _cameraPtMouse.y / TILESIZE_Y;
 
-		n = indexY * TILEMAX_X + indexX;
-		_curTileIndex = n; // 이전 인덱스를 저장해서, 다음거에서 바꿈
+		// 지금 인덱스를 저장해서, 이전거를 바꿈
+		_curBaseTileIndex = indexY * TILEMAX_X + indexX;
 		// 좌측 베이스 타일 체크 
-		if (PtInRect(&_tile[n].rc, _cameraPtMouse))
+		if (PtInRect(&_tile[_curBaseTileIndex].rc, _cameraPtMouse))
 		{
-			if (n == 0 && tempC++ % 15 == 0) {
-				cout << _tile[n].rc.left << endl;
-				cout << _tile[n].rc.top << endl;
-				cout << _tile[n].rc.right << endl;
-				cout << _tile[n].rc.bottom << endl;
-				cout << "//" << endl;
-				cout << _cameraPtMouse.x << endl;
-				cout << _cameraPtMouse.y << endl;
+			// 테스트용
+			if (_curBaseTileIndex == 0 && tempC++ % 15 == 0)
+			{
+
 			}
-			_tile[n].ptInRect = true;
-			//_tilePos.x = _tile[n].pos.x;
-			//_tilePos.y = _tile[n].pos.y;
+			_tile[_curBaseTileIndex].ptInRect = true;
+			_tilePos.x = _tile[_curBaseTileIndex].pos.x;
+			_tilePos.y = _tile[_curBaseTileIndex].pos.y;
 		}
 
 	}
 
+	if (_curBaseTileIndex != _beforeBaseTileIndex && _curBaseTileIndex <= TILEMAX_X * TILEMAX_Y)
+	{
+		_tile[_beforeBaseTileIndex].ptInRect = false;
+		cout << "cur : " << _curBaseTileIndex << endl;
+		cout << "before : " << _beforeBaseTileIndex << endl;
+		cout << "---------------" << endl;
+
+	}
 
 	//============================================================================================================
 		// 우측 샘플 타일 체크 
 
-	if (PtInRect(&_sampleTileRect, _cameraPtMouse) && _sampleTileOn)
+	if (_sampleTileOn)
 	{
-		//_inSampleTile = true;
+		// 타일셋 켜져있고, 절대좌표에서 확인되면 타일체크 중
+		if (PtInRect(&_sampleTileRect, _ptMouse))
+		{
+			_inSampleTile = true;
+		}
+		else
+		{
+			_inSampleTile = false;
+		};
 	}
-	if (!PtInRect(&_sampleTileRect, _cameraPtMouse) && _sampleTileOn)
-	{
-		//_inSampleTile = false;
-	}
-
 
 	// 작성중
 	if ((_cameraPtMouse.x >= _sampleTileRect.left && _cameraPtMouse.x <= _sampleTileRect.right)
@@ -680,20 +685,24 @@ void MapTool::ptInTileCheck()
 	{
 		indexX = _cameraPtMouse.x / TILESIZE_X;
 		indexY = _cameraPtMouse.y / TILESIZE_Y;
-
-		n = indexY * TILEMAX_X + indexX;
-
-		// 우측 샘플 타일 체크 
-		if (PtInRect(&_tile[n].rc, _cameraPtMouse))
+		if (indexX < TILEMAX_X && indexY < TILEMAX_Y)
 		{
-			//_tile[n].ptInRect = true;
-			_tilePos.x = _tile[n].pos.x;
-			_tilePos.y = _tile[n].pos.y;
+			cout << "100개 타일 범위 내 잇음" << endl;
+			_curSampleTileIndex = indexY * TILEMAX_X + indexX;
+
+			// 우측 샘플 타일 체크 
+			if (PtInRect(&_tile[_curSampleTileIndex].rc, _cameraPtMouse))
+			{
+				//_tile[n].ptInRect = true;
+				_tilePos.x = _tile[_curSampleTileIndex].pos.x;
+				_tilePos.y = _tile[_curSampleTileIndex].pos.y;
+			}
 		}
 	}
 
 
 }
+
 
 void MapTool::clear()
 {
