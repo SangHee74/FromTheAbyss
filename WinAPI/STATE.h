@@ -13,6 +13,8 @@ public:
 	virtual void stateInit(Player* player)=0;
 	virtual void stateUpdate(Player* player)=0;
 	virtual void stateRelease()=0;
+	virtual void stateRender(Player* player)=0;
+ 
 
 protected:
 
@@ -34,6 +36,7 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
 
 };
 
@@ -49,8 +52,11 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
 };
 
+
+#if 0
 
 // 피격 상태 - 일정시간동안 움직일 수 없고, 키 입력이 없는 경우 대기한다.
 class BeHitState : public STATE
@@ -64,6 +70,7 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender();
 };
 
 // 다운 상태 - 일정시간동안 쓰러진 모션 후 타이틀로 돌아간다
@@ -78,6 +85,7 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender();
 };
 
 
@@ -100,7 +108,7 @@ public:
 	void comboThree(Player* player);
 };
 
-#if 0
+
 class TwoHandWeaponCombo : public STATE
 {
 	static TwoHandWeaponCombo* instance;

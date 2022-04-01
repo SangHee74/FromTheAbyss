@@ -5,8 +5,8 @@
 // 대기, 이동, 피격, 죽음 상태
 IdleState* IdleState::instance;
 MoveState* MoveState::instance;
-BeHitState* BeHitState::instance;
-DeadState* DeadState::instance;
+//BeHitState* BeHitState::instance;
+//DeadState* DeadState::instance;
 
 
 // 대기
@@ -41,6 +41,7 @@ void IdleState::stateUpdate(Player* player)
 		SetPlayerState(player, MoveState::getInstance());
 	}
 
+	/*
 	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
@@ -87,7 +88,7 @@ void IdleState::stateUpdate(Player* player)
 	{
 		SetPlayerState(player, DeadState::getInstance());
 	}
-
+	*/
 }
 
 void IdleState::stateRelease()
@@ -98,6 +99,10 @@ void IdleState::stateRelease()
 	//	delete instance;
 	//	instance = 0;	
 	//}
+}
+
+void IdleState::stateRender(Player* player)
+{
 }
 
 // 이동
@@ -122,7 +127,7 @@ void MoveState::stateUpdate(Player * player)
 	timeCount++;
 	if (timeCount % 120 == 0); cout << "MoveState::update" << endl;
 
-#if 0 
+ 
 	// 좌
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
@@ -187,7 +192,7 @@ void MoveState::stateUpdate(Player * player)
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
-#endif
+
 	//방향키 입력 종료
 	if (player->getIsStateCheck().test(1))
 	{
@@ -197,6 +202,7 @@ void MoveState::stateUpdate(Player * player)
 		SetPlayerState(player, IdleState::getInstance());
 	}
 
+	/*
 	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
@@ -244,7 +250,7 @@ void MoveState::stateUpdate(Player * player)
 		SetPlayerState(player, DeadState::getInstance());
 	}
 
-
+	*/
 
 	if (timeCount % 10 == 0)
 	{
@@ -295,8 +301,12 @@ void MoveState::stateRelease()
 	//}
 }
 
+void MoveState::stateRender(Player* player)
+{
+}
 
 
+#if 0
 // 피격
 BeHitState* BeHitState::getInstance()
 {
@@ -374,3 +384,4 @@ void DeadState::stateRelease()
 
 
 
+#endif

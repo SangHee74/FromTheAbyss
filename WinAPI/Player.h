@@ -111,7 +111,7 @@ public:
 	STATE* _pStatePattern; // 상태패턴 
 	void setPlayerState(STATE* state); // 상태 업데이트
 	void stateUpdate(); // 상태패턴 업데이트
-
+	void stateRender(); // 상태패턴 렌더
 
 public:
 	Player() {}

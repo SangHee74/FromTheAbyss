@@ -204,6 +204,8 @@ void Player::render(void)
 	}
 	//rcMake(getMemDC(), _rcPlayer);
 	//rcMake(getMemDC(), _playerWeapon.rc);
+
+	stateRender();
 }
 
 
@@ -336,6 +338,13 @@ void Player::stateUpdate()
 
 	}
 
+
+}
+
+// Çàµ¿ ·»´õ
+void Player::stateRender()
+{
+	_pStatePattern->stateRender(this);
 
 }
 
