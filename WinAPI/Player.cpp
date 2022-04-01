@@ -5,16 +5,13 @@
 
 HRESULT Player::init(void)
 {
-	if(_playerType==ONE) _faceImg = IMG("p_sum_1R");
+	// 로드 데이터 하기.....
+	_faceImg = IMG("p_face");
 	_playerState = PLAYERSTATE::IDLE;
 	_playerDirection = PLAYERDIRECTION::DOWN;
+	_weaponType = WEAPONTYPE::SWORD;
 
-	_pos.x = LSCENTER_X;
-	_pos.y = CENTER_Y;
-	w = IMG("p_idle_6")->getWidth();
-	h = IMG("p_idle_6")->getHeight();
-	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, IMG("p_idle_6")->getFrameWidth(), IMG("p_idle_6")->getFrameHeight());
-
+	// 제이슨 로더에서 가져오면 좋을거같은데..
 	_status.curHp = 100;
 	_status.curSp = 100;
 	_status.curExp = 0;
@@ -33,212 +30,193 @@ HRESULT Player::init(void)
 	_abyss = 1;
 	_stage = 1;
 
-	_isLeft = false;
-	_isLive = true;
-	_isRunnig = false;
 
-	_speed = 2;
+	// isLive on
+	_isStateCheck.reset();
+	_isStateCheck.set(4);
+
+
+	_speed = 10;
 
 	_tempFrameX = _tempFrameY = _tempCount = 0;
+
+
+	// 상태패턴 
+	// 초기에는 대기상태로 시작
+	//_pStatePattern = IdleState::getInstance();
+
+	switch (_weaponType)
+	{
+	case  WEAPONTYPE::SWORD:
+		_playerImage = IMG("p_idle_oneHand");
+		_weaponimage = IMG("weapon_sword");
+		break;
+	case  WEAPONTYPE::AX:
+		_playerImage = IMG("p_idle_oneHand");
+		_weaponimage = IMG("weapon_ax");
+		break;
+	case  WEAPONTYPE::SPEAR:
+		_playerImage = IMG("p_idle_twoHand");
+		_weaponimage = IMG("weapon_spear");
+		break;
+	}
+
+	// 플레이어의 값을 받아서
+	_frameX = 0;
+	_frameY = static_cast<int>(_playerDirection);
+	_pos.x = LSCENTER_X;
+	_pos.y = CENTER_Y;
+	_width = _playerImage->getFrameWidth();
+	_height = _playerImage->getFrameHeight();
+	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, _width, _height);
+
+
+
+	_playerWeapon.frameX = 0;
+	_playerWeapon.frameY = 0;
+	_playerWeapon.posX = _pos.x - 50;
+	_playerWeapon.posY = _pos.y - 40;
+	_playerWeapon.rc = RectMakeCenter(_playerWeapon.posX, _playerWeapon.posY, _weaponimage->getFrameWidth(), _weaponimage->getFrameHeight());
 
 	return S_OK;
 }
 
 void Player::release(void)
 {
+	//_pStatePattern->stateRelease();
 }
 
 void Player::update(void)
 {
 	_tempCount++;
-	
-	if (_isLive)
+
+	// state pattern update
+	stateUpdate();
+
+	// 좌
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !_isRunnig)
+		_isStateCheck.set(1);
+		_pos.x -= _speed;
+		_playerDirection = PLAYERDIRECTION::LEFT;
+
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			_isLeft = true;
-			_pos.x -= _speed;
-
-			_playerDirection = PLAYERDIRECTION::LEFT;
-			_playerState = PLAYERSTATE::MOVE;
-
-
-			if (KEYMANAGER->isStayKeyDown(VK_UP))
-			{
-				_playerDirection = PLAYERDIRECTION::LEFTUP;
-			}
-			if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-			{
-				_playerDirection = PLAYERDIRECTION::LEFTDOWN;
-			}
+			_playerDirection = PLAYERDIRECTION::LEFTUP;
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !_isRunnig)
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			_isLeft = false;
-			_pos.x += _speed;
-
-			_playerDirection = PLAYERDIRECTION::RIGHT;
-			_playerState = PLAYERSTATE::MOVE;
-
-
-
-			if (KEYMANAGER->isStayKeyDown(VK_UP))
-			{
-				_playerDirection = PLAYERDIRECTION::RIGHTUP;
-			}
-			if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-			{
-				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_UP) && !_isRunnig)
-		{
-			_pos.y -= _speed;
-
-			_playerDirection = PLAYERDIRECTION::UP;
-			_playerState = PLAYERSTATE::MOVE;
-
-
-			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-			{
-				_playerDirection = PLAYERDIRECTION::LEFTUP;
-			}
-			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-			{
-				_playerDirection = PLAYERDIRECTION::RIGHTUP;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN) && !_isRunnig)
-		{
-			_pos.y += _speed;
-
-			_playerDirection = PLAYERDIRECTION::DOWN;
-			_playerState = PLAYERSTATE::MOVE;
-
-
-			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-			{
-				_playerDirection = PLAYERDIRECTION::LEFTDOWN;
-			}
-			if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-			{
-				_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
-			}
-		}
-
-		if ( KEYOKU(VK_LEFT) || KEYOKU(VK_UP)|| KEYOKU(VK_DOWN))
-		{
-			_isRunnig = false;
-			_playerState = PLAYERSTATE::IDLE;
-		}
-		if (KEYOKU(VK_RIGHT))
-		{
-			_isRunnig = false;
-			_playerState = PLAYERSTATE::IDLE;
-			_isLeft = false;
-		}
-
-		// 나중에 상태패턴에서 각 이미지의 길이, 높이를 받아서 해야겠다.
-		// w,h 안쓰니까 초점이 잘 안맞음
-		w = IMG("p_idle_6")->getWidth();
-		h = IMG("p_idle_6")->getHeight();
-		_rcPlayer = RectMakeCenter(_pos.x, _pos.y, w, h);
-
-	}
-	else  _playerState = PLAYERSTATE::DEAD;
-
-	if (this->_status.curHp <= 0) _isLive = false;
-
-	// 임시 카운트 - 프레임
-	if (_isLeft)
-	{
-		_tempFrameY = 0;
-	}
-	else _tempFrameY = 1;
-
-	if (_tempCount % 10 == 0)
-	{
-		if (_isLeft)
-		{
-			_tempFrameX++;
-			if (_tempFrameX >= 3) _tempFrameX = 0;
-		}
-		else
-		{
-			_tempFrameX--;
-			if (_tempFrameX < 0) _tempFrameX = 3;
+			_playerDirection = PLAYERDIRECTION::LEFTDOWN;
 		}
 	}
+	// 우
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		_pos.x += _speed;
+		_playerDirection = PLAYERDIRECTION::RIGHT;
+
+
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		{
+			_playerDirection = PLAYERDIRECTION::RIGHTUP;
+
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+
+		}
+	}
+	// 위
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	{
+		_pos.y -= _speed;
+		_playerDirection = PLAYERDIRECTION::RIGHT;
+
+
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			_isStateCheck.set(1);
+			_playerDirection = PLAYERDIRECTION::LEFTUP;
+
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			_isStateCheck.reset(0);
+			_playerDirection = PLAYERDIRECTION::RIGHTUP;
+		}
+	}
+	// 아래
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	{
+		_pos.y += _speed;
+		_playerDirection = PLAYERDIRECTION::DOWN;
+
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			_isStateCheck.set(1);
+			_playerDirection = PLAYERDIRECTION::LEFTDOWN;
+
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			_isStateCheck.reset(0);
+			_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
+
+		}
+	}
+
+
+
+
 }
 
 void Player::render(void)
 {
 	float left = _rcPlayer.left - _rcCamera.left;
 	float top = _rcPlayer.top - _rcCamera.top;
+	float weaponLeft = _playerWeapon.rc.left - _rcCamera.left;
+	float weaponTop = _playerWeapon.rc.top - _rcCamera.top;
 
-		
-	if (_isLive)
+
+
+	// 플레이어가 무기 위에 렌더
+	if (_playerDirection == PLAYERDIRECTION::UP || _playerDirection == PLAYERDIRECTION::LEFTUP
+		|| _playerDirection == PLAYERDIRECTION::RIGHTUP)
 	{
-		if (_playerState == PLAYERSTATE::IDLE)
+		// 달리기, 피격, 죽음 상태
+		if (_isStateCheck.test(1) || _isStateCheck.test(3) || !_isStateCheck.test(4))
 		{
-			
-			IMGFR("p_idle", getMemDC(), left, top, static_cast<int>(_playerDirection), 1);
-
 		}
-		else if (_playerState == PLAYERSTATE::MOVE)
-		{
-			if (_playerDirection == PLAYERDIRECTION::UP)
-			{
-				IMGFR("p_run_12", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if (_playerDirection == PLAYERDIRECTION::DOWN)
-			{
-				IMGFR("p_run_6", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFT) || (_playerDirection == PLAYERDIRECTION::RIGHT))
-			{
-				IMGFR("p_run_9", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFTUP) || (_playerDirection == PLAYERDIRECTION::RIGHTUP))
-			{
-				IMGFR("p_run_11", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
-			if ((_playerDirection == PLAYERDIRECTION::LEFTDOWN) || (_playerDirection == PLAYERDIRECTION::RIGHTDOWN))
-			{
-				IMGFR("p_run_7", getMemDC(), left, top, _tempFrameX, _tempFrameY);
-			}
+		else _weaponimage->frameRender(getMemDC(), weaponLeft, weaponTop, 1, _playerWeapon.frameY);
 
-		}
-
-
-
+		_playerImage->frameRender(getMemDC(), left, top, _frameX, _frameY);
 	}
+
+	// 플레이어가 무기 아래에 렌더
+	if (_playerDirection == PLAYERDIRECTION::DOWN || _playerDirection == PLAYERDIRECTION::LEFTDOWN
+		|| _playerDirection == PLAYERDIRECTION::RIGHTDOWN)
+	{
+		_playerImage->frameRender(getMemDC(), left, top, _frameX, _frameY);
+
+		// 달리기, 피격, 죽음 상태
+		if (_isStateCheck.test(1) || _isStateCheck.test(3) || !_isStateCheck.test(4))
+		{
+		}
+		else _weaponimage->frameRender(getMemDC(), weaponLeft, weaponTop, 1, _playerWeapon.frameY);
+	}
+
+	if (KEYOKD('P'))
+	{
+		cout << " 현재 X 프레임 : " << _frameX << endl;
+		cout << " 현재 Y 프레임 : " << _frameY << endl;
+	}
+	//rcMake(getMemDC(), _rcPlayer);
+	//rcMake(getMemDC(), _playerWeapon.rc);
 }
 
 
-float Player::getPlayerPosX()
-{
-	return _pos.x;
-}
 
-float Player::getPlayerPosY()
-{
-	return _pos.y;
-}
-
-void Player::setPlayerPosX(float x)
-{
-	_pos.x = x;
-}
-void Player::setPlayerPosY(float y)
-{
-	_pos.y = y;
-}
-
-RECT Player::getPlayerRect()
-{
-	return _rcPlayer;
-}
 
 void Player::setCameraRect(RECT rc)
 {
@@ -256,32 +234,191 @@ void Player::setStage(int num)
 }
 
 
-// 상태패턴
 // 상태 세팅
 void Player::setPlayerState(STATE* state)
 {
-	this->_pState = state;
+	// 자동으로 실행
+	//this->_pStatePattern = state;
+	//_pStatePattern->stateInit(this);
 }
 
 // 행동 세팅
-void Player::idle()
+void Player::stateUpdate()
 {
-	_pState->idle(this);
+	//_pStatePattern->stateUpdate(this);
+
+	// 플레이어 위치 업데이트 
+	_width = _playerImage->getFrameWidth();
+	_height = _playerImage->getFrameHeight();
+	_rcPlayer = RectMakeCenter(_pos.x, _pos.y, _width, _height);
+
+	// 왼쪽은 상시 체크 
+	if (_playerDirection == PLAYERDIRECTION::LEFT ||
+		_playerDirection == PLAYERDIRECTION::LEFTUP ||
+		_playerDirection == PLAYERDIRECTION::LEFTDOWN)
+	{
+		_isStateCheck.set(0);
+	}
+	else _isStateCheck.reset(0);
+
+	// 플레이어 이미지 업데이트 
+	switch (_playerState)
+	{
+	case PLAYERSTATE::IDLE:
+		if (_weaponType == WEAPONTYPE::SWORD)
+		{
+			_playerImage = IMG("p_idle_oneHand");
+			_weaponimage = IMG("weapon_sword");
+		}
+		else if (_weaponType == WEAPONTYPE::AX)
+		{
+			_playerImage = IMG("p_idle_oneHand");
+			_weaponimage = IMG("weapon_ax");
+		}
+		else if (_weaponType == WEAPONTYPE::SPEAR)
+		{
+			_playerImage = IMG("p_idle_twoHand");
+			_weaponimage = IMG("weapon_ax");
+		}
+		_playerImage->setFrameX(0);
+		break;
+	case PLAYERSTATE::MOVE:
+		_playerImage = IMG("p_move");
+		_playerImage->setFrameX(_frameX);
+		break;
+	case PLAYERSTATE::BEHIT:
+		_playerImage = IMG("p_hit");
+
+		break;
+	case PLAYERSTATE::DEAD:
+		_playerImage = IMG("p_dead");
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_ONE:
+		_playerImage = IMG("p_oneHandCombo_01");
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_TWO:
+		_playerImage = IMG("p_oneHandCombo_02");
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_THREE:
+		_playerImage = IMG("p_oneHandCombo_03");
+
+		break;
+	case PLAYERSTATE::TWOHANDCOMBO_ONE:
+		_playerImage = IMG("p_twoHandCombo_01");
+
+		break;
+	case PLAYERSTATE::TWOHANDCOMBO_TWO:
+		_playerImage = IMG("p_twoHandCombo_02");
+
+		break;
+	case PLAYERSTATE::SKILL_SOULCAPTURE:
+		break;
+	case PLAYERSTATE::SKILL_SPEARSTRIKE:
+		break;
+
+	}
+
+	// 플레이어 이미지 인덱스 돌리기
+	_timeCount++;
+	if (_timeCount % 10 == 0) _frameX++;
+	if (_playerState == PLAYERSTATE::MOVE)
+	{
+		if (_frameX >= 3) _frameX = 0;
+	}
+	else if (_playerState == PLAYERSTATE::BEHIT || _playerState == PLAYERSTATE::DEAD)
+	{
+		_frameX = 0;
+	}
+	else if (_playerState == PLAYERSTATE::SKILL_SOULCAPTURE)
+	{
+		if (_frameX >= 2) _frameX = 0;
+	}
+	else
+	{
+		if (_frameX >= 1) _frameX = 0;
+	}
+
+	_frameY = static_cast<int>(_playerDirection);
+
+
+	// 무기 위치+프레임 업데이트 (상태->방향)
+	switch (_playerState)
+	{
+	case PLAYERSTATE::IDLE:
+		switch (_playerDirection)
+		{
+		case PLAYERDIRECTION::UP:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::DOWN:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::LEFT:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::RIGHT:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::LEFTUP:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::RIGHTUP:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::LEFTDOWN:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		case PLAYERDIRECTION::RIGHTDOWN:
+			_playerWeapon.posX = _pos.x - 22;
+			_playerWeapon.posY = _pos.y - 32;
+			break;
+		}
+		break;
+	case PLAYERSTATE::MOVE:
+		break;
+	case PLAYERSTATE::BEHIT:
+		break;
+	case PLAYERSTATE::DEAD:
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_ONE:
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_TWO:
+		break;
+	case PLAYERSTATE::ONEHANDCOMBO_THREE:
+		break;
+	case PLAYERSTATE::TWOHANDCOMBO_ONE:
+		break;
+	case PLAYERSTATE::TWOHANDCOMBO_TWO:
+		break;
+	case PLAYERSTATE::SKILL_SOULCAPTURE:
+		break;
+	case PLAYERSTATE::SKILL_SPEARSTRIKE:
+		break;
+	default:
+		break;
+	}
+
+
+
+
+
+
+
+	_playerWeapon.rc = RectMakeCenter(_playerWeapon.posX, _playerWeapon.posY, _weaponimage->getFrameWidth(), _weaponimage->getFrameHeight());
+
+
+
 }
 
-void Player::move()
-{
-	_pState->move(this);
-}
 
-void Player::attack()
-{
-	_pState->attack(this);
-}
 
-void Player::beHit()
-{
-	_pState->beHit(this);
-}
+
 
 
