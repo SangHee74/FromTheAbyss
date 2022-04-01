@@ -96,8 +96,8 @@ void Player::update(void)
 	// аб
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		_isStateCheck.set(1);
 		_pos.x -= _speed;
+		_playerState = PLAYERSTATE::MOVE;
 		_playerDirection = PLAYERDIRECTION::LEFT;
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -113,6 +113,7 @@ void Player::update(void)
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		_pos.x += _speed;
+		_playerState = PLAYERSTATE::MOVE;
 		_playerDirection = PLAYERDIRECTION::RIGHT;
 
 
@@ -131,6 +132,7 @@ void Player::update(void)
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		_pos.y -= _speed;
+		_playerState = PLAYERSTATE::MOVE;
 		_playerDirection = PLAYERDIRECTION::RIGHT;
 
 
@@ -150,6 +152,7 @@ void Player::update(void)
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		_pos.y += _speed;
+		_playerState = PLAYERSTATE::MOVE;
 		_playerDirection = PLAYERDIRECTION::DOWN;
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -164,6 +167,13 @@ void Player::update(void)
 			_playerDirection = PLAYERDIRECTION::RIGHTDOWN;
 
 		}
+	}
+
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT)
+		|| KEYMANAGER->isOnceKeyUp(VK_UP) || KEYMANAGER->isOnceKeyUp(VK_DOWN))
+	{
+		_playerState = PLAYERSTATE::IDLE;
+
 	}
 
 
