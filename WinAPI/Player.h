@@ -61,36 +61,40 @@ struct tagWeaponData
 	RECT rc;
 	int frameX;
 	int frameY;
-
-	//RECT effectRc;
 };
 
 class Player :public GameNode
 {
 private:
 	char _strName[128];
-	WEAPONTYPE _weaponType; // 플레이어 무기타입
+	WEAPONTYPE _weaponType;			  // 플레이어 무기타입
+	PLAYERSTATE _playerState;		  // 플레이어 상태
 	PLAYERDIRECTION _playerDirection; // 플레이어 방향
-	PLAYERSTATE _playerState; // 플레이어 상태
-	tagPlayerStatus _status; // 플레이어 스탯
-	tagWeaponData _playerWeapon; // 플레이어 무기+이펙트
-	Image* _faceImg;   // 플레이어 얼굴 이미지
-	Image* _weaponimage; // 무기
-	Image* _playerImage; // 플레이어
-
-
+	tagPlayerStatus _status;		  // 플레이어 스탯
+	tagWeaponData _playerWeapon;	  // 플레이어 무기+이펙트
+	Image* _faceImg;	 // 플레이어 얼굴 이미지
+	Image* _playerImage; // 플레이어 이미지
+	Image* _weaponimage; // 무기 이미지
+	
 	int _abyss;
 	int _stage;
 
-	POINT _pos;
-	RECT _rcPlayer;
+	// 렌더관련 변수
 	int _timeCount;
 	int _frameX;
 	int _frameY;
-	int _width; // 이미지마다 맞춰줄 가로세로
+	int _width; // 이미지 마다 맞춰 줄 가로세로
 	int _height;
+	int _speed;
 
+	// 위치
+	POINT _pos;
+	RECT _rcPlayer;
+
+	// 카메라 관련 
 	RECT _rcCamera;
+	float _left, _top;			   // 플레이어 용
+	float _weaponLeft, _weaponTop; // 무기 용
 
 	// 1 = true;
 	// 000001 : isLeft		// 0
@@ -98,20 +102,17 @@ private:
 	// 000100 : isAttack	// 2
 	// 001000 : isHit		// 3
 	// 010000 : isLive		// 4
-	// 100000 : 
+	// 100000 : render_weaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
 
-	int _speed;
-	int _tempFrameY; // 임시
-	int _tempFrameX;
-	int _tempCount;
 
 
 public:
-	STATE* _pStatePattern; // 상태패턴 
-	void setPlayerState(STATE* state); // 상태 업데이트
-	void stateUpdate(); // 상태패턴 업데이트
-	void stateRender(); // 상태패턴 렌더
+	// 상태패턴
+	STATE* _pStatePattern; 
+	void setPlayerState(STATE* state); 
+	void stateUpdate(); 
+	void stateRender(); 
 
 public:
 	Player() {}
@@ -122,6 +123,20 @@ public:
 	void update(void);
 	void render(void);
 
+	// 상태패턴용 겟셋 =====================
+
+	RECT& getPRect() { return _rcPlayer; }
+	RECT& getCRect() { return _rcCamera; }
+	POINT& getPPos() { return _pos; }
+	int& getPFrameX() { return _frameX; }
+	int& getPFrameY() { return _frameY; }
+	Image* getPImg() { return _playerImage; }
+	Image* getWImg() { return _weaponimage; }
+	bitset<6>& getPState() { return _isStateCheck; }
+
+
+	//=====================================
+
 	Image getPlayerSumImg() { return *(this->_faceImg); }
 	tagPlayerStatus getStatus() { return this->_status; }
 	//void setStatus(tagPlayerStatus status,int value) { status.curExp = value;	}
@@ -131,7 +146,7 @@ public:
 	int getPlayerDirectionWhitInt() { return static_cast<int>(this->_playerDirection); }
 	void setPlayerDirection(PLAYERDIRECTION state) { _playerDirection = state; }
 
-	RECT getPlayerRect() { return this->getPlayerRect(); }
+	RECT getPlayerRect() { return _rcPlayer; }
 	void setCameraRect(RECT rc);
 
 	int getPlayerPosX() { return this->_pos.x; }
@@ -144,7 +159,7 @@ public:
 	void setPlayerFrameY(int y) { _frameX = y; }
 	int getPlayerSpeed() { return this->_speed; }
 	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
-	void setPlauerWeapon(tagWeaponData value) { _playerWeapon = value; }
+	void setPlayerWeapon(tagWeaponData value) { _playerWeapon = value; }
 	Image* setPlayerWeaponImg(Image* image) { return this->_weaponimage; }
 	Image* setPlayerImg(Image* image) { return this->_playerImage; }
 
@@ -155,6 +170,8 @@ public:
 	int getStage() { return this->_stage; }
 	void setAbyss(int num);
 	void setStage(int num);
+	void inStageSetting();
 
+	
 };
 

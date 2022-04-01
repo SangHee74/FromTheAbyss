@@ -1,14 +1,15 @@
 #include "Stdafx.h"
-#include "STATE.h"
+#include "StateAttack.h"
+#include "Player.h"
 
 
 // 무기별 콤보, 스킬공격 2종 
-OneHandWeaponCombo* OneHandWeaponCombo::instance;
+//OneHandWeaponCombo* OneHandWeaponCombo::instance;
 //TwoHandWeaponCombo* TwoHandWeaponCombo::instance;
 //SoulCapture* SoulCapture::instance;
 //SpearStrike* SpearStrike::instance;
 
-
+#if 0
 // 공격
 OneHandWeaponCombo* OneHandWeaponCombo::getInstance()
 {
@@ -26,7 +27,7 @@ void OneHandWeaponCombo::stateInit(Player* player)
 	player->setPlayerImg(IMG("p_oneHandCombo"));
 
 
-	timeCount =  0;
+	timeCount = 0;
 
 	// 방향별 무기 프레임 지정(comboOne 1,2 /  comboTwo 1,2 / comboThree 1,2 ) : 총 6개
 	// 스위치로 플레이어 방향 받아서 지정.
@@ -37,7 +38,7 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 {
 	// 30카운트(0.5초)지나기 전 재입력하면 다음콤보
 	timeCount++;
-	if ( combo.none())
+	if (combo.none())
 	{
 		combo.set(0);
 		comboOne(player);
@@ -105,7 +106,7 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
-	
+
 	if (combo.test(0) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
 	{
 		// 2단 공격 실행
@@ -121,7 +122,7 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 		combo.reset(1);
 	}
 	//프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	if (combo.test(2) && (timeCount >= 30 && ! player->getIsStateCheck().test(2)))
+	if (combo.test(2) && (timeCount >= 30 && !player->getIsStateCheck().test(2)))
 	{
 		SetPlayerState(player, IdleState::getInstance());
 		combo.reset();
@@ -145,10 +146,10 @@ void OneHandWeaponCombo::comboOne(Player* player)
 	if (combo.test(0)) cout << "1단공격 비트셋 킴" << endl;
 
 	player->setPlayerFrameX(player->getPlayerFrameX() + 1);
-	if(player->getPlayerFrameX() == 1 && timeCount % 30 == 0)
+	if (player->getPlayerFrameX() == 1 && timeCount % 30 == 0)
 	{
-	//프레임처리까지 다아아아 끝나고 공격처리 끝 
-	player->getIsStateCheck().reset(2);
+		//프레임처리까지 다아아아 끝나고 공격처리 끝 
+		player->getIsStateCheck().reset(2);
 	}
 
 }
@@ -183,7 +184,7 @@ void OneHandWeaponCombo::comboThree(Player* player)
 
 }
 
-#if 0
+
 TwoHandWeaponCombo * TwoHandWeaponCombo::getInstance()
 {
 	if (instance == nullptr) instance = new TwoHandWeaponCombo();
