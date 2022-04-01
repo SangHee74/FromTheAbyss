@@ -9,7 +9,6 @@ BeHitState* BeHitState::instance;
 DeadState* DeadState::instance;
 
 
-
 // 대기
 IdleState* IdleState::getInstance()
 {
@@ -21,22 +20,17 @@ IdleState* IdleState::getInstance()
 void IdleState::stateInit(Player* player)
 {
 	cout << "IdleState::init" << endl;
-	player->getIsStateCheck().reset(2);
+	
+//	player->getIsStateCheck().reset(2);
 
-	if (player->getPlayerWeapon() == WEAPONTYPE::SWORD)
-	{
-		player->setPlayerImg(IMG("p_idle_oneHand"));
-	}
-	else if (player->getPlayerWeapon() == WEAPONTYPE::AX)
-	{
-		player->setPlayerImg(IMG("p_idle_twoHand"));
-	}
 
 }
 
 void IdleState::stateUpdate(Player* player)
 {
-	cout << "IdleState::update" << endl;
+	// timeCount 60 = 1초
+	timeCount++;
+	if (timeCount % 60 == 0); cout << "IdleState::update" << endl;
 
 	// 공격이 아닐때 이동
 	if ( !(player->getIsStateCheck().test(2)) &&
@@ -59,21 +53,21 @@ void IdleState::stateUpdate(Player* player)
 		}
 		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
 		{
-			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+			//SetPlayerState(player, TwoHandWeaponCombo::getInstance());
 		}
 	}
 
 	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		SetPlayerState(player, SoulCapture::getInstance());
+		//SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
 		// 창을 장착하고 있으면 스킬로
 		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
 		{
-			SetPlayerState(player, SpearStrike::getInstance());
+			//SetPlayerState(player, SpearStrike::getInstance());
 		}
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
@@ -99,11 +93,11 @@ void IdleState::stateUpdate(Player* player)
 void IdleState::stateRelease()
 {
 	cout << "IdleState::release" << endl;
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
+	//if (instance )
+	//{
+	//	delete instance;
+	//	instance = 0;	
+	//}
 }
 
 // 이동
@@ -114,22 +108,21 @@ MoveState* MoveState::getInstance()
 }
 
 void MoveState::stateInit(Player * player)
-{
+{	
 	cout << "MoveState::init" << endl;
 	player->getIsStateCheck().set(1);
 
-	player->setPlayerImg(IMG("p_move"));
-
-
-	// Y프레임만 세팅
-	player->setPlayerFrameY(static_cast<int>(player->getPlayerDirection()));
+	
+	
 	
 }
 
 void MoveState::stateUpdate(Player * player)
 {
-	cout << "MoveState::update" << endl;
+	timeCount++;
+	if (timeCount % 120 == 0); cout << "MoveState::update" << endl;
 
+#if 0 
 	// 좌
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
@@ -194,16 +187,13 @@ void MoveState::stateUpdate(Player * player)
 			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
-
+#endif
 	//방향키 입력 종료
-	if (KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
+	if (player->getIsStateCheck().test(1))
 	{
-		player->getIsStateCheck().reset(1);
-		SetPlayerState(player, IdleState::getInstance());
-	}
-	if (KEYOKU(VK_RIGHT))
-	{
-		player->getIsStateCheck().reset(1);
+		// 대기상태로 돌아가는 조건은 어케해야대나 ..
+		// x프레임이 모두 돌고 나면 달리기 off ,
+		// 달리기 오프면 대기로. 
 		SetPlayerState(player, IdleState::getInstance());
 	}
 
@@ -219,21 +209,21 @@ void MoveState::stateUpdate(Player * player)
 		}
 		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
 		{
-			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+		//	SetPlayerState(player, TwoHandWeaponCombo::getInstance());
 		}
 	}
 
 	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		SetPlayerState(player, SoulCapture::getInstance());
+		//SetPlayerState(player, SoulCapture::getInstance());
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
 		// 창을 장착하고 있으면 스킬로
 		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
 		{
-			SetPlayerState(player, SpearStrike::getInstance());
+		//	SetPlayerState(player, SpearStrike::getInstance());
 		}
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
@@ -256,6 +246,41 @@ void MoveState::stateUpdate(Player * player)
 
 
 
+	if (timeCount % 10 == 0)
+	{
+		// 플레이어 왼쪽
+		if (player->getIsStateCheck().test(0))
+		{
+			player->setPlayerFrameX(player->getPlayerFrameX()+1);
+			if (player->getPlayerFrameX() >= 3)
+			{
+				player->setPlayerFrameX(0);
+
+				if ( KEYOKU(VK_RIGHT) || KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN) )
+				{
+					// 프레임이 끝까지 다 돌았을때 키를 떼면 달리기 종료
+					player->getIsStateCheck().reset(1);
+
+				}
+			}
+		}
+		else
+		{
+			player->setPlayerFrameX(player->getPlayerFrameX() - 1);
+			if (player->getPlayerFrameX() < 0)
+			{
+				player->setPlayerFrameX(3);
+
+				if (KEYOKU(VK_RIGHT) || KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
+				{
+					// 프레임이 끝까지 다 돌았을때 키를 떼면 달리기 종료
+					player->getIsStateCheck().reset(1);
+
+				}
+			}
+		}
+	}
+
 
 }
 
@@ -263,11 +288,11 @@ void MoveState::stateRelease()
 {
 	cout << "MoveState::release" << endl;
 
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
+	//if (instance)
+	//{
+	//	delete instance;
+	//	instance = 0;
+	//}
 }
 
 
@@ -281,22 +306,16 @@ BeHitState* BeHitState::getInstance()
 
 void BeHitState::stateInit(Player * player)
 {
-	cout << "BeHitState::Init" << endl;
+	if (timeCount % 180 == 0) cout << "BeHitState::Init" << endl;
 	player->getIsStateCheck().set(3);
 
-	player->setPlayerImg(IMG("p_hit"));
 
-	// Y프레임만 세팅
-	if (player->getIsStateCheck().test(0))
-	{
-		player->setPlayerFrameY(0);
-	}
-	else player->setPlayerFrameY(1);
 }
 
 void BeHitState::stateUpdate(Player * player)
 {
-	cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
+	timeCount++;
+	if (timeCount % 120 == 0) cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
 	// 맞으면 일정시간 무적
 
 	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
@@ -332,12 +351,6 @@ void DeadState::stateInit(Player * player)
 
 	player->setPlayerImg(IMG("p_down"));
 
-	// Y프레임만 세팅
-	if (player->getIsStateCheck().test(0))
-	{
-		player->setPlayerFrameY(0);
-	}
-	else player->setPlayerFrameY(1);
 
 }
 

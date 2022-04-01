@@ -15,8 +15,10 @@ enum class PLAYERDIRECTION
 enum class PLAYERSTATE
 {
 	IDLE, MOVE, BEHIT, DEAD,
-	ATT1, ATT2, ATT3,
-	SKILL1, SKILL2, SKILL3
+	ONEHANDCOMBO_ONE, ONEHANDCOMBO_TWO, ONEHANDCOMBO_THREE,
+	TWOHANDCOMBO_ONE, TWOHANDCOMBO_TWO,
+	SKILL_SOULCAPTURE,SKILL_SPEARSTRIKE
+	//SKILL1, SKILL2, SKILL3
 };
 
 struct tagInventory
@@ -74,7 +76,7 @@ private:
 	tagWeaponData _playerWeapon; // 플레이어 무기+이펙트
 	Image* _faceImg;   // 플레이어 얼굴 이미지
 	Image* _weaponimage; // 무기
-	Image* _playerImg; // 플레이어
+	Image* _playerImage; // 플레이어
 
 
 	int _abyss;
@@ -82,6 +84,7 @@ private:
 
 	POINT _pos;
 	RECT _rcPlayer;
+	int _timeCount;
 	int _frameX;
 	int _frameY;
 	int _width; // 이미지마다 맞춰줄 가로세로
@@ -142,8 +145,9 @@ public:
 	int getPlayerSpeed() { return this->_speed; }
 	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
 	void setPlauerWeapon(tagWeaponData value) { _playerWeapon = value; }
-	Image* setPlayerImg(Image* image) { return this->_playerImg; }
-	
+	Image* setPlayerWeaponImg(Image* image) { return this->_weaponimage; }
+	Image* setPlayerImg(Image* image) { return this->_playerImage; }
+
 	bitset<6> getIsStateCheck() { return this->_isStateCheck; }
 	unsigned int getIsStateCheck(int value) { return this->_isStateCheck[value]; }
 
@@ -151,7 +155,6 @@ public:
 	int getStage() { return this->_stage; }
 	void setAbyss(int num);
 	void setStage(int num);
-
 
 };
 

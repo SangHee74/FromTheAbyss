@@ -27,6 +27,7 @@ protected:
 class IdleState : public STATE
 {
 	static IdleState* instance;
+	int timeCount;
 public:
 	static IdleState* getInstance();
 
@@ -41,6 +42,7 @@ public:
 class MoveState : public STATE
 {
 	static MoveState* instance;
+	int timeCount;
 public:
 	static MoveState* getInstance();
 
@@ -54,6 +56,8 @@ public:
 class BeHitState : public STATE
 {
 	static BeHitState* instance;
+	int timeCount;
+
 public:
 	static BeHitState* getInstance();
 
@@ -66,6 +70,8 @@ public:
 class DeadState : public STATE
 {
 	static DeadState* instance;
+	int timeCount;
+
 public:
 	static DeadState* getInstance();
 
@@ -81,15 +87,20 @@ class OneHandWeaponCombo : public STATE
 {
 	static OneHandWeaponCombo* instance;
 	int timeCount;
+	bitset<3> combo;
 public:
 	static OneHandWeaponCombo* getInstance();
 
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+
+	void comboOne(Player* player);
+	void comboTwo(Player* player);
+	void comboThree(Player* player);
 };
 
-
+#if 0
 class TwoHandWeaponCombo : public STATE
 {
 	static TwoHandWeaponCombo* instance;
@@ -127,7 +138,7 @@ public:
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
 };
-
+#endif
 
 #pragma endregion 
 
