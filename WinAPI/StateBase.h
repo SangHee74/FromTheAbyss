@@ -4,7 +4,7 @@
 class Player;
 
 // 대기 상태 
-class IdleState : public STATE
+class IdleState : public STATE, public GameNode
 {
 	static IdleState* instance;
 	int timeCount;

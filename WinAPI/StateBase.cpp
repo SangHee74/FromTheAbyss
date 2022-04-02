@@ -23,8 +23,12 @@ void IdleState::stateInit(Player* player)
 	cout << "IdleState::init" << endl;
 
 	// 이미지 이닛, 프레임 초기화, 에니메이션 초기화 등
-	//	player->getIsStateCheck().reset(2);
+	// 대기 : 이동, 공격, 피격 초기화
+	player->getIsStateCheck().reset(1);
+	player->getIsStateCheck().reset(2);
+	player->getIsStateCheck().reset(3);
 
+	player->setState(PLAYERSTATE::IDLE);
 
 }
 
@@ -91,6 +95,68 @@ void IdleState::stateUpdate(Player* player)
 		SetPlayerState(player, DeadState::getInstance());
 	}
 	*/
+
+	
+	PLAYERDIRECTION _tempDirection;
+	_tempDirection = player->getDirection();
+
+	// 대기중 렌더 좌표 업데이트 
+	switch (_tempDirection)
+	{
+	case PLAYERDIRECTION::UP:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::DOWN:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::LEFT:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::RIGHT:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::LEFTUP:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::RIGHTUP:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::LEFTDOWN:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	case PLAYERDIRECTION::RIGHTDOWN:
+		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
+		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
+		break;
+	}
+	
+	// 무기변환 테스트
+	if (KEYMANAGER->isOnceKeyDown('1'))
+	{
+		player->getPlayerWeapon().type = WEAPONTYPE::SWORD;
+	}
+	if (KEYMANAGER->isOnceKeyDown('2'))
+	{
+		player->getPlayerWeapon().type = WEAPONTYPE::AX;
+	}
+	if (KEYMANAGER->isOnceKeyDown('3'))
+	{
+		player->getPlayerWeapon().type = WEAPONTYPE::SPEAR;
+	}
+
+	// 이미지 갈아끼기
+	if (player->getPlayerWeapon().type == WEAPONTYPE::SWORD) player->getPlayer().image = IMG("p_idle_oneHand");
+	else if (player->getPlayerWeapon().type == WEAPONTYPE::AX) player->getPlayer().image = IMG("p_idle_oneHand");
+	else if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR) player->getPlayer().image = IMG("p_idle_twoHand");
+	player->getPlayer().image->setFrameX(0); // 이후 아이템넘버 가져오기
+
 }
 
 void IdleState::stateRelease()
@@ -105,21 +171,6 @@ void IdleState::stateRelease()
 
 void IdleState::stateRender(Player* player)
 {
-
-	// 플레이어가 무기 아래에 렌더
-	if (player->getPState().test(5))
-	{
-
-
-
-		//player->frameRender(getMemDC(), left, top, _frameX, _frameY);
-
-	// 달리기, 피격, 죽음 상태
-	//if (_isStateCheck.test(1) || _isStateCheck.test(3) || !_isStateCheck.test(4))
-	//{
-	//}
-	//else _weaponimage->frameRender(getMemDC(), weaponLeft, weaponTop, 1, _playerWeapon.frameY);
-	}
 }
 
 // 이동
@@ -132,92 +183,154 @@ MoveState* MoveState::getInstance()
 void MoveState::stateInit(Player * player)
 {
 	cout << "MoveState::init" << endl;
+
+	// 이동 : 공격, 피격 초기화
+
+	player->getIsStateCheck().reset(2);
+	player->getIsStateCheck().reset(3);
 	player->getIsStateCheck().set(1);
 
-
-
+	player->setState(PLAYERSTATE::MOVE);
 
 }
 
+// !!!!!!!!!!!!!!!! 무브 왼쪽이동 프레임 업데이트 수정!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void MoveState::stateUpdate(Player * player)
 {
 	timeCount++;
-	if (timeCount % 120 == 0); cout << "MoveState::update" << endl;
+	if (timeCount % 60 == 0); cout << "MoveState::update" << endl;
+
+	
+	// 상
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	{
+		player->getPlayer().movePosY -= player->getPlayer().speed;
+		player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
+		
+		player->setDirection(PLAYERDIRECTION::UP);
+
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->getIsStateCheck().set(0);
+			player->setDirection(PLAYERDIRECTION::LEFTUP);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+		{
+			player->getIsStateCheck().set(0);
+			player->setDirection(PLAYERDIRECTION::LEFTUP);
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->getIsStateCheck().reset(0);
+			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+		{
+			player->getIsStateCheck().reset(0);
+			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+		}
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_UP))
+	{
+		cout << "get idleInstance" << endl;
+		SetPlayerState(player, IdleState::getInstance());
+	}
+	// 하
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	{
+		player->getPlayer().movePosY += player->getPlayer().speed;
+		player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
+		player->setDirection(PLAYERDIRECTION::DOWN);
 
 
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->getIsStateCheck().set(0);
+			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->getIsStateCheck().reset(0);
+			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+		{
+			player->getIsStateCheck().set(0);
+			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+		{
+			player->getIsStateCheck().reset(0);
+			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+		}
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+	{
+		cout << "get idleInstance" << endl;
+		SetPlayerState(player, IdleState::getInstance());
+	}
 	// 좌
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		player->setPlayerPosX(player->getPlayerPosX() - player->getPlayerSpeed());
-		player->setPlayerDirection(PLAYERDIRECTION::LEFT);
+		player->getIsStateCheck().set(0);
+		player->getPlayer().movePosX -= player->getPlayer().speed;
+		player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
+
+		player->setDirection(PLAYERDIRECTION::LEFT);
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			player->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
+			player->setDirection(PLAYERDIRECTION::LEFTUP);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_UP))
+		{
+			player->setDirection(PLAYERDIRECTION::LEFTUP);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			player->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
+			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
 		}
+		if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+		{
+			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+		}
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+	{
+		cout << "get idleInstance" << endl;
+		SetPlayerState(player, IdleState::getInstance());
 	}
 	// 우
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		player->setPlayerPosX(player->getPlayerPosX() + player->getPlayerSpeed());
-		player->setPlayerDirection(PLAYERDIRECTION::RIGHT);
+		player->getIsStateCheck().reset(0);
+		player->getPlayer().movePosX += player->getPlayer().speed;
+		player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
+		player->setDirection(PLAYERDIRECTION::RIGHT);
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			player->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
+			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_UP))
+		{
+			player->setDirection(PLAYERDIRECTION::RIGHTUP);
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
+			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+		{
+			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
 		}
 	}
-	// 위
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
-		player->setPlayerPosY(player->getPlayerPosY() - player->getPlayerSpeed());
-		player->setPlayerDirection(PLAYERDIRECTION::UP);
-
-
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			player->setPlayerDirection(PLAYERDIRECTION::LEFTUP);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			player->getIsStateCheck().reset(0);
-			player->setPlayerDirection(PLAYERDIRECTION::RIGHTUP);
-		}
-	}
-	// 아래
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-	{
-		player->setPlayerPosY(player->getPlayerPosY() + player->getPlayerSpeed());
-		player->setPlayerDirection(PLAYERDIRECTION::DOWN);
-
-
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			player->setPlayerDirection(PLAYERDIRECTION::LEFTDOWN);
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			player->getIsStateCheck().reset(0);
-			player->setPlayerDirection(PLAYERDIRECTION::RIGHTDOWN);
-		}
-	}
-
-	//방향키 입력 종료
-	if (player->getIsStateCheck().test(1))
-	{
-		// 대기상태로 돌아가는 조건은 어케해야대나 ..
-		// x프레임이 모두 돌고 나면 달리기 off ,
-		// 달리기 오프면 대기로. 
+		cout << "get idleInstance" << endl;
 		SetPlayerState(player, IdleState::getInstance());
 	}
+
 
 	/*
 	// 공격
@@ -269,37 +382,23 @@ void MoveState::stateUpdate(Player * player)
 
 	*/
 
-	if (timeCount % 10 == 0)
+	if (timeCount % 30 == 0)
 	{
 		// 플레이어 왼쪽
 		if (player->getIsStateCheck().test(0))
 		{
-			player->setPlayerFrameX(player->getPlayerFrameX() + 1);
-			if (player->getPlayerFrameX() >= 3)
+			player->getPlayer().frameX += 1;
+			if ( player->getPlayer().frameX >= 3)
 			{
-				player->setPlayerFrameX(0);
-
-				if (KEYOKU(VK_RIGHT) || KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
-				{
-					// 프레임이 끝까지 다 돌았을때 키를 떼면 달리기 종료
-					player->getIsStateCheck().reset(1);
-
-				}
+				player->getPlayer().frameX = 0;
 			}
 		}
 		else
 		{
-			player->setPlayerFrameX(player->getPlayerFrameX() - 1);
-			if (player->getPlayerFrameX() < 0)
+			player->getPlayer().frameX -= 1;
+			if (player->getPlayer().frameX < 0)
 			{
-				player->setPlayerFrameX(3);
-
-				if (KEYOKU(VK_RIGHT) || KEYOKU(VK_LEFT) || KEYOKU(VK_UP) || KEYOKU(VK_DOWN))
-				{
-					// 프레임이 끝까지 다 돌았을때 키를 떼면 달리기 종료
-					player->getIsStateCheck().reset(1);
-
-				}
+				player->getPlayer().frameX = 3;
 			}
 		}
 	}

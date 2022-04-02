@@ -106,6 +106,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("weapon_sword", "Resources/Images/Object/weapon_sword.bmp", 600 * MAGNI, 25 * MAGNI, 25, 1, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 25 * MAGNI, 27, 1, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_spear", "Resources/Images/Object/weapon_spear.bmp", 520 * MAGNI, 75 * MAGNI, 10, 1, MGT);
+	IMAGEMANAGER->addFrameImage("weapon_none", "Resources/Images/Object/weapon_none.bmp", 25 * MAGNI, 25 * MAGNI, 1, 1, MGT);
 
 
 

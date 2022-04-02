@@ -21,6 +21,7 @@ enum class PLAYERSTATE
 	//SKILL1, SKILL2, SKILL3
 };
 
+// item data
 struct tagInventory
 {
 
@@ -31,8 +32,28 @@ struct tagEquip
 
 };
 
+
+// player data
+struct tagAbyssData
+{
+	// -> 진행가능한 단계
+	// int AbyssHall[abyss][stage];
+	int abyss; // 입장가능 어비스
+	int stage; // 입장가능 스테이지 
+	int block; // 클리어한 블럭
+
+	// 맵 오픈 방식은 조금 더 고민 해볼 것.
+	// 001 0000 스테이지 블럭 1~5
+	// 010 0000 스테이지 블럭 6~10
+	// 100 0001 1블럭 오픈
+	// 100 0010 2블럭 오픈
+	bitset<6> blockCheck[9 * 4];
+};
+
 struct tagPlayerStatus
 {
+	char _strName[128];
+
 	int curHp;
 	int curSp;
 	int curExp;
@@ -49,52 +70,65 @@ struct tagPlayerStatus
 	int iAgi; //속도
 	int iLuk; //크리
 
+	int lufia; //소지금
+
 	tagEquip tEquip;
 	tagInventory tInven;
 };
 
-class STATE;
+struct tagPlayerData
+{
+	RECT	rc;
+	int		movePosX, movePosY;
+	int		drawPosX, drawPosY;
+	int		frameX, frameY;
+	int		width, height;   // 이미지 마다 맞춰 줄 가로세로
+	int		speed;
+	Image*  face;	 // 플레이어 얼굴 이미지
+	Image*  image;	 // 플레이어 이미지
+};
 
+// player Weapon
 struct tagWeaponData
 {
-	float posX, posY;
+	WEAPONTYPE type;			  // 플레이어 무기타입
 	RECT rc;
-	int frameX;
-	int frameY;
+	int movePosX, movePosY;		  // 이동 좌표
+	int drawPosX, drawPosY;		  // 렌더 좌표
+	int frameX, frameY;
+	int width, height;			  // 이미지 마다 맞춰 줄 가로세로
+	Image* image;
 };
+
+
+
+// camera 
+struct tagCamera
+{
+	RECT rc;
+	int playerLeft, playerTop;
+	int weaponLeft, weaponTop;
+};
+
+class STATE;  // 상태패턴(상호참조-전방선언)
 
 class Player :public GameNode
 {
 private:
-	char _strName[128];
-	WEAPONTYPE _weaponType;			  // 플레이어 무기타입
-	PLAYERSTATE _playerState;		  // 플레이어 상태
-	PLAYERDIRECTION _playerDirection; // 플레이어 방향
-	tagPlayerStatus _status;		  // 플레이어 스탯
-	tagWeaponData _playerWeapon;	  // 플레이어 무기+이펙트
-	Image* _faceImg;	 // 플레이어 얼굴 이미지
-	Image* _playerImage; // 플레이어 이미지
-	Image* _weaponimage; // 무기 이미지
+	PLAYERSTATE		_state;		// 플레이어 상태
+	PLAYERDIRECTION _direction; // 플레이어 방향
 	
-	int _abyss;
-	int _stage;
+	tagAbyssData	_abyss;		// 던전 정보
+	tagPlayerStatus _status;	// 플레이어 스탯
+	tagPlayerData	_player;	// 플레이어 정보
+	tagWeaponData	_weapon;	// 플레이어 무기+이펙트
+	tagCamera		_camera;	// 플레이어 카메라
 
-	// 렌더관련 변수
+	// 아이템 임시 변수
+	int itemNum;
+
+	// 렌더관련 변수 -> 애니메이션으로 할지
 	int _timeCount;
-	int _frameX;
-	int _frameY;
-	int _width; // 이미지 마다 맞춰 줄 가로세로
-	int _height;
-	int _speed;
-
-	// 위치
-	POINT _pos;
-	RECT _rcPlayer;
-
-	// 카메라 관련 
-	RECT _rcCamera;
-	float _left, _top;			   // 플레이어 용
-	float _weaponLeft, _weaponTop; // 무기 용
 
 	// 1 = true;
 	// 000001 : isLeft		// 0
@@ -102,10 +136,8 @@ private:
 	// 000100 : isAttack	// 2
 	// 001000 : isHit		// 3
 	// 010000 : isLive		// 4
-	// 100000 : render_weaponTop(playerDirectionDown) // 5
+	// 100000 : render_isweaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
-
-
 
 public:
 	// 상태패턴
@@ -123,54 +155,38 @@ public:
 	void update(void);
 	void render(void);
 
+	// get/set
+	PLAYERSTATE getState()						 { return _state; }
+	void setState(PLAYERSTATE state)		     { _state = state; }
+	PLAYERDIRECTION getDirection()				 { return _direction; }
+	void setDirection(PLAYERDIRECTION direction) { _direction = direction; }
+	//tagAbyssData getAbyss()						 { return _abyss; }
+	//void setAbyss(tagAbyssData data)			 { _abyss = data; }
+	//tagPlayerStatus getStatus()					 { return _status; }
+	//void setStatus(tagPlayerStatus data)		 { _status = data; }
+	//tagPlayerData getPlayerdata()				 { return _player; }
+	//void setPlayerdata(tagPlayerData data)		 { _player = data; }
+	//tagWeaponData getWeapon()					 { return _weapon; }
+	//void setWeapon(tagWeaponData data)			 { _weapon = data; }
+	//tagCamera getCAM()							 { return _camera; }
+	//void setCAM(tagCamera cam)					 { _camera =cam; }
+	bitset<6> getIsStateCheck()					 { return this->_isStateCheck; }
+	unsigned int getIsStateCheck(int value)		 { return this->_isStateCheck[value]; }
+
+	// function
+	void inStageWeaponSetting();
+
 	// 상태패턴용 겟셋 =====================
-
-	RECT& getPRect() { return _rcPlayer; }
-	RECT& getCRect() { return _rcCamera; }
-	POINT& getPPos() { return _pos; }
-	int& getPFrameX() { return _frameX; }
-	int& getPFrameY() { return _frameY; }
-	Image* getPImg() { return _playerImage; }
-	Image* getWImg() { return _weaponimage; }
-	bitset<6>& getPState() { return _isStateCheck; }
-
-
+	//PLAYERSTATE&	 getPlayerState()	   { return _state; }
+	//PLAYERDIRECTION& getPlayerDirection()  { return _direction; }
+	tagAbyssData&	 getPlayerAbyss() { return _abyss; }
+	tagPlayerStatus& getPlayerStatus() { return _status; }
+	tagPlayerData&	 getPlayer() { return _player; }
+	tagWeaponData&   getPlayerWeapon() { return _weapon; }
+	tagCamera&		 getPlayerCAM() { return _camera; }
+	//bitset<6>&		 getPlayerStateCheck() { return _isStateCheck; }
 	//=====================================
 
-	Image getPlayerSumImg() { return *(this->_faceImg); }
-	tagPlayerStatus getStatus() { return this->_status; }
-	//void setStatus(tagPlayerStatus status,int value) { status.curExp = value;	}
-	//오퍼레이터 필요
-
-	PLAYERDIRECTION getPlayerDirection() { return this->_playerDirection; }
-	int getPlayerDirectionWhitInt() { return static_cast<int>(this->_playerDirection); }
-	void setPlayerDirection(PLAYERDIRECTION state) { _playerDirection = state; }
-
-	RECT getPlayerRect() { return _rcPlayer; }
-	void setCameraRect(RECT rc);
-
-	int getPlayerPosX() { return this->_pos.x; }
-	int getPlayerPosY() { return this->_pos.y; }
-	void setPlayerPosX(float x) { _pos.x = x; }
-	void setPlayerPosY(float y) { _pos.y = y; }
-	int getPlayerFrameX() { return this->_frameX; }
-	int getPlayerFrameY() { return this->_frameX; }
-	void setPlayerFrameX(int x) { _frameX = x; }
-	void setPlayerFrameY(int y) { _frameX = y; }
-	int getPlayerSpeed() { return this->_speed; }
-	WEAPONTYPE getPlayerWeapon() { return this->_weaponType; }
-	void setPlayerWeapon(tagWeaponData value) { _playerWeapon = value; }
-	Image* setPlayerWeaponImg(Image* image) { return this->_weaponimage; }
-	Image* setPlayerImg(Image* image) { return this->_playerImage; }
-
-	bitset<6> getIsStateCheck() { return this->_isStateCheck; }
-	unsigned int getIsStateCheck(int value) { return this->_isStateCheck[value]; }
-
-	int getAbyss() { return this->_abyss; }
-	int getStage() { return this->_stage; }
-	void setAbyss(int num);
-	void setStage(int num);
-	void inStageSetting();
 
 	
 };

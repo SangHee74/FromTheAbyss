@@ -18,7 +18,7 @@ HRESULT Stage::init(void)
 
 
 	_UIBar = new ProgressBar;
-	_UIBar->init(_player->getStatus().maxHp, _player->getStatus().maxSp);
+	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 
 	_alpha;
 
@@ -42,13 +42,13 @@ void Stage::release(void)
 
 void Stage::update(void)
 {
-	
+	// 검은 제대로 움직임.
 	POINT cameraPos;
-	cameraPos.x = _player->getPlayerPosX();
-	cameraPos.y = _player->getPlayerPosY();
+	cameraPos.x = _player->getPlayer().drawPosX;
+	cameraPos.y = _player->getPlayer().drawPosY;
 	CAM->setCameraPos(cameraPos);
 	CAM->update();
-	_player->setCameraRect(CAM->getScreenRect());
+	_player->getPlayerCAM().rc = CAM->getScreenRect();
 	_player->update();
 
 	
@@ -60,8 +60,8 @@ void Stage::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_F10))
 	{
 		int healGayge = 100;
-		_UIBar->setHpGauge(healGayge, _player->getStatus().maxHp);
-		_UIBar->setSpGauge(healGayge, _player->getStatus().maxSp);
+		_UIBar->setHpGauge(healGayge, _player->getPlayerStatus().maxHp);
+		_UIBar->setSpGauge(healGayge, _player->getPlayerStatus().maxSp);
 
 	}
 
@@ -83,7 +83,7 @@ void Stage::render(void)
 	_player->render();
 
 	_UIBar->render();
-	_UIBar->renderHpSpNumImg(_player->getStatus().curHp, _player->getStatus().curSp,
-		_player->getStatus().maxHp, _player->getStatus().maxSp);
+	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
+		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 	_subScreen->render();
 }
