@@ -53,11 +53,11 @@ HRESULT Player::init(void)
 	_player.frameY = static_cast<int>(_direction);
 	_player.movePosX = _player.drawPosX = LSCENTER_X;
 	_player.movePosY = _player.drawPosY = CENTER_Y;
-	// !! =========================drawPos 추가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 아니면 move 포스만 업데이트 하고, 함수에서 가로 세로 조정!!!!
 	_player.width  = _player.image->getFrameWidth();
 	_player.height = _player.image->getFrameHeight();
-	_player.rc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
+	// 순서 체크 할 것. 
+	_player.rc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
+	//_player.rc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
 
 	_camera.playerLeft = _camera.playerTop = 0;
 	_camera.weaponLeft = _camera.weaponTop = 0;
@@ -70,7 +70,9 @@ HRESULT Player::init(void)
 
 	_weapon.width  = _weapon.image->getFrameWidth();
 	_weapon.height = _weapon.image->getFrameHeight();
-	_weapon.rc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
+	_weapon.rc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
+	//_weapon.rc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
+
 
 
 	// bitset setting - isLive
@@ -270,7 +272,6 @@ void Player::stateUpdate()
 
 	// 플레이어 카메라가 안붙음 !!!!!
 	// 플레이어 + 무기 위치 업데이트 (상태로 이관할 것 )
-	_player.rc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
 	_weapon.rc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
 
 

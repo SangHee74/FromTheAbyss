@@ -44,8 +44,8 @@ void Stage::update(void)
 {
 	// 검은 제대로 움직임.
 	POINT cameraPos;
-	cameraPos.x = _player->getPlayer().drawPosX;
-	cameraPos.y = _player->getPlayer().drawPosY;
+	cameraPos.x = _player->getPlayer().movePosX; // drawPos면 맵이 안움직임
+	cameraPos.y = _player->getPlayer().movePosY;
 	CAM->setCameraPos(cameraPos);
 	CAM->update();
 	_player->getPlayerCAM().rc = CAM->getScreenRect();
