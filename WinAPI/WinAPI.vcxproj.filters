@@ -133,7 +133,10 @@
     <ClCompile Include="CButtonState.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="STATE+ATTACK.cpp">
+    <ClCompile Include="StateBase.cpp">
+      <Filter>FromTheAbyss\Player\STATE</Filter>
+    </ClCompile>
+    <ClCompile Include="StateAttack.cpp">
       <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClCompile>
   </ItemGroup>
@@ -275,6 +278,12 @@
     </ClInclude>
     <ClInclude Include="CButtonState.h">
       <Filter>API\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="StateBase.h">
+      <Filter>FromTheAbyss\Player\STATE</Filter>
+    </ClInclude>
+    <ClInclude Include="StateAttack.h">
+      <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

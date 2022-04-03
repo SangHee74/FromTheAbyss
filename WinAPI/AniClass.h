@@ -21,9 +21,7 @@ private:
 	Animation* _aMplayerMoveLRDownImg	;
 
 
-	// 무기 이미지 
-	//p_att_ax_6
-
+	
 	// 무기 에니메이션
 
 public:

@@ -176,8 +176,9 @@
     <ClCompile Include="SoundScene.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="STATE+ATTACK.cpp" />
     <ClCompile Include="STATE.cpp" />
+    <ClCompile Include="StateAttack.cpp" />
+    <ClCompile Include="StateBase.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -234,6 +235,8 @@
     <ClInclude Include="Square.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="STATE.h" />
+    <ClInclude Include="StateAttack.h" />
+    <ClInclude Include="StateBase.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Store.h" />
     <ClInclude Include="SubMenu.h" />

@@ -58,8 +58,16 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_oneHandCombo", "Resources/Images/Player/p_oneHandCombo.bmp", 60 * MAGNI, 400 * MAGNI, 6, 8, MGT);
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo", "Resources/Images/Player/p_twoHandCombo.bmp", 60 * MAGNI, 400 * MAGNI, 4, 8, MGT);
 	IMAGEMANAGER->addFrameImage("p_skill_soulCapture", "Resources/Images/Player/p_skill_soulCapture.bmp", 90 * MAGNI, 400 * MAGNI, 3, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_oneHandCombo_01", "Resources/Images/Player/p_oneHandCombo_01.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_oneHandCombo_02", "Resources/Images/Player/p_oneHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_oneHandCombo_03", "Resources/Images/Player/p_oneHandCombo_03.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_twoHandCombo_01", "Resources/Images/Player/p_twoHandCombo_01.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
+	IMAGEMANAGER->addFrameImage("p_twoHandCombo_02", "Resources/Images/Player/p_twoHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 
-	IMAGEMANAGER->addFrameImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 76 * MAGNI, 4, 2, MGT);
+
+
+
+	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 40 * MAGNI, MGT);
 
 
 	
@@ -97,6 +105,8 @@ HRESULT ImageClass::init(void)
 
 	IMAGEMANAGER->addFrameImage("weapon_sword", "Resources/Images/Object/weapon_sword.bmp", 600 * MAGNI, 25 * MAGNI, 25, 1, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 25 * MAGNI, 27, 1, MGT);
+	IMAGEMANAGER->addFrameImage("weapon_spear", "Resources/Images/Object/weapon_spear.bmp", 520 * MAGNI, 75 * MAGNI, 10, 1, MGT);
+	IMAGEMANAGER->addFrameImage("weapon_none", "Resources/Images/Object/weapon_none.bmp", 25 * MAGNI, 25 * MAGNI, 1, 1, MGT);
 
 
 

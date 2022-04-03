@@ -14,6 +14,9 @@ private:
 	
 	int _alpha;
 
+	int _currentAbyss;
+	int _currentStage;
+
 public:
 	Stage() {}
 	~Stage() {}
