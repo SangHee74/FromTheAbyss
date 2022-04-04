@@ -150,15 +150,13 @@ void Player::inStageWeaponSetting()
 {
 	// 무기넘버에 따라 무기시트에서 프레임 업데이트
 	_weapon.frameY = itemNum;
-	//if(_)
-
+	_player.drawPosX = _player.movePosX;
+	_player.drawPosY = _player.movePosY;
 
 	// 던전 진입 또는 무기 변경 시 (대기)
 	// 대기 :플레이어 이미지,  무기-> 방향 -> 프레임 업데이트 + 렌더좌표 수정
 	if (_weapon.type == WEAPONTYPE::SWORD && _state == PLAYERSTATE::IDLE)
 	{
-		_player.drawPosX = _player.movePosX;
-		_player.drawPosY = _player.movePosY;
 		_player.image = IMG("p_idle_oneHand");
 		_weapon.image = IMG("weapon_sword");
 		_weapon.frameX = 1;
@@ -253,8 +251,6 @@ void Player::inStageWeaponSetting()
 #pragma endregion
 	if (_weapon.type == WEAPONTYPE::SPEAR && _state == PLAYERSTATE::IDLE)
 	{
-		_player.drawPosX = _player.movePosX;
-		_player.drawPosY = _player.movePosY;
 		_player.image = IMG("p_idle_twoHand");
 		_weapon.image = IMG("weapon_spear");
 		switch (_direction)
@@ -337,56 +333,7 @@ void Player::stateUpdate()
 	_pStatePattern->stateUpdate(this);
 
 	// 상태에 따른 플레이어 이미지 업데이트 
-	/*switch (_state)
-	{
-	case PLAYERSTATE::HIT:
-		_player.image->setFrameX(_player.frameX);
-		if(_isStateCheck.test(0)) _player.image->setFrameY(0);
-		else _player.image->setFrameY(1);
 
-		break;
-	case PLAYERSTATE::DEAD:
-		_player.image->setFrameX(_player.frameX);
-		if (_isStateCheck.test(0)) _player.image->setFrameY(0);
-		else _player.image->setFrameY(1);
-
-		break;
-	case PLAYERSTATE::ONEHANDCOMBO_ONE:
-		_player.image = IMG("p_oneHandCombo_01");
-		if (_weapon.type == WEAPONTYPE::SWORD) _weapon.image= IMG("weapon_sword");
-		else if (_weapon.type == WEAPONTYPE::AX) _weapon.image = IMG("weapon_ax");
-		break;
-	case PLAYERSTATE::ONEHANDCOMBO_TWO:
-		_player.image = IMG("p_oneHandCombo_02");
-		if (_weapon.type == WEAPONTYPE::SWORD) _weapon.image = IMG("weapon_sword");
-		else if (_weapon.type == WEAPONTYPE::AX) _weapon.image = IMG("weapon_ax");
-
-		break;
-	case PLAYERSTATE::ONEHANDCOMBO_THREE:
-		_player.image = IMG("p_oneHandCombo_03");
-		if (_weapon.type == WEAPONTYPE::SWORD) _weapon.image = IMG("weapon_sword");
-		else if (_weapon.type == WEAPONTYPE::AX) _weapon.image = IMG("weapon_ax");
-
-		break;
-	case PLAYERSTATE::TWOHANDCOMBO_ONE:
-		_player.image = IMG("p_twoHandCombo_01");
-		if (_weapon.type == WEAPONTYPE::SPEAR) _weapon.image = IMG("weapon_spear");
-
-		break;
-	case PLAYERSTATE::TWOHANDCOMBO_TWO:
-		_player.image = IMG("p_twoHandCombo_02");
-		if (_weapon.type == WEAPONTYPE::SPEAR) _weapon.image = IMG("weapon_spear");
-
-
-		break;
-	case PLAYERSTATE::SKILL_SOULCAPTURE:
-		break;
-	case PLAYERSTATE::SKILL_SPEARSTRIKE:
-		break;
-
-	}
-*/
-	
 	// 플레이어 + 무기 위치 업데이트
 	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
 	_player.drawRc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);

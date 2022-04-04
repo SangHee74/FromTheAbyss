@@ -139,6 +139,9 @@
     <ClCompile Include="StateAttack.cpp">
       <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -284,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="StateAttack.h">
       <Filter>FromTheAbyss\Player\STATE</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>FromTheAbyss\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

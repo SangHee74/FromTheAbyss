@@ -164,6 +164,7 @@
     </ClCompile>
     <ClCompile Include="MainHall.cpp" />
     <ClCompile Include="MapTool.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Pub.cpp" />
@@ -220,6 +221,7 @@
     </ClInclude>
     <ClInclude Include="MainHall.h" />
     <ClInclude Include="MapTool.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Pub.h" />

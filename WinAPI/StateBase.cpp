@@ -287,8 +287,6 @@ void MoveState::stateUpdate(Player* player)
 		SetPlayerState(player, IdleState::getInstance());
 	}
 
-
-	
 	// АјАн
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{

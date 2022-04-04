@@ -50,8 +50,6 @@ void Stage::update(void)
 	_player->getPlayerCAM().rc = CAM->getScreenRect();
 	_player->update();
 
-
-	
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);

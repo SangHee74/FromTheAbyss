@@ -102,8 +102,6 @@ struct tagWeaponData
 	Image* image;
 };
 
-
-
 // camera 
 struct tagCamera
 {
@@ -162,34 +160,21 @@ public:
 	// get/set
 	PLAYERSTATE getState()						 { return _state; }
 	void setState(PLAYERSTATE state)		     { _state = state; }
+	
 	PLAYERDIRECTION getDirection()				 { return _direction; }
 	void setDirection(PLAYERDIRECTION direction) { _direction = direction; }
-	//tagAbyssData getAbyss()						 { return _abyss; }
-	//void setAbyss(tagAbyssData data)			 { _abyss = data; }
-	//tagPlayerStatus getStatus()					 { return _status; }
-	//void setStatus(tagPlayerStatus data)		 { _status = data; }
-	//tagPlayerData getPlayerdata()				 { return _player; }
-	//void setPlayerdata(tagPlayerData data)		 { _player = data; }
-	//tagWeaponData getWeapon()					 { return _weapon; }
-	//void setWeapon(tagWeaponData data)			 { _weapon = data; }
-	//tagCamera getCAM()							 { return _camera; }
-	//void setCAM(tagCamera cam)					 { _camera =cam; }
+	
 	bitset<6> getIsStateCheck()					 { return this->_isStateCheck; }
 	unsigned int getIsStateCheck(int value)		 { return this->_isStateCheck[value]; }
 
-	// function
-	void inStageWeaponSetting();
-
-	// 상태패턴용 겟셋 =====================
-	//PLAYERSTATE&	 getPlayerState()	   { return _state; }
-	//PLAYERDIRECTION& getPlayerDirection()  { return _direction; }
 	tagAbyssData&	 getPlayerAbyss() { return _abyss; }
 	tagPlayerStatus& getPlayerStatus() { return _status; }
 	tagPlayerData&	 getPlayer() { return _player; }
 	tagWeaponData&   getPlayerWeapon() { return _weapon; }
 	tagCamera&		 getPlayerCAM() { return _camera; }
-	//bitset<6>&		 getPlayerStateCheck() { return _isStateCheck; }
-	//=====================================
+
+	// function
+	void inStageWeaponSetting();
 
 
 	//임시
