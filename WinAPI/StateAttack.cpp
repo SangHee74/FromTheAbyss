@@ -32,28 +32,30 @@ void OneHandWeaponCombo::stateInit(Player* player)
 void OneHandWeaponCombo::stateUpdate(Player* player)
 {
 
-	// 30카운트(0.5초)지나기 전 재입력하면 다음콤보
+	// 60카운트(1초)지나기 전 재입력하면 다음콤보
+	// 콤보에서 시간초 초기화.
 	timeCount++;
-	if (combo.none())
+	cout << timeCount << endl;
+	if (combo.none() && KEYMANAGER->isStayKeyDown('X') )
 	{
 		// 1단 공격 실행
 		combo.set(0);
 		comboOne(player);
 	}
 
-	if (combo.test(0) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
+	//if (combo.test(0) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
 	{
 		// 2단 공격 실행
-		combo.set(1);
-		comboTwo(player);
-		combo.reset(0);
+		//combo.set(1);
+		//comboTwo(player);
+		//combo.reset(0);
 	}
-	else if (combo.test(1) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
+	//else if (combo.test(1) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
 	{
 		// 3단 공격 실행
-		combo.set(2);
-		comboThree(player);
-		combo.reset(1);
+		//combo.set(2);
+		//comboThree(player);
+		//combo.reset(1);
 	}
 	//프레임 종료 or 카운트 끝나면 대기모션으로 전환)
 	if (combo.test(2) && (timeCount >= 30 && !player->getIsStateCheck().test(2)))
@@ -79,17 +81,22 @@ void OneHandWeaponCombo::stateRender(Player* player)
 
 void OneHandWeaponCombo::comboOne(Player* player)
 {
+	
 	player->getPlayer().image = IMG("p_oneHandCombo_01");
-
+	player->getPlayer().frameX = 0;
 	// isAttack
 	player->getIsStateCheck().set(2);
 	cout << "한손무기 1단 공격 함수" << endl;
 
-	player->getPlayer().frameX += 1;
-	if (player->getPlayer().frameX == 1 && timeCount % 60 == 0)
+	if (timeCount % 120 == 0)
 	{
-		//프레임처리까지 다아아아 끝나고 공격처리 끝 
-		player->getIsStateCheck().reset(2);
+		player->getPlayer().frameX += 1;
+
+		if (player->getPlayer().frameX > 1 && timeCount % 180 == 0)
+		{
+			//프레임처리까지 다아아아 끝나고 공격처리 끝 
+			player->getIsStateCheck().reset(2);
+		}
 	}
 
 }
