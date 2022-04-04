@@ -142,6 +142,15 @@
     <ClCompile Include="Monster.cpp">
       <Filter>FromTheAbyss\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="FieldMonster.cpp">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="BossMonster.cpp">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -289,6 +298,15 @@
       <Filter>FromTheAbyss\Player\STATE</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldMonster.h">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>FromTheAbyss\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMonster.h">
       <Filter>FromTheAbyss\Monster</Filter>
     </ClInclude>
   </ItemGroup>

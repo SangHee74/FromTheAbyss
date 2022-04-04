@@ -14,8 +14,6 @@ HRESULT Player::init(void)
 	_direction = PLAYERDIRECTION::DOWN;
 	_weapon.type = WEAPONTYPE::AX;
 
-	_tempIMG = IMG("skill_utill_Icon");
-
 	// 제이슨 로더에서 가져오면 좋을거같은데..
 	_status.curHp = 100;
 	_status.curSp = 100;
@@ -36,19 +34,13 @@ HRESULT Player::init(void)
 	_abyss.abyss = 1;
 	_abyss.stage = 1;
 
+#pragma endregion
+
 	// 임시 아이템넘버(무기프레임이미지 시트에서 y프레임)
 	itemNum = 0;
-
-	// 장비상태, 던전-스테이지 입구에 맞게 방향 설정하는 함수
-	// 던전 내 아이템 변경시 바꿔도 괜찮을 듯 
-	// 필요한 정보 : 무기타입, 무기번호, 캐릭터방향
-	inStageWeaponSetting();
-
-
-
-
-
-#pragma endregion
+	if (itemNum == 0) _weapon.image = IMG("weapon_sword");
+	if (itemNum == 1) _weapon.image = IMG("weapon_ax");
+	if (itemNum == 2) _weapon.image = IMG("weapon_spear");
 
 	_player.speed = 10;
 	if (_weapon.type == WEAPONTYPE::SPEAR) _player.image=IMG("p_idle_twoHand");
@@ -64,20 +56,14 @@ HRESULT Player::init(void)
 	// 순서 체크 할 것. 
 	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
 
-	_camera.playerLeft = _camera.playerTop = 0;
-	_camera.weaponLeft = _camera.weaponTop = 0;
-
 	// Down-Idle
 	// 무기 데이터 업데이트
 	// 이후 던전 방향에 맞게 조정
 	_weapon.movePosX = _weapon.drawPosX = _player.movePosX;
 	_weapon.movePosY = _weapon.drawPosY = _player.movePosY ;
-
 	_weapon.width  = _weapon.image->getFrameWidth();
 	_weapon.height = _weapon.image->getFrameHeight();
 	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
-	_weapon.drawRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
-
 
 	// bitset setting - isLive
 	_isStateCheck.reset();
@@ -98,7 +84,7 @@ void Player::release(void)
 
 void Player::update(void)
 {
-
+	// weapon pos+frame setting(idle)
 	inStageWeaponSetting();
 
 	// state pattern update
@@ -141,8 +127,8 @@ void Player::render(void)
 	//가로세로 4px 사각형
 	RECT tempPos;
 	tempPos = RectMakeCenter(_player.movePosX, _player.movePosY, 4,4);
-	Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
-		tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
+	//Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
+	//	tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
 
 }
 
@@ -150,11 +136,14 @@ void Player::inStageWeaponSetting()
 {
 	// 무기넘버에 따라 무기시트에서 프레임 업데이트
 	_weapon.frameY = itemNum;
+	
+	// 이동좌표, 렌더좌표 업데이트 
 	_player.drawPosX = _player.movePosX;
 	_player.drawPosY = _player.movePosY;
 
 	// 던전 진입 또는 무기 변경 시 (대기)
 	// 대기 :플레이어 이미지,  무기-> 방향 -> 프레임 업데이트 + 렌더좌표 수정
+#pragma region 좌표 맞춤
 	if (_weapon.type == WEAPONTYPE::SWORD && _state == PLAYERSTATE::IDLE)
 	{
 		_player.image = IMG("p_idle_oneHand");
@@ -162,7 +151,6 @@ void Player::inStageWeaponSetting()
 		_weapon.frameX = 1;
 		switch (_direction)
 		{
-#pragma region 좌표 맞춤
 		case PLAYERDIRECTION::UP:
 			_weapon.drawPosX = _weapon.movePosX + 19;
 			_weapon.drawPosY = _weapon.movePosY - 31;
@@ -199,8 +187,6 @@ void Player::inStageWeaponSetting()
 	}
 	if (_weapon.type == WEAPONTYPE::AX && _state == PLAYERSTATE::IDLE)
 	{
-		_player.drawPosX = _player.movePosX;
-		_player.drawPosY = _player.movePosY;
 		_player.image = IMG("p_idle_oneHand");
 		_weapon.image = IMG("weapon_ax");
 		switch (_direction)
@@ -256,44 +242,48 @@ void Player::inStageWeaponSetting()
 		switch (_direction)
 		{
 		case PLAYERDIRECTION::UP:
-			_weapon.frameX = 3;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 4;
+			_player.drawPosX = _player.movePosX - 2;
+			_weapon.drawPosX = _weapon.movePosX - 40;
+			_weapon.drawPosY = _weapon.movePosY - 70;
 			break;
 		case PLAYERDIRECTION::DOWN:
-			_weapon.frameX = 4;
+			_weapon.frameX = 5;
+			_player.drawPosX = _player.movePosX + 2;
 			_weapon.drawPosX = _weapon.movePosX - 19;
 			_weapon.drawPosY = _weapon.movePosY - 68;
 			break;
 		case PLAYERDIRECTION::LEFT:
-			_weapon.frameX = 1;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 12;
+			_weapon.drawPosX = _weapon.movePosX - 78;
+			_weapon.drawPosY = _weapon.movePosY - 79;
 			break;
 		case PLAYERDIRECTION::RIGHT:
-			_weapon.frameX = 26;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 13;
+			_weapon.drawPosX = _weapon.movePosX + 8;
+			_weapon.drawPosY = _weapon.movePosY - 79;
 			break;
 		case PLAYERDIRECTION::LEFTUP:
-			_weapon.frameX = 1;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 4;
+			_weapon.drawPosX = _weapon.movePosX - 53;
+			_weapon.drawPosY = _weapon.movePosY - 70;
 			break;
 		case PLAYERDIRECTION::RIGHTUP:
-			_weapon.frameX = 26;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 5;
+			_player.drawPosX = _player.movePosX - 2;
+			_weapon.drawPosX = _weapon.movePosX - 15;
+			_weapon.drawPosY = _weapon.movePosY - 67;
 			break;
 		case PLAYERDIRECTION::LEFTDOWN:
-			_weapon.frameX = 1;
+			_weapon.frameX = 5;
 			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.drawPosY = _weapon.movePosY - 68;
 			break;
 		case PLAYERDIRECTION::RIGHTDOWN:
-			_weapon.frameX = 26;
-			_weapon.drawPosX = _weapon.movePosX - 23;
-			_weapon.drawPosY = _weapon.movePosY - 27;
+			_weapon.frameX = 4;
+			_player.drawPosX = _player.movePosX - 2;
+			_weapon.drawPosX = _weapon.movePosX - 48;
+			_weapon.drawPosY = _weapon.movePosY - 71;
 			break;
 		}
 	}
@@ -331,8 +321,6 @@ void Player::stateUpdate()
 
 	// 상태패턴 업데이트 
 	_pStatePattern->stateUpdate(this);
-
-	// 상태에 따른 플레이어 이미지 업데이트 
 
 	// 플레이어 + 무기 위치 업데이트
 	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);

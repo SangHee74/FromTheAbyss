@@ -85,7 +85,7 @@ void OneHandWeaponCombo::comboOne(Player* player)
 	player->getIsStateCheck().set(2);
 	cout << "한손무기 1단 공격 함수" << endl;
 
-	player->getPlayer().frameX + 1;
+	player->getPlayer().frameX += 1;
 	if (player->getPlayer().frameX == 1 && timeCount % 60 == 0)
 	{
 		//프레임처리까지 다아아아 끝나고 공격처리 끝 
@@ -102,7 +102,7 @@ void OneHandWeaponCombo::comboTwo(Player* player)
 
 	cout << "한손무기 2단 공격 함수" << endl;
 
-	player->getPlayer().frameX + 1;
+	player->getPlayer().frameX += 1;
 	if (player->getPlayer().frameX == 3 && timeCount % 60 == 0)
 	{
 		//프레임처리까지 다아아아 끝나고 공격처리 끝 
@@ -119,7 +119,7 @@ void OneHandWeaponCombo::comboThree(Player* player)
 
 	cout << "한손무기 3단 공격 함수" << endl;
 
-	player->getPlayer().frameX + 1;
+	player->getPlayer().frameX += 1;
 	if (player->getPlayer().frameX == 5 && timeCount % 60 == 0)
 	{
 		//프레임처리까지 다아아아 끝나고 공격처리 끝 

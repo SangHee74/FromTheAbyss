@@ -1,4 +1,5 @@
 #pragma once
+#include "GameNode.h"
 
 enum class MONSTERDIRECTION
 {
@@ -10,40 +11,61 @@ enum class MOSTERSTATE
 	IDLE, MOVE, HIT, DEAD, ATTACK
 };
 
-struct tagMosterStatus
-{
-	int ID;
-	int curHp;
-	int curSp;
-	int maxHp;
-	int maxSp;
-	int dropExp;
-	int dropLufia;
-	int dropItemID;
-};
 
-struct tagMosterData
-{
-	RECT	moveRc;
-	RECT	drawRc;
-	int		movePosX, movePosY; 
-	int		drawPosX, drawPosY;  
-	int		frameX, frameY;
-	int		width, height;  
-	int		speed;
-	Image*  image;	  
-};
-
-
-class Monster
+class Monster : public GameNode
 {
 protected:
 	MOSTERSTATE _state;
 	MONSTERDIRECTION _direction;
-	tagMosterData _monster;
-	tagMosterStatus _status;
+
+	char _name[128];
+	int  _curHp;
+	int  _curSp;
+	int  _dropExp;
+	int  _dropLufia;
+	int  _dropItemIndex;
+
+	RECT	_moveRc;
+	int		_movePosX, _movePosY;
+	int		_frameX, _frameY;
+	//int		_width, _height;
+	int		_speed;
+	float	_rndTimeCount;
+	float	_worldTimeCount;
+	Image*  _image;
 
 public:
+	Monster(void);
+	virtual ~Monster() {};
+
+	HRESULT init(void);
+	HRESULT init(const char* imageName, POINT position);
+	void release(void);
+	void update(void);
+	void render(void);
+
+	virtual void move(void);
+	void draw(void);
+	void animation(void);
+
+	// get/set
+	MOSTERSTATE getState()			 { return _state; }
+	MONSTERDIRECTION getDirection()  { return _direction; }
+
+	void setHp(int hp) { _curHp = hp; }
+	int  getExp()	   { return _dropExp; }
+	int  getLufia()	   { return _dropLufia; }
+	int  getItem()	   { return _dropItemIndex; }
+
+	RECT getRc() { return _moveRc; }
+	int  getMovePosX() { return _movePosX; }
+	int  getMovePosY() { return _movePosY; }
+	int  getFrameX() { return _frameX; }
+	int  getFrameY() { return _frameY; }
+	int  getSpeed() { return _speed; }
 
 };
+
+
+
 

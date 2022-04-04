@@ -402,11 +402,12 @@ void HitState::stateUpdate(Player* player)
 	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
 	if (player->getIsStateCheck().test(0))
 	{
-		player->getPlayer().movePosX - (player->getPlayer().speed*0.5);
+		
+		player->getPlayer().movePosX -= (player->getPlayer().speed*0.5);
 	}
 	else if (!player->getIsStateCheck().test(0))
 	{
-		player->getPlayer().movePosX + (player->getPlayer().speed*0.5);
+		player->getPlayer().movePosX += (player->getPlayer().speed*0.5);
 	}
 
 	player->getPlayer().frameX = 0;

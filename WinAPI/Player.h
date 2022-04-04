@@ -32,7 +32,6 @@ struct tagEquip
 
 };
 
-
 // player data
 struct tagAbyssData
 {
@@ -52,8 +51,8 @@ struct tagAbyssData
 
 struct tagPlayerStatus
 {
-	char _strName[128];
-
+	char name[128];
+	
 	int curHp;
 	int curSp;
 	int curExp;
@@ -124,13 +123,8 @@ private:
 	tagWeaponData	_weapon;	// 플레이어 무기+이펙트
 	tagCamera		_camera;	// 플레이어 카메라
 
-	Image* _tempIMG;
-
 	// 아이템 임시 변수
 	int itemNum;
-
-	// 렌더관련 변수 -> 애니메이션으로 할지
-	//int _timeCount;
 
 	// 1 = true;
 	// 000001 : isLeft		// 0
@@ -167,11 +161,11 @@ public:
 	bitset<6> getIsStateCheck()					 { return this->_isStateCheck; }
 	unsigned int getIsStateCheck(int value)		 { return this->_isStateCheck[value]; }
 
-	tagAbyssData&	 getPlayerAbyss() { return _abyss; }
-	tagPlayerStatus& getPlayerStatus() { return _status; }
-	tagPlayerData&	 getPlayer() { return _player; }
-	tagWeaponData&   getPlayerWeapon() { return _weapon; }
-	tagCamera&		 getPlayerCAM() { return _camera; }
+	tagAbyssData&	 getPlayerAbyss()			 { return _abyss; }
+	tagPlayerStatus& getPlayerStatus()			 { return _status; }
+	tagPlayerData&	 getPlayer()				 { return _player; }
+	tagWeaponData&   getPlayerWeapon()			 { return _weapon; }
+	tagCamera&		 getPlayerCAM()				 { return _camera; }
 
 	// function
 	void inStageWeaponSetting();

@@ -1,22 +1,21 @@
 #pragma once
 #include "GameNode.h"
-#include "Enemy.h"
-#include "Bullets.h"
-
-class Rocket;
+#include "Monster.h"
+#include "FieldMonster.h"
+#include "BossMonster.h"
+#include "player.h"
 
 class EnemyManager : public GameNode
 {
 private:
-	typedef vector<Enemy*> vEnemy;
-	typedef vector<Enemy*>::iterator viEnemy;
+	typedef vector<Monster*> vMonster;
+	typedef vector<Monster*>::iterator viMoster;
 
 private:
-	vEnemy _vMinion;
-	viEnemy _viMinion;
+	vMonster _vMonster;
+	viMoster _viMonster;
 
-	Bullet* _bullet;
-	Rocket* _rocket;
+	Player* _player;
 
 public:
 	HRESULT init(void);
@@ -24,17 +23,15 @@ public:
 	void update(void);
 	void render(void);
 
-	void setMinion(void);
-	void removeMinion(int arrNum);
+	void setMoster(void);
+	void removeMonster(int arrNum);
 
-	void minionBulletFire(void);
+	void monsterAttack(void);
 	void collision(void);
 
-	// 객체의 미니언이 어떤 객체와 충돌 했는지 등의 정보를 로켓으로 넘겨준다.
-	vector<Enemy*> getMinions(void) { return _vMinion; }
-
-	Bullet* getBullet(void) { return _bullet; }
-	void setRocketMemoryAddress(Rocket* rk) { _rocket = rk; }
+	// 어떤 객체와 충돌 했는지 등의 정보를 넘겨준다.
+	vector<Monster*> getMonsters(void) { return _vMonster; }
+	void setPlayerMemoryAddress(Player* player) { _player = player; }
 
 	EnemyManager() {}
 	~EnemyManager() {}
