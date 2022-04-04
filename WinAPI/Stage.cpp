@@ -42,14 +42,14 @@ void Stage::release(void)
 
 void Stage::update(void)
 {
-	// 검은 제대로 움직임.
 	POINT cameraPos;
-	cameraPos.x = _player->getPlayer().movePosX; // drawPos면 맵이 안움직임
+	cameraPos.x = _player->getPlayer().movePosX;
 	cameraPos.y = _player->getPlayer().movePosY;
 	CAM->setCameraPos(cameraPos);
 	CAM->update();
 	_player->getPlayerCAM().rc = CAM->getScreenRect();
 	_player->update();
+
 
 	
 	_UIBar->update();
@@ -66,6 +66,13 @@ void Stage::update(void)
 	}
 
 	_subScreen->update();
+	
+	
+	// 죽으면 메인홀로 이동
+	if ( !_player->getIsStateCheck().test(4))
+	{
+		SCENEMANAGER->changeScene("main");
+	}
 }
 
 void Stage::render(void)
@@ -86,4 +93,5 @@ void Stage::render(void)
 	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
 		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 	_subScreen->render();
+
 }

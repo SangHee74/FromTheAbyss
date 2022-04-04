@@ -18,7 +18,7 @@ class SubMenu :public GameNode
 private:
 	Player* _playerInfo;
 
-	bitset<8> _subMenu = 0;
+	bitset<4> _subMenu = 0;
 	bitset<4> _tapOn = 0;
 	RECT _menuButton[SUB_END];
 	RECT _tapButton[TAP_END];

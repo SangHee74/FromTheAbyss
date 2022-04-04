@@ -1,27 +1,23 @@
 #include "Stdafx.h"
 #include "StateBase.h"
+#include "StateAttack.h"
 #include "Player.h"
-
 
 // 대기, 이동, 피격, 죽음 상태
 IdleState* IdleState::instance;
 MoveState* MoveState::instance;
-//BeHitState* BeHitState::instance;
-//DeadState* DeadState::instance;
-
+HitState* HitState::instance;
+DeadState* DeadState::instance;
 
 // 대기
 IdleState* IdleState::getInstance()
 {
 	if (instance == nullptr) instance = new IdleState();
-
 	return instance;
 }
 
 void IdleState::stateInit(Player* player)
 {
-	cout << "IdleState::init" << endl;
-
 	// 이미지 이닛, 프레임 초기화, 에니메이션 초기화 등
 	// 대기 : 이동, 공격, 피격 초기화
 	player->getIsStateCheck().reset(1);
@@ -30,40 +26,38 @@ void IdleState::stateInit(Player* player)
 
 	player->setState(PLAYERSTATE::IDLE);
 
+	// 플레이어 무기타입(image), 방향(frameX), 무기번호(frameY)+ 무기좌표 세팅
+	player->inStageWeaponSetting();
+
 }
 
 void IdleState::stateUpdate(Player* player)
 {
-	// timeCount 60 = 1초
-	timeCount++;
-	if (timeCount % 60 == 0); cout << "IdleState::update" << endl;
+#pragma region player
 
-	// 공격이 아닐때 이동
+	// 이동
 	if (!(player->getIsStateCheck().test(2)) &&
 		( KEYMANAGER->isStayKeyDown(VK_LEFT)) || (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		|| (KEYMANAGER->isStayKeyDown(VK_UP)) || (KEYMANAGER->isStayKeyDown(VK_DOWN)))
 	{
-		cout << "get moveInstance" << endl;
 		SetPlayerState(player, MoveState::getInstance());
 	}
 
-	/*
 	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
-		cout << "get AttackInstance!" << endl;
-
-		if ((player->getPlayerWeapon() == WEAPONTYPE::SWORD) ||
-			(player->getPlayerWeapon() == WEAPONTYPE::AX))
+		if ((player->getPlayerWeapon().type == WEAPONTYPE::SWORD) ||
+			(player->getPlayerWeapon().type == WEAPONTYPE::AX))
 		{
 			SetPlayerState(player, OneHandWeaponCombo::getInstance());
 		}
-		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR)
 		{
-			//SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
 		}
 	}
 
+	/*
 	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
@@ -81,87 +75,57 @@ void IdleState::stateUpdate(Player* player)
 	{
 		cout << "get 3rd Skill Instance" << endl;
 	}
+	*/
 
 	// 피격
 	if (player->getIsStateCheck().test(3))
 	{
 		cout << "피격당함!" << endl;
-		SetPlayerState(player, BeHitState::getInstance());
+		SetPlayerState(player, HitState::getInstance());
 	}
 
 	// 죽음
-	if (player->getStatus().curHp <= 0)
+	if (player->getPlayerStatus().curHp <= 0)
 	{
 		SetPlayerState(player, DeadState::getInstance());
 	}
-	*/
+
 
 	
-	PLAYERDIRECTION _tempDirection;
-	_tempDirection = player->getDirection();
+#pragma endregion
 
-	// 대기중 렌더 좌표 업데이트 
-	switch (_tempDirection)
-	{
-	case PLAYERDIRECTION::UP:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::DOWN:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::LEFT:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::RIGHT:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::LEFTUP:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::RIGHTUP:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::LEFTDOWN:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	case PLAYERDIRECTION::RIGHTDOWN:
-		player->getPlayerWeapon().drawPosX = player->getPlayerWeapon().movePosX - 23;
-		player->getPlayerWeapon().drawPosY = player->getPlayerWeapon().movePosY - 27;
-		break;
-	}
-	
+#pragma region weapon
+
 	// 무기변환 테스트
 	if (KEYMANAGER->isOnceKeyDown('1'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::SWORD;
+		player->inStageWeaponSetting();
+
 	}
 	if (KEYMANAGER->isOnceKeyDown('2'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::AX;
+		player->inStageWeaponSetting();
+
 	}
 	if (KEYMANAGER->isOnceKeyDown('3'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::SPEAR;
+		player->inStageWeaponSetting();
+
+	}
+	if (KEYMANAGER->isOnceKeyDown('4'))
+	{
 	}
 
-	// 이미지 갈아끼기
-	if (player->getPlayerWeapon().type == WEAPONTYPE::SWORD) player->getPlayer().image = IMG("p_idle_oneHand");
-	else if (player->getPlayerWeapon().type == WEAPONTYPE::AX) player->getPlayer().image = IMG("p_idle_oneHand");
-	else if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR) player->getPlayer().image = IMG("p_idle_twoHand");
-	player->getPlayer().image->setFrameX(0); // 이후 아이템넘버 가져오기
+#pragma endregion
 
+	player->getPlayer().frameX = 0;
 }
 
 void IdleState::stateRelease()
 {
-	cout << "IdleState::release" << endl;
 	//if (instance )
 	//{
 	//	delete instance;
@@ -182,24 +146,20 @@ MoveState* MoveState::getInstance()
 
 void MoveState::stateInit(Player * player)
 {
-	cout << "MoveState::init" << endl;
-
 	// 이동 : 공격, 피격 초기화
-
 	player->getIsStateCheck().reset(2);
 	player->getIsStateCheck().reset(3);
 	player->getIsStateCheck().set(1);
 
 	player->setState(PLAYERSTATE::MOVE);
 
+	timeCount = 0;
 }
 
-// !!!!!!!!!!!!!!!! 무브 왼쪽이동 프레임 업데이트 수정!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void MoveState::stateUpdate(Player * player)
+void MoveState::stateUpdate(Player* player)
 {
 	timeCount++;
-	if (timeCount % 60 == 0); cout << "MoveState::update" << endl;
-
+	player->getPlayer().image = IMG("p_move");
 	
 	// 상
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -232,7 +192,6 @@ void MoveState::stateUpdate(Player * player)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_UP))
 	{
-		cout << "get idleInstance" << endl;
 		SetPlayerState(player, IdleState::getInstance());
 	}
 	// 하
@@ -266,7 +225,6 @@ void MoveState::stateUpdate(Player * player)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 	{
-		cout << "get idleInstance" << endl;
 		SetPlayerState(player, IdleState::getInstance());
 	}
 	// 좌
@@ -297,7 +255,6 @@ void MoveState::stateUpdate(Player * player)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
-		cout << "get idleInstance" << endl;
 		SetPlayerState(player, IdleState::getInstance());
 	}
 	// 우
@@ -327,28 +284,27 @@ void MoveState::stateUpdate(Player * player)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
-		cout << "get idleInstance" << endl;
 		SetPlayerState(player, IdleState::getInstance());
 	}
 
 
-	/*
+	
 	// 공격
 	if (KEYMANAGER->isStayKeyDown('X'))
 	{
 		cout << "get AttackInstance!" << endl;
 
-		if ((player->getPlayerWeapon() == WEAPONTYPE::SWORD) ||
-			(player->getPlayerWeapon() == WEAPONTYPE::AX))
+		if ((player->getPlayerWeapon().type == WEAPONTYPE::SWORD) ||
+			(player->getPlayerWeapon().type == WEAPONTYPE::AX))
 		{
 			SetPlayerState(player, OneHandWeaponCombo::getInstance());
 		}
-		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
+		if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR)
 		{
-		//	SetPlayerState(player, TwoHandWeaponCombo::getInstance());
+			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
 		}
 	}
-
+	/*
 	// 스킬
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
@@ -367,49 +323,47 @@ void MoveState::stateUpdate(Player * player)
 		cout << "get 3rd Skill Instance" << endl;
 	}
 
+	*/
+
 	// 피격
 	if (player->getIsStateCheck().test(3))
 	{
 		cout << "피격당함!" << endl;
-		SetPlayerState(player, BeHitState::getInstance());
+		SetPlayerState(player, HitState::getInstance());
 	}
 
 	// 죽음
-	if (player->getStatus().curHp <= 0)
+	if (player->getPlayerStatus().curHp <= 0)
 	{
 		SetPlayerState(player, DeadState::getInstance());
 	}
 
-	*/
 
-	if (timeCount % 30 == 0)
+	if (timeCount % 10 == 0)
 	{
 		// 플레이어 왼쪽
 		if (player->getIsStateCheck().test(0))
 		{
-			player->getPlayer().frameX += 1;
-			if ( player->getPlayer().frameX >= 3)
-			{
-				player->getPlayer().frameX = 0;
-			}
+			frameIndexX++;
+			if (frameIndexX > 3) frameIndexX = 0;
 		}
 		else
 		{
-			player->getPlayer().frameX -= 1;
-			if (player->getPlayer().frameX < 0)
-			{
-				player->getPlayer().frameX = 3;
-			}
+			frameIndexX--;
+			if (frameIndexX < 0) frameIndexX = 3;
 		}
+		
+
+		// 초기화 : 1초
+		if (timeCount==60) timeCount = 0;
 	}
 
-
+	player->getPlayer().frameX = frameIndexX;
+	player->getPlayerWeapon().image = IMG("weapon_none");
 }
 
 void MoveState::stateRelease()
 {
-	cout << "MoveState::release" << endl;
-
 	//if (instance)
 	//{
 	//	delete instance;
@@ -422,40 +376,54 @@ void MoveState::stateRender(Player* player)
 }
 
 
-#if 0
+
 // 피격
-BeHitState* BeHitState::getInstance()
+HitState* HitState::getInstance()
 {
-	if (instance == nullptr) instance = new BeHitState();
+	if (instance == nullptr) instance = new HitState();
 	return instance;
 }
 
-void BeHitState::stateInit(Player * player)
+void HitState::stateInit(Player* player)
 {
-	if (timeCount % 180 == 0) cout << "BeHitState::Init" << endl;
 	player->getIsStateCheck().set(3);
+	player->setState(PLAYERSTATE::HIT);
 
 
 }
 
-void BeHitState::stateUpdate(Player * player)
+void HitState::stateUpdate(Player* player)
 {
 	timeCount++;
-	if (timeCount % 120 == 0) cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
+	player->getPlayer().image = IMG("p_hit");
+	player->getPlayerWeapon().image = IMG("weapon_none");
+
+	if (timeCount % 60 == 0) cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
 	// 맞으면 일정시간 무적
 
 	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
 	if (player->getIsStateCheck().test(0))
 	{
-		player->setPlayerPosX(player->getPlayerPosX() + (player->getPlayerSpeed()*0.5));
+		player->getPlayer().movePosX - (player->getPlayer().speed*0.5);
 	}
-	else player->setPlayerPosX(player->getPlayerPosX() - (player->getPlayerSpeed()*0.5));
+	else if (!player->getIsStateCheck().test(0))
+	{
+		player->getPlayer().movePosX + (player->getPlayer().speed*0.5);
+	}
+
+	player->getPlayer().frameX = 0;
+	
+	// 2초
+	if (timeCount % 120 == 0)
+	{
+		SetPlayerState(player, IdleState::getInstance());
+	}
+
+
 }
 
-void BeHitState::stateRelease()
+void HitState::stateRelease()
 {
-	cout << "BeHitState::release" << endl;
-
 	if (instance)
 	{
 		delete instance;
@@ -463,7 +431,11 @@ void BeHitState::stateRelease()
 	}
 }
 
-DeadState * DeadState::getInstance()
+void HitState::stateRender(Player* player)
+{
+}
+
+DeadState* DeadState::getInstance()
 {
 	if (instance == nullptr) instance = new DeadState();
 	return instance;
@@ -472,18 +444,23 @@ DeadState * DeadState::getInstance()
 void DeadState::stateInit(Player * player)
 {
 
-	cout << "DeadState::init" << endl;
-	player->getIsStateCheck().reset(4);
-
-	player->setPlayerImg(IMG("p_down"));
-
-
+	player->setState(PLAYERSTATE::DEAD);
 }
 
-void DeadState::stateUpdate(Player * player)
+void DeadState::stateUpdate(Player* player)
 {
 	// 쓰러진 이미지 보여준 후 타이틀로 이동
-	cout << "죽음;;;;;;;;;;;;;;;;;;;;;;;" << endl;
+	timeCount++;
+	player->getPlayer().image = IMG("p_down");
+	player->getPlayerWeapon().image = IMG("weapon_none");
+
+	player->getPlayer().frameX = 0;
+
+	// 3초 
+	if (timeCount % 180 == 0)
+	{
+		player->getIsStateCheck().reset(4);
+	}
 
 }
 
@@ -491,13 +468,17 @@ void DeadState::stateRelease()
 {
 	cout << "DeadState::release" << endl;
 
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
+	//if (instance)
+	//{
+	//	delete instance;
+	//	instance = 0;
+	//}
 }
 
+void DeadState::stateRender(Player* player)
+{
+}
 
+#if 0
 
 #endif

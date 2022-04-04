@@ -14,7 +14,7 @@ enum class PLAYERDIRECTION
 
 enum class PLAYERSTATE
 {
-	IDLE, MOVE, BEHIT, DEAD,
+	IDLE, MOVE, HIT, DEAD,
 	ONEHANDCOMBO_ONE, ONEHANDCOMBO_TWO, ONEHANDCOMBO_THREE,
 	TWOHANDCOMBO_ONE, TWOHANDCOMBO_TWO,
 	SKILL_SOULCAPTURE,SKILL_SPEARSTRIKE
@@ -78,9 +78,10 @@ struct tagPlayerStatus
 
 struct tagPlayerData
 {
-	RECT	rc;
-	int		movePosX, movePosY;
-	int		drawPosX, drawPosY;
+	RECT	moveRc;
+	RECT	drawRc;
+	int		movePosX, movePosY; // rc업데이트
+	int		drawPosX, drawPosY; // 이미지 렌더(LT)
 	int		frameX, frameY;
 	int		width, height;   // 이미지 마다 맞춰 줄 가로세로
 	int		speed;
@@ -92,7 +93,8 @@ struct tagPlayerData
 struct tagWeaponData
 {
 	WEAPONTYPE type;			  // 플레이어 무기타입
-	RECT rc;
+	RECT moveRc;
+	RECT drawRc;
 	int movePosX, movePosY;		  // 이동 좌표
 	int drawPosX, drawPosY;		  // 렌더 좌표
 	int frameX, frameY;
@@ -124,11 +126,13 @@ private:
 	tagWeaponData	_weapon;	// 플레이어 무기+이펙트
 	tagCamera		_camera;	// 플레이어 카메라
 
+	Image* _tempIMG;
+
 	// 아이템 임시 변수
 	int itemNum;
 
 	// 렌더관련 변수 -> 애니메이션으로 할지
-	int _timeCount;
+	//int _timeCount;
 
 	// 1 = true;
 	// 000001 : isLeft		// 0
@@ -138,7 +142,7 @@ private:
 	// 010000 : isLive		// 4
 	// 100000 : render_isweaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
-
+	
 public:
 	// 상태패턴
 	STATE* _pStatePattern; 
@@ -188,6 +192,7 @@ public:
 	//=====================================
 
 
-	
+	//임시
+	int getItemNum() { return itemNum; }
 };
 

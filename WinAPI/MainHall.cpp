@@ -6,12 +6,12 @@ HRESULT MainHall::init(void)
 	mainIdx = 1;
 	_textNum = 0;
 
-	_icon[0] = RectMake(756, 132, 110, 90);
-	_icon[1] = RectMake(720, 354, 90, 70);
-	_icon[2] = RectMake(844, 377, 90, 70);
-	_icon[3] = RectMake(972, 377, 90, 70);
-	_icon[4] = RectMake(1095, 354, 90, 70);
-	_icon[5] = RectMake(1155, 262, 90, 70);
+	_icon[MAINSCENE_ABYSS] = RectMake(756, 132, 110, 90);
+	_icon[MAINSCENE_PUB] = RectMake(720, 354, 90, 70);
+	_icon[MAINSCENE_STORE] = RectMake(844, 377, 90, 70);
+	_icon[MAINSCENE_SQURE] = RectMake(972, 377, 90, 70);
+	_icon[MAINSCENE_TUTO] = RectMake(1095, 354, 90, 70);
+	_icon[MAINSCENE_CASTLE] = RectMake(1155, 262, 90, 70);
 
 	return S_OK;
 }
@@ -40,46 +40,46 @@ void MainHall::render(void)
 
 int MainHall::menuSelect()
 {
-	if (PtInRect(&_icon[0], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_ABYSS], _ptMouse))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = 0;
+			_textNum = MAINSCENE_ABYSS;
 		}
 	}
-	if (PtInRect(&_icon[1], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_PUB], _ptMouse))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_textNum = 1;
+			_textNum = MAINSCENE_PUB;
 		}
 	}
-	if (PtInRect(&_icon[2], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_STORE], _ptMouse))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_textNum = 2;
+			_textNum = MAINSCENE_STORE;
 		}
 	}
-	if (PtInRect(&_icon[3], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_SQURE], _ptMouse))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_textNum = 3;
+			_textNum = MAINSCENE_SQURE;
 		}
 	}
-	if (PtInRect(&_icon[4], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_TUTO], _ptMouse))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_textNum = 4;
+			_textNum = MAINSCENE_TUTO;
 		}
 	}
-	if (PtInRect(&_icon[5], _ptMouse))
+	if (PtInRect(&_icon[MAINSCENE_CASTLE], _ptMouse))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_textNum = 5;
+			_textNum = MAINSCENE_CASTLE;
 		}
 	}
 

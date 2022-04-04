@@ -3,30 +3,20 @@
 #include "Animation.h"
 
 #pragma region player Animation
-class PlayerAniClass : public GameNode
+
+class PlayerMoveAni : public GameNode
 {
 private:
 	// 이동 이미지 _aI
-	Image* _aIplayerMoveDownImg;		//p_run_6
-	Image* _aIplayerMoveUpImg;			//p_run_12
-	Image* _aIplayerMoveLRImg;			//p_run_9
-	Image* _aIplayerMoveLRUpImg;		//p_run_11
-	Image* _aIplayerMoveLRDownImg;		//p_run_7
+	Image* _aIPlayerMove;		// p_move
 
 	// 이동 에니메이션 _aM
-	Animation* _aMplayerMoveDownImg		;
-	Animation* _aMplayerMoveUpImg		;
-	Animation* _aMplayerMoveLRImg		;
-	Animation* _aMplayerMoveLRUpImg		;
-	Animation* _aMplayerMoveLRDownImg	;
+	Animation* _aMPlayerMove;
 
-
-	
-	// 무기 에니메이션
 
 public:
-	PlayerAniClass() {}
-	~PlayerAniClass() {}
+	PlayerMoveAni() {}
+	~PlayerMoveAni() {}
 
 	HRESULT init(void);
 	void release(void);

@@ -39,11 +39,10 @@ void SubMenu::release(void)
 
 void SubMenu::update(void)
 {
-	if (KEYOKD(VK_LBUTTON))
-	{
+
 		selectMenu();
 		selectTap();
-	}
+
 
 	if (KEYOKD('Q'))
 	{
@@ -66,6 +65,10 @@ void SubMenu::render(void)
 	renderTap();
 	renderStat();
 
+	for (int i = 0; i < SUB_END; i++)
+	{
+		rcMake(getMemDC(), _menuButton[i]);
+	}
 
 }
 
@@ -74,21 +77,46 @@ void SubMenu::selectMenu()
 {
 	if (PtInRect(&_menuButton[SUB_ITEM], _ptMouse)|| _subMenuIdx ==0)
 	{
-		_subMenu.reset(); _subMenu.set(1);
-		_tapOn.reset();   _tapOn.set(1);
+	//	cout << "인벤버튼 검출-----" << endl;
+		if (KEYOKD(VK_LBUTTON))
+		{
+			cout << "문제1=============" << endl;
+			_subMenu.reset(); _subMenu.set(1);
+			_tapOn.reset();   _tapOn.set(1);
+		}
 	}
 	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse) || _subMenuIdx == 1)
 	{
-		_subMenu.reset(); _subMenu.set(2);
-		_tapOn.reset();   _tapOn.set(1);
+		//cout << "스킬버튼 검출-----" << endl;
+
+		if (KEYOKD(VK_LBUTTON))
+		{
+			cout << "문제2=============" << endl;
+
+			_subMenu.reset(); _subMenu.set(2);
+			_tapOn.reset();   _tapOn.set(1);
+		}
 	}
 	if (PtInRect(&_menuButton[SUB_MAP], _ptMouse) || _subMenuIdx == 2)
 	{
-		_subMenu.reset(); _subMenu.set(3);
+		//cout << "맵버튼 검출-----" << endl;
+
+		if (KEYOKD(VK_LBUTTON))
+		{
+			cout << "문제3=============" << endl;
+
+			_subMenu.reset(); _subMenu.set(3);
+		}
 	}
 	if (PtInRect(&_menuButton[SUB_STATUS], _ptMouse) || _subMenuIdx == 3)
 	{
-		_subMenu.reset(); _subMenu.set(4);
+		//cout << "스탯버튼 검출-----" << endl;
+		if (KEYOKD(VK_LBUTTON))
+		{
+			cout << "문제4=============" << endl;
+
+			_subMenu.reset(); _subMenu.set(4);
+		}
 	}
 
 
@@ -98,15 +126,24 @@ void SubMenu::selectTap()
 {
 	if (PtInRect(&_tapButton[TAP_ONE], _ptMouse))
 	{
-		_tapOn.reset(); _tapOn.set(1);
+		if (KEYOKD(VK_LBUTTON))
+		{
+			_tapOn.reset(); _tapOn.set(1);
+		}
 	}
 	if (PtInRect(&_tapButton[TAP_TWO], _ptMouse))
 	{
-		_tapOn.reset(); _tapOn.set(2);
+		if (KEYOKD(VK_LBUTTON))
+		{
+			_tapOn.reset(); _tapOn.set(2);
+		}
 	}
 	if (PtInRect(&_tapButton[TAP_THREE], _ptMouse))
 	{
-		_tapOn.reset(); _tapOn.set(3);
+		if (KEYOKD(VK_LBUTTON))
+		{
+			_tapOn.reset(); _tapOn.set(3);
+		}
 	}
 }
 

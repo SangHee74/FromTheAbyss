@@ -61,7 +61,6 @@ void Animation::setDefPlayFrame(bool reverse, bool loop)
 
 	if (reverse)
 	{
-
 		if (_loop)
 		{
 			// 갈때 프레임

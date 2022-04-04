@@ -3,13 +3,13 @@
 
 class Player;
 
-#if 0
-
 // 공격 상태 - 무기타입에 따라 콤보 공격횟수가 달라진다.
 class OneHandWeaponCombo : public STATE
 {
 	static OneHandWeaponCombo* instance;
 	int timeCount;
+	int frameIndexX;
+	int weaponFrameIndexX;
 	bitset<3> combo;
 public:
 	static OneHandWeaponCombo* getInstance();
@@ -17,6 +17,8 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
+
 
 	void comboOne(Player* player);
 	void comboTwo(Player* player);
@@ -34,7 +36,11 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
+
 };
+
+#if 0
 
 #pragma region Skill
 
@@ -48,6 +54,8 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
+
 };
 
 class SpearStrike : public STATE
@@ -60,6 +68,7 @@ public:
 	virtual void stateInit(Player* player);	  // 초기화
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
+	virtual void stateRender(Player* player);
 };
 
 

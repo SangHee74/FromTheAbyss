@@ -1,13 +1,19 @@
 #pragma once
 #include "GameNode.h"
 
+enum MAINSCENE
+{
+	MAINSCENE_ABYSS, MAINSCENE_PUB,   MAINSCENE_STORE, 
+	MAINSCENE_SQURE, MAINSCENE_TUTO,  MAINSCENE_CASTLE, 
+	MAINSCENE_END
+};
 
 class MainHall:public GameNode
 {
 private:
 
-	RECT _icon[6];
-	tagText _menuInfoText[6];
+	RECT _icon[MAINSCENE_END];
+	tagText _menuInfoText[MAINSCENE_END];
 	int _textNum;
 	int _selectMenu;
 
