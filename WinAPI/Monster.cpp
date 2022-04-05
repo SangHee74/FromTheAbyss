@@ -16,6 +16,21 @@ HRESULT Monster::init(void)
 	return S_OK;
 }
 
+HRESULT Monster::init(POINT position)
+{
+	_worldTimeCount = GetTickCount();
+	_rndTimeCount = RND->getFromFloatTo(50, 150);
+
+	_moveRc = RectMakeCenter(position.x, position.y,
+		_image->getFrameWidth(), _image->getFrameHeight());
+
+	_movePosX = position.x;
+	_movePosY = position.y;
+	_speed = 0.0f;
+
+	return S_OK;
+}
+
 HRESULT Monster::init(const char * imageName, POINT position)
 {
 	_worldTimeCount = GetTickCount();
@@ -66,8 +81,10 @@ void Monster::animation(void)
 		_frameX++;
 		if (_image->getMaxFrameX() < _frameX)
 		{
-			_frameY = 0;
+			_frameX = 0;
 		}
 	}
 
 }
+
+

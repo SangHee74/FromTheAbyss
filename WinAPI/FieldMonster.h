@@ -5,10 +5,9 @@ class Dionaea : public Monster
 {
 private:
 
-
 public:
 	Dionaea();
-	~Dionaea();
+	~Dionaea() {};
 
 };
 
@@ -17,10 +16,9 @@ class EvilEye : public Monster
 {
 private:
 
-
 public:
 	EvilEye();
-	~EvilEye();
+	~EvilEye() {};
 
 };
 
@@ -28,9 +26,8 @@ class Kobold : public Monster
 {
 private:
 
-
 public:
 	Kobold();
-	~Kobold();
+	~Kobold() {};
 
 }; 

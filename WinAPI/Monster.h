@@ -3,7 +3,7 @@
 
 enum class MONSTERDIRECTION
 {
-	UP, DOWN, LEFT, RIGHT,
+	UP, DOWN, LEFT, RIGHT
 };
 
 enum class MOSTERSTATE
@@ -18,9 +18,8 @@ protected:
 	MOSTERSTATE _state;
 	MONSTERDIRECTION _direction;
 
-	char _name[128];
 	int  _curHp;
-	int  _curSp;
+	//int  _curSp;
 	int  _dropExp;
 	int  _dropLufia;
 	int  _dropItemIndex;
@@ -39,6 +38,7 @@ public:
 	virtual ~Monster() {};
 
 	HRESULT init(void);
+	HRESULT init(POINT position);
 	HRESULT init(const char* imageName, POINT position);
 	void release(void);
 	void update(void);

@@ -43,10 +43,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("sub_skill", "Resources/Images/BackGround/sub_skill.bmp", CENTER_X, 0, 256 * MAGNI, 192 * MAGNI, MGT);
 
 #pragma endregion
-	IMAGEMANAGER->addImage("abyss9BG", "Resources/Images/MApToll/abyss9BG.bmp", 0, 0, 256 * MAGNI, 192 * MAGNI, MGT);
-
-	IMAGEMANAGER->addImage("Å×¸Ê", "Resources/testMap.bmp", 0, 0, 1280,960, MGT);
-	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 720*10, 720*10, MGT);
 
 #pragma region Player
 
@@ -139,7 +135,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("stage2", "Resources/Images/Object/stage2.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("stage3", "Resources/Images/Object/stage3.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 
-
 	IMAGEMANAGER->addFrameImage("skill_att_Icon", "Resources/Images/Object/skill_att_Icon.bmp", 0, 0, 297 * MAGNI, 99 * MAGNI, 9, 3, MGT);
 	IMAGEMANAGER->addFrameImage("skill_utill_Icon", "Resources/Images/Object/skill_utill_Icon.bmp", 0, 0, 256 * MAGNI, 32 * MAGNI, 8, 1, MGT);
 	IMAGEMANAGER->addFrameImage("store_icon", "Resources/Images/Object/store_icon.bmp", 0, 0, 240 * MAGNI, 20 * MAGNI, 15, 2, MGT);
@@ -206,7 +201,9 @@ HRESULT ImageClass::init(void)
 	// ¼±ÅÃ Å¸ÀÏ Ç¥½Ã
 	IMAGEMANAGER->addImage("tileS", "Resources/Images/MapTool/tileSlot.bmp", 0, 0, 24, 24, MGT);
 
-	
+	// ÀÓ½Ã ¸Ê ÀÌ¹ÌÁö 
+	IMAGEMANAGER->addImage("abyss9BG", "Resources/Images/MApToll/abyss9BG.bmp", 0, 0, 256 * MAGNI, 192 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 1038 * MAGNI, 1025 * MAGNI, MGT);
 
 
 #pragma endregion

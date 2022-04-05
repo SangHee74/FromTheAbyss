@@ -41,7 +41,19 @@ void EnemyManager::setMoster(void)
 	{
 		Monster* dionaea;
 		dionaea = new Dionaea;
-		dionaea->init("Dionaea_idle", PointMake(150 + i * 200, 100 + i * 100));
+		
+		// 생성자에서 이미지까지 초기화 중. 
+
+		//dionaea->init("Dionaea_idle", PointMake(150 + i * 200, 100 + i * 100));
+		dionaea->init(PointMake(150 + i * 200, 100 + i * 100));
+
+
+
+
+
+
+
+
 		_vMonster.push_back(dionaea);
 	}
 

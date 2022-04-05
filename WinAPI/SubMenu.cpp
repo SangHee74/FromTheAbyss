@@ -8,11 +8,11 @@ HRESULT SubMenu::init(void)
 
 	// 0001 인벤 0010 스킬 0100 맵 1000 스탯
 	_subMenu.reset();
-	_subMenu.set(1);
+	_subMenu.set(0);
 
 	// 0001 1탭 0010 2탭 0100 3탭
 	_tapOn.reset();
-	_tapOn.set(1);
+	_tapOn.set(0);
 
 	int subX;
 	subX = CENTER_X;
@@ -26,8 +26,6 @@ HRESULT SubMenu::init(void)
 	_tapButton[TAP_TWO]   = RectMake(subX+(10* MAGNI), 75 * MAGNI,  14* MAGNI, 36* MAGNI);
 	_tapButton[TAP_THREE] = RectMake(subX+(10* MAGNI), 115* MAGNI, 14* MAGNI, 36* MAGNI);
 
-	_subMenuIdx = 0;
-
 	return S_OK;
 }
 
@@ -39,24 +37,8 @@ void SubMenu::release(void)
 
 void SubMenu::update(void)
 {
-
-		selectMenu();
-		selectTap();
-
-
-	if (KEYOKD('Q'))
-	{
-		_subMenuIdx--;
-		if (_subMenuIdx < 0) _subMenuIdx = 0;
-		selectMenu();
-	}
-	if (KEYOKD('W'))
-	{
-		_subMenuIdx++;
-		if (_subMenuIdx > 3) _subMenuIdx = 3;
-		selectMenu();
-	}
-
+	selectMenu();
+	if( _subMenu.test(0) || _subMenu.test(1)) selectTap();
 }
 
 void SubMenu::render(void)
@@ -75,47 +57,42 @@ void SubMenu::render(void)
 
 void SubMenu::selectMenu()
 {
-	if (PtInRect(&_menuButton[SUB_ITEM], _ptMouse)|| _subMenuIdx ==0)
+	if (PtInRect(&_menuButton[SUB_ITEM], _ptMouse))
 	{
-	//	cout << "인벤버튼 검출-----" << endl;
 		if (KEYOKD(VK_LBUTTON))
 		{
-			cout << "문제1=============" << endl;
+			_subMenuIdx = SUB_ITEM;
+			_subMenu.reset(); _subMenu.set(0);
+			_tapOn.reset();   _tapOn.set(0);
+		}
+	}
+	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse))
+	{
+
+		if (KEYOKD(VK_LBUTTON))
+		{
+			_subMenuIdx = SUB_SKILL;
 			_subMenu.reset(); _subMenu.set(1);
-			_tapOn.reset();   _tapOn.set(1);
+			_tapOn.reset();   _tapOn.set(0);
 		}
 	}
-	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse) || _subMenuIdx == 1)
+	if (PtInRect(&_menuButton[SUB_MAP], _ptMouse))
 	{
-		//cout << "스킬버튼 검출-----" << endl;
 
 		if (KEYOKD(VK_LBUTTON))
 		{
-			cout << "문제2=============" << endl;
-
+			_subMenuIdx = SUB_MAP;
 			_subMenu.reset(); _subMenu.set(2);
-			_tapOn.reset();   _tapOn.set(1);
+			_tapOn.reset();
 		}
 	}
-	if (PtInRect(&_menuButton[SUB_MAP], _ptMouse) || _subMenuIdx == 2)
+	if (PtInRect(&_menuButton[SUB_STATUS], _ptMouse) )
 	{
-		//cout << "맵버튼 검출-----" << endl;
-
 		if (KEYOKD(VK_LBUTTON))
 		{
-			cout << "문제3=============" << endl;
-
+			_subMenuIdx = SUB_STATUS;
 			_subMenu.reset(); _subMenu.set(3);
-		}
-	}
-	if (PtInRect(&_menuButton[SUB_STATUS], _ptMouse) || _subMenuIdx == 3)
-	{
-		//cout << "스탯버튼 검출-----" << endl;
-		if (KEYOKD(VK_LBUTTON))
-		{
-			cout << "문제4=============" << endl;
-
-			_subMenu.reset(); _subMenu.set(4);
+			_tapOn.reset();
 		}
 	}
 
@@ -128,40 +105,40 @@ void SubMenu::selectTap()
 	{
 		if (KEYOKD(VK_LBUTTON))
 		{
-			_tapOn.reset(); _tapOn.set(1);
+			_tapOn.reset(); _tapOn.set(0);
 		}
 	}
 	if (PtInRect(&_tapButton[TAP_TWO], _ptMouse))
 	{
 		if (KEYOKD(VK_LBUTTON))
 		{
-			_tapOn.reset(); _tapOn.set(2);
+			_tapOn.reset(); _tapOn.set(1);
 		}
 	}
 	if (PtInRect(&_tapButton[TAP_THREE], _ptMouse))
 	{
 		if (KEYOKD(VK_LBUTTON))
 		{
-			_tapOn.reset(); _tapOn.set(3);
+			_tapOn.reset(); _tapOn.set(2);
 		}
 	}
 }
 
 void SubMenu::renderMenu()
 {
-	if (_subMenu.test(1))
+	if (_subMenu.test(0))
 	{
 		IMGR("sub_inven", getMemDC(), CENTER_X, 0);
 	}
-	else if (_subMenu.test(2))
+	else if (_subMenu.test(1))
 	{
 		IMGR("sub_skill", getMemDC(), CENTER_X, 0);
 	}
-	else if (_subMenu.test(3))
+	else if (_subMenu.test(2))
 	{
 		IMGR("sub_map", getMemDC(), CENTER_X, 0);
 	}
-	else if (_subMenu.test(4))
+	else if (_subMenu.test(3))
 	{
 		IMGR("sub_stat", getMemDC(), CENTER_X, 0);
 	}
@@ -169,20 +146,17 @@ void SubMenu::renderMenu()
 
 void SubMenu::renderTap()
 {
-	if (_subMenu.test(1) || _subMenu.test(2)) 
+	if (_tapOn.test(0))
 	{
-		if (_tapOn.test(1))
-		{
-			IMGR("tap_1", getMemDC(), CENTER_X, 62);
-		}
-		else if (_tapOn.test(2))
-		{
-			IMGR("tap_2", getMemDC(), CENTER_X, 162);
-		}
-		else
-		{
-			IMGR("tap_3", getMemDC(), CENTER_X, 262);
-		}
+		IMGR("tap_1", getMemDC(), CENTER_X, 62);
+	}
+	if (_tapOn.test(1))
+	{
+		IMGR("tap_2", getMemDC(), CENTER_X, 162);
+	}
+	if (_tapOn.test(2))
+	{
+		IMGR("tap_3", getMemDC(), CENTER_X, 262);
 	}
 }
 

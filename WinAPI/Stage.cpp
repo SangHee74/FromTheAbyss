@@ -7,18 +7,20 @@ HRESULT Stage::init(void)
 {
 	_player = new Player();
 	_player->init();
-	
 
+	_UIBar = new ProgressBar;
+	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+	
 	_subScreen = new SubMenu();
 	_subScreen->init();
+
+	_em = new EnemyManager();
+	_em->init();
 
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, IMG("¸Ê2")->getWidth());
 	CAM->setLimitsY(CENTER_Y, IMG("¸Ê2")->getHeight());
 
-
-	_UIBar = new ProgressBar;
-	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 
 	_alpha;
 
@@ -35,6 +37,9 @@ void Stage::release(void)
 
 	_player->release();
 	SAFE_DELETE(_player);
+
+	_em->release();
+	SAFE_DELETE(_em);
 
 	//STATE::destroy();
 
@@ -71,6 +76,13 @@ void Stage::update(void)
 	{
 		SCENEMANAGER->changeScene("main");
 	}
+
+	_em->update();
+
+	int tempDistance;
+	//getDistance(_player->getPlayer().movePosX, _player->getPlayer().movePosY,
+	//	_em->getMonsters())
+
 }
 
 void Stage::render(void)
@@ -87,9 +99,15 @@ void Stage::render(void)
 
 	_player->render();
 
+
+
+	//_em->render();
+
+	
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
 		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+
 	_subScreen->render();
 
 }
