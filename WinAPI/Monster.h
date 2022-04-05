@@ -45,6 +45,7 @@ public:
 	void render(void);
 
 	virtual void move(void);
+	virtual void attack(void);
 	void draw(void);
 	void animation(void);
 

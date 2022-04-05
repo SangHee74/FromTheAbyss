@@ -3,27 +3,78 @@
 
 Dionaea::Dionaea()
 {
+	_curHp = 30;
+	_dropExp = 20;
+	_dropLufia = RND->getInt(50);
+	_dropItemIndex = 0 ; // 임시
+
+	_state = MOSTERSTATE::IDLE;
+	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
+	_speed = 2;
+	_frameX = 0;
+	_frameY = (int)_direction;
+	_image = IMG("Dionaea_idle");
+}
+
+void Dionaea::move()
+{
+}
+
+void Dionaea::attack()
+{
+}
+
+
+EvilEye::EvilEye()
+{
+	cout << "----------FieldMoster<EvilEye> constructor----------" << endl;
+
 	_curHp = 10;
 	_dropExp = 10;
 	_dropLufia = RND->getInt(15);
-	_dropItemIndex = 0 ; // 임시
+	_dropItemIndex = 0; // 임시
 
-	_state = static_cast<MOSTERSTATE> (RND->getInt(1));
+	_state = MOSTERSTATE::IDLE;
 	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
-
-	//	_width, _height;
-	_speed = 2;
-	if (_state == MOSTERSTATE::IDLE) _image = IMG("Dionaea_idle");
-	else if(_state == MOSTERSTATE::MOVE) _image = IMG("Dionaea_move");
-
+	_speed = 3;
+	_frameX = 0;
 	_frameY = (int)_direction;
-	cout << "FieldMoster constructor end" << endl;
+	_image = IMG("EvilEye_idle");
+
+	cout << "----------------------------------------------------" << endl;
 }
 
-EvilEye::EvilEye()
+void EvilEye::move()
+{
+}
+
+void EvilEye::attack()
 {
 }
 
 Kobold::Kobold()
+{
+	cout << "----------FieldMoster<Kobold> constructor----------" << endl;
+
+	_curHp = 50;
+	_dropExp = 70;
+	_dropLufia = RND->getInt(80);
+	_dropItemIndex = 0; // 임시
+
+	_state = MOSTERSTATE::IDLE;
+	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
+	_speed = 3;
+	_frameX = 0;
+	_frameY = (int)_direction;
+	_image = IMG("Kobold_idle");
+
+	cout << "---------------------------------------------------" << endl;
+}
+
+void Kobold::move()
+{
+}
+
+void Kobold::attack()
 {
 }

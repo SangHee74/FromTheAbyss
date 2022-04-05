@@ -95,8 +95,6 @@ void SubMenu::selectMenu()
 			_tapOn.reset();
 		}
 	}
-
-
 }
 
 void SubMenu::selectTap()

@@ -50,7 +50,8 @@ void Camera::setLimitsX(float leftLimit, float rightLimit)
 
 #else
 	_leftLimit = leftLimit;
-	_rightLimit = rightLimit - LSCENTER_X;
+	_rightLimit = rightLimit - RSCENTER_X;
+
 #endif // MapTool
 
 

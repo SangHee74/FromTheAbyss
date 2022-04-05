@@ -7,8 +7,9 @@ HRESULT Stage::init(void)
 {
 	_player = new Player();
 	_player->init();
+	_player->setPixelMap("¸Ê2ÇÈ¼¿Ãæµ¹");
 
-	_UIBar = new ProgressBar;
+	_UIBar = new ProgressBar();
 	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 	
 	_subScreen = new SubMenu();
@@ -20,7 +21,6 @@ HRESULT Stage::init(void)
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, IMG("¸Ê2")->getWidth());
 	CAM->setLimitsY(CENTER_Y, IMG("¸Ê2")->getHeight());
-
 
 	_alpha;
 
@@ -95,8 +95,14 @@ void Stage::render(void)
 		cameraTop,
 		CENTER_X, WINSIZE_Y);
 
-	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
+	if (KEYMANAGER->isToggleKey(VK_F2))
+	{
+		IMGR("¸Ê2ÇÈ¼¿Ãæµ¹", getMemDC(), 0, 0,
+			cameraLeft,
+			cameraTop,
+			CENTER_X, WINSIZE_Y);
+	}
 	_player->render();
 
 
@@ -107,7 +113,8 @@ void Stage::render(void)
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
 		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+	//IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
-	_subScreen->render();
+//	_subScreen->render();
 
 }

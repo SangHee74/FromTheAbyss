@@ -49,8 +49,11 @@ HRESULT Player::init(void)
 	// 플레이어의 값을 받아서
 	_player.frameX = 0;
 	_player.frameY = static_cast<int>(_direction);
-	_player.movePosX = _player.drawPosX = LSCENTER_X;
-	_player.movePosY = _player.drawPosY = CENTER_Y;
+	//_player.movePosX = _player.drawPosX = LSCENTER_X;
+	//_player.movePosY = _player.drawPosY = CENTER_Y;
+	_direction = PLAYERDIRECTION::RIGHT;
+	_player.movePosX = _player.drawPosX = 50;
+	_player.movePosY = _player.drawPosY = 300;
 	_player.width  = _player.image->getFrameWidth();
 	_player.height = _player.image->getFrameHeight();
 	// 순서 체크 할 것. 
@@ -74,6 +77,13 @@ HRESULT Player::init(void)
 	_pStatePattern = IdleState::getInstance();
 	setPlayerState(_pStatePattern);
 
+	// 픽셀충돌 - 탐색
+	_pixel.probeTop   = _player.movePosY - _player.image->getHeight() / 2;
+	_pixel.probeDown  = _player.movePosY + _player.image->getHeight() / 2;
+	_pixel.probeLeft  = _player.movePosX - _player.image->getWidth() / 2;
+	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
+
+
 	return S_OK;
 }
 
@@ -93,6 +103,9 @@ void Player::update(void)
 	// hit,dead 상태일때는 Y프레임 세팅 제외.
 	if (_state == PLAYERSTATE::HIT || _state == PLAYERSTATE::DEAD) {}
 	else _player.frameY = static_cast<int>(_direction);
+
+	// 픽셀충돌
+	
 	
 }
 
@@ -287,7 +300,11 @@ void Player::inStageWeaponSetting()
 			break;
 		}
 	}
+
+	//PixelCollision("");
 }
+
+
 
 
 // 상태 세팅

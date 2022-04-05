@@ -32,6 +32,8 @@ public:
 	virtual void stateUpdate(Player* player);  // 업데이트 
 	virtual void stateRelease(); // 해제
 	virtual void stateRender(Player* player);
+
+	void pixelCollision(Player* player); // 픽셀충돌 보정
 };
 
 

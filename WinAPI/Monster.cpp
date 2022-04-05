@@ -67,6 +67,11 @@ void Monster::move(void)
 	// 오버라이딩
 }
 
+void Monster::attack(void)
+{
+	// 오버라이딩
+}
+
 void Monster::draw(void)
 {
 	_image->frameRender(getMemDC(), _moveRc.left, _moveRc.top,

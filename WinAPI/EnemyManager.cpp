@@ -45,13 +45,13 @@ void EnemyManager::setMoster(void)
 		// 생성자에서 이미지까지 초기화 중. 
 
 		//dionaea->init("Dionaea_idle", PointMake(150 + i * 200, 100 + i * 100));
+
+		// 식충식물 
 		dionaea->init(PointMake(150 + i * 200, 100 + i * 100));
 
+		// 외눈박이
 
-
-
-
-
+		// 코볼트
 
 
 		_vMonster.push_back(dionaea);

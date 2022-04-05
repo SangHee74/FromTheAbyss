@@ -5,6 +5,10 @@ HRESULT ImageClass::init(void)
 {
 	//MAGNI :  WINSIZE_X/512   //magnification
 #pragma region BG
+		// ÀÓ½Ã ¸Ê ÀÌ¹ÌÁö 
+	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("¸Ê2ÇÈ¼¿Ãæµ¹", "Resources/testMap2_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+
 	IMAGEMANAGER->addImage("title", "Resources/Images/BackGround/title.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("save", "Resources/Images/BackGround/save.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("main", "Resources/Images/BackGround/main.bmp", WINSIZE_X, WINSIZE_Y);
@@ -69,8 +73,6 @@ HRESULT ImageClass::init(void)
 	
 #pragma endregion
 
-
-
 #pragma region enemy
 	IMAGEMANAGER->addFrameImage("Dionaea_attack", "Resources/Images/Monster/Dionaea_attack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_hit", "Resources/Images/Monster/Dionaea_hit.bmp", 48 * MAGNI, 120 * MAGNI, 1, 2, MGT);
@@ -90,7 +92,6 @@ HRESULT ImageClass::init(void)
 
 
 #pragma endregion
-
 
 #pragma region object
 	IMAGEMANAGER->addFrameImage("dropItem", "Resources/Images/Object/dropItem.bmp", 150 * MAGNI, 22 * MAGNI, 6, 1, MGT);
@@ -188,6 +189,7 @@ HRESULT ImageClass::init(void)
 
 	IMAGEMANAGER->addImage("mBG", "Resources/Images/MapTool/bg.bmp", 0, 0, 1280, 720, MGT);
 	IMAGEMANAGER->addImage("mbg", "Resources/Images/MapTool/mbg.bmp", 0, 0, 320,720, MGT);
+	IMAGEMANAGER->addImage("abyss9BG", "Resources/Images/MApToll/abyss9BG.bmp", 0, 0, 256 * MAGNI, 192 * MAGNI, MGT);
 
 	IMAGEMANAGER->addImage("tileSetB", "Resources/Images/MapTool/tileSetB.bmp", 0, 0, 100, 50, MGT);
 	IMAGEMANAGER->addImage("wallB", "Resources/Images/MapTool/wallB.bmp", 0, 0, 100, 50, MGT);
@@ -200,10 +202,6 @@ HRESULT ImageClass::init(void)
 
 	// ¼±ÅÃ Å¸ÀÏ Ç¥½Ã
 	IMAGEMANAGER->addImage("tileS", "Resources/Images/MapTool/tileSlot.bmp", 0, 0, 24, 24, MGT);
-
-	// ÀÓ½Ã ¸Ê ÀÌ¹ÌÁö 
-	IMAGEMANAGER->addImage("abyss9BG", "Resources/Images/MApToll/abyss9BG.bmp", 0, 0, 256 * MAGNI, 192 * MAGNI, MGT);
-	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 1038 * MAGNI, 1025 * MAGNI, MGT);
 
 
 #pragma endregion

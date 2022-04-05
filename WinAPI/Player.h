@@ -109,6 +109,15 @@ struct tagCamera
 	int weaponLeft, weaponTop;
 };
 
+// 픽셀충돌
+struct tagPixel
+{
+	int	probeTop;
+	int probeDown;
+	int probeLeft;
+	int probeRight;
+};
+
 class STATE;  // 상태패턴(상호참조-전방선언)
 
 class Player :public GameNode
@@ -122,7 +131,9 @@ private:
 	tagPlayerData	_player;	// 플레이어 정보
 	tagWeaponData	_weapon;	// 플레이어 무기+이펙트
 	tagCamera		_camera;	// 플레이어 카메라
+	tagPixel		_pixel;		// 플레이어 픽셀충돌
 
+	Image* _pixelMap;
 	// 아이템 임시 변수
 	int itemNum;
 
@@ -166,10 +177,12 @@ public:
 	tagPlayerData&	 getPlayer()				 { return _player; }
 	tagWeaponData&   getPlayerWeapon()			 { return _weapon; }
 	tagCamera&		 getPlayerCAM()				 { return _camera; }
+	tagPixel&		 getPlayerPixel()			 { return _pixel; }
 
 	// function
 	void inStageWeaponSetting();
-
+	void setPixelMap(char* image) { _pixelMap = IMG(image); };
+	Image* getMapImage() { return _pixelMap; }
 
 	//임시
 	int getItemNum() { return itemNum; }
