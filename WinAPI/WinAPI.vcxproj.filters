@@ -151,6 +151,9 @@
     <ClCompile Include="BossMonster.cpp">
       <Filter>FromTheAbyss\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>API\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -308,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="BossMonster.h">
       <Filter>FromTheAbyss\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>API\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -165,8 +165,6 @@ void MoveState::stateUpdate(Player* player)
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		player->getPlayer().movePosY -= player->getPlayer().speed;
-		player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
-		
 		player->setDirection(PLAYERDIRECTION::UP);
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -198,24 +196,7 @@ void MoveState::stateUpdate(Player* player)
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		player->getPlayer().movePosY += player->getPlayer().speed;
-		player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
 		player->setDirection(PLAYERDIRECTION::DOWN);
-
-		//for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 20; i++)
-		//{
-		//	COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-		//	int r = GetRValue(color);
-		//	int g = GetGValue(color);
-		//	int b = GetBValue(color);
-		//
-		//	if (!(r == 255 && g == 0 && b == 255))
-		//	{
-		//		player->getPlayer().movePosY = i - player->getPlayer().image->getHeight() / 2;
-		//		break;
-		//	}
-		//}
-
-
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
@@ -247,8 +228,6 @@ void MoveState::stateUpdate(Player* player)
 	{
 		player->getIsStateCheck().set(0);
 		player->getPlayer().movePosX -= player->getPlayer().speed;
-		player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
-
 		player->setDirection(PLAYERDIRECTION::LEFT);
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -277,7 +256,6 @@ void MoveState::stateUpdate(Player* player)
 	{
 		player->getIsStateCheck().reset(0);
 		player->getPlayer().movePosX += player->getPlayer().speed;
-		player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
 		player->setDirection(PLAYERDIRECTION::RIGHT);
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -302,8 +280,15 @@ void MoveState::stateUpdate(Player* player)
 		SetPlayerState(player, IdleState::getInstance());
 	}
 
-	// ÇÈ¼¿Ãæµ¹
+	// Å°ÀÔ·Â ÈÄ ÇÈ¼¿Ãæµ¹
 	pixelCollision(player);
+
+	// ÃÖÁ¾ Ä³¸¯ÅÍ ÁÂÇ¥¸¦ ¹Þ´Â ¹«±â ÁÂÇ¥ 
+	player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
+	player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
+
+
+
 
 	// °ø°Ý
 	if (KEYMANAGER->isStayKeyDown('X'))
@@ -395,199 +380,175 @@ void MoveState::stateRender(Player* player)
 void MoveState::pixelCollision(Player* player)
 {
 	//Å½Áö
-	player->getPlayerPixel().probeTop = player->getPlayer().movePosY - player->getPlayer().image->getHeight() / 2;
-	player->getPlayerPixel().probeDown = player->getPlayer().movePosY + player->getPlayer().image->getHeight() / 2;
-	player->getPlayerPixel().probeLeft = player->getPlayer().movePosX - player->getPlayer().image->getHeight() / 2;
-	player->getPlayerPixel().probeRight = player->getPlayer().movePosX + player->getPlayer().image->getHeight() / 2;
+	player->getPlayerPixel().probeDown = (player->getPlayer().movePosY + player->getPlayer().image->getFrameHeight() / 2) -8;
+	player->getPlayerPixel().probeLeft = player->getPlayer().movePosX-20;
+	player->getPlayerPixel().probeRight = player->getPlayer().movePosX+20;
 
 	switch (player->getDirection())
 	{
-	case PLAYERDIRECTION::UP: cout << "ÇÈ¼¿UP " << endl;
-		for (int i = player->getPlayerPixel().probeTop - 20; i < player->getPlayerPixel().probeTop + 20; i++)
+	case PLAYERDIRECTION::UP:
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
-			// ¸¶Á¨Å¸°¡ ¾Æ´Ï¸é 
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				// posY = ¾Æ·¡·Î º¸Á¤
-				player->getPlayer().movePosY = i + player->getPlayer().image->getHeight() / 2;
-				player->getPlayer().movePosY = i + player->getPlayer().image->getHeight() / 2;
-				cout << "ÇÈ¼¿¾÷ : " << i + player->getPlayer().image->getHeight() / 2 << endl;
+				player->getPlayer().movePosY += player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
 
-	case PLAYERDIRECTION::DOWN:cout << "ÇÈ¼¿down " << endl;
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 20; i++)
+	case PLAYERDIRECTION::DOWN: 
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color); 			
-			int g = GetGValue(color); 			
-			int b = GetBValue(color);
-
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY = i - player->getPlayer().image->getHeight() / 2;
-				cout << "ÇÈ¼¿´Ù¿î" << i - player->getPlayer().image->getHeight() / 2 << endl;
-				break;
-			}
-		}
-		break;
-
-	case PLAYERDIRECTION::LEFT:cout << "ÇÈ¼¿left " << endl;
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 20; i++)
-		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
-			if (!(r == 255 && g == 0 && b == 255))
+			if ( !(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i + player->getPlayer().image->getWidth() / 2;
-				cout << "ÇÈ¼¿¿ÞÂÊ : " <<  i + player->getPlayer().image->getWidth() / 2 << endl;
-
+				player->getPlayer().movePosY -= player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
 
-	case PLAYERDIRECTION::RIGHT:cout << "ÇÈ¼¿right " << endl;
+	case PLAYERDIRECTION::LEFT:
+		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
+		{
+			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+			if (!(r == 255 && g == 0 && b == 255))
+			{
+				player->getPlayer().movePosX += player->getPlayer().speed;
+				break;
+			}
+		}
+		break;
+
+	case PLAYERDIRECTION::RIGHT:
 		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 20; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i - player->getPlayer().image->getWidth() / 2;
-				cout << "ÇÈ¼¿¿À¸¥ÂÊ : " <<  i - player->getPlayer().image->getWidth() / 2 << endl;
-
+				player->getPlayer().movePosX -= player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
-
+	
 	case PLAYERDIRECTION::LEFTUP:
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 20; i++)
+		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
+			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i + player->getPlayer().image->getWidth() / 2;
+				player->getPlayer().movePosX += player->getPlayer().speed;
 				break;
 			}
 		}
-		for (int i = player->getPlayerPixel().probeTop - 20; i < player->getPlayerPixel().probeTop + 20; i++)
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
-			// ¸¶Á¨Å¸°¡ ¾Æ´Ï¸é 
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				// posY = ¾Æ·¡·Î º¸Á¤
-				player->getPlayer().movePosY = i + player->getPlayer().image->getHeight() / 2;
+				player->getPlayer().movePosY += player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
 
 	case PLAYERDIRECTION::RIGHTUP:
-		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 20; i++)
+		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i - player->getPlayer().image->getWidth() / 2;
+				player->getPlayer().movePosX -= player->getPlayer().speed;
 				break;
 			}
 		}
-		for (int i = player->getPlayerPixel().probeTop - 20; i < player->getPlayerPixel().probeTop + 20; i++)
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosY = i + player->getPlayer().image->getHeight() / 2;
+				player->getPlayer().movePosY += player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
 
 	case PLAYERDIRECTION::LEFTDOWN:
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 20; i++)
+		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
+			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i + player->getPlayer().image->getWidth() / 2;
+				player->getPlayer().movePosX += player->getPlayer().speed;
 				break;
 			}
 		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 20; i++)
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosY = i - player->getPlayer().image->getHeight() / 2;
+				player->getPlayer().movePosY -= player->getPlayer().speed;
 				break;
 			}
 		}
 		break;
 
 	case PLAYERDIRECTION::RIGHTDOWN:
-		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 20; i++)
+		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosX = i - player->getPlayer().image->getWidth() / 2;
+				player->getPlayer().movePosX -= player->getPlayer().speed;
 				break;
 			}
 		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 20; i++)
+		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
 		{
 			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
 			if (!(r == 255 && g == 0 && b == 255))
 			{
-				player->getPlayer().movePosY = i - player->getPlayer().image->getHeight() / 2;
+				player->getPlayer().movePosY -= player->getPlayer().speed;
 				break;
 			}
 		}

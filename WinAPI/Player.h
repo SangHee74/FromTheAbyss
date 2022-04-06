@@ -61,14 +61,13 @@ struct tagPlayerStatus
 	int maxExp;
 
 	int lv;
-	int gold;
 	int iAtt; //물공
 	int iDef; //물방
 	int iInt; //마공
 	int iMen; //마방
 	int iAgi; //속도
 	int iLuk; //크리
-
+	int iStatusPoint; 
 	int lufia; //소지금
 
 	tagEquip tEquip;
@@ -112,7 +111,6 @@ struct tagCamera
 // 픽셀충돌
 struct tagPixel
 {
-	int	probeTop;
 	int probeDown;
 	int probeLeft;
 	int probeRight;

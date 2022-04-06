@@ -7,7 +7,7 @@ HRESULT Stage::init(void)
 {
 	_player = new Player();
 	_player->init();
-	_player->setPixelMap("¸Ê2ÇÈ¼¿Ãæµ¹");
+	_player->setPixelMap("map_stage1_pixel");
 
 	_UIBar = new ProgressBar();
 	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
@@ -19,8 +19,8 @@ HRESULT Stage::init(void)
 	_em->init();
 
 	CAM->init();
-	CAM->setLimitsX(LSCENTER_X, IMG("¸Ê2")->getWidth());
-	CAM->setLimitsY(CENTER_Y, IMG("¸Ê2")->getHeight());
+	CAM->setLimitsX(LSCENTER_X, IMG("map_stage1")->getWidth());
+	CAM->setLimitsY(CENTER_Y, IMG("map_stage1")->getHeight());
 
 	_alpha;
 
@@ -90,31 +90,34 @@ void Stage::render(void)
 	int cameraLeft = CAM->getScreenRect().left;
 	int cameraTop = CAM->getScreenRect().top;
 
-	IMGR("¸Ê2", getMemDC(), 0, 0,
+	IMGR("map_stage1", getMemDC(), 0, 0,
 		cameraLeft,
 		cameraTop,
 		CENTER_X, WINSIZE_Y);
 
+	_player->render();
 
+	//_em->render();
+
+	IMGR("map_stage1_top", getMemDC(), 0, 0,
+		cameraLeft,
+		cameraTop,
+		CENTER_X, WINSIZE_Y);
+	
 	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
-		IMGR("¸Ê2ÇÈ¼¿Ãæµ¹", getMemDC(), 0, 0,
+		IMGR("map_stage1_pixel", getMemDC(), 0, 0,
 			cameraLeft,
 			cameraTop,
 			CENTER_X, WINSIZE_Y);
 	}
-	_player->render();
-
-
-
-	//_em->render();
-
-	
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
 		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 	//IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
-//	_subScreen->render();
+	_subScreen->render();
+
+
 
 }

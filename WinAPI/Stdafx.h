@@ -23,8 +23,6 @@
 #include "inc/Jsoncpp/json.h"
 
 
-
-
 //! C 런타임 헤더 파일
 #include <stdlib.h>
 #include <stdio.h>
@@ -65,7 +63,7 @@ using namespace std;
 #include "SoundManager.h"
 #include "JsonSaveLoader.h"
 #include "Camera.h"
-//#include "Player.h"
+#include "ObjectManager.h"
 
 using namespace MY_UTIL;
 
@@ -82,7 +80,7 @@ using namespace MY_UTIL;
 #define SOUNDMANAGER SoundManager::getSingleton()
 #define JSONDATAMANAGER JsonSaveLoader::getSingleton()
 #define CAM Camera::getSingleton()
-
+#define OBJMANAGER ObjectManager::getSingleton()
 
 
 //============================

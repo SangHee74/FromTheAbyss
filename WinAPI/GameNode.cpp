@@ -50,6 +50,9 @@ HRESULT GameNode::init(bool managerInit)
 		// 카메라 매니저 초기화
 		CAM->init();
 
+		// 오브젝트 매니저 초기화
+		OBJMANAGER->init();
+
 
 	}
 
@@ -92,13 +95,17 @@ void GameNode::release(void)
 		SOUNDMANAGER->release();
 		SOUNDMANAGER->releaseSingleton();
 
-		// 제이슨 데이터 매니저 해제, 싱글톤 해제
+		// 제이슨 데이터 매니저 해제 
 		JSONDATAMANAGER->release();
 		JSONDATAMANAGER->releaseSingleton();
 
 		// 카메라 해제, 싱글톤 해제
 		CAM->release();
 		CAM->releaseSingleton();
+
+		// 오브젝트 매니저 해제
+		OBJMANAGER->release();
+		OBJMANAGER->releaseSingleton();
 	}
 
 	ReleaseDC(_hWnd, _hdc);

@@ -3,9 +3,9 @@
 
 Dionaea::Dionaea()
 {
-	_curHp = 30;
-	_dropExp = 20;
-	_dropLufia = RND->getInt(50);
+	_curHp = 50;
+	_dropExp = 4;
+	_dropLufia = RND->getInt(5);
 	_dropItemIndex = 0 ; // 임시
 
 	_state = MOSTERSTATE::IDLE;
@@ -29,7 +29,7 @@ EvilEye::EvilEye()
 {
 	cout << "----------FieldMoster<EvilEye> constructor----------" << endl;
 
-	_curHp = 10;
+	_curHp = 20;
 	_dropExp = 10;
 	_dropLufia = RND->getInt(15);
 	_dropItemIndex = 0; // 임시

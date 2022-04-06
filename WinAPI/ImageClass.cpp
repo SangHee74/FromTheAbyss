@@ -5,9 +5,10 @@ HRESULT ImageClass::init(void)
 {
 	//MAGNI :  WINSIZE_X/512   //magnification
 #pragma region BG
-		// ÀÓ½Ã ¸Ê ÀÌ¹ÌÁö 
-	IMAGEMANAGER->addImage("¸Ê2", "Resources/testMap2.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
-	IMAGEMANAGER->addImage("¸Ê2ÇÈ¼¿Ãæµ¹", "Resources/testMap2_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	// ¸Ê ÀÌ¹ÌÁö 
+	IMAGEMANAGER->addImage("map_stage1", "Resources/Images/Map/map_stage1.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage1_top", "Resources/Images/Map/map_stage1_top.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage1_pixel", "Resources/Images/Map/map_stage1_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
 
 	IMAGEMANAGER->addImage("title", "Resources/Images/BackGround/title.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("save", "Resources/Images/BackGround/save.bmp", WINSIZE_X, WINSIZE_Y);
@@ -94,6 +95,12 @@ HRESULT ImageClass::init(void)
 #pragma endregion
 
 #pragma region object
+
+	IMAGEMANAGER->addImage("map_wood1", "Resources/Images/Map/map_obj_wood1.bmp", 0, 0, 85 * 3, 96 * 3, MGT);
+	IMAGEMANAGER->addImage("map_wood2", "Resources/Images/Map/map_obj_wood2.bmp", 0, 0, 126 * 3, 190 * 3, MGT);
+	IMAGEMANAGER->addImage("map_rock", "Resources/Images/Map/map_obj_rock.bmp", 0, 0, 32 * 3, 45 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stone", "Resources/Images/Map/map_obj_stone.bmp", 0, 0, 22 * 3, 46 * 3, MGT);
+
 	IMAGEMANAGER->addFrameImage("dropItem", "Resources/Images/Object/dropItem.bmp", 150 * MAGNI, 22 * MAGNI, 6, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Equipment_icon", "Resources/Images/Object/Equipment_icon.bmp", 160 * MAGNI, 52 * MAGNI, 6, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Inven_icon", "Resources/Images/Object/Inven_icon.bmp", 352 * MAGNI, 96 * MAGNI, 11, 3, MGT);

@@ -20,16 +20,16 @@ HRESULT Player::init(void)
 	_status.curExp = 0;
 	_status.maxHp = _status.curHp;
 	_status.maxSp = _status.curSp;
-	_status.maxExp = 100;
+	_status.maxExp = 16;
 	_status.lv = 1;
-	_status.gold = 0;
 	_status.iAtt = 10;
-	_status.iDef = 10;
-	_status.iInt = 10;
+	_status.iDef = 12;
+	_status.iInt = 7;
 	_status.iMen = 10;
-	_status.iAgi = 10;
-	_status.iLuk = 10;
-
+	_status.iAgi = 8;
+	_status.iLuk = 9;
+	_status.iStatusPoint = 0; 
+	_status.lufia = 300;
 	// 블럭 정보 추가 필요
 	_abyss.abyss = 1;
 	_abyss.stage = 1;
@@ -78,7 +78,6 @@ HRESULT Player::init(void)
 	setPlayerState(_pStatePattern);
 
 	// 픽셀충돌 - 탐색
-	_pixel.probeTop   = _player.movePosY - _player.image->getHeight() / 2;
 	_pixel.probeDown  = _player.movePosY + _player.image->getHeight() / 2;
 	_pixel.probeLeft  = _player.movePosX - _player.image->getWidth() / 2;
 	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
@@ -137,11 +136,25 @@ void Player::render(void)
 	//rcMake(getMemDC(), _weapon.moveRc);
 
 
-	//가로세로 4px 사각형
-	RECT tempPos;
+	//가로세로 4px 사각형 / 중점 + 픽셀충돌 위치 계산
+	RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
 	tempPos = RectMakeCenter(_player.movePosX, _player.movePosY, 4,4);
-	//Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
-	//	tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
+	Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
+		tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
+	
+	// 아래 - 를 좌우로 뿌리기 
+	tempPos3 = RectMakeCenter(_player.movePosX, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos3.left - _camera.rc.left,     tempPos3.top - _camera.rc.top,
+						  tempPos3.left - _camera.rc.left + 4, tempPos3.top - _camera.rc.top + 4);
+	// 좌
+	tempPos4 = RectMakeCenter(_player.movePosX-20, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos4.left - _camera.rc.left,	   tempPos4.top - _camera.rc.top,
+						  tempPos4.left - _camera.rc.left + 4, tempPos4.top - _camera.rc.top + 4);
+	// 우
+	tempPos5 = RectMakeCenter(_player.movePosX+20, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos5.left - _camera.rc.left,	   tempPos5.top - _camera.rc.top,
+						  tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
+
 
 }
 
@@ -301,7 +314,6 @@ void Player::inStageWeaponSetting()
 		}
 	}
 
-	//PixelCollision("");
 }
 
 
