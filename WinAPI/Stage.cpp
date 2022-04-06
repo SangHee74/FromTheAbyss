@@ -8,7 +8,7 @@ HRESULT Stage::init(void)
 	_player->setPixelMap("map_stage1_pixel");
 
 	_em = new EnemyManager();
-	_em->init();
+	_em->init(_currentAbyss, _currentStage);
 
 	_UIBar = new ProgressBar();
 	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);

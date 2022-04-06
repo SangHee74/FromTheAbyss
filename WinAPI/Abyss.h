@@ -9,6 +9,7 @@ enum AbyssIdx : UINT8
 	STAGE
 };
 
+
 class Abyss :public GameNode
 {
 private:

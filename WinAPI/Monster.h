@@ -19,8 +19,7 @@ protected:
 	MONSTERDIRECTION _direction;
 
 	int  _curHp;
-	//int  _curSp;
-	int  _dropExp;
+ 	int  _dropExp;
 	int  _dropLufia;
 	int  _dropItemIndex;
 
@@ -29,6 +28,7 @@ protected:
 	int		_frameX, _frameY;
 	//int		_width, _height;
 	int		_speed;
+	float	_angle; // ?
 	float	_rndTimeCount;
 	float	_worldTimeCount;
 	Image*  _image;

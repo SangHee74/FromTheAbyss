@@ -74,7 +74,8 @@ void Monster::attack(void)
 
 void Monster::draw(void)
 {
-	_image->frameRender(getMemDC(), _moveRc.left, _moveRc.top,
+	_image->frameRender(getMemDC(), 
+		_moveRc.left-CAM->getScreenRect().left, _moveRc.top - CAM->getScreenRect().top,
 		_frameX, _frameY);
 }
 

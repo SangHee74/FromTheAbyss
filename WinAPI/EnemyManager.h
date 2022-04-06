@@ -3,7 +3,19 @@
 #include "Monster.h"
 #include "FieldMonster.h"
 #include "BossMonster.h"
-#include "player.h"
+
+
+#define STAGE_MONSTER_POS_MAX 20
+#define ABYSS_MAX 2
+#define STAGE_MAX 4
+
+struct tagCreateMonsterPos
+{
+	POINT pos[STAGE_MONSTER_POS_MAX];
+	bool inPos[STAGE_MONSTER_POS_MAX];
+};
+
+class Stage;
 
 class EnemyManager : public GameNode
 {
@@ -15,23 +27,23 @@ private:
 	vMonster _vMonster;
 	viMoster _viMonster;
 
-	Player* _player;
+	tagCreateMonsterPos _monsterPos[ABYSS_MAX*STAGE_MAX];
 
 public:
 	HRESULT init(void);
+	HRESULT init(int abyss, int stage);
 	void release(void);
 	void update(void);
 	void render(void);
 
-	void setMoster(void);
+	void loadMonsterPos();
+	void setMoster(int abyss, int stage);
 	void removeMonster(int arrNum);
 
 	void monsterAttack(void);
-	void collision(void);
+	//void collision(void);
 
-	// 어떤 객체와 충돌 했는지 등의 정보를 넘겨준다.
 	vector<Monster*> getMonsters(void) { return _vMonster; }
-	void setPlayerMemoryAddress(Player* player) { _player = player; }
 
 	EnemyManager() {}
 	~EnemyManager() {}

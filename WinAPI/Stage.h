@@ -5,7 +5,6 @@
 #include "ProgressBar.h"
 #include "SubMenu.h"
 
-
 class Stage :public GameNode
 {
 private:
@@ -20,9 +19,6 @@ private:
 	int _currentAbyss;
 	int _currentStage;
 
-
-
-
 public:
 	Stage() {}
 	~Stage() {}
@@ -30,5 +26,6 @@ public:
 	void release(void);
 	void update(void);
 	void render(void);
+
 };
 
