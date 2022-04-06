@@ -5,6 +5,7 @@ HRESULT Stage::init(void)
 {
 	_player = new Player();
 	_player->init();
+	_player->setPixelMap("map_stage1_pixel");
 
 	_em = new EnemyManager();
 	_em->init();
@@ -38,6 +39,7 @@ void Stage::release(void)
 
 	_em->release();
 	SAFE_DELETE(_em);
+
 	//STATE::destroy();
 
 }

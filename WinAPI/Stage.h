@@ -1,6 +1,7 @@
 #pragma once
 #include "GameNode.h"
-
+#include "Player.h"
+#include "EnemyManager.h"
 #include "ProgressBar.h"
 #include "SubMenu.h"
 
@@ -9,6 +10,8 @@ class Stage :public GameNode
 {
 private:
 
+	Player* _player;
+	EnemyManager* _em;
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
 	
