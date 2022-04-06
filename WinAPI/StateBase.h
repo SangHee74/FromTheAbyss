@@ -34,6 +34,7 @@ public:
 	virtual void stateRender(Player* player);
 
 	void pixelCollision(Player* player); // 픽셀충돌 보정
+	bool pixelColorCheck(Player* player,int getPixelX, int getPixelY);
 };
 
 

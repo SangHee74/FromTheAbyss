@@ -154,6 +154,7 @@ void MoveState::stateInit(Player * player)
 	player->setState(PLAYERSTATE::MOVE);
 
 	timeCount = 0;
+	frameIndexX = 0;
 }
 
 void MoveState::stateUpdate(Player* player)
@@ -380,181 +381,88 @@ void MoveState::stateRender(Player* player)
 void MoveState::pixelCollision(Player* player)
 {
 	//탐지
+	player->getPlayerPixel().probeUp =	 (player->getPlayer().movePosY + player->getPlayer().image->getFrameHeight() / 2) -16;
 	player->getPlayerPixel().probeDown = (player->getPlayer().movePosY + player->getPlayer().image->getFrameHeight() / 2) -8;
 	player->getPlayerPixel().probeLeft = player->getPlayer().movePosX-20;
 	player->getPlayerPixel().probeRight = player->getPlayer().movePosX+20;
-
+	
+	
 	switch (player->getDirection())
 	{
 	case PLAYERDIRECTION::UP:
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
+		if ( pixelColorCheck(player,player->getPlayer().movePosX, player->getPlayerPixel().probeUp))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY += player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosY += player->getPlayer().speed;
 		}
 		break;
 
-	case PLAYERDIRECTION::DOWN: 
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
+	case PLAYERDIRECTION::DOWN:
+		if (pixelColorCheck(player, player->getPlayer().movePosX, player->getPlayerPixel().probeDown))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if ( !(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY -= player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosY -= player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::LEFT:
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
+		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX += player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX += player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::RIGHT:
-		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 20; i++)
+		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX -= player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX -= player->getPlayer().speed;
 		}
 		break;
-	
+		
 	case PLAYERDIRECTION::LEFTUP:
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
+		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeUp))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX += player->getPlayer().speed;
-				break;
-			}
-		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
-		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY += player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX += player->getPlayer().speed;
+			player->getPlayer().movePosY += player->getPlayer().speed;
 		}
 		break;
 
-	case PLAYERDIRECTION::RIGHTUP:
-		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 5; i++)
+	case PLAYERDIRECTION::RIGHTUP: // 수정 필요
+		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeUp))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX -= player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX -= player->getPlayer().speed;
+			player->getPlayer().movePosY += player->getPlayer().speed;
 		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
-		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY += player->getPlayer().speed;
-				break;
-			}
-		}
-		break;
 
 	case PLAYERDIRECTION::LEFTDOWN:
-		for (int i = player->getPlayerPixel().probeLeft - 20; i < player->getPlayerPixel().probeLeft + 5; i++)
+		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().moveRc.bottom);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX += player->getPlayer().speed;
-				break;
-			}
-		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
-		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY -= player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX += player->getPlayer().speed;
+			player->getPlayer().movePosY -= player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::RIGHTDOWN:
-		for (int i = player->getPlayerPixel().probeRight - 20; i < player->getPlayerPixel().probeRight + 5; i++)
+		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
 		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), i, player->getPlayer().movePosY);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosX -= player->getPlayer().speed;
-				break;
-			}
-		}
-		for (int i = player->getPlayerPixel().probeDown - 20; i < player->getPlayerPixel().probeDown + 5; i++)
-		{
-			COLORREF color = GetPixel(player->getMapImage()->getMemDC(), player->getPlayer().movePosX, i);
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-			if (!(r == 255 && g == 0 && b == 255))
-			{
-				player->getPlayer().movePosY -= player->getPlayer().speed;
-				break;
-			}
+			player->getPlayer().movePosX -= player->getPlayer().speed;
+			player->getPlayer().movePosY -= player->getPlayer().speed;
 		}
 		break;
 	}
+}
 
+// 픽셀체크할 맵 이미지, 컬러체크할 X, Y 
+bool MoveState::pixelColorCheck(Player* player,int getPixelX, int getPixelY)
+{
+	COLORREF color = GetPixel(player->getMapImage()->getMemDC(), getPixelX, getPixelY);
+	int r = GetRValue(color);
+	int g = GetGValue(color);
+	int b = GetBValue(color);
+	if (!(r == 255 && g == 0 && b == 255))
+	{
+		// 마젠타가 아니면, 픽셀 충돌임.
+		return true;
+	}
+	else return false;
 }
 
 
@@ -569,8 +477,6 @@ void HitState::stateInit(Player* player)
 {
 	player->getIsStateCheck().set(3);
 	player->setState(PLAYERSTATE::HIT);
-
-
 }
 
 void HitState::stateUpdate(Player* player)
@@ -579,29 +485,33 @@ void HitState::stateUpdate(Player* player)
 	player->getPlayer().image = IMG("p_hit");
 	player->getPlayerWeapon().image = IMG("weapon_none");
 
-	if (timeCount % 60 == 0) cout << "맞앗음 ㅠㅠㅠㅠㅠㅠ" << endl;
-	// 맞으면 일정시간 무적
-
 	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
 	if (player->getIsStateCheck().test(0))
 	{
-		
-		player->getPlayer().movePosX -= (player->getPlayer().speed*0.5);
+		player->getPlayer().movePosX += (player->getPlayer().speed*0.1);
+		player->getPlayer().frameY = 0;
 	}
 	else if (!player->getIsStateCheck().test(0))
 	{
-		player->getPlayer().movePosX += (player->getPlayer().speed*0.5);
+		player->getPlayer().movePosX -= (player->getPlayer().speed*0.1);
+		player->getPlayer().frameY = 1;
 	}
 
 	player->getPlayer().frameX = 0;
-	
-	// 2초
-	if (timeCount % 120 == 0)
+
+	// 이동 후 픽셀충돌 필요
+	//pixelCollision(player);
+
+	// 최종 캐릭터 좌표를 받는 무기 좌표 
+	player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
+	player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
+
+	// 0.5초 간 피격모션
+	if (timeCount % 30 == 0)
 	{
 		SetPlayerState(player, IdleState::getInstance());
 	}
-
-
+	
 }
 
 void HitState::stateRelease()
@@ -626,7 +536,6 @@ DeadState* DeadState::getInstance()
 void DeadState::stateInit(Player * player)
 {
 
-	player->setState(PLAYERSTATE::DEAD);
 }
 
 void DeadState::stateUpdate(Player* player)
@@ -636,14 +545,24 @@ void DeadState::stateUpdate(Player* player)
 	player->getPlayer().image = IMG("p_down");
 	player->getPlayerWeapon().image = IMG("weapon_none");
 
+
+	if (player->getIsStateCheck().test(0))
+	{
+		player->getPlayer().frameY = 0;
+	}
+	else if (!player->getIsStateCheck().test(0))
+	{
+		player->getPlayer().frameY = 1;
+	}
 	player->getPlayer().frameX = 0;
+
 
 	// 3초 
 	if (timeCount % 180 == 0)
 	{
 		player->getIsStateCheck().reset(4);
+		player->setState(PLAYERSTATE::DEAD);
 	}
-
 }
 
 void DeadState::stateRelease()

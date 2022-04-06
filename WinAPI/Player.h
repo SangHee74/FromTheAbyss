@@ -111,6 +111,7 @@ struct tagCamera
 // 픽셀충돌
 struct tagPixel
 {
+	int probeUp;
 	int probeDown;
 	int probeLeft;
 	int probeRight;
@@ -143,6 +144,9 @@ private:
 	// 010000 : isLive		// 4
 	// 100000 : render_isweaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
+
+
+	int _shadowAlpha;
 	
 public:
 	// 상태패턴

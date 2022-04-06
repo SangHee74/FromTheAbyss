@@ -51,8 +51,9 @@ HRESULT ImageClass::init(void)
 
 #pragma region Player
 
-	IMAGEMANAGER->addFrameImage("p_down.bmp", "Resources/Images/Player/p_down.bmp", 30 * MAGNI, 100 * MAGNI, 1, 2, MGT);
-	IMAGEMANAGER->addFrameImage("p_hit.bmp", "Resources/Images/Player/p_hit.bmp", 30 * MAGNI, 100 * MAGNI, 1 , 2, MGT);
+	IMAGEMANAGER->addImage("p_shadow", "Resources/Images/Player/p_shadow.bmp", 18 * MAGNI, 8 * MAGNI, MGT);
+	IMAGEMANAGER->addFrameImage("p_down", "Resources/Images/Player/p_down.bmp", 30 * MAGNI, 100 * MAGNI, 1, 2, MGT);
+	IMAGEMANAGER->addFrameImage("p_hit", "Resources/Images/Player/p_hit.bmp", 30 * MAGNI, 100 * MAGNI, 1 , 2, MGT);
 	IMAGEMANAGER->addFrameImage("p_idle_oneHand", "Resources/Images/Player/p_idle_oneHand.bmp", 30 * MAGNI, 400 * MAGNI, 1, 8, MGT);
 	IMAGEMANAGER->addFrameImage("p_idle_twoHand", "Resources/Images/Player/p_idle_twoHand.bmp", 30 * MAGNI, 400 * MAGNI, 1, 8, MGT);
 	IMAGEMANAGER->addFrameImage("p_move", "Resources/Images/Player/p_move.bmp", 120 * MAGNI, 400 * MAGNI, 4,8, MGT);

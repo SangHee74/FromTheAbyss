@@ -42,6 +42,8 @@ HRESULT Player::init(void)
 	if (itemNum == 1) _weapon.image = IMG("weapon_ax");
 	if (itemNum == 2) _weapon.image = IMG("weapon_spear");
 
+	_shadowAlpha = 120;
+
 	_player.speed = 10;
 	if (_weapon.type == WEAPONTYPE::SPEAR) _player.image=IMG("p_idle_twoHand");
 	else _player.image = IMG("p_idle_oneHand");
@@ -93,6 +95,8 @@ void Player::release(void)
 
 void Player::update(void)
 {
+
+
 	// weapon pos+frame setting(idle)
 	inStageWeaponSetting();
 
@@ -103,9 +107,18 @@ void Player::update(void)
 	if (_state == PLAYERSTATE::HIT || _state == PLAYERSTATE::DEAD) {}
 	else _player.frameY = static_cast<int>(_direction);
 
-	// 픽셀충돌
+
 	
-	
+
+	// 외부에서 맞은 경우피격모션으로 바꾸기 
+	if (_state == PLAYERSTATE::HIT)
+	{
+		_pStatePattern = HitState::getInstance();
+		setPlayerState(_pStatePattern);
+	}
+
+
+
 }
 
 void Player::render(void)
@@ -116,6 +129,7 @@ void Player::render(void)
 	_camera.weaponLeft = _weapon.drawRc.left - _camera.rc.left;
 	_camera.weaponTop = _weapon.drawRc.top - _camera.rc.top;
 
+	IMGAR("p_shadow", getMemDC(), _camera.playerLeft+20, _camera.playerTop +100 ,_shadowAlpha);
 
 	if (_isStateCheck.test(5))
 	{
@@ -128,12 +142,6 @@ void Player::render(void)
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 	}
 
-	if(KEYOKD('P'))
-	{
-	//cout << " 현재 Y 프레임 : " << _player.frameY << endl;
-	}
-	//rcMake(getMemDC(), _player.moveRc);
-	//rcMake(getMemDC(), _weapon.moveRc);
 
 
 	//가로세로 4px 사각형 / 중점 + 픽셀충돌 위치 계산
@@ -143,15 +151,19 @@ void Player::render(void)
 		tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
 	
 	// 아래 - 를 좌우로 뿌리기 
+	tempPos2 = RectMakeCenter(_player.movePosX, _pixel.probeUp, 4, 4);
+	Rectangle(getMemDC(), tempPos2.left - _camera.rc.left,	   tempPos2.top - _camera.rc.top,
+						  tempPos2.left - _camera.rc.left + 4, tempPos2.top - _camera.rc.top + 4);
+
 	tempPos3 = RectMakeCenter(_player.movePosX, _pixel.probeDown, 4, 4);
 	Rectangle(getMemDC(), tempPos3.left - _camera.rc.left,     tempPos3.top - _camera.rc.top,
 						  tempPos3.left - _camera.rc.left + 4, tempPos3.top - _camera.rc.top + 4);
 	// 좌
-	tempPos4 = RectMakeCenter(_player.movePosX-20, _pixel.probeDown, 4, 4);
+	tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
 	Rectangle(getMemDC(), tempPos4.left - _camera.rc.left,	   tempPos4.top - _camera.rc.top,
 						  tempPos4.left - _camera.rc.left + 4, tempPos4.top - _camera.rc.top + 4);
 	// 우
-	tempPos5 = RectMakeCenter(_player.movePosX+20, _pixel.probeDown, 4, 4);
+	tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
 	Rectangle(getMemDC(), tempPos5.left - _camera.rc.left,	   tempPos5.top - _camera.rc.top,
 						  tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
 

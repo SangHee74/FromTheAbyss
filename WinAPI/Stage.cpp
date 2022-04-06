@@ -55,24 +55,38 @@ void Stage::update(void)
 	_player->getPlayerCAM().rc = CAM->getScreenRect();
 	_player->update();
 
+	_UIBar->setHpGauge(_player->getPlayerStatus().curHp, _player->getPlayerStatus().maxHp);
+	_UIBar->setSpGauge(_player->getPlayerStatus().curSp, _player->getPlayerStatus().maxSp);
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
 
-	// 포션 적용 시 ( 인벤토리 작성 후 getPotionGauge() 할 것
-	if (KEYMANAGER->isOnceKeyDown(VK_F10))
-	{
-		int healGayge = 100;
-		_UIBar->setHpGauge(healGayge, _player->getPlayerStatus().maxHp);
-		_UIBar->setSpGauge(healGayge, _player->getPlayerStatus().maxSp);
 
+
+
+	if (KEYOKD('5'))
+	{
+		_player->getPlayerStatus().curHp -= 10;
+		_player->setState(PLAYERSTATE::HIT);
+	}
+
+	if (KEYOKD('6'))
+	{
+		_player->getPlayerStatus().curHp += 10;
+	}
+
+	if (KEYOKD('7'))
+	{
+		cout << "끼임탈출!" << endl;
+		_player->getPlayer().movePosX = 50;
+		_player->getPlayer().movePosY = 300;
 	}
 
 	_subScreen->update();
 	
 	
 	// 죽으면 메인홀로 이동
-	if ( !_player->getIsStateCheck().test(4))
+	if ( _player->getState() == PLAYERSTATE::DEAD)
 	{
 		SCENEMANAGER->changeScene("main");
 	}
@@ -82,6 +96,7 @@ void Stage::update(void)
 	int tempDistance;
 	//getDistance(_player->getPlayer().movePosX, _player->getPlayer().movePosY,
 	//	_em->getMonsters())
+
 
 }
 
