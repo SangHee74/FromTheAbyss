@@ -1,23 +1,19 @@
 #include "Stdafx.h"
 #include "Stage.h"
-//#include "STATE.h"
 
-// 오브젝트 매니저로 이관중
 HRESULT Stage::init(void)
 {
-	OBJMANAGER->init();
+	_player = new Player();
+	_player->init();
 
-	OBJMANAGER->getPlayer()->_player->setPixelMap("map_stage1_pixel");
+	_em = new EnemyManager();
+	_em->init();
 
 	_UIBar = new ProgressBar();
-	_UIBar->init(OBJMANAGER->getPlayer()->_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
 	
 	_subScreen = new SubMenu();
 	_subScreen->init();
-
-
-	// 오브젝트 매니저로 수정할 것 .
-
 
 
 	CAM->init();
@@ -37,7 +33,11 @@ void Stage::release(void)
 	_subScreen->release();
 	SAFE_DELETE(_subScreen);
 
+	_player->release();
+	SAFE_DELETE(_player);
 
+	_em->release();
+	SAFE_DELETE(_em);
 	//STATE::destroy();
 
 }
