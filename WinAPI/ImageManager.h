@@ -7,7 +7,8 @@ STL 맵의 핵심 : key와 value !!!
 - 첫번째 first -> 키
 - 두번째 second -> 값 
 - 추가하는 방법은 insert를 사용하고 키와 밸류 두개를 동시에 추가해야 하니
-   pair or make_pair를 사용하여 추가한다. 
+   pair or 
+   _pair를 사용하여 추가한다. 
 
    - pair() :  두가지 자료형을 하나로 묶는 구조체 (템플릿으로 어떤 자료형도 됨)
    - make_pair() : 말 그대로 pair를 만들어 줌 

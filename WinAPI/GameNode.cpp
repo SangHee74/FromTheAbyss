@@ -4,8 +4,6 @@
 
 HRESULT GameNode::init(void)
 {
-	//함수가 성공적으로 실행되었음을 알리는 S_OK 변환
-	//Success_ok
 	return S_OK;
 }
 
@@ -19,7 +17,6 @@ HRESULT GameNode::init(bool managerInit)
 	{	
 		// 로케일 설정(디렉토리에서 한글로 검색하기 위해 필요) - 로케일 헤더 파일 추가할 것.
 		setlocale(LC_ALL, "Korean"); // LC_ALL : OS에 저장된 한국(Korean) 정보를 모두 가져온다. 
-
 
 		//타이머 초기화
 		SetTimer(_hWnd, 1, 10, NULL);
@@ -52,6 +49,9 @@ HRESULT GameNode::init(bool managerInit)
 
 		// 오브젝트 매니저 초기화
 		OBJMANAGER->init();
+
+		// 데이터 매니저 초기화
+		DATAMANAGER->init();
 
 
 	}
@@ -106,6 +106,10 @@ void GameNode::release(void)
 		// 오브젝트 매니저 해제
 		OBJMANAGER->release();
 		OBJMANAGER->releaseSingleton();
+
+		// 데이터 매니저 해제
+		DATAMANAGER->release();
+		DATAMANAGER->releaseSingleton();
 	}
 
 	ReleaseDC(_hWnd, _hdc);

@@ -24,11 +24,12 @@ protected:
 	int  _dropItemIndex;
 
 	RECT	_moveRc;
+	RECT	_recognitionRc; // 인식범위
 	int		_movePosX, _movePosY;
 	int		_frameX, _frameY;
 	//int		_width, _height;
 	int		_speed;
-	float	_angle; // ?
+	float	_angle; // 플레이어를 향해 다가갈
 	float	_rndTimeCount;
 	float	_worldTimeCount;
 	Image*  _image;

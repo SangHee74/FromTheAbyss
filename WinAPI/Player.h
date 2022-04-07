@@ -42,11 +42,14 @@ struct tagAbyssData
 	int block; // 클리어한 블럭
 
 	// 맵 오픈 방식은 조금 더 고민 해볼 것.
-	// 001 0000 스테이지 블럭 1~5
-	// 010 0000 스테이지 블럭 6~10
-	// 100 0001 1블럭 오픈
-	// 100 0010 2블럭 오픈
-	bitset<6> blockCheck[9 * 4];
+	// 0000 0000 스테이지 블럭 0~3
+	// 0001 0000 스테이지 블럭 4~7
+	// 0010 0000 스테이지 블럭 8~11
+	// 0100 0000 스테이지 블럭 12~15
+
+	// 1000 0001 1블럭 오픈
+	// 1000 0010 2블럭 오픈
+	bitset<6> blockCheck[8 * 4]; // 8어비스 4스테이지
 };
 
 struct tagPlayerStatus
@@ -183,10 +186,12 @@ public:
 
 	// function
 	void inStageWeaponSetting();
-	void setPixelMap(char* image) { _pixelMap = IMG(image); };
-	Image* getMapImage() { return _pixelMap; }
 
 	//임시
 	int getItemNum() { return itemNum; }
+
+	// 스테이지 별 맵 세팅을 위해-스테이지로 이관
+	void setPixelMap(char* image) { _pixelMap = IMG(image); };
+	Image* getMapImage() { return _pixelMap; }
 };
 

@@ -62,6 +62,7 @@ using namespace std;
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "JsonSaveLoader.h"
+#include "DataManager.h"
 #include "Camera.h"
 #include "ObjectManager.h"
 
@@ -79,6 +80,7 @@ using namespace MY_UTIL;
 #define SCENEMANAGER SceneManager::getSingleton()
 #define SOUNDMANAGER SoundManager::getSingleton()
 #define JSONDATAMANAGER JsonSaveLoader::getSingleton()
+#define DATAMANAGER DataManager::getSingleton()
 #define CAM Camera::getSingleton()
 #define OBJMANAGER ObjectManager::getSingleton()
 

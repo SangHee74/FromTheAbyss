@@ -1,10 +1,8 @@
 #pragma once
 #include "GameNode.h"
 
-
 class MainGame :public GameNode
 {
-
 	
 public:
 	HRESULT init(void);

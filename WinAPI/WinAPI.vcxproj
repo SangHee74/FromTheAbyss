@@ -151,6 +151,7 @@
     <ClCompile Include="Castle.cpp" />
     <ClCompile Include="CButtonState.cpp" />
     <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FieldMonster.cpp" />
     <ClCompile Include="FontManager.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="CButtonState.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="CommonMacroFunction.h" />
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FieldMonster.h" />
     <ClInclude Include="FontManager.h" />

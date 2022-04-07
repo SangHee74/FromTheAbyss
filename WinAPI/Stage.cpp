@@ -1,13 +1,15 @@
 #include "Stdafx.h"
 #include "Stage.h"
+#include "Abyss.h"
 
 HRESULT Stage::init(void)
 {
-	_player = new Player();
-	_player->init();
-	_player->setPixelMap("map_stage1_pixel");
+	// 캐릭터 이닛
+	DATAMANAGER->getPlayer()->init(); // 로드한 데이터 이닛.
 
 	_em = new EnemyManager();
+
+	//_currentAbyss = _player->getP
 	_em->init(_currentAbyss, _currentStage);
 
 	_UIBar = new ProgressBar();
@@ -16,6 +18,10 @@ HRESULT Stage::init(void)
 	_subScreen = new SubMenu();
 	_subScreen->init();
 
+	// 맵 정보 세팅
+	// 플레이어가 가진 선택 어비스, 스테이지 정보를 기준으로. 
+	// 렌더맵, 픽셀맵, 오브젝트, 탑렌더 
+	_player->setPixelMap("map_stage1_pixel");
 
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, IMG("map_stage1")->getWidth());
@@ -34,8 +40,6 @@ void Stage::release(void)
 	_subScreen->release();
 	SAFE_DELETE(_subScreen);
 
-	_player->release();
-	SAFE_DELETE(_player);
 
 	_em->release();
 	SAFE_DELETE(_em);
