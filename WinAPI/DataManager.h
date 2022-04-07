@@ -6,7 +6,7 @@ class DataManager :public SingletonBase<DataManager>
 {
 private:
 
-	Player* player;
+	Player* _player;
 
 
 public:
@@ -15,9 +15,9 @@ public:
 	void update(void);
 	void render(void);
 
-	Player* getPlayer() { return player; }
-	void setPlayer(Player* User) { player = User; }
-	void clearPlayer() { player = nullptr; }
+	Player* getPlayer() { return _player; }
+	void setPlayer(Player* User) { _player = User; }
+	void clearPlayer() { _player = nullptr; }
 
 };
 

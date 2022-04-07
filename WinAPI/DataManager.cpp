@@ -3,8 +3,8 @@
 
 HRESULT DataManager::init(void)
 {
-	player = new Player();
-	player->init();
+	_player = new Player();
+	_player->init();
 
 
 	return S_OK;

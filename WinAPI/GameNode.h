@@ -23,8 +23,8 @@ public:
 	// 백버퍼 이미지 얻기
 	Image* getBackBuffer(void) { return _backBuffer; }
 
-	HDC getMemDC(){return _backBuffer->getMemDC();}
-	HDC getHDC() {return _hdc;	}
+	HDC getMemDC() { return _backBuffer->getMemDC(); }
+	HDC getHDC() { return _hdc; }
 
 	// 메인 프로시저
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);

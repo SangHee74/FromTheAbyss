@@ -62,7 +62,6 @@ using namespace std;
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "JsonSaveLoader.h"
-#include "DataManager.h"
 #include "Camera.h"
 #include "ObjectManager.h"
 
@@ -80,7 +79,6 @@ using namespace MY_UTIL;
 #define SCENEMANAGER SceneManager::getSingleton()
 #define SOUNDMANAGER SoundManager::getSingleton()
 #define JSONDATAMANAGER JsonSaveLoader::getSingleton()
-#define DATAMANAGER DataManager::getSingleton()
 #define CAM Camera::getSingleton()
 #define OBJMANAGER ObjectManager::getSingleton()
 
@@ -101,6 +99,7 @@ using namespace MY_UTIL;
 #define KEYOKU KEYMANAGER->isOnceKeyUp
 #define KEYSKD KEYMANAGER->isStayKeyDown
 #define KEYTOG KEYMANAGER->isToggleKey
+
 
 
 //#define MAPTOOL
@@ -143,6 +142,7 @@ using namespace MY_UTIL;
 
 #define MAGNI WINSIZE_X/512   //magnification
 
+
 //===============================================
 // # 매크로 함수 # (클래스에서 동적할당된 부분 해제)
 //===============================================
@@ -162,3 +162,5 @@ extern POINT		_ptMouse;
 // # 전역클래스 #
 //=============
 //Player* _player;
+#include "DataManager.h"
+#define DATAMANAGER DataManager::getSingleton()

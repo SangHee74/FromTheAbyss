@@ -36,6 +36,7 @@ void Abyss::update(void)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
+				_abyss = 1;
 				_isStage = true;
 			}			
 		}
