@@ -4,13 +4,8 @@
 
 HRESULT EnemyManager::init(void)
 {
-
-	return S_OK;
-}
-
-HRESULT EnemyManager::init(int abyss, int stage)
-{
-	setMoster(abyss, stage);
+	loadMonsterPos();
+	setMoster();
 
 	return S_OK;
 }
@@ -30,7 +25,7 @@ void EnemyManager::update(void)
 	_viMonster = _vMonster.begin();
 	for (; _viMonster != _vMonster.end(); ++_viMonster)
 	{
-		//(*_viMonster)->update();
+		(*_viMonster)->update();
 	}
 }
 
@@ -59,40 +54,45 @@ void EnemyManager::loadMonsterPos()
 	}
 }
 
-void EnemyManager::setMoster(int abyss, int stage)
+void EnemyManager::setMoster()
 {
+	int currentAbyss = DATAMANAGER->getMapData().enterAbyssInfo.abyss;
+	int currentStage = DATAMANAGER->getMapData().enterAbyssInfo.stage;
 
-	loadMonsterPos();
-
-	int currentAbyss = 10* abyss;
-	int currentStage = 1* stage;
-
-	switch (currentAbyss + currentStage)
+	switch (currentAbyss)
 	{
 		// 어비스-스테이지(index범위)
 		// ex :  11(0~19) 12(20~39) 13(40~59) 14(60~79)
 		//		 21(80~99) 22(100~119) 23(120~139) 24(140~159)
-	case 11:
-		for (int i = 0; i < 9 ; i++)
+	case 1:
+		if (currentStage == 1)
 		{
-			Monster* dionaea;
-			dionaea = new Dionaea;
+			for (int i = 0; i < 9; i++)
+			{
+				Monster* dionaea;
+				dionaea = new Dionaea;
 
-			// 식충식물 
-			dionaea->init(monsterRandomPos(11, 5));
-			_vMonster.push_back(dionaea);
+				// 식충식물 
+				dionaea->init(monsterRandomPos(11, 5));
+				_vMonster.push_back(dionaea);
+			}
+
+			for (int i = 0; i < 9; i++)
+			{
+				Monster* evilEye;
+				evilEye = new EvilEye;
+
+				// 외눈박이
+				evilEye->init(monsterRandomPos(11, 5));
+				_vMonster.push_back(evilEye);
+
+			}
+		}
+		if (currentStage == 1)
+		{
+			cout << "어비스1-스테이지2 몬스터 미구현!" << endl;
 		}
 
-		for (int i = 0; i < 9 ; i++)
-		{
-			Monster* evilEye;
-			evilEye = new EvilEye;
-
-			// 외눈박이
-			evilEye->init(monsterRandomPos(11, 5));
-			_vMonster.push_back(evilEye);
-
-		}
 		break;
 	}
 

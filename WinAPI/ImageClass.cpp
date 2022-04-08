@@ -98,7 +98,7 @@ HRESULT ImageClass::init(void)
 
 #pragma region object
 
-	IMAGEMANAGER->addImage("map_gate", "Resources/Images/Map/map_obj_gate.bmp", 0, 0, 100,50, MGT);
+	IMAGEMANAGER->addImage("map_gate", "Resources/Images/Map/map_obj_gate.bmp", 0, 0, 120,50, MGT);
 	IMAGEMANAGER->addImage("map_wood1", "Resources/Images/Map/map_obj_wood1.bmp", 0, 0, 85 * 3, 96 * 3, MGT);
 	IMAGEMANAGER->addImage("map_wood2", "Resources/Images/Map/map_obj_wood2.bmp", 0, 0, 126 * 3, 190 * 3, MGT);
 	IMAGEMANAGER->addImage("map_rock", "Resources/Images/Map/map_obj_rock.bmp", 0, 0, 32 * 3, 45 * 3, MGT);

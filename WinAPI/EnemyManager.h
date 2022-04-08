@@ -39,13 +39,12 @@ private:
 
 public:
 	HRESULT init(void);
-	HRESULT init(int abyss, int stage);
 	void release(void);
 	void update(void);
 	void render(void);
 
 	void loadMonsterPos();
-	void setMoster(int abyss, int stage);
+	void setMoster();
 	void removeMonster(int arrNum);
 
 	void monsterAttack(void);

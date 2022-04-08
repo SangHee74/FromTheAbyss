@@ -13,7 +13,7 @@ Dionaea::Dionaea()
 	_speed = 2;
 	_frameX = 0;
 	_frameY = (int)_direction;
-	_image = IMG("Dionaea_idle");
+	_image = IMG("Dionaea_move");
 }
 
 void Dionaea::move()
@@ -42,8 +42,9 @@ EvilEye::EvilEye()
 
 void EvilEye::move()
 {
+
 	_movePosX += RND->getFloat(5.0f);
-	if (_movePosX > WINSIZE_X + 50) _movePosX = 0;
+	if (_movePosX > CENTER_X + 50) _movePosX = 0;
 	_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
 
 }
@@ -54,7 +55,6 @@ void EvilEye::attack()
 
 Kobold::Kobold()
 {
-	cout << "----------FieldMoster<Kobold> constructor----------" << endl;
 
 	_curHp = 50;
 	_dropExp = 70;
@@ -68,7 +68,6 @@ Kobold::Kobold()
 	_frameY = (int)_direction;
 	_image = IMG("Kobold_idle");
 
-	cout << "---------------------------------------------------" << endl;
 }
 
 void Kobold::move()

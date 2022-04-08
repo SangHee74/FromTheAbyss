@@ -155,7 +155,7 @@
       <Filter>API\Manager</Filter>
     </ClCompile>
     <ClCompile Include="DataManager.cpp">
-      <Filter>API\Manager</Filter>
+      <Filter>FromTheAbyss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,7 +319,7 @@
       <Filter>API\Manager</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
-      <Filter>API\Manager</Filter>
+      <Filter>FromTheAbyss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

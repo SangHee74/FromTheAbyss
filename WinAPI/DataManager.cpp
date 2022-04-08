@@ -20,12 +20,6 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 
 	}
 
-
-
-	//_pixelMap = IMG("map_stage1_pixel");
-
-
-
 	return S_OK;
 }
 
@@ -37,10 +31,15 @@ HRESULT DataManager::init(void)
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
 	_mapData.enterAbyssInfo.stage = 1; // 임시
 
+	_mapData.map = nullptr;
+	_mapData.mapObject = nullptr;
+	_mapData.mapTop = nullptr;
+	_mapData.pixelMap = nullptr;
+
+	_mapData.gate.inGateCount = 0;
 	
 	_player = new Player(); // 플레이어 객체 생성 
 	_player->init();
-
 
 
 	return S_OK;
@@ -65,22 +64,16 @@ void DataManager::setStageSetting(void)
 {
 	int settingAbyss = _mapData.enterAbyssInfo.abyss;
 	int settingStage = _mapData.enterAbyssInfo.stage;
+	int inRcWidth = 60;
+	int inRcHeight = 20;
 
 	switch (settingAbyss)
 	{
-		// 세팅할 데이터 초기화
-		_mapData.map = nullptr;
-		_mapData.mapObject = nullptr;
-		_mapData.mapTop = nullptr;
-		_mapData.pixelMap = nullptr;
 		for (int i = 0; i < GATE_END; i++)
 		{
-			_mapData.gate.rc[i] = RectMakeCenter(-200, -200, 100, 50);
+			_mapData.gate.drawRc[i] = RectMakeCenter(-200, -200, 120, 50);
+			_mapData.gate.inRc[i]	= RectMakeCenter(-200, -200, inRcWidth, inRcHeight);
 		}
-
-		// 어비스-스테이지(index범위)
-		// ex :  11(0~19)  12(20~39)   13(40~59)   14(60~79)
-		//		 21(80~99) 22(100~119) 23(120~139) 24(140~159)
 	case 1:
 		if (settingStage == 1)
 		{
@@ -89,19 +82,19 @@ void DataManager::setStageSetting(void)
 			_mapData.mapObject  = IMG("map_stage1");
 			_mapData.mapTop	 = IMG("map_stage1_top");
 			_mapData.pixelMap	 = IMG("map_stage1_pixel");
-
-			_mapData.gate.rc[GATE_HOME] =
-				RectMake(25,328,IMG("map_gate")->getWidth(), IMG("map_gate")->getHeight());
-			_mapData.gate.rc[GATE_NEXTSTAGE] =
-				RectMake(2110, 660, IMG("map_gate")->getWidth(), IMG("map_gate")->getHeight());
+			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 120, 50);
+			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, inRcWidth, inRcHeight);
+			_mapData.gate.drawRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, 120, 50);
+			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, inRcWidth, inRcHeight);
 
 			// 플레이어 정보 세팅
-			_player->playerInStageSetting(50, 300, PLAYERDIRECTION::RIGHTDOWN);
+			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
  
 		}
 		if (settingStage == 2)
 		{
-			cout << "어비스1 - 스테이지2" << endl;
+			cout << "어비스1 - 스테이지2 미구현으로 인해 마을로 돌아갑니다" << endl;
+			SCENEMANAGER->changeScene("main");
 		}
 
 		break;

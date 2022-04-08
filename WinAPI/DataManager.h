@@ -10,7 +10,8 @@ enum GATE
 };
 struct tagGate
 {
-	RECT rc[GATE_END]; // 0메인홀, 1다음맵 , 2 임시통로
+	RECT drawRc[GATE_END]; // 0메인홀, 1다음맵 , 2 임시통로
+	RECT inRc[GATE_END]; // 내부렉트
 	int inGateCount; // 일정시간 이상 경과 시 씬체인지
 };
 

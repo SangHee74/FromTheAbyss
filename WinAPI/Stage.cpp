@@ -8,7 +8,7 @@ HRESULT Stage::init(void)
 	DATAMANAGER->setStageSetting();
 	
 	_em = new EnemyManager();
-	_em->init(_currentAbyss, _currentStage);
+	_em->init();
 
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
@@ -109,13 +109,13 @@ void Stage::render(void)
 	
 	// 포탈
 	IMGR("map_gate", getMemDC(),
-		DATAMANAGER->getMapData().gate.rc[GATE_HOME].left - cameraLeft,
-		DATAMANAGER->getMapData().gate.rc[GATE_HOME].top - cameraTop);
+		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 	IMGR("map_gate", getMemDC(),
-		DATAMANAGER->getMapData().gate.rc[GATE_NEXTSTAGE].left - cameraLeft,
-		DATAMANAGER->getMapData().gate.rc[GATE_NEXTSTAGE].top - cameraTop);
+		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].top - cameraTop);
 
-
+	//if()
 	// 몬스터
 	_em->render();
 
@@ -124,6 +124,7 @@ void Stage::render(void)
 
 	// 오브젝트 - 렌더 순서 확인
 	//
+
 
 	// 배경 탑
 	DATAMANAGER->getMapData().mapTop->render
@@ -144,19 +145,51 @@ void Stage::render(void)
 
 	_subScreen->render();
 
-
-
+	Rectangle(getMemDC(), 
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].top - cameraTop,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].right - cameraLeft,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
+		);
 
 }
 
 void Stage::portalOn()
 {
 	RECT tempRc;
+	RECT playerTempRc;
+	playerTempRc = RectMakeCenter(
+		DATAMANAGER->getPlayer()->getPlayer().movePosX,
+		DATAMANAGER->getPlayer()->getPlayer().moveRc.bottom,
+		40, 30);
+
 	// 메인홀로 가는 게이트 
-	if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.rc[GATE_HOME],
-		&DATAMANAGER->getPlayer()->getPlayer().drawRc))
+	if ( IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_HOME], &playerTempRc) )
 	{
+		DATAMANAGER->getMapData().gate.inGateCount++;
+		cout << "집가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
+		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
+		{
+			DATAMANAGER->getMapData().gate.inGateCount = 0;
+			SCENEMANAGER->changeScene("main");
+		}
 
 	}
+	else if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_NEXTSTAGE], &playerTempRc))
+	{
+		DATAMANAGER->getMapData().gate.inGateCount++;
+		cout << "다음 스테이지 가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
+		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
+		{
+			DATAMANAGER->getMapData().gate.inGateCount = 0;
+			// 다음 스테이지를 위해 스테이지 업데이트 해줄 것 
+			DATAMANAGER->getMapData().enterAbyssInfo.stage++;
+			DATAMANAGER->getPlayer()->getPlayerAbyss().stage++;
+
+			SCENEMANAGER->changeScene("stage");
+		}
+
+	}
+	else DATAMANAGER->getMapData().gate.inGateCount = 0;
 }
 
