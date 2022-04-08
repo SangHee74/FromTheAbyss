@@ -27,7 +27,7 @@ HRESULT SceneManager::init(void)
 	_currentScene = nullptr;
 	_loadingScene = nullptr;
 	_readyScene = nullptr;
-
+	_fadeOut.blackImg = IMAGEMANAGER->findImage("black");
 	return S_OK;
 }
 
@@ -98,6 +98,7 @@ GameNode * SceneManager::addLoadingScene(string loadingSceneName, GameNode * sce
 }
 
 // 씬 변경 
+// 페이드 아웃 추가 
 HRESULT SceneManager::changeScene(string sceneName)
 {
 	// 변경하려는 씬을 찾는다.
@@ -106,9 +107,13 @@ HRESULT SceneManager::changeScene(string sceneName)
 	if (find == _mSceneList.end()) return E_FAIL;
 	if (find->second == _currentScene) return S_OK;
 
+	// 찾는데 성공하고, 초기화가 됬다면 
 	if (SUCCEEDED(find->second->init()))
 	{
-		// 바꿀 씬 초기화 후 변경
+		// 페이드 아웃
+
+
+		// 페이드 아웃 후 씬 변경
 		// 씬을 바꿔도 변수가 계속 남아있게 설계를 고민하자 
 		// 익스턴 스태틱 등등 
 		_currentScene = find->second;

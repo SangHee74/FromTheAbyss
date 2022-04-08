@@ -390,35 +390,35 @@ void MoveState::pixelCollision(Player* player)
 	switch (player->getDirection())
 	{
 	case PLAYERDIRECTION::UP:
-		if ( pixelColorCheck(player,player->getPlayer().movePosX, player->getPlayerPixel().probeUp))
+		if ( pixelColorCheck(player->getPlayer().movePosX, player->getPlayerPixel().probeUp))
 		{
 			player->getPlayer().movePosY += player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::DOWN:
-		if (pixelColorCheck(player, player->getPlayer().movePosX, player->getPlayerPixel().probeDown))
+		if (pixelColorCheck( player->getPlayer().movePosX, player->getPlayerPixel().probeDown))
 		{
 			player->getPlayer().movePosY -= player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::LEFT:
-		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
+		if (pixelColorCheck( player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
 		{
 			player->getPlayer().movePosX += player->getPlayer().speed;
 		}
 		break;
 
 	case PLAYERDIRECTION::RIGHT:
-		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
+		if (pixelColorCheck( player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
 		{
 			player->getPlayer().movePosX -= player->getPlayer().speed;
 		}
 		break;
 		
 	case PLAYERDIRECTION::LEFTUP:
-		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeUp))
+		if (pixelColorCheck( player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeUp))
 		{
 			player->getPlayer().movePosX += player->getPlayer().speed;
 			player->getPlayer().movePosY += player->getPlayer().speed;
@@ -426,14 +426,14 @@ void MoveState::pixelCollision(Player* player)
 		break;
 
 	case PLAYERDIRECTION::RIGHTUP: // 수정 필요
-		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeUp))
+		if (pixelColorCheck( player->getPlayerPixel().probeRight, player->getPlayerPixel().probeUp))
 		{
 			player->getPlayer().movePosX -= player->getPlayer().speed;
 			player->getPlayer().movePosY += player->getPlayer().speed;
 		}
 
 	case PLAYERDIRECTION::LEFTDOWN:
-		if (pixelColorCheck(player, player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
+		if (pixelColorCheck( player->getPlayerPixel().probeLeft, player->getPlayerPixel().probeDown))
 		{
 			player->getPlayer().movePosX += player->getPlayer().speed;
 			player->getPlayer().movePosY -= player->getPlayer().speed;
@@ -441,7 +441,7 @@ void MoveState::pixelCollision(Player* player)
 		break;
 
 	case PLAYERDIRECTION::RIGHTDOWN:
-		if (pixelColorCheck(player, player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
+		if (pixelColorCheck( player->getPlayerPixel().probeRight, player->getPlayerPixel().probeDown))
 		{
 			player->getPlayer().movePosX -= player->getPlayer().speed;
 			player->getPlayer().movePosY -= player->getPlayer().speed;
@@ -451,18 +451,26 @@ void MoveState::pixelCollision(Player* player)
 }
 
 // 픽셀체크할 맵 이미지, 컬러체크할 X, Y 
-bool MoveState::pixelColorCheck(Player* player,int getPixelX, int getPixelY)
+bool MoveState::pixelColorCheck(int getPixelX, int getPixelY)
 {
-	COLORREF color = GetPixel(player->getMapImage()->getMemDC(), getPixelX, getPixelY);
+	DATAMANAGER->getMapData().pixelMap->getMemDC();
+
+	COLORREF color = GetPixel(DATAMANAGER->getMapData().pixelMap->getMemDC(), getPixelX, getPixelY);
 	int r = GetRValue(color);
 	int g = GetGValue(color);
 	int b = GetBValue(color);
+
+
 	if (!(r == 255 && g == 0 && b == 255))
 	{
 		// 마젠타가 아니면, 픽셀 충돌임.
 		return true;
 	}
 	else return false;
+
+
+
+
 }
 
 

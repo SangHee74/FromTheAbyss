@@ -12,14 +12,14 @@ HRESULT Abyss::init(void)
 	_buttonRc[BUTTON_THREE]  = RectMake(RSCENTER_X - (w*0.5), 310, w, h);
 
 	_backButton = RectMake(WINSIZE_X - 134, WINSIZE_Y - 50, 120, 40);
-
-	_abyssIdx = ABYSS;
+	_upButton	= RectMake(CENTER_X, 0, 78,78);
+	_dowbButton = RectMake(CENTER_X, WINSIZE_Y-78, 78,78);
 	_isStage = false;
+	
 	_abyss = 0;
 	_stage = 0;
-	_maxAbyss = DATAMANAGER->getPlayer()->getPlayerAbyss().abyss;
-	_maxStage = DATAMANAGER->getPlayer()->getPlayerAbyss().stage;
-
+	_alpha = 0;
+	_downButtonOn = false;
 
 	return S_OK;
 }
@@ -36,7 +36,8 @@ void Abyss::update(void)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
-				_abyss = 1;
+				DATAMANAGER->getMapData().enterAbyssInfo.abyss = 1;
+				DATAMANAGER->getMapData().enterAbyssInfo.stage = 1;
 				_isStage = true;
 			}			
 		}
@@ -44,7 +45,7 @@ void Abyss::update(void)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
-				SCENEMANAGER->changeScene("stage");
+				_fadeOut.set(1);
 			}
 		}
 	}
@@ -66,6 +67,27 @@ void Abyss::update(void)
 			}
 		}
 	}
+
+
+	if (_downButtonOn)
+	{
+
+	}
+
+	// &&getElipcedTime 해서 지연시간 약간 있으면 좋을듯
+	// 페이드아웃
+	if (_fadeOut.test(1))
+	{
+		_alpha += 4;
+		if (_alpha >= 255)
+		{
+			_alpha = 255;
+			SOUNDMANAGER->stop("abyss");
+			SCENEMANAGER->changeScene("stage");
+		}
+	}
+
+
 }
 
 void Abyss::render(void)

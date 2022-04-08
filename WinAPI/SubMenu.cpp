@@ -3,9 +3,6 @@
 
 HRESULT SubMenu::init(void)
 {
-	_playerInfo = new Player();
-	_playerInfo->init();
-
 	// 0001 ÀÎº¥ 0010 ½ºÅ³ 0100 ¸Ê 1000 ½ºÅÈ
 	_subMenu.reset();
 	_subMenu.set(0);
@@ -31,8 +28,6 @@ HRESULT SubMenu::init(void)
 
 void SubMenu::release(void)
 {
-	_playerInfo->release();
-	SAFE_DELETE(_playerInfo);
 }
 
 void SubMenu::update(void)

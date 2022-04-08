@@ -1,27 +1,30 @@
 #pragma once
 #include "GameNode.h"
-#define MAXSAVESLOT 3
+
+enum SAVESLOT
+{
+	SAVE_ONE,SAVE_TWO,SAVE_THREE,SAVE_END
+};
+
 
 struct tagSlot
 {
-	tagOnlyText _txet;
-	RECT _slotRc;
-	Image* _newGame;
-	Image* _newGameSelect;
-	bool _isSaved;
-	bool _isSelected;
+	tagOnlyText txet;
+	RECT slotRc;
+	Image* newGame;
+	Image* newGameSelect;
+	bool isSaved;
+	bool isSelected;
 };
 
 class Save :public GameNode
 {
 private:
-	tagSlot _slot[MAXSAVESLOT];
+	tagSlot _slot[SAVE_END];
 	RECT _selectRc;
 	RECT _deleteRc;
 
-
-
-	bool _chcekLast;
+	bool _nextScene;
 
 public:
 	Save() {}

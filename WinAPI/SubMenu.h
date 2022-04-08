@@ -1,6 +1,5 @@
 #pragma once
 #include "GameNode.h"
-#include "Player.h"
 
 enum SUBMENU
 {
@@ -16,7 +15,6 @@ enum TAPBUTTON
 class SubMenu :public GameNode
 {
 private:
-	Player* _playerInfo;
 
 	bitset<4> _subMenu = 0;
 	bitset<4> _tapOn = 0;

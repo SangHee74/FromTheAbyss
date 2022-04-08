@@ -27,8 +27,6 @@ void Dionaea::attack()
 
 EvilEye::EvilEye()
 {
-	cout << "----------FieldMoster<EvilEye> constructor----------" << endl;
-
 	_curHp = 20;
 	_dropExp = 10;
 	_dropLufia = RND->getInt(15);
@@ -39,9 +37,7 @@ EvilEye::EvilEye()
 	_speed = 3;
 	_frameX = 0;
 	_frameY = (int)_direction;
-	_image = IMG("EvilEye_idle");
-
-	cout << "----------------------------------------------------" << endl;
+	_image = IMG("evilEye_idle");
 }
 
 void EvilEye::move()

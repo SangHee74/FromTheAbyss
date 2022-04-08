@@ -1,5 +1,11 @@
 #pragma once
-#include "ProgressBar.h"
+#include "GameNode.h"
+
+
+enum PLAYERNUMBER
+{
+	PLAYER_NONE, PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_END
+};
 
 enum class WEAPONTYPE
 {
@@ -135,7 +141,6 @@ private:
 	tagCamera		_camera;	// 플레이어 카메라
 	tagPixel		_pixel;		// 플레이어 픽셀충돌
 
-	Image* _pixelMap;
 	// 아이템 임시 변수
 	int itemNum;
 
@@ -163,6 +168,7 @@ public:
 	~Player() {}
 
 	HRESULT init(void);
+
 	void release(void);
 	void update(void);
 	void render(void);
@@ -185,13 +191,12 @@ public:
 	tagPixel&		 getPlayerPixel()			 { return _pixel; }
 
 	// function
+	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void inStageWeaponSetting();
+
 
 	//임시
 	int getItemNum() { return itemNum; }
 
-	// 스테이지 별 맵 세팅을 위해-스테이지로 이관
-	void setPixelMap(char* image) { _pixelMap = IMG(image); };
-	Image* getMapImage() { return _pixelMap; }
 };
 

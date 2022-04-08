@@ -21,29 +21,28 @@ HRESULT Monster::init(POINT position)
 	_worldTimeCount = GetTickCount();
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 
-	_moveRc = RectMakeCenter(position.x, position.y,
-		_image->getFrameWidth(), _image->getFrameHeight());
-
 	_movePosX = position.x;
 	_movePosY = position.y;
 	_speed = 0.0f;
 
+	_moveRc = RectMakeCenter(position.x, position.y,
+		_image->getFrameWidth(), _image->getFrameHeight());
 	return S_OK;
 }
 
-HRESULT Monster::init(const char * imageName, POINT position)
+HRESULT Monster::init(const char* imageName, POINT position)
 {
 	_worldTimeCount = GetTickCount();
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 
 	_image = IMAGEMANAGER->findImage(imageName);
-	_moveRc = RectMakeCenter(position.x, position.y,
-		_image->getFrameWidth(), _image->getFrameHeight());
 
 	_movePosX = position.x;
 	_movePosY = position.y;
 	_speed = 0.0f;
 
+	_moveRc = RectMakeCenter(position.x, position.y,
+		_image->getFrameWidth(), _image->getFrameHeight());
 	return S_OK;
 }
 
@@ -77,6 +76,8 @@ void Monster::draw(void)
 	_image->frameRender(getMemDC(), 
 		_moveRc.left-CAM->getScreenRect().left, _moveRc.top - CAM->getScreenRect().top,
 		_frameX, _frameY);
+
+	//rcMake(getMemDC(), _moveRc);
 }
 
 void Monster::animation(void)

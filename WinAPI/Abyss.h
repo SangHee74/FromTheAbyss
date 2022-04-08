@@ -8,27 +8,25 @@ enum BUTTONNUM
 	BUTTON_THREE,
 	BUTTON_END
 };
-enum AbyssIdx : UINT8
-{
-	BEFORE,
-	ABYSS,
-	STAGE
-};
-
 
 class Abyss :public GameNode
 {
 private:
 
-	RECT _buttonRc[BUTTON_END];
-	RECT _backButton;
-	AbyssIdx _abyssIdx;
-	bool _isStage;
-	tagOnlyText _index[3];
-	int _abyss;
-	int _stage;
-	int _maxAbyss;
-	int _maxStage;
+	
+	RECT _buttonRc[BUTTON_END]; // 어비스/스테이지 선택버튼
+	RECT _backButton;		    // 뒤로가기
+	RECT _upButton;				// 위로 올리기
+	RECT _dowbButton;			// 아래로 내리기 
+	bool _isStage;				// 버튼을 클릭하여 페이드아웃 시작
+	tagOnlyText _index[3];		// npc 대화
+
+	int _abyss;	        // 데이터 매니저로 전달할 던전 정보 
+	int _stage;	        // 데이터 매니저로 전달할 던전 정보 
+	int _alpha;			// 페이드아웃 알파
+	bitset<2> _fadeOut; // 페이드아웃 온오프
+	bool _downButtonOn; // 내리기 버튼 활성화 유무 
+
 
 public:
 	Abyss():
@@ -46,6 +44,4 @@ public:
 	void update(void);
 	void render(void);
 
-	int getAbyss() { return _abyss; }
-	int getStage() { return _stage; }
 };

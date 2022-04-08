@@ -158,9 +158,8 @@ extern HINSTANCE	_hInstance;
 extern HWND			_hWnd;
 extern POINT		_ptMouse;
 
-//=============
-// # 전역클래스 #
-//=============
-//Player* _player;
+//=========================
+// # 게임 데이터 관리 #
+//=========================
 #include "DataManager.h"
 #define DATAMANAGER DataManager::getSingleton()

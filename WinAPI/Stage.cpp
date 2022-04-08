@@ -4,30 +4,23 @@
 
 HRESULT Stage::init(void)
 {
-	// 캐릭터 이닛
-	DATAMANAGER->getPlayer()->init(); // 로드한 데이터 이닛.
-
+	// 스테이지 세팅 (맵+플레이어 정보)
+	DATAMANAGER->setStageSetting();
+	
 	_em = new EnemyManager();
-
-	//_currentAbyss = _player->getP
 	_em->init(_currentAbyss, _currentStage);
 
 	_UIBar = new ProgressBar();
-	_UIBar->init(_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 	
 	_subScreen = new SubMenu();
 	_subScreen->init();
 
-	// 맵 정보 세팅
-	// 플레이어가 가진 선택 어비스, 스테이지 정보를 기준으로. 
-	// 렌더맵, 픽셀맵, 오브젝트, 탑렌더 
-	_player->setPixelMap("map_stage1_pixel");
-
 	CAM->init();
-	CAM->setLimitsX(LSCENTER_X, IMG("map_stage1")->getWidth());
-	CAM->setLimitsY(CENTER_Y, IMG("map_stage1")->getHeight());
+	CAM->setLimitsX(LSCENTER_X, DATAMANAGER->getMapData().map->getWidth());
+	CAM->setLimitsY(CENTER_Y, DATAMANAGER->getMapData().map->getHeight());
 
-	_alpha;
+	_alpha = 0;
 
 	return S_OK;
 }
@@ -40,7 +33,6 @@ void Stage::release(void)
 	_subScreen->release();
 	SAFE_DELETE(_subScreen);
 
-
 	_em->release();
 	SAFE_DELETE(_em);
 
@@ -51,15 +43,18 @@ void Stage::release(void)
 void Stage::update(void)
 {
 	POINT cameraPos;
-	cameraPos.x = _player->getPlayer().movePosX;
-	cameraPos.y = _player->getPlayer().movePosY;
+	cameraPos.x = DATAMANAGER->getPlayer()->getPlayer().movePosX;
+	cameraPos.y = DATAMANAGER->getPlayer()->getPlayer().movePosY;
 	CAM->setCameraPos(cameraPos);
 	CAM->update();
-	_player->getPlayerCAM().rc = CAM->getScreenRect();
-	_player->update();
+	DATAMANAGER->getPlayer()->getPlayerCAM().rc = CAM->getScreenRect();
 
-	_UIBar->setHpGauge(_player->getPlayerStatus().curHp, _player->getPlayerStatus().maxHp);
-	_UIBar->setSpGauge(_player->getPlayerStatus().curSp, _player->getPlayerStatus().maxSp);
+	DATAMANAGER->getPlayer()->update();
+
+	_em->update();
+
+	_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
+	_UIBar->setSpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curSp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
@@ -69,73 +64,99 @@ void Stage::update(void)
 
 	if (KEYOKD('5'))
 	{
-		_player->getPlayerStatus().curHp -= 10;
-		_player->setState(PLAYERSTATE::HIT);
+		DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= 10;
+		DATAMANAGER->getPlayer()->setState(PLAYERSTATE::HIT);
 	}
 
 	if (KEYOKD('6'))
 	{
-		_player->getPlayerStatus().curHp += 10;
+		DATAMANAGER->getPlayer()->getPlayerStatus().curHp += 10;
 	}
 
 	if (KEYOKD('7'))
 	{
 		cout << "끼임탈출!" << endl;
-		_player->getPlayer().movePosX = 50;
-		_player->getPlayer().movePosY = 300;
+		DATAMANAGER->getPlayer()->getPlayer().movePosX = 50;
+		DATAMANAGER->getPlayer()->getPlayer().movePosY = 300;
 	}
 
 	_subScreen->update();
 	
 	
 	// 죽으면 메인홀로 이동
-	if ( _player->getState() == PLAYERSTATE::DEAD)
+	if (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD)
 	{
 		SCENEMANAGER->changeScene("main");
 	}
 
-	_em->update();
 
-	int tempDistance;
-	//getDistance(_player->getPlayer().movePosX, _player->getPlayer().movePosY,
-	//	_em->getMonsters())
+	portalOn();
+
 
 
 }
 
+
+// 렌더링 순서 변경 함수 추가 필요
 void Stage::render(void)
 {
 	int cameraLeft = CAM->getScreenRect().left;
 	int cameraTop = CAM->getScreenRect().top;
 
-	IMGR("map_stage1", getMemDC(), 0, 0,
-		cameraLeft,
-		cameraTop,
-		CENTER_X, WINSIZE_Y);
-
-	_player->render();
-
-	//_em->render();
-
-	IMGR("map_stage1_top", getMemDC(), 0, 0,
-		cameraLeft,
-		cameraTop,
-		CENTER_X, WINSIZE_Y);
+	// 배경
+	DATAMANAGER->getMapData().map->render
+	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 	
+	// 포탈
+	IMGR("map_gate", getMemDC(),
+		DATAMANAGER->getMapData().gate.rc[GATE_HOME].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.rc[GATE_HOME].top - cameraTop);
+	IMGR("map_gate", getMemDC(),
+		DATAMANAGER->getMapData().gate.rc[GATE_NEXTSTAGE].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.rc[GATE_NEXTSTAGE].top - cameraTop);
+
+
+	// 몬스터
+	_em->render();
+
+	// 플레이어 
+	DATAMANAGER->getPlayer()->render();
+
+	// 오브젝트 - 렌더 순서 확인
+	//
+
+	// 배경 탑
+	DATAMANAGER->getMapData().mapTop->render
+	(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
+	
+
 	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
-		IMGR("map_stage1_pixel", getMemDC(), 0, 0,
-			cameraLeft,
-			cameraTop,
-			CENTER_X, WINSIZE_Y);
+		DATAMANAGER->getMapData().pixelMap->render
+		(getMemDC(), 0, 0, cameraLeft, 	cameraTop, 	CENTER_X, WINSIZE_Y);
 	}
+
+	// 서브화면(UI)
 	_UIBar->render();
-	_UIBar->renderHpSpNumImg(_player->getPlayerStatus().curHp, _player->getPlayerStatus().curSp,
-		_player->getPlayerStatus().maxHp, _player->getPlayerStatus().maxSp);
+	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
+		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 	//IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
 	_subScreen->render();
 
 
 
+
 }
+
+void Stage::portalOn()
+{
+	RECT tempRc;
+	// 메인홀로 가는 게이트 
+	if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.rc[GATE_HOME],
+		&DATAMANAGER->getPlayer()->getPlayer().drawRc))
+	{
+
+	}
+}
+

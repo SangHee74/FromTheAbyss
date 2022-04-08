@@ -4,7 +4,8 @@ class Title :public GameNode
 {
 private:
 	RECT _startRc;
-
+	int _alpha;
+	bitset<2> _fadeout;
 
 public:
 	Title() {}

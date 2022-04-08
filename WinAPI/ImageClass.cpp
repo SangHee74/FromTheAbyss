@@ -10,6 +10,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("map_stage1_top", "Resources/Images/Map/map_stage1_top.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
 	IMAGEMANAGER->addImage("map_stage1_pixel", "Resources/Images/Map/map_stage1_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
 
+	IMAGEMANAGER->addImage("black", "Resources/Images/BackGround/black.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("title", "Resources/Images/BackGround/title.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("save", "Resources/Images/BackGround/save.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("main", "Resources/Images/BackGround/main.bmp", WINSIZE_X, WINSIZE_Y);
@@ -97,6 +98,7 @@ HRESULT ImageClass::init(void)
 
 #pragma region object
 
+	IMAGEMANAGER->addImage("map_gate", "Resources/Images/Map/map_obj_gate.bmp", 0, 0, 100,50, MGT);
 	IMAGEMANAGER->addImage("map_wood1", "Resources/Images/Map/map_obj_wood1.bmp", 0, 0, 85 * 3, 96 * 3, MGT);
 	IMAGEMANAGER->addImage("map_wood2", "Resources/Images/Map/map_obj_wood2.bmp", 0, 0, 126 * 3, 190 * 3, MGT);
 	IMAGEMANAGER->addImage("map_rock", "Resources/Images/Map/map_obj_rock.bmp", 0, 0, 32 * 3, 45 * 3, MGT);
@@ -119,11 +121,13 @@ HRESULT ImageClass::init(void)
 
 #pragma region UI	
 	
+	
 	IMAGEMANAGER->addImage("titleButton", "Resources/Images/Object/titleButton.bmp", RSCENTER_X, CENTER_Y, 98 * MAGNI, 30 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("nextButton", "Resources/Images/Object/nextButton.bmp", RSCENTER_X, CENTER_Y, 72 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("ynButton", "Resources/Images/Object/YesNoButton.bmp",   RSCENTER_X, CENTER_Y, 56 * MAGNI, 20 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("ynButton1", "Resources/Images/Object/YesNoButton1.bmp", RSCENTER_X, CENTER_Y, 56 * MAGNI, 20 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("ynButton2", "Resources/Images/Object/YesNoButton2.bmp", RSCENTER_X, CENTER_Y, 56 * MAGNI, 20 * MAGNI, MGT);
+	IMAGEMANAGER->addFrameImage("upDownButton", "Resources/Images/Object/upDownButton.bmp", RSCENTER_X, 0, 62 * MAGNI, 62 * MAGNI, MGT);
 
 	IMAGEMANAGER->addImage("newGame", "Resources/Images/Object/newGame.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("newGame0", "Resources/Images/Object/newGame0.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);

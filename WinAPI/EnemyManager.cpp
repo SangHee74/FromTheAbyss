@@ -30,7 +30,7 @@ void EnemyManager::update(void)
 	_viMonster = _vMonster.begin();
 	for (; _viMonster != _vMonster.end(); ++_viMonster)
 	{
-		(*_viMonster)->update();
+		//(*_viMonster)->update();
 	}
 }
 
@@ -73,7 +73,7 @@ void EnemyManager::setMoster(int abyss, int stage)
 		// ex :  11(0~19) 12(20~39) 13(40~59) 14(60~79)
 		//		 21(80~99) 22(100~119) 23(120~139) 24(140~159)
 	case 11:
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 9 ; i++)
 		{
 			Monster* dionaea;
 			dionaea = new Dionaea;
@@ -83,7 +83,7 @@ void EnemyManager::setMoster(int abyss, int stage)
 			_vMonster.push_back(dionaea);
 		}
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 9 ; i++)
 		{
 			Monster* evilEye;
 			evilEye = new EvilEye;
@@ -123,38 +123,40 @@ void EnemyManager::monsterAttack(void)
 // 몬스터 리스폰 좌표 랜덤설정
 POINT EnemyManager::monsterRandomPos(int abyssStage, int monsterCount)
 {
+
+
 	// 랜덤으로 검출할 인덱스와 좌표
-	int rndIndex;
-	POINT rndPos;
+	int count=0; // 몬스터 카운트만큼 좌표를 추출했는지 체크 
+	int rndIndex = 0;
+	POINT rndPos = { 0,0 };
 
 	//매개변수: 어비스 - 스테이지 - (index범위 검출용)
 	switch (abyssStage)
 	{
 	case 11:
-		rndIndex = RND->getFromIntTo(0, 19);
+	rndIndex = RND->getFromIntTo(0, 19);
+		for (int i = 0; i < monsterCount; i++)
+		{
+			if (monsterCount != count)
+			{
+				for (int j = 0; j < STAGE_MONSTER_POS_MAX; j++)
+				{
+					// ! 랜덤인덱스에 몬스터가 있다면 스킵
+					if (_monsterPos[0].mapPos[rndIndex].inMonster) continue;
+					else // 랜덤인덱스에 몬스터가 없다면 좌표입력 및 true 설정
+					{
+						rndPos.x = _monsterPos[0].mapPos[rndIndex].posX;
+						rndPos.y = _monsterPos[0].mapPos[rndIndex].posY;
+						_monsterPos[0].mapPos[rndIndex].inMonster = true;
+						count++;
+						break;
+					}
+				}
+			}
+			else break;
+		}
 		break;
 	}
-
-	for (int i = 0; i < monsterCount; i++)
-	{
-		for (int j = 0; j < STAGE_MONSTER_POS_MAX; j++)
-		{
-			// ! 랜덤인덱스에 몬스터가 있다면
-			if (_monsterPos[0].mapPos[rndIndex].inMonster)
-			{
-				// 재귀함수로 몬스터가 없는 인덱스가 나올때까지 검출
-				monsterRandomPos(abyssStage, monsterCount);
-			}
-			else // 랜덤인덱스에 몬스터가 없다면 좌표입력 및 true 설정
-			{
-				rndPos.x = _monsterPos[0].mapPos[rndIndex].posX;
-				rndPos.y = _monsterPos[0].mapPos[rndIndex].posY;
-				_monsterPos[0].mapPos[rndIndex].inMonster = true;
-				break;
-			}
-		}
-	}
-
 	// 포인트로 만들어서 반환하면 init에 함수 바로 사용 가능
 	return PointMake(rndPos.x, rndPos.y);
 }

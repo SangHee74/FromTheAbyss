@@ -4,11 +4,9 @@
 #include "FieldMonster.h"
 #include "BossMonster.h"
 
-
 #define STAGE_MONSTER_POS_MAX 20
 #define ABYSS_MAX 2
 #define STAGE_MAX 4
-
 
 struct tagCreateMonsterPos
 {
