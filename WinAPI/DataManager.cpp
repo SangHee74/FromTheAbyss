@@ -79,8 +79,8 @@ void DataManager::setStageSetting(void)
 		{
 			// 스테이지의 맵 정보 세팅
 			_mapData.map		 = IMG("map_stage1");
-			_mapData.mapObject  = IMG("map_stage1");
-			_mapData.mapTop	 = IMG("map_stage1_top");
+			//_mapData.mapObject   = IMG("map_stage1");
+			_mapData.mapTop	     = IMG("map_stage1_top");
 			_mapData.pixelMap	 = IMG("map_stage1_pixel");
 			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 120, 50);
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, inRcWidth, inRcHeight);

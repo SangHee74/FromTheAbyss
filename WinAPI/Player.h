@@ -1,7 +1,6 @@
 #pragma once
 #include "GameNode.h"
 
-
 enum PLAYERNUMBER
 {
 	PLAYER_NONE, PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_END
@@ -20,9 +19,9 @@ enum class PLAYERDIRECTION
 
 enum class PLAYERSTATE
 {
-	IDLE, MOVE, HIT, DEAD,
-	ONEHANDCOMBO_ONE, ONEHANDCOMBO_TWO, ONEHANDCOMBO_THREE,
-	TWOHANDCOMBO_ONE, TWOHANDCOMBO_TWO,
+	IDLE, MOVE, DEF, DEAD,
+	ATT_ONEHANDCOMBO, ATT_ONEHANDCOMBO_TWO, ATT_ONEHANDCOMBO_THREE,
+	ATT_TWOHANDCOMBO_ONE, ATT_TWOHANDCOMBO_TWO,
 	SKILL_SOULCAPTURE,SKILL_SPEARSTRIKE
 	//SKILL1, SKILL2, SKILL3
 };
@@ -126,6 +125,23 @@ struct tagPixel
 	int probeRight;
 };
 
+// 렉트충돌
+struct tagCollisionRc
+{
+
+	RECT defRc;
+	RECT attRc;
+	int defWidth;
+	int defHeight;
+	int attPosX;
+	int attPosY;
+	int attWidth;
+	int attHeight;
+	Image* attEffectImg;
+	int attEffFrameX;
+	int attEffFrameY;
+};
+
 class STATE;  // 상태패턴(상호참조-전방선언)
 
 class Player :public GameNode
@@ -140,6 +156,7 @@ private:
 	tagWeaponData	_weapon;	// 플레이어 무기+이펙트
 	tagCamera		_camera;	// 플레이어 카메라
 	tagPixel		_pixel;		// 플레이어 픽셀충돌
+	tagCollisionRc  _collision; // 플레이어 렉트충돌
 
 	// 아이템 임시 변수
 	int itemNum;
@@ -152,7 +169,6 @@ private:
 	// 010000 : isLive		// 4
 	// 100000 : render_isweaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
-
 
 	int _shadowAlpha;
 	
@@ -180,21 +196,23 @@ public:
 	PLAYERDIRECTION getDirection()				 { return _direction; }
 	void setDirection(PLAYERDIRECTION direction) { _direction = direction; }
 	
-	bitset<6> getIsStateCheck()					 { return this->_isStateCheck; }
-	unsigned int getIsStateCheck(int value)		 { return this->_isStateCheck[value]; }
-
+	bitset<6>&		 getIsStateCheck()			 { return _isStateCheck; }
 	tagAbyssData&	 getPlayerAbyss()			 { return _abyss; }
 	tagPlayerStatus& getPlayerStatus()			 { return _status; }
 	tagPlayerData&	 getPlayer()				 { return _player; }
 	tagWeaponData&   getPlayerWeapon()			 { return _weapon; }
 	tagCamera&		 getPlayerCAM()				 { return _camera; }
 	tagPixel&		 getPlayerPixel()			 { return _pixel; }
+	tagCollisionRc&  getPlayerCollisionRc()		 { return _collision; }
+
 
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void inStageWeaponSetting();
+	void setPlayerCollisionAttRc(int posX, int posY, int width, int height);
 
 
+		
 	//임시
 	int getItemNum() { return itemNum; }
 

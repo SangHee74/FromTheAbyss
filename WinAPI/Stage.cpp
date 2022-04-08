@@ -65,7 +65,7 @@ void Stage::update(void)
 	if (KEYOKD('5'))
 	{
 		DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= 10;
-		DATAMANAGER->getPlayer()->setState(PLAYERSTATE::HIT);
+		DATAMANAGER->getPlayer()->setState(PLAYERSTATE::DEF);
 	}
 
 	if (KEYOKD('6'))
@@ -131,7 +131,7 @@ void Stage::render(void)
 	(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
 	
 
-	if (KEYMANAGER->isToggleKey(VK_F2))
+	if (KEYMANAGER->isToggleKey(VK_F3))
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, 	cameraTop, 	CENTER_X, WINSIZE_Y);

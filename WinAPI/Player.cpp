@@ -4,7 +4,6 @@
 #include "StateBase.h"
 #include "StateAttack.h"
 
-
 HRESULT Player::init(void)
 {
 #pragma region 플레이어 데이터 입출력 영역 
@@ -35,7 +34,15 @@ HRESULT Player::init(void)
 
 	_shadowAlpha = 120;
 	_player.speed = 10;
-		
+	_collision.defWidth = 40;
+	_collision.defHeight = 80;
+	_collision.attWidth = 0;
+	_collision.attHeight = 0;
+	_collision.attEffectImg = nullptr;
+	_collision.attEffFrameX = 0;
+	_collision.attEffFrameY = 0;
+
+
 
 	return S_OK;
 }
@@ -48,22 +55,21 @@ void Player::release(void)
 void Player::update(void)
 {
 
-
 	// weapon pos+frame setting(idle)
 	inStageWeaponSetting();
 
 	// state pattern update
 	stateUpdate();
 	
-	// hit,dead 상태일때는 Y프레임 세팅 제외.
-	if (_state == PLAYERSTATE::HIT || _state == PLAYERSTATE::DEAD) {}
+	// def,dead 상태일때는 Y프레임 세팅 제외.
+	if (_state == PLAYERSTATE::DEF || _state == PLAYERSTATE::DEAD) {}
 	else _player.frameY = static_cast<int>(_direction);
 
 
 	// 외부에서 맞은 경우피격모션으로 바꾸기 
-	if (_state == PLAYERSTATE::HIT)
+	if (_state == PLAYERSTATE::DEF)
 	{
-		_pStatePattern = HitState::getInstance();
+		_pStatePattern = DefState::getInstance();
 		setPlayerState(_pStatePattern);
 	}
 
@@ -93,30 +99,63 @@ void Player::render(void)
 	}
 
 
+	//=======================================================================================================
+	// # 피격범위, 픽셀충돌체크 프로비 범위 토글키
+	//=======================================================================================================
+#pragma region 가이드 라인 토글키
+	if (KEYTOG(VK_F2))
+	{
+		// 가로세로 4px 사각형 / 중점 + 픽셀충돌 위치 계산
+		// 가이드 Toggle
+		RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
+		tempPos = RectMakeCenter(_player.movePosX, _player.movePosY, 4, 4);
+		Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
+			tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
 
-	// 가로세로 4px 사각형 / 중점 + 픽셀충돌 위치 계산
-	// 가이드 Toggle
-	RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
-	tempPos = RectMakeCenter(_player.movePosX, _player.movePosY, 4,4);
-	Rectangle(getMemDC(), tempPos.left - _camera.rc.left, tempPos.top - _camera.rc.top,
-		tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
-	
-	// 아래 - 를 좌우로 뿌리기 
-	tempPos2 = RectMakeCenter(_player.movePosX, _pixel.probeUp, 4, 4);
-	Rectangle(getMemDC(), tempPos2.left - _camera.rc.left,	   tempPos2.top - _camera.rc.top,
-						  tempPos2.left - _camera.rc.left + 4, tempPos2.top - _camera.rc.top + 4);
+		// 피격범위 렌더 
+		Rectangle(getMemDC(), _collision.defRc.left - _camera.rc.left, _collision.defRc.top - _camera.rc.top,
+			_collision.defRc.left - _camera.rc.left + _collision.defWidth, _collision.defRc.top - _camera.rc.top + _collision.defHeight);
 
-	tempPos3 = RectMakeCenter(_player.movePosX, _pixel.probeDown, 4, 4);
-	Rectangle(getMemDC(), tempPos3.left - _camera.rc.left,     tempPos3.top - _camera.rc.top,
-						  tempPos3.left - _camera.rc.left + 4, tempPos3.top - _camera.rc.top + 4);
-	// 좌
-	tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
-	Rectangle(getMemDC(), tempPos4.left - _camera.rc.left,	   tempPos4.top - _camera.rc.top,
-						  tempPos4.left - _camera.rc.left + 4, tempPos4.top - _camera.rc.top + 4);
-	// 우
-	tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
-	Rectangle(getMemDC(), tempPos5.left - _camera.rc.left,	   tempPos5.top - _camera.rc.top,
-						  tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
+		if (_isStateCheck.test(5))
+		{
+			_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
+			_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
+		}
+		if (!_isStateCheck.test(5))
+		{
+			_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
+			_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
+		}
+
+		// 타격범위 렌더
+		Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
+							  _collision.attRc.left - _camera.rc.left + _collision.attWidth,
+							  _collision.attRc.top  - _camera.rc.top  + _collision.attHeight );
+
+
+		// 픽셀충돌 아래 - 를 좌우로 뿌리기 
+		tempPos2 = RectMakeCenter(_player.movePosX, _pixel.probeUp, 4, 4);
+		Rectangle(getMemDC(), tempPos2.left - _camera.rc.left, tempPos2.top - _camera.rc.top,
+			tempPos2.left - _camera.rc.left + 4, tempPos2.top - _camera.rc.top + 4);
+
+		tempPos3 = RectMakeCenter(_player.movePosX, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos3.left - _camera.rc.left, tempPos3.top - _camera.rc.top,
+			tempPos3.left - _camera.rc.left + 4, tempPos3.top - _camera.rc.top + 4);
+		// 픽셀충돌 좌
+		tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos4.left - _camera.rc.left, tempPos4.top - _camera.rc.top,
+			tempPos4.left - _camera.rc.left + 4, tempPos4.top - _camera.rc.top + 4);
+		// 픽셀충돌 우
+		tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos5.left - _camera.rc.left, tempPos5.top - _camera.rc.top,
+			tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
+
+		//rcMake(getMemDC(), _player.defRc);
+		//rcMake(getMemDC(), _weapon.attRc);
+	}
+
+#pragma endregion
+
 
 
 }
@@ -276,9 +315,9 @@ void Player::inStageWeaponSetting()
 			break;
 		}
 	}
+
+
 }
-
-
 
 
 // 상태 세팅
@@ -318,6 +357,11 @@ void Player::stateUpdate()
 	_player.drawRc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
 	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
 	_weapon.drawRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
+	
+	// 캐릭터 피격/타격 범위 업데이트
+	_collision.defRc = RectMakeCenter(_player.drawPosX, _player.drawPosY+10, _collision.defWidth, _collision.defHeight);
+	_collision.attRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _collision.attWidth, _collision.attHeight);
+
 
 }
 
@@ -383,6 +427,17 @@ void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION dire
 	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
 }
 
+
+void Player::setPlayerCollisionAttRc(int posX, int posY, int width, int height )
+{
+	_collision.attPosX = posX;
+	_collision.attPosY = posY;
+	_collision.attWidth = width;
+	_collision.attHeight = height;
+
+	_collision.attRc =
+		RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+}
 
 
 

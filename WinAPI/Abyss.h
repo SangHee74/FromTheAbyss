@@ -17,8 +17,8 @@ private:
 	RECT _buttonRc[BUTTON_END]; // 어비스/스테이지 선택버튼
 	RECT _backButton;		    // 뒤로가기
 	RECT _upButton;				// 위로 올리기
-	RECT _dowbButton;			// 아래로 내리기 
-	bool _isStage;				// 버튼을 클릭하여 페이드아웃 시작
+	RECT _downButton;			// 아래로 내리기 
+	bool _isWaitInput;			// 더블클릭 대기
 	tagOnlyText _index[3];		// npc 대화
 
 	int _abyss;	        // 데이터 매니저로 전달할 던전 정보 

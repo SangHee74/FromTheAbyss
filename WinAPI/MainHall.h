@@ -16,6 +16,8 @@ private:
 	tagText _menuInfoText[MAINSCENE_END];
 	int _textNum;
 	int _selectMenu;
+	//int _selectCount;
+	bool _isWaitInput;
 
 #pragma region main bit flags
 	unsigned char mainIdx;
@@ -47,7 +49,7 @@ public:
 	void update(void);
 	void render(void);
 
-	int menuSelect();
+	void menuSelect();
 	void menuInfo(int textNum);
 };
 

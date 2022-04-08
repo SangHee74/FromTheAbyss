@@ -13,8 +13,8 @@ HRESULT Abyss::init(void)
 
 	_backButton = RectMake(WINSIZE_X - 134, WINSIZE_Y - 50, 120, 40);
 	_upButton	= RectMake(CENTER_X, 0, 78,78);
-	_dowbButton = RectMake(CENTER_X, WINSIZE_Y-78, 78,78);
-	_isStage = false;
+	_downButton = RectMake(CENTER_X, WINSIZE_Y-78, 78,78);
+	_isWaitInput = false;
 	
 	_abyss = 0;
 	_stage = 0;
@@ -32,13 +32,13 @@ void Abyss::update(void)
 {
 	if (PtInRect(&_buttonRc[BUTTON_ONE], _ptMouse))
 	{
-		if (!_isStage)
+		if (!_isWaitInput)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
 				DATAMANAGER->getMapData().enterAbyssInfo.abyss = 1;
 				DATAMANAGER->getMapData().enterAbyssInfo.stage = 1;
-				_isStage = true;
+				_isWaitInput = true;
 			}			
 		}
 		else
@@ -49,24 +49,24 @@ void Abyss::update(void)
 			}
 		}
 	}
-
 	if (PtInRect(&_backButton, _ptMouse))
 	{
-		if (!_isStage)
+		if (!_isWaitInput)
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
-				SCENEMANAGER->changeScene("main");
+				_isWaitInput = false;
 			}
 		}
 		else
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
-				_isStage = false;
+				SCENEMANAGER->changeScene("main");
 			}
 		}
 	}
+	else _isWaitInput = false;
 
 
 	if (_downButtonOn)
@@ -94,7 +94,7 @@ void Abyss::render(void)
 {
 	IMGR("abyss", getMemDC());
 
-	if(!_isStage)
+	if(!_isWaitInput)
 	{
 		IMGR("abyss1", getMemDC(), _buttonRc[0].left, _buttonRc[0].top);
 		FONTMANAGER->firstLineText(getMemDC(), _index[0].text);

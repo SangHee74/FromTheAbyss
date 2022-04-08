@@ -6,7 +6,7 @@
 // 대기, 이동, 피격, 죽음 상태
 IdleState* IdleState::instance;
 MoveState* MoveState::instance;
-HitState* HitState::instance;
+DefState* DefState::instance;
 DeadState* DeadState::instance;
 
 // 대기
@@ -29,6 +29,8 @@ void IdleState::stateInit(Player* player)
 	// 플레이어 무기타입(image), 방향(frameX), 무기번호(frameY)+ 무기좌표 세팅
 	player->inStageWeaponSetting();
 
+	// 공격범위 초기화
+	player->setPlayerCollisionAttRc(0, 0, 0, 0);
 }
 
 void IdleState::stateUpdate(Player* player)
@@ -80,8 +82,7 @@ void IdleState::stateUpdate(Player* player)
 	// 피격
 	if (player->getIsStateCheck().test(3))
 	{
-		cout << "피격당함!" << endl;
-		SetPlayerState(player, HitState::getInstance());
+		SetPlayerState(player, DefState::getInstance());
 	}
 
 	// 죽음
@@ -155,6 +156,9 @@ void MoveState::stateInit(Player * player)
 
 	timeCount = 0;
 	frameIndexX = 0;
+
+	player->setPlayerCollisionAttRc(0, 0, 0, 0);
+
 }
 
 void MoveState::stateUpdate(Player* player)
@@ -331,7 +335,7 @@ void MoveState::stateUpdate(Player* player)
 	if (player->getIsStateCheck().test(3))
 	{
 		cout << "피격당함!" << endl;
-		SetPlayerState(player, HitState::getInstance());
+		SetPlayerState(player, DefState::getInstance());
 	}
 
 	// 죽음
@@ -475,22 +479,24 @@ bool MoveState::pixelColorCheck(int getPixelX, int getPixelY)
 
 
 // 피격
-HitState* HitState::getInstance()
+DefState* DefState::getInstance()
 {
-	if (instance == nullptr) instance = new HitState();
+	if (instance == nullptr) instance = new DefState();
 	return instance;
 }
 
-void HitState::stateInit(Player* player)
+void DefState::stateInit(Player* player)
 {
 	player->getIsStateCheck().set(3);
-	player->setState(PLAYERSTATE::HIT);
+	player->setState(PLAYERSTATE::DEF);
+	player->setPlayerCollisionAttRc(0, 0, 0, 0);
+
 }
 
-void HitState::stateUpdate(Player* player)
+void DefState::stateUpdate(Player* player)
 {
 	timeCount++;
-	player->getPlayer().image = IMG("p_hit");
+	player->getPlayer().image = IMG("p_def");
 	player->getPlayerWeapon().image = IMG("weapon_none");
 
 	// 왼쪽에서 맞으면 오른쪽으로 약간 이동 
@@ -504,6 +510,7 @@ void HitState::stateUpdate(Player* player)
 		player->getPlayer().movePosX -= (player->getPlayer().speed*0.1);
 		player->getPlayer().frameY = 1;
 	}
+
 
 	player->getPlayer().frameX = 0;
 
@@ -522,7 +529,7 @@ void HitState::stateUpdate(Player* player)
 	
 }
 
-void HitState::stateRelease()
+void DefState::stateRelease()
 {
 	if (instance)
 	{
@@ -531,7 +538,7 @@ void HitState::stateRelease()
 	}
 }
 
-void HitState::stateRender(Player* player)
+void DefState::stateRender(Player* player)
 {
 }
 
@@ -543,6 +550,7 @@ DeadState* DeadState::getInstance()
 
 void DeadState::stateInit(Player * player)
 {
+	player->setPlayerCollisionAttRc(0, 0, 0, 0);
 
 }
 

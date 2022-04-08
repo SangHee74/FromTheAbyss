@@ -7,9 +7,11 @@ class Player;
 class OneHandWeaponCombo : public STATE
 {
 	static OneHandWeaponCombo* instance;
-	int timeCount;
-	int frameIndexX;
-	int weaponFrameIndexX;
+	int timeCount; 
+	int comboMinTime;
+	int comboMaxTime;
+
+
 	bitset<3> combo;
 public:
 	static OneHandWeaponCombo* getInstance();

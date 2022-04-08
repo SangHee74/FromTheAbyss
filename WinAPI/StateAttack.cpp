@@ -20,6 +20,11 @@ void OneHandWeaponCombo::stateInit(Player* player)
 {
 	// 비트셋 초기화 + 공격으로 전환
 	player->getIsStateCheck().reset(0);
+	player->getIsStateCheck().set(2);
+
+	player->getPlayerCollisionRc().attEffFrameX = 0;
+	player->getPlayerCollisionRc().attEffFrameY = 0;
+	
 	combo.reset(0);
 
 	timeCount = 0;
@@ -35,13 +40,12 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 	// 60카운트(1초)지나기 전 재입력하면 다음콤보
 	// 콤보에서 시간초 초기화.
 	timeCount++;
-	cout << timeCount << endl;
-	if (combo.none() && KEYMANAGER->isStayKeyDown('X') )
-	{
-		// 1단 공격 실행
-		combo.set(0);
-		comboOne(player);
-	}
+
+	// 1단 공격 실행
+	combo.set(0);
+	if (combo.none()) comboOne(player);
+	
+
 
 	//if (combo.test(0) && KEYMANAGER->isStayKeyDown('X') && !player->getIsStateCheck().test(2))
 	{
@@ -83,10 +87,12 @@ void OneHandWeaponCombo::comboOne(Player* player)
 {
 	
 	player->getPlayer().image = IMG("p_oneHandCombo_01");
-	player->getPlayer().frameX = 0;
+	player->getPlayerCollisionRc().attEffectImg = IMG("eff_sword");
+	player->getPlayerCollisionRc().attEffFrameY = static_cast<int>(player->getDirection());
+
 	// isAttack
-	player->getIsStateCheck().set(2);
 	cout << "한손무기 1단 공격 함수" << endl;
+	player->setPlayerCollisionAttRc(0, 0, 0, 0);
 
 	if (timeCount % 120 == 0)
 	{
@@ -98,6 +104,7 @@ void OneHandWeaponCombo::comboOne(Player* player)
 			player->getIsStateCheck().reset(2);
 		}
 	}
+
 
 }
 
