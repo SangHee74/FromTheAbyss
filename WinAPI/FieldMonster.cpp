@@ -43,9 +43,9 @@ EvilEye::EvilEye()
 void EvilEye::move()
 {
 
-	_movePosX += RND->getFloat(5.0f);
-	if (_movePosX > CENTER_X + 50) _movePosX = 0;
-	_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
+	//_movePosX += RND->getFloat(5.0f);
+	//if (_movePosX > CENTER_X + 50) _movePosX = 0;
+	//_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
 
 }
 

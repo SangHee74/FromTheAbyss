@@ -25,8 +25,11 @@ HRESULT Monster::init(POINT position)
 	_movePosY = position.y;
 	_speed = 0.0f;
 
+
 	_moveRc = RectMakeCenter(position.x, position.y,
 		_image->getFrameWidth(), _image->getFrameHeight());
+	_collision.defRc =  RectMakeCenter(position.x, position.y,
+			_image->getFrameWidth()-20, _image->getFrameHeight()-20);
 	return S_OK;
 }
 

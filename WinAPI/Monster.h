@@ -12,11 +12,15 @@ enum class MOSTERSTATE
 };
 
 
+
 class Monster : public GameNode
 {
 protected:
 	MOSTERSTATE _state;
 	MONSTERDIRECTION _direction;
+
+	tagPixel		_pixel;		// 몬스터 픽셀충돌
+	tagCollisionRc  _collision; // 몬스터 렉트충돌
 
 	int  _curHp;
  	int  _dropExp;

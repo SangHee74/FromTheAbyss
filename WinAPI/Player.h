@@ -211,7 +211,7 @@ public:
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
 	void playerCollisionAttDataSetting(int currentFrameX);
-
+	void playerAttSetting(bitset<3> combo);
 		
 	//юс╫ц
 	int getItemNum() { return itemNum; }

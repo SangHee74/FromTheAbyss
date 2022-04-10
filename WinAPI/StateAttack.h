@@ -7,12 +7,14 @@ class Player;
 class OneHandWeaponCombo : public STATE
 {
 	static OneHandWeaponCombo* instance;
-	int timeCount; 
-	//float comboMinTime;
-	float comboInputMaxTime;
+	//int _timeCount; 
+	float _comboInputMinTime; // 최소 키 입력 시간
+	float _comboInputMaxTime; // 최대 키 입력 시간
 
-
-	bitset<3> combo;
+	// 001 : 1단 콤보
+	// 010 : 2단 콤보
+	// 100 : 3단 콤보 
+	bitset<3> _combo;
 public:
 	static OneHandWeaponCombo* getInstance();
 
@@ -25,6 +27,7 @@ public:
 	void comboOne(Player* player);
 	void comboTwo(Player* player);
 	void comboThree(Player* player);
+	void weaponAttFrameSetting(Player* player);
 };
 
 
