@@ -27,10 +27,14 @@ void IdleState::stateInit(Player* player)
 	player->setState(PLAYERSTATE::IDLE);
 
 	// 플레이어 무기타입(image), 방향(frameX), 무기번호(frameY)+ 무기좌표 세팅
-	player->inStageWeaponSetting();
+	player->weaponinStageSetting();
 
 	// 공격범위 초기화
-	player->setPlayerCollisionAttRc(0, 0, 0, 0);
+	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().attEffFrameX = 0;
+	player->getPlayerCollisionRc().attEffFrameY = 0;
+
+	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
 }
 
 void IdleState::stateUpdate(Player* player)
@@ -51,6 +55,7 @@ void IdleState::stateUpdate(Player* player)
 		if ((player->getPlayerWeapon().type == WEAPONTYPE::SWORD) ||
 			(player->getPlayerWeapon().type == WEAPONTYPE::AX))
 		{
+			cout << "키입력 X !" << endl;
 			SetPlayerState(player, OneHandWeaponCombo::getInstance());
 		}
 		if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR)
@@ -101,19 +106,19 @@ void IdleState::stateUpdate(Player* player)
 	if (KEYMANAGER->isOnceKeyDown('1'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::SWORD;
-		player->inStageWeaponSetting();
+		player->weaponinStageSetting();
 
 	}
 	if (KEYMANAGER->isOnceKeyDown('2'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::AX;
-		player->inStageWeaponSetting();
+		player->weaponinStageSetting();
 
 	}
 	if (KEYMANAGER->isOnceKeyDown('3'))
 	{
 		player->getPlayerWeapon().type = WEAPONTYPE::SPEAR;
-		player->inStageWeaponSetting();
+		player->weaponinStageSetting();
 
 	}
 	if (KEYMANAGER->isOnceKeyDown('4'))
@@ -156,8 +161,6 @@ void MoveState::stateInit(Player * player)
 
 	timeCount = 0;
 	frameIndexX = 0;
-
-	player->setPlayerCollisionAttRc(0, 0, 0, 0);
 
 }
 
@@ -489,7 +492,14 @@ void DefState::stateInit(Player* player)
 {
 	player->getIsStateCheck().set(3);
 	player->setState(PLAYERSTATE::DEF);
-	player->setPlayerCollisionAttRc(0, 0, 0, 0);
+
+	// 공격범위 초기화
+	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().attEffFrameX = 0;
+	player->getPlayerCollisionRc().attEffFrameY = 0;
+
+	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
+
 
 }
 
@@ -550,7 +560,12 @@ DeadState* DeadState::getInstance()
 
 void DeadState::stateInit(Player * player)
 {
-	player->setPlayerCollisionAttRc(0, 0, 0, 0);
+	// 공격범위 초기화
+	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().attEffFrameX = 0;
+	player->getPlayerCollisionRc().attEffFrameY = 0;
+
+	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
 
 }
 

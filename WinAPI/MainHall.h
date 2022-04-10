@@ -16,7 +16,7 @@ private:
 	tagText _menuInfoText[MAINSCENE_END];
 	int _textNum;
 	int _selectMenu;
-	//int _selectCount;
+	float _selectCount;
 	bool _isWaitInput;
 
 #pragma region main bit flags

@@ -88,7 +88,7 @@ void EnemyManager::setMoster()
 
 			}
 		}
-		if (currentStage == 1)
+		if (currentStage == 2)
 		{
 			cout << "어비스1-스테이지2 몬스터 미구현!" << endl;
 		}

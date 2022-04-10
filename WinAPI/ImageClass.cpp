@@ -71,7 +71,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 330 , 110 , 2, 1, MGT);
 	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
 
-
 	
 #pragma endregion
 

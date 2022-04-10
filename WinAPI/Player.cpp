@@ -38,9 +38,6 @@ HRESULT Player::init(void)
 	_collision.defHeight = 80;
 	_collision.attWidth = 0;
 	_collision.attHeight = 0;
-	_collision.attEffectImg = nullptr;
-	_collision.attEffFrameX = 0;
-	_collision.attEffFrameY = 0;
 
 
 
@@ -56,7 +53,7 @@ void Player::update(void)
 {
 
 	// weapon pos+frame setting(idle)
-	inStageWeaponSetting();
+	weaponinStageSetting();
 
 	// state pattern update
 	stateUpdate();
@@ -66,7 +63,7 @@ void Player::update(void)
 	else _player.frameY = static_cast<int>(_direction);
 
 
-	// 외부에서 맞은 경우피격모션으로 바꾸기 
+	// 외부에서 맞은 경우 피격모션으로 바꾸기 
 	if (_state == PLAYERSTATE::DEF)
 	{
 		_pStatePattern = DefState::getInstance();
@@ -84,16 +81,30 @@ void Player::render(void)
 	_camera.playerTop = _player.drawRc.top - _camera.rc.top;
 	_camera.weaponLeft = _weapon.drawRc.left - _camera.rc.left;
 	_camera.weaponTop = _weapon.drawRc.top - _camera.rc.top;
+	_camera.effectLeft = _collision.attRc.left - _camera.rc.left;
+	_camera.effectTop = _collision.attRc.top - _camera.rc.top;
 
 	IMGAR("p_shadow", getMemDC(), _camera.playerLeft+20, _camera.playerTop +100 ,_shadowAlpha);
+	// 타격범위 렌더
+	Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
+		_collision.attRc.left - _camera.rc.left + _collision.attWidth,
+		_collision.attRc.top - _camera.rc.top + _collision.attHeight);
 
 	if (_isStateCheck.test(5))
 	{
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
+		if (_isStateCheck.test(2))
+		{
+			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
+		}
 	}
 	if (! _isStateCheck.test(5))
 	{
+		if (_isStateCheck.test(2))
+		{
+			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
+		}		
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 	}
@@ -127,10 +138,16 @@ void Player::render(void)
 			_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		}
 
+		// 무기이미지 렌더
+		Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
+			_weapon.drawRc.left - _camera.rc.left + _weapon.width,
+			_weapon.drawRc.top - _camera.rc.top + _weapon.height);
+
+
 		// 타격범위 렌더
-		Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
-							  _collision.attRc.left - _camera.rc.left + _collision.attWidth,
-							  _collision.attRc.top  - _camera.rc.top  + _collision.attHeight );
+		//Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
+		//					  _collision.attRc.left - _camera.rc.left + _collision.attWidth,
+		//					  _collision.attRc.top  - _camera.rc.top  + _collision.attHeight );
 
 
 		// 픽셀충돌 아래 - 를 좌우로 뿌리기 
@@ -160,11 +177,119 @@ void Player::render(void)
 
 }
 
-void Player::inStageWeaponSetting()
+
+// 상태 세팅
+void Player::setPlayerState(STATE* state)
+{
+	// 자동으로 실행
+	this->_pStatePattern = state;
+	_pStatePattern->stateInit(this);
+}
+
+// 행동 세팅
+void Player::stateUpdate()
+{
+	// 방향은 상시 체크 
+	if (_direction == PLAYERDIRECTION::LEFT 
+		|| _direction == PLAYERDIRECTION::LEFTUP 
+		|| _direction == PLAYERDIRECTION::LEFTDOWN)
+	{
+		_isStateCheck.set(0);
+	}
+	else _isStateCheck.reset(0);
+
+	// playerDirection = DOWN : 플레이어가 무기 아래에 렌더
+	if (_direction == PLAYERDIRECTION::DOWN
+		|| _direction == PLAYERDIRECTION::LEFTDOWN
+		|| _direction == PLAYERDIRECTION::RIGHTDOWN)
+	{
+		_isStateCheck.set(5);
+	}
+	else _isStateCheck.reset(5);
+
+	// 상태패턴 업데이트 
+	_pStatePattern->stateUpdate(this);
+
+	// 플레이어 + 무기 위치 업데이트
+	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
+	_player.drawRc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
+	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
+	_weapon.drawRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
+	
+	// 캐릭터 피격/타격 범위 업데이트
+	_collision.defRc = RectMakeCenter(_player.drawPosX, _player.drawPosY+10, _collision.defWidth, _collision.defHeight);
+	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+
+
+}
+
+// 행동 렌더
+void Player::stateRender()
+{
+	_pStatePattern->stateRender(this);
+}
+
+
+
+// 스테이지 이닛용 
+void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction)
+{
+
+	_player.movePosX = _player.drawPosX = playerX;
+	_player.movePosY = _player.drawPosY = playerY;
+	_state = PLAYERSTATE::IDLE;
+	_direction = direction;
+
+	// 임시 아이템넘버(무기프레임이미지 시트에서 y프레임)
+	itemNum = 0;
+	if (itemNum == 0)
+	{
+		_weapon.image = IMG("weapon_sword"); _weapon.type = WEAPONTYPE::SWORD;
+	}
+	if (itemNum == 1)
+	{
+		_weapon.image = IMG("weapon_ax"); _weapon.type = WEAPONTYPE::AX;
+	}
+	if (itemNum == 2)
+	{
+		_weapon.image = IMG("weapon_spear");  _weapon.type = WEAPONTYPE::SPEAR;
+	}
+
+	if (_weapon.type == WEAPONTYPE::SPEAR) _player.image = IMG("p_idle_twoHand");
+	else _player.image = IMG("p_idle_oneHand");
+
+	_player.frameX = 0;
+	_player.frameY = static_cast<int>(_direction);
+	_player.width = _player.image->getFrameWidth();
+	_player.height = _player.image->getFrameHeight();
+	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
+
+	_weapon.movePosX = _weapon.drawPosX = _player.movePosX;
+	_weapon.movePosY = _weapon.drawPosY = _player.movePosY;
+	_weapon.width = _weapon.image->getFrameWidth();
+	_weapon.height = _weapon.image->getFrameHeight();
+	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
+
+	// bitset setting - isLive
+	_isStateCheck.reset();
+	_isStateCheck.set(4);
+
+	// 상태패턴 (대기상태로 시작)
+	// 캐릭터 방향, 무기타입, 무기번호(itemNum)
+	_pStatePattern = IdleState::getInstance();
+	setPlayerState(_pStatePattern);
+
+	// 픽셀충돌 - 탐색
+	_pixel.probeDown = _player.movePosY + _player.image->getHeight() / 2;
+	_pixel.probeLeft = _player.movePosX - _player.image->getWidth() / 2;
+	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
+}
+
+void Player::weaponinStageSetting()
 {
 	// 무기넘버에 따라 무기시트에서 프레임 업데이트
 	_weapon.frameY = itemNum;
-	
+
 	// 이동좌표, 렌더좌표 업데이트 
 	_player.drawPosX = _player.movePosX;
 	_player.drawPosY = _player.movePosY;
@@ -319,125 +444,66 @@ void Player::inStageWeaponSetting()
 
 }
 
-
-// 상태 세팅
-void Player::setPlayerState(STATE* state)
+void Player::playerCollisionAttDataSetting(int currentEffectFrameX)
 {
-	// 자동으로 실행
-	this->_pStatePattern = state;
-	_pStatePattern->stateInit(this);
-}
-
-// 행동 세팅
-void Player::stateUpdate()
-{
-	// 방향은 상시 체크 
-	if (_direction == PLAYERDIRECTION::LEFT 
-		|| _direction == PLAYERDIRECTION::LEFTUP 
-		|| _direction == PLAYERDIRECTION::LEFTDOWN)
+	if (currentEffectFrameX == 0)
 	{
-		_isStateCheck.set(0);
+		switch (_direction)
+		{
+		case PLAYERDIRECTION::UP:
+			if (_weapon.type == WEAPONTYPE::SWORD || _weapon.type == WEAPONTYPE::AX) // 한손무기
+			{
+				_collision.attPosX = _weapon.drawPosX - 25;
+				_collision.attPosY = _weapon.drawPosY + 56;
+				_collision.attWidth	= 122;
+				_collision.attHeight = 113;
+
+			}
+			else // 두손무기
+			{
+
+			}
+			break;
+		case PLAYERDIRECTION::DOWN:
+			break;
+		case PLAYERDIRECTION::LEFT:
+			break;
+		case PLAYERDIRECTION::RIGHT:
+			break;
+		case PLAYERDIRECTION::LEFTUP:
+			break;
+		case PLAYERDIRECTION::RIGHTUP:
+			break;
+		case PLAYERDIRECTION::LEFTDOWN:
+			break;
+		case PLAYERDIRECTION::RIGHTDOWN:
+			if (_weapon.type == WEAPONTYPE::SWORD || _weapon.type == WEAPONTYPE::AX) // 한손무기
+			{
+				cout << "한손무기-라이트다운 : Pos, w, h 변경 시작-------" << endl;
+				_collision.attPosX = _weapon.drawPosX - 25;
+				_collision.attPosY = _weapon.drawPosY + 56;
+				_collision.attWidth = 122;
+				_collision.attHeight = 113;
+
+			}
+			else // 두손무기
+			{
+
+			}
+			break;
+		}
 	}
-	else _isStateCheck.reset(0);
 
-	// playerDirection = DOWN : 플레이어가 무기 아래에 렌더
-	if (_direction == PLAYERDIRECTION::DOWN
-		|| _direction == PLAYERDIRECTION::LEFTDOWN
-		|| _direction == PLAYERDIRECTION::RIGHTDOWN)
-	{
-		_isStateCheck.set(5);
-	}
-	else _isStateCheck.reset(5);
-
-	// 상태패턴 업데이트 
-	_pStatePattern->stateUpdate(this);
-
-	// 플레이어 + 무기 위치 업데이트
-	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
-	_player.drawRc = RectMakeCenter(_player.drawPosX, _player.drawPosY, _player.width, _player.height);
-	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
-	_weapon.drawRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _weapon.width, _weapon.height);
+	//_collision.attPosX = posX;
+	//_collision.attPosY = posY;
+	//_collision.attWidth = width;
+	//_collision.attHeight = height;
+	//_collision.attRc =
+	//	RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	
-	// 캐릭터 피격/타격 범위 업데이트
-	_collision.defRc = RectMakeCenter(_player.drawPosX, _player.drawPosY+10, _collision.defWidth, _collision.defHeight);
-	_collision.attRc = RectMakeCenter(_weapon.drawPosX, _weapon.drawPosY, _collision.attWidth, _collision.attHeight);
-
-
-}
-
-// 행동 렌더
-void Player::stateRender()
-{
-	_pStatePattern->stateRender(this);
-}
-
-
-
-// 스테이지 이닛용 
-void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction)
-{
-
-	_player.movePosX = _player.drawPosX = playerX;
-	_player.movePosY = _player.drawPosY = playerY;
-	_state = PLAYERSTATE::IDLE;
-	_direction = direction;
-
-	// 임시 아이템넘버(무기프레임이미지 시트에서 y프레임)
-	itemNum = 0;
-	if (itemNum == 0)
+	if (_state == PLAYERSTATE::IDLE)
 	{
-		_weapon.image = IMG("weapon_sword"); _weapon.type = WEAPONTYPE::SWORD;
+		_collision.attRc = RectMakeCenter(0,0,0,0);
 	}
-	if (itemNum == 1)
-	{
-		_weapon.image = IMG("weapon_ax"); _weapon.type = WEAPONTYPE::AX;
-	}
-	if (itemNum == 2)
-	{
-		_weapon.image = IMG("weapon_spear");  _weapon.type = WEAPONTYPE::SPEAR;
-	}
-
-	if (_weapon.type == WEAPONTYPE::SPEAR) _player.image = IMG("p_idle_twoHand");
-	else _player.image = IMG("p_idle_oneHand");
-
-	_player.frameX = 0;
-	_player.frameY = static_cast<int>(_direction);
-	_player.width = _player.image->getFrameWidth();
-	_player.height = _player.image->getFrameHeight();
-	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
-
-	_weapon.movePosX = _weapon.drawPosX = _player.movePosX;
-	_weapon.movePosY = _weapon.drawPosY = _player.movePosY;
-	_weapon.width = _weapon.image->getFrameWidth();
-	_weapon.height = _weapon.image->getFrameHeight();
-	_weapon.moveRc = RectMakeCenter(_weapon.movePosX, _weapon.movePosY, _weapon.width, _weapon.height);
-
-	// bitset setting - isLive
-	_isStateCheck.reset();
-	_isStateCheck.set(4);
-
-	// 상태패턴 (대기상태로 시작)
-	// 캐릭터 방향, 무기타입, 무기번호(itemNum)
-	_pStatePattern = IdleState::getInstance();
-	setPlayerState(_pStatePattern);
-
-	// 픽셀충돌 - 탐색
-	_pixel.probeDown = _player.movePosY + _player.image->getHeight() / 2;
-	_pixel.probeLeft = _player.movePosX - _player.image->getWidth() / 2;
-	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
 }
-
-
-void Player::setPlayerCollisionAttRc(int posX, int posY, int width, int height )
-{
-	_collision.attPosX = posX;
-	_collision.attPosY = posY;
-	_collision.attWidth = width;
-	_collision.attHeight = height;
-
-	_collision.attRc =
-		RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
-}
-
-
 

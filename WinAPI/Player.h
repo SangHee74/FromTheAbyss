@@ -114,6 +114,7 @@ struct tagCamera
 	RECT rc;
 	int playerLeft, playerTop;
 	int weaponLeft, weaponTop;
+	int effectLeft, effectTop;
 };
 
 // 픽셀충돌
@@ -165,7 +166,7 @@ private:
 	// 000001 : isLeft		// 0
 	// 000010 :	isRunnig	// 1
 	// 000100 : isAttack	// 2
-	// 001000 : isHit		// 3
+	// 001000 : isDefense 	// 3
 	// 010000 : isLive		// 4
 	// 100000 : render_isweaponTop(playerDirectionDown) // 5
 	bitset<6> _isStateCheck;
@@ -208,9 +209,8 @@ public:
 
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
-	void inStageWeaponSetting();
-	void setPlayerCollisionAttRc(int posX, int posY, int width, int height);
-
+	void weaponinStageSetting();
+	void playerCollisionAttDataSetting(int currentFrameX);
 
 		
 	//임시

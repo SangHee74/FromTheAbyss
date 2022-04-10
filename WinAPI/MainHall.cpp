@@ -5,7 +5,7 @@ HRESULT MainHall::init(void)
 {
 	mainIdx = 1;
 	_textNum = 0;
-	//_selectCount = 0;
+	_selectCount = 0;
 
 	_icon[MAINSCENE_ABYSS] = RectMake(756, 132, 110, 90);
 	_icon[MAINSCENE_PUB] = RectMake(720, 354, 90, 70);
@@ -24,7 +24,7 @@ void MainHall::release(void)
 void MainHall::update(void)
 {
 	menuSelect();
-
+	//_isWaitInput = false;
 
 }
 
@@ -157,7 +157,7 @@ void MainHall::menuSelect()
 			}
 		}
 	}
-	else _isWaitInput = false;
+	 
 
 
 }

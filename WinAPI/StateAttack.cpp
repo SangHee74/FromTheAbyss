@@ -18,16 +18,24 @@ OneHandWeaponCombo* OneHandWeaponCombo::getInstance()
 
 void OneHandWeaponCombo::stateInit(Player* player)
 {
+	cout << "한손공격 콤보 이닛" << endl;
 	// 비트셋 초기화 + 공격으로 전환
 	player->getIsStateCheck().reset(0);
 	player->getIsStateCheck().set(2);
 
 	player->getPlayerCollisionRc().attEffFrameX = 0;
 	player->getPlayerCollisionRc().attEffFrameY = 0;
+	player->getPlayerCollisionRc().attPosX = 0;
+	player->getPlayerCollisionRc().attPosY = 0;
+	player->getPlayerCollisionRc().attWidth = 0;
+	player->getPlayerCollisionRc().attHeight = 0;
+
 	
 	combo.reset(0);
 
 	timeCount = 0;
+	//comboMinTime = 0.0f;
+	comboInputMaxTime = 0.0f;
 
 	// 방향별 무기 프레임 지정(comboOne 1,2 /  comboTwo 1,2 / comboThree 1,2 ) : 총 6개
 	// 스위치로 플레이어 방향 받아서 지정.
@@ -36,14 +44,26 @@ void OneHandWeaponCombo::stateInit(Player* player)
 
 void OneHandWeaponCombo::stateUpdate(Player* player)
 {
+	cout << "한손공격 콤보 업데이트------" << endl;
 
 	// 60카운트(1초)지나기 전 재입력하면 다음콤보
 	// 콤보에서 시간초 초기화.
-	timeCount++;
+
+	// 
+	timeCount += TIMEMANAGER->getElapsedTime();
+	if (timeCount >= 0.3f)
+	{
+	cout << "timeCount : " << timeCount << endl;
+	cout << "comboInputMaxTime :" << comboInputMaxTime << endl;
+		timeCount = 0;
+		comboInputMaxTime++;
+	}
+
+
 
 	// 1단 공격 실행
 	combo.set(0);
-	if (combo.none()) comboOne(player);
+	if (combo.test(0)) comboOne(player);
 	
 
 
@@ -85,18 +105,24 @@ void OneHandWeaponCombo::stateRender(Player* player)
 
 void OneHandWeaponCombo::comboOne(Player* player)
 {
+	cout << "한손무기 1단 공격 함수" << endl;
 	
+	// 이미지 세팅 
 	player->getPlayer().image = IMG("p_oneHandCombo_01");
 	player->getPlayerCollisionRc().attEffectImg = IMG("eff_sword");
+	player->getPlayerCollisionRc().attEffFrameX = 0;
 	player->getPlayerCollisionRc().attEffFrameY = static_cast<int>(player->getDirection());
 
-	// isAttack
-	cout << "한손무기 1단 공격 함수" << endl;
-	player->setPlayerCollisionAttRc(0, 0, 0, 0);
-
+	// 공격범위 세팅 
+	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
+	cout << "------------------------------" << endl;
+	// 캐릭터 프레임 + 이펙트 프레임 + 공격범위 업데이트 
 	if (timeCount % 120 == 0)
 	{
 		player->getPlayer().frameX += 1;
+		player->getPlayerCollisionRc().attEffFrameX += 1;
+		player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
+
 
 		if (player->getPlayer().frameX > 1 && timeCount % 180 == 0)
 		{

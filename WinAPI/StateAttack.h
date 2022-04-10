@@ -8,8 +8,8 @@ class OneHandWeaponCombo : public STATE
 {
 	static OneHandWeaponCombo* instance;
 	int timeCount; 
-	int comboMinTime;
-	int comboMaxTime;
+	//float comboMinTime;
+	float comboInputMaxTime;
 
 
 	bitset<3> combo;

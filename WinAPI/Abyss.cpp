@@ -66,7 +66,7 @@ void Abyss::update(void)
 			}
 		}
 	}
-	else _isWaitInput = false;
+
 
 
 	if (_downButtonOn)
