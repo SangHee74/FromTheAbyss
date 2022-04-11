@@ -10,11 +10,14 @@ class OneHandWeaponCombo : public STATE
 	//int _timeCount; 
 	float _comboInputMinTime; // 최소 키 입력 시간
 	float _comboInputMaxTime; // 최대 키 입력 시간
+	float _playerMotionTime; // 최대 키 입력 시간
 
 	// 001 : 1단 콤보
 	// 010 : 2단 콤보
 	// 100 : 3단 콤보 
-	bitset<3> _combo;
+	bitset<3> _comboStart;
+	bitset<3> _comboEnd;
+
 public:
 	static OneHandWeaponCombo* getInstance();
 

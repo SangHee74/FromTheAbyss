@@ -126,9 +126,9 @@ void Stage::render(void)
 	//
 
 
-	// 배경 탑
-	DATAMANAGER->getMapData().mapTop->render
-	(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
+	// 배경 탑 - 임시 닫음
+	//DATAMANAGER->getMapData().mapTop->render
+	//(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
 	
 
 	if (KEYMANAGER->isToggleKey(VK_F3))

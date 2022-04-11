@@ -67,6 +67,18 @@ void EnemyManager::setMoster()
 	case 1:
 		if (currentStage == 1)
 		{
+
+			// 피격 테스트 용 
+			Monster* dionaea;
+			dionaea = new Dionaea;
+
+			// 식충식물 
+			dionaea->init({ 280, 330 });
+			_vMonster.push_back(dionaea);
+
+
+
+
 			for (int i = 0; i < 9; i++)
 			{
 				Monster* dionaea;

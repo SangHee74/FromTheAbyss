@@ -92,14 +92,14 @@ void Player::render(void)
 	{
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
-		if (_isStateCheck.test(2))
+		if ( _state == PLAYERSTATE::ATT_ONEHANDCOMBO)
 		{
 			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
 		}
 	}
 	if (! _isStateCheck.test(5))
 	{
-		if (_isStateCheck.test(2))
+		if (_state == PLAYERSTATE::ATT_ONEHANDCOMBO)
 		{
 			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
 		}		
@@ -168,6 +168,7 @@ void Player::render(void)
 		//rcMake(getMemDC(), _player.defRc);
 		//rcMake(getMemDC(), _weapon.attRc);
 	}
+
 
 #pragma endregion
 
@@ -282,6 +283,8 @@ void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION dire
 	_pixel.probeDown = _player.movePosY + _player.image->getHeight() / 2;
 	_pixel.probeLeft = _player.movePosX - _player.image->getWidth() / 2;
 	_pixel.probeRight = _player.movePosX + _player.image->getWidth() / 2;
+
+
 }
 
 // 던전 진입 또는 무기 변경 시 (대기상태)
@@ -443,70 +446,7 @@ void Player::weaponinStageSetting()
 
 }
 
-// 공격 시 타격범위 업데이트
-void Player::playerCollisionAttDataSetting(int currentEffectFrameX)
-{
-	if (currentEffectFrameX == 0)
-	{
-		switch (_direction)
-		{
-		case PLAYERDIRECTION::UP:
-			if (_weapon.type == WEAPONTYPE::SWORD || _weapon.type == WEAPONTYPE::AX) // 한손무기
-			{
-				_collision.attPosX = _weapon.drawPosX - 25;
-				_collision.attPosY = _weapon.drawPosY + 56;
-				_collision.attWidth	= 122;
-				_collision.attHeight = 113;
-
-			}
-			else // 두손무기
-			{
-
-			}
-			break;
-		case PLAYERDIRECTION::DOWN:
-			break;
-		case PLAYERDIRECTION::LEFT:
-			break;
-		case PLAYERDIRECTION::RIGHT:
-			break;
-		case PLAYERDIRECTION::LEFTUP:
-			break;
-		case PLAYERDIRECTION::RIGHTUP:
-			break;
-		case PLAYERDIRECTION::LEFTDOWN:
-			break;
-		case PLAYERDIRECTION::RIGHTDOWN:
-			if (_weapon.type == WEAPONTYPE::SWORD || _weapon.type == WEAPONTYPE::AX) // 한손무기
-			{
-				_collision.attPosX = _weapon.drawPosX - 25;
-				_collision.attPosY = _weapon.drawPosY + 56;
-				_collision.attWidth = 122;
-				_collision.attHeight = 113;
-
-			}
-			else // 두손무기
-			{
-
-			}
-			break;
-		}
-	}
-
-	//_collision.attPosX = posX;
-	//_collision.attPosY = posY;
-	//_collision.attWidth = width;
-	//_collision.attHeight = height;
-	//_collision.attRc =
-	//	RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
-	
-	if (_state == PLAYERSTATE::IDLE)
-	{
-		_collision.attRc = RectMakeCenter(0,0,0,0);
-	}
-}
-
-// 공격 시 캐릭터 위치, 무기위치 , 무기프레임 업데이트 
+// 공격 시 캐릭터 위치, 무기위치 이펙트 위치 , 무기프레임 업데이트 
 void Player::playerAttSetting(bitset<3> combo)
 {
 
@@ -578,20 +518,20 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.frameX = 3;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
+					_collision.attPosX = _weapon.drawPosX - 20;
 					_collision.attPosY = _weapon.drawPosY + 56;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.attWidth = 120;
+					_collision.attHeight = 105;
 				}
 				else // OK!
 				{
 					_weapon.frameX = 4; // 프레임이 끝날때까지 
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
-					_collision.attPosY = _weapon.drawPosY + 56;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.attPosX = _weapon.drawPosX + 95;
+					_collision.attPosY = _weapon.drawPosY - 30;
+					_collision.attWidth = 120;
+					_collision.attHeight = 105;
 
 					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
 					{
@@ -603,8 +543,9 @@ void Player::playerAttSetting(bitset<3> combo)
 		}
 	}
 
+
 	_collision.attRc =
 		RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
-
+	
 }
 

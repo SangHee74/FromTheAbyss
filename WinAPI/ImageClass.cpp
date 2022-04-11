@@ -68,7 +68,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo_02", "Resources/Images/Player/p_twoHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 
 	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 40 * MAGNI, MGT);
-	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 330 , 110 , 2, 1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310 , 106 , 2, 1, MGT);
 	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
 
 	

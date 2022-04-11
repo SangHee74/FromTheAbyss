@@ -20,8 +20,7 @@ enum class PLAYERDIRECTION
 enum class PLAYERSTATE
 {
 	IDLE, MOVE, DEF, DEAD,
-	ATT_ONEHANDCOMBO, ATT_ONEHANDCOMBO_TWO, ATT_ONEHANDCOMBO_THREE,
-	ATT_TWOHANDCOMBO_ONE, ATT_TWOHANDCOMBO_TWO,
+	ATT_ONEHANDCOMBO, ATT_TWOHANDCOMBO,
 	SKILL_SOULCAPTURE,SKILL_SPEARSTRIKE
 	//SKILL1, SKILL2, SKILL3
 };
@@ -210,7 +209,7 @@ public:
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
-	void playerCollisionAttDataSetting(int currentFrameX);
+//	void playerCollisionAttDataSetting(int currentFrameX);
 	void playerAttSetting(bitset<3> combo);
 		
 	//юс╫ц
