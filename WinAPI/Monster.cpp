@@ -14,6 +14,8 @@ HRESULT Monster::init(void)
 
 HRESULT Monster::init(POINT position)
 {
+	timeCount = 0.0f;
+
 	_monster.worldTimeCount = GetTickCount();
 	_monster.rndTimeCount = RND->getFromFloatTo(50, 150);
 
@@ -55,6 +57,19 @@ void Monster::release(void)
 void Monster::update(void)
 {
 	move();
+
+
+	if (_state == MONSTERSTATE::DEF)
+	{
+		timeCount += TIMEMANAGER->getElapsedTime();
+
+		if (timeCount >= 1.0f)
+		{
+			timeCount = 0;
+			_state = MONSTERSTATE::IDLE;
+		}
+	}
+
 }
 
 void Monster::render(void)

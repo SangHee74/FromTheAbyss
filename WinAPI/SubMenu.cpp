@@ -14,26 +14,35 @@ HRESULT SubMenu::init(void)
 	int subX;
 	subX = CENTER_X;
 		
-	_menuButton[SUB_ITEM]   = RectMake(subX+(9 * MAGNI),  3* MAGNI, 53* MAGNI, 20* MAGNI);
+	_menuButton[SUB_ITEM]   = RectMake(subX+(9  * MAGNI), 3* MAGNI, 53* MAGNI, 20* MAGNI);
 	_menuButton[SUB_SKILL]  = RectMake(subX+(70 * MAGNI), 3* MAGNI, 53* MAGNI, 20* MAGNI);
 	_menuButton[SUB_MAP]    = RectMake(subX+(131* MAGNI), 3* MAGNI, 53* MAGNI, 20* MAGNI);
 	_menuButton[SUB_STATUS] = RectMake(subX+(192* MAGNI), 3* MAGNI, 53* MAGNI, 20* MAGNI);
 
 	_tapButton[TAP_ONE]   = RectMake(subX+(10* MAGNI), 35 * MAGNI,  14* MAGNI, 36* MAGNI);
 	_tapButton[TAP_TWO]   = RectMake(subX+(10* MAGNI), 75 * MAGNI,  14* MAGNI, 36* MAGNI);
-	_tapButton[TAP_THREE] = RectMake(subX+(10* MAGNI), 115* MAGNI, 14* MAGNI, 36* MAGNI);
+	_tapButton[TAP_THREE] = RectMake(subX+(10* MAGNI), 115* MAGNI,  14* MAGNI, 36* MAGNI);
+
+
+	_map = new SubMap();
+	_map->init();
+
 
 	return S_OK;
 }
 
 void SubMenu::release(void)
 {
+	_map->release();
+	SAFE_DELETE(_map);
 }
 
 void SubMenu::update(void)
 {
 	selectMenu();
 	if( _subMenu.test(0) || _subMenu.test(1)) selectTap();
+
+	_map->update();
 }
 
 void SubMenu::render(void)
@@ -44,9 +53,13 @@ void SubMenu::render(void)
 
 	for (int i = 0; i < SUB_END; i++)
 	{
-		rcMake(getMemDC(), _menuButton[i]);
+		//rcMake(getMemDC(), _menuButton[i]);
 	}
 
+	if (_subMenuIdx == SUB_ITEM);//
+	if (_subMenuIdx == SUB_SKILL);//
+	if(_subMenuIdx == SUB_MAP) _map->render();
+	if (_subMenuIdx == SUB_STATUS); //
 }
 
 

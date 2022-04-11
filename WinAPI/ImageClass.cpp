@@ -68,8 +68,10 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo_02", "Resources/Images/Player/p_twoHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 
 	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 40 * MAGNI, MGT);
-	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310 , 106 , 2, 1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword2.bmp", 960 , 88 , 5, 2, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310 , 106 , 2, 1, MGT);
 	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
 
 	
 #pragma endregion
@@ -106,10 +108,10 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Equipment_icon", "Resources/Images/Object/Equipment_icon.bmp", 160 * MAGNI, 52 * MAGNI, 6, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Inven_icon", "Resources/Images/Object/Inven_icon.bmp", 352 * MAGNI, 96 * MAGNI, 11, 3, MGT);
 
-	IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+	//IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
 
 	IMAGEMANAGER->addFrameImage("weapon_sword", "Resources/Images/Object/weapon_sword.bmp", 600 * MAGNI, 25 * MAGNI, 25, 1, MGT);
-	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 25 * MAGNI, 27, 1, MGT);
+	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 50 * MAGNI, 27, 2, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_spear", "Resources/Images/Object/weapon_spear.bmp", 832 * MAGNI, 75 * MAGNI, 16, 1, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_none", "Resources/Images/Object/weapon_none.bmp", 25 * MAGNI, 25 * MAGNI, 1, 1, MGT);
 	IMAGEMANAGER->addFrameImage("none", "Resources/Images/Object/none.bmp", 25 * MAGNI, 25 * MAGNI, 1, 1, MGT);
@@ -165,7 +167,7 @@ HRESULT ImageClass::init(void)
 
 	IMAGEMANAGER->addImage("map_abyss", "Resources/Images/Object/map_abyss.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("map_stage", "Resources/Images/Object/map_stage.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, MGT);
-	IMAGEMANAGER->addFrameImage("map_sumnail", "Resources/Images/Object/map_sumnail.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, 8, 1, MGT);
+	IMAGEMANAGER->addFrameImage("map_thumbnail", "Resources/Images/Object/map_thumbnail.bmp", 0, 0, 512 * MAGNI, 64 * MAGNI, 8, 1, MGT);
 	IMAGEMANAGER->addFrameImage("map_path", "Resources/Images/Object/map_path.bmp", 0, 0, 170 * MAGNI, 10 * MAGNI, 17, 1, MGT);
 	IMAGEMANAGER->addFrameImage("map_point", "Resources/Images/Object/map_point.bmp", 0, 0, 40 * MAGNI, 10 * MAGNI, 4, 1, MGT);
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameNode.h"
+#include "SubMap.h"
 
 enum SUBMENU
 {
@@ -22,6 +23,8 @@ private:
 	RECT _tapButton[TAP_END];
 	int _subMenuIdx;
 
+	SubMap* _map;
+
 public:
 	SubMenu() {}
 	~SubMenu() {}
@@ -35,6 +38,10 @@ public:
 	void selectTap();
 	void renderMenu();
 	void renderTap();
+
+	void renderInven();
+
+	void renderSkill();
 	void renderStat();
 };
 

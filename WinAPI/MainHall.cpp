@@ -167,7 +167,7 @@ void MainHall::menuInfo(int textNum)
 	IMGR("main", getMemDC());
 	SetTextAlign(getMemDC(), TA_CENTER);
 	FONTMANAGER->drawText(getMemDC(), 180, 272, "µÕ±Ù¸ð²Ã", 32, FW_SEMIBOLD,
-		_menuInfoText[_textNum].name, wcslen(_menuInfoText[_textNum].name), RGB(2550, 255, 255));
+		_menuInfoText[_textNum].name, wcslen(_menuInfoText[_textNum].name), RGB(255, 255, 255));
 
 	SetTextAlign(getMemDC(), TA_LEFT);
 	int _textBufferCnt = 150;

@@ -84,9 +84,9 @@ void Player::render(void)
 
 	IMGAR("p_shadow", getMemDC(), _camera.playerLeft+20, _camera.playerTop +100 ,_shadowAlpha);
 	// 타격범위 렌더
-	Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
-		_collision.attRc.left - _camera.rc.left + _collision.attWidth,
-		_collision.attRc.top - _camera.rc.top + _collision.attHeight);
+	//Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
+	//	_collision.attRc.left - _camera.rc.left + _collision.attWidth,
+	//	_collision.attRc.top - _camera.rc.top + _collision.attHeight);
 
 	if (_isStateCheck.test(5))
 	{
@@ -363,7 +363,7 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 36;
 			break;
 		case PLAYERDIRECTION::RIGHT:
-			_weapon.frameX = 26;
+			_weapon.frameX = 1;
 			_weapon.drawPosX = _weapon.movePosX + 12;
 			_weapon.drawPosY = _weapon.movePosY - 36;
 			break;
@@ -373,7 +373,7 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 40;
 			break;
 		case PLAYERDIRECTION::RIGHTUP:
-			_weapon.frameX = 26;
+			_weapon.frameX = 1;
 			_weapon.drawPosX = _weapon.movePosX - 14;
 			_weapon.drawPosY = _weapon.movePosY - 40;
 			break;
@@ -383,7 +383,7 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 28;
 			break;
 		case PLAYERDIRECTION::RIGHTDOWN:
-			_weapon.frameX = 26;
+			_weapon.frameX = 1;
 			_weapon.drawPosX = _weapon.movePosX + 13;
 			_weapon.drawPosY = _weapon.movePosY - 28;
 
@@ -453,7 +453,7 @@ void Player::playerAttSetting(bitset<3> combo)
 	// 무기타입 -> 캐릭터 방향 -> 콤보단계 -> 캐릭터 프레임X 
 	// 캐릭터 프레임X가 두번째가 되면, 바라보는 방향으로 약간 이동.
 	int tempMoveMax;
-	if (_weapon.type == WEAPONTYPE::SWORD)
+	if (_weapon.type == WEAPONTYPE::AX)
 	{
 		switch (_direction)
 		{
@@ -462,7 +462,7 @@ void Player::playerAttSetting(bitset<3> combo)
 			{
 				if (_player.frameX = 0)
 				{
-					_weapon.frameX = 6;
+					_weapon.frameX = 9;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY - 50;
 					_collision.attPosX = _weapon.drawPosX - 25;
@@ -472,7 +472,7 @@ void Player::playerAttSetting(bitset<3> combo)
 				}
 				else
 				{
-					_weapon.frameX = 11; 
+					_weapon.frameX = 10; 
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
 					_collision.attPosX = _weapon.drawPosX - 25;
@@ -515,13 +515,13 @@ void Player::playerAttSetting(bitset<3> combo)
 			{
 				if (_player.frameX = 0)
 				{
-					_weapon.frameX = 3;
+					_weapon.frameX = 25;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
 					_collision.attPosX = _weapon.drawPosX - 20;
 					_collision.attPosY = _weapon.drawPosY + 56;
-					_collision.attWidth = 120;
-					_collision.attHeight = 105;
+					_collision.attWidth = 116;
+					_collision.attHeight = 43;
 				}
 				else // OK!
 				{
@@ -530,8 +530,8 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.drawPosY = _weapon.movePosY + 50;
 					_collision.attPosX = _weapon.drawPosX + 95;
 					_collision.attPosY = _weapon.drawPosY - 30;
-					_collision.attWidth = 120;
-					_collision.attHeight = 105;
+					_collision.attWidth = 116;
+					_collision.attHeight = 43;
 
 					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
 					{

@@ -105,8 +105,9 @@ void Stage::update(void)
 
 
 	portalOn();
-
-
+	collision();
+	_playereEffect->update();
+	_monsterEffect->update();
 
 }
 
@@ -139,6 +140,7 @@ void Stage::render(void)
 	// 오브젝트 - 렌더 순서 확인
 	//
 
+	// 플레이어, 몬스터 이펙트 렌더 
 	_monsterEffect->render();
 	_playereEffect->render();
 
@@ -216,26 +218,35 @@ void Stage::collision(void)
 	for (int i = 0; i < _em->getMonsters().size(); i++)
 	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
-		if ((IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc,
-			&_em->getMonsters()[i]->getMonsterCollisionRc().defRc)) 
-			&& _em->getMonsters()[i]->getState() == MONSTERSTATE::DEF )
+		if ( IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
+			&_em->getMonsters()[i]->getMonsterCollisionRc().defRc)      
+			&& ! (_em->getMonsters()[i]->getState() == MONSTERSTATE::DEF) )
 		{
+
 			// 몬스터 체력감소 + 피격상태로 전환
+			_em->getMonsters()[i]->getState()= MONSTERSTATE::DEF;
 			// 몬스터 체력 세팅 함수
 			int temp = 0;
 			temp = playerRandomDamage();
+			cout << "플레이어 데미지 : " << temp << endl;
 			//_em->getMonsters()[i]->setHp(playerRandomDamage());
-			cout << " 현재 플레이어 랜덤 데미지 : " << temp << endl;
+			_playereEffect->show(tempRc);
 			_em->getMonsters()[i]->setHp(temp);
-
-
-			// 몬스터 체력이 없으면 
-			// 이펙트 출력 후 
-			_em->removeMonster(i);
-
-
+			cout << "몬스터 남은 HP : " << _em->getMonsters()[i]->getHp() << endl;;
 			break;
+
 		}
+		// 몬스터 체력이 없으면 
+		if (_em->getMonsters()[i]->getHp() <= 0)
+		{
+			// 몬스터 죽음 이펙트 출력,
+			_monsterEffect->show(_em->getMonsters()[i]->getMonster().moveRc);
+			// 몬스터 데이터 플레이어에 적용,
+
+			// 삭제 
+			_em->removeMonster(i);
+		}
+
 	}
 
 }

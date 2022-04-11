@@ -64,15 +64,15 @@ void DataManager::setStageSetting(void)
 {
 	int settingAbyss = _mapData.enterAbyssInfo.abyss;
 	int settingStage = _mapData.enterAbyssInfo.stage;
-	int inRcWidth = 60;
-	int inRcHeight = 20;
+	int gateInRcWidth = 60;
+	int gateInRcHeight = 20;
 
 	switch (settingAbyss)
 	{
 		for (int i = 0; i < GATE_END; i++)
 		{
 			_mapData.gate.drawRc[i] = RectMakeCenter(-200, -200, 120, 50);
-			_mapData.gate.inRc[i]	= RectMakeCenter(-200, -200, inRcWidth, inRcHeight);
+			_mapData.gate.inRc[i]	= RectMakeCenter(-200, -200, gateInRcWidth, gateInRcHeight);
 		}
 	case 1:
 		if (settingStage == 1)
@@ -83,9 +83,9 @@ void DataManager::setStageSetting(void)
 			_mapData.mapTop	     = IMG("map_stage1_top");
 			_mapData.pixelMap	 = IMG("map_stage1_pixel");
 			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 120, 50);
-			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, inRcWidth, inRcHeight);
+			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, gateInRcWidth, gateInRcHeight);
 			_mapData.gate.drawRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, 120, 50);
-			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, inRcWidth, inRcHeight);
+			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
 			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);

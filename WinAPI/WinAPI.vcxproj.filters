@@ -160,6 +160,9 @@
     <ClCompile Include="Effect.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClCompile>
+    <ClCompile Include="SubMap.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -325,6 +328,9 @@
       <Filter>FromTheAbyss</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClInclude>
+    <ClInclude Include="SubMap.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
   </ItemGroup>

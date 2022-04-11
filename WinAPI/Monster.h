@@ -58,21 +58,22 @@ public:
 	void animation(void);
 
 	// get/set
-	MONSTERSTATE getState()			 { return _state; }
-	MONSTERDIRECTION getDirection()  { return _direction; }
+	MONSTERSTATE&	  getState()			  { return _state; }
+	MONSTERDIRECTION& getDirection()		  { return _direction; }
 
-	tagMonsterData&	 getMonster() { return _monster; }
-	tagPixel&		 getMonsterPixel() { return _pixel; }
-	tagCollisionRc&  getMonsterCollisionRc() { return _collision; }
+	tagMonsterData&	  getMonster()			  { return _monster; }
+	tagPixel&		  getMonsterPixel()		  { return _pixel; }
+	tagCollisionRc&   getMonsterCollisionRc() { return _collision; }
 
 	void setHp(int hp) { _curHp-=hp; }
+	int	 getHp()	   { return _curHp; }
 	int  getAtt()	   { return _curAtt; }
 	int  getExp()	   { return _dropExp; }
 	int  getLufia()	   { return _dropLufia; }
 	int  getItem()	   { return _dropItemIndex; }
 
 
-
+	float timeCount = 0.0f;
 };
 
 
