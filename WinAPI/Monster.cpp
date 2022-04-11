@@ -1,15 +1,11 @@
 #include "Stdafx.h"
 #include "Monster.h"
 
-Monster::Monster() : _moveRc(RectMake(0, 0, 0, 0)),
-					 _movePosX(0.0f),
-					 _movePosY(0.0f),
-					 _frameX(0),
-					 _frameY(0),
-					 _rndTimeCount(0.0f),
-					 _worldTimeCount(0.0f)
+Monster::Monster()
 {
 }
+
+
 
 HRESULT Monster::init(void)
 {
@@ -18,34 +14,37 @@ HRESULT Monster::init(void)
 
 HRESULT Monster::init(POINT position)
 {
-	_worldTimeCount = GetTickCount();
-	_rndTimeCount = RND->getFromFloatTo(50, 150);
+	_monster.worldTimeCount = GetTickCount();
+	_monster.rndTimeCount = RND->getFromFloatTo(50, 150);
 
-	_movePosX = position.x;
-	_movePosY = position.y;
-	_speed = 0.0f;
+	_monster.movePosX = position.x;
+	_monster.movePosY = position.y;
+	_monster.speed = 0.0f;
 
 
-	_moveRc = RectMakeCenter(position.x, position.y,
-		_image->getFrameWidth(), _image->getFrameHeight());
-	_collision.defRc =  RectMakeCenter(position.x, position.y,
-			_image->getFrameWidth()-40, _image->getFrameHeight()-40);
+	_monster.moveRc = RectMakeCenter(position.x, position.y,
+		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
+	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+		//RectMakeCenter(position.x, position.y,
+		//_monster.image->getFrameWidth()-40, _monster.image->getFrameHeight()-40);
 	return S_OK;
 }
 
 HRESULT Monster::init(const char* imageName, POINT position)
 {
-	_worldTimeCount = GetTickCount();
-	_rndTimeCount = RND->getFromFloatTo(50, 150);
+	_monster.worldTimeCount = GetTickCount();
+	_monster.rndTimeCount = RND->getFromFloatTo(50, 150);
 
-	_image = IMAGEMANAGER->findImage(imageName);
+	_monster.image = IMAGEMANAGER->findImage(imageName);
+	_monster.frameX = 0;
+	_monster.frameY = 0;
 
-	_movePosX = position.x;
-	_movePosY = position.y;
-	_speed = 0.0f;
+	_monster.movePosX = position.x;
+	_monster.movePosY = position.y;
+	_monster.speed = 0.0f;
 
-	_moveRc = RectMakeCenter(position.x, position.y,
-		_image->getFrameWidth(), _image->getFrameHeight());
+	_monster.moveRc = RectMakeCenter(position.x, position.y,
+		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
 	return S_OK;
 }
 
@@ -84,22 +83,23 @@ void Monster::draw(void)
 		_collision.defRc.bottom - CAM->getScreenRect().top
 	);
 
-	_image->frameRender(getMemDC(), 
-		_moveRc.left-CAM->getScreenRect().left, _moveRc.top - CAM->getScreenRect().top,
-		_frameX, _frameY);
+	_monster.image->frameRender(getMemDC(),
+		_monster.moveRc.left-CAM->getScreenRect().left,
+		_monster.moveRc.top - CAM->getScreenRect().top,
+		_monster.frameX, _monster.frameY);
 
 	//rcMake(getMemDC(), _moveRc);
 }
 
 void Monster::animation(void)
 {
-	if (_rndTimeCount + _worldTimeCount <= GetTickCount())
+	if (_monster.rndTimeCount + _monster.worldTimeCount <= GetTickCount())
 	{
-		_worldTimeCount = GetTickCount();
-		_frameX++;
-		if (_image->getMaxFrameX() < _frameX)
+		_monster.worldTimeCount = GetTickCount();
+		_monster.frameX++;
+		if (_monster.image->getMaxFrameX() < _monster.frameX)
 		{
-			_frameX = 0;
+			_monster.frameX = 0;
 		}
 	}
 

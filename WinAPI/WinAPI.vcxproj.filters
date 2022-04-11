@@ -157,6 +157,9 @@
     <ClCompile Include="DataManager.cpp">
       <Filter>FromTheAbyss</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="DataManager.h">
       <Filter>FromTheAbyss</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

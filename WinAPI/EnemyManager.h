@@ -34,7 +34,7 @@ private:
 	vMonster _vMonster;
 	viMoster _viMonster;
 
-	// 던전*스테이지 수 만큼 맵이 만들어짐
+	// 던전*스테이지 수 만큼 몬스터 좌표세트가 만들어짐
 	tagMapPos _monsterPos[ABYSS_MAX*STAGE_MAX];
 
 public:
@@ -48,7 +48,6 @@ public:
 	void removeMonster(int arrNum);
 
 	void monsterAttack(void);
-	//void collision(void);
 	POINT monsterRandomPos(int abyssStage, int monsterCount);
 	
 	vector<Monster*> getMonsters(void) { return _vMonster; }

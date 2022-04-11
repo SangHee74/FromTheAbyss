@@ -549,3 +549,12 @@ void Player::playerAttSetting(bitset<3> combo)
 	
 }
 
+int Player::playerDamage()
+{
+	int damage = 0;
+
+
+
+	return damage;
+}
+

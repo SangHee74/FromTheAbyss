@@ -13,6 +13,12 @@ HRESULT Stage::init(void)
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 	
+	_playereEffect = new PlayerEffect();
+	_playereEffect->init();
+
+	_monsterEffect = new MosterEffect();
+	_monsterEffect->init();
+
 	_subScreen = new SubMenu();
 	_subScreen->init();
 
@@ -21,12 +27,20 @@ HRESULT Stage::init(void)
 	CAM->setLimitsY(CENTER_Y, DATAMANAGER->getMapData().map->getHeight());
 
 	_alpha = 0;
+	
 
 	return S_OK;
 }
 
 void Stage::release(void)
 {
+
+	_playereEffect->release();
+	SAFE_DELETE(_playereEffect);
+
+	_monsterEffect->release();
+	SAFE_DELETE(_monsterEffect);
+
 	_UIBar->release();
 	SAFE_DELETE(_UIBar);
 
@@ -125,6 +139,8 @@ void Stage::render(void)
 	// 오브젝트 - 렌더 순서 확인
 	//
 
+	_monsterEffect->render();
+	_playereEffect->render();
 
 	// 배경 탑 - 임시 닫음
 	//DATAMANAGER->getMapData().mapTop->render
@@ -193,3 +209,56 @@ void Stage::portalOn()
 	else DATAMANAGER->getMapData().gate.inGateCount = 0;
 }
 
+
+void Stage::collision(void)
+{
+	RECT tempRc;
+	for (int i = 0; i < _em->getMonsters().size(); i++)
+	{
+		// 플레이어 공격이펙트 -> 몬스터 피격박스
+		if ((IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc,
+			&_em->getMonsters()[i]->getMonsterCollisionRc().defRc)) 
+			&& _em->getMonsters()[i]->getState() == MONSTERSTATE::DEF )
+		{
+			// 몬스터 체력감소 + 피격상태로 전환
+			// 몬스터 체력 세팅 함수
+			int temp = 0;
+			temp = playerRandomDamage();
+			//_em->getMonsters()[i]->setHp(playerRandomDamage());
+			cout << " 현재 플레이어 랜덤 데미지 : " << temp << endl;
+			_em->getMonsters()[i]->setHp(temp);
+
+
+			// 몬스터 체력이 없으면 
+			// 이펙트 출력 후 
+			_em->removeMonster(i);
+
+
+			break;
+		}
+	}
+
+}
+
+int Stage::playerRandomDamage()
+{
+	int rndPlayerDmg;
+
+		rndPlayerDmg = RND->getFromIntTo(
+			DATAMANAGER->getPlayer()->getPlayerStatus().iAtt*0.85,
+			DATAMANAGER->getPlayer()->getPlayerStatus().iAtt		);
+
+	return rndPlayerDmg;
+
+}
+
+int Stage::monsterRandomDamage(int i)
+{
+	int rndMonsterDmg;
+
+	rndMonsterDmg = RND->getFromIntTo(
+		_em->getMonsters()[i]->getAtt() *0.85,
+		_em->getMonsters()[i]->getAtt()            );
+
+	return rndMonsterDmg;
+}

@@ -32,7 +32,7 @@ inline void RectangleMake(HDC hdc, int x, int y, int width, int height)
 	Rectangle(hdc, x, y, x + width, y + height);
 }
 
-inline void rcMake(HDC hdc, RECT &rc) // 0126add
+inline void rcMake(HDC hdc, RECT &rc) 
 {
 	Rectangle(hdc, rc.left,rc.top,rc.right,rc.bottom);
 }
@@ -55,4 +55,13 @@ inline RECT CollisionAreaResizing(RECT &rcDest, int width, int height)
 				rcDest.right - width / 2 ,rcDest.bottom - height / 2 };
 
 	return rc;
+}
+
+inline POINT rcMiddlePos(RECT &rc)
+{
+	int posX, posY;
+	posX = (rc.right - rc.left) *0.5;
+	posY = (rc.bottom - rc.top) *0.5;
+
+	return POINT{ posX, posY };
 }

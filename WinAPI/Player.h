@@ -128,7 +128,7 @@ struct tagPixel
 // 렉트충돌
 struct tagCollisionRc
 {
-
+	// 충돌 범위 조정 
 	RECT defRc;
 	RECT attRc;
 	int defWidth;
@@ -209,8 +209,8 @@ public:
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
-//	void playerCollisionAttDataSetting(int currentFrameX);
 	void playerAttSetting(bitset<3> combo);
+	int playerDamage();
 		
 	//임시
 	int getItemNum() { return itemNum; }

@@ -6,37 +6,40 @@ enum class MONSTERDIRECTION
 	UP, DOWN, LEFT, RIGHT
 };
 
-enum class MOSTERSTATE
+enum class MONSTERSTATE
 {
-	IDLE, MOVE, HIT, DEAD, ATTACK
+	IDLE, MOVE, DEF, DEAD, ATT
 };
 
-
+struct tagMonsterData
+{
+	RECT	moveRc;
+	RECT	recognitionRc;		// 플레이어를 향해 다가갈 인식 범위
+	int		movePosX, movePosY; // rc업데이트
+	int		frameX, frameY;
+	int		speed;
+	float	angle;				// 플레이어를 향해 다가갈 각도
+	float	rndTimeCount;
+	float	worldTimeCount;
+	Image*  image;				// 몬스터 이미지
+};
 
 class Monster : public GameNode
 {
 protected:
-	MOSTERSTATE _state;
+	MONSTERSTATE _state;
 	MONSTERDIRECTION _direction;
 
+	tagMonsterData	_monster;	// 몬스터 정보
 	tagPixel		_pixel;		// 몬스터 픽셀충돌
 	tagCollisionRc  _collision; // 몬스터 렉트충돌
 
 	int  _curHp;
+	int  _curAtt;
  	int  _dropExp;
 	int  _dropLufia;
 	int  _dropItemIndex;
-
-	RECT	_moveRc;
-	RECT	_recognitionRc; // 인식범위
-	int		_movePosX, _movePosY;
-	int		_frameX, _frameY;
-	//int		_width, _height;
-	int		_speed;
-	float	_angle; // 플레이어를 향해 다가갈
-	float	_rndTimeCount;
-	float	_worldTimeCount;
-	Image*  _image;
+	
 
 public:
 	Monster(void);
@@ -55,20 +58,20 @@ public:
 	void animation(void);
 
 	// get/set
-	MOSTERSTATE getState()			 { return _state; }
+	MONSTERSTATE getState()			 { return _state; }
 	MONSTERDIRECTION getDirection()  { return _direction; }
 
-	void setHp(int hp) { _curHp = hp; }
+	tagMonsterData&	 getMonster() { return _monster; }
+	tagPixel&		 getMonsterPixel() { return _pixel; }
+	tagCollisionRc&  getMonsterCollisionRc() { return _collision; }
+
+	void setHp(int hp) { _curHp-=hp; }
+	int  getAtt()	   { return _curAtt; }
 	int  getExp()	   { return _dropExp; }
 	int  getLufia()	   { return _dropLufia; }
 	int  getItem()	   { return _dropItemIndex; }
 
-	RECT getRc() { return _moveRc; }
-	int  getMovePosX() { return _movePosX; }
-	int  getMovePosY() { return _movePosY; }
-	int  getFrameX() { return _frameX; }
-	int  getFrameY() { return _frameY; }
-	int  getSpeed() { return _speed; }
+
 
 };
 

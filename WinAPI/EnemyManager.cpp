@@ -132,6 +132,7 @@ void EnemyManager::monsterAttack(void)
 	//return false;
 }
 
+
 // 몬스터 리스폰 좌표 랜덤설정
 POINT EnemyManager::monsterRandomPos(int abyssStage, int monsterCount)
 {

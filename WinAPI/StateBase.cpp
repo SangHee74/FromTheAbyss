@@ -36,19 +36,6 @@ void IdleState::stateInit(Player* player)
 	player->getPlayerCollisionRc().attWidth = 0;
 	player->getPlayerCollisionRc().attHeight = 0;
 
-	player->getPlayerCollisionRc().attRc = RectMakeCenter(0, 0, 0, 0);
-	cout << "대기 전환 시 타격렉트 초기화--------------------------------------------------" << endl;
-	cout << "타격렉트 왼 : " << player->getPlayerCollisionRc().attRc.left << ",  탑: " <<
-		player->getPlayerCollisionRc().attRc.top << ",  가로: " <<
-		player->getPlayerCollisionRc().attWidth << ",  세로: " <<
-		player->getPlayerCollisionRc().attHeight << endl;
-	cout << "타격렉트 초기화 완료--------------------------------------------------" << endl;
-
-
-	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
-	player->getPlayerCollisionRc().attEffFrameX = 0;
-	player->getPlayerCollisionRc().attEffFrameY = 0;
-
 }
 
 void IdleState::stateUpdate(Player* player)
