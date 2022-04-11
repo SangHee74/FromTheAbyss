@@ -9,13 +9,12 @@
 //	bitset<16> mapOpen; // 4*4
 //};
 
-struct tagMinimapImg
+struct tagMiniMapImg
 {
-	RECT miniMapTile[16];
-	Image* miniMap[16];
-	Image* returnImg;
-	Image* nextImg;
-	Image* playerPositionImg;
+	RECT miniMapTile;
+	Image* miniMapPath;
+	bitset<1> OnMiniMapTile;
+	int pathFrameX;
 };
 
 class SubMap : public GameNode
@@ -38,8 +37,15 @@ private: // miniMap
 	int _mapIndexY;
 	int _mapRangeX[4];
 	int _mapRangeY[4];
-	bitset<16> _nimiMapOpen; // 4*4
-	tagMinimapImg _pathNavigation; // abyss*stage
+	int _curIndex;
+
+	Image* _returnImg;
+	Image* _nextImg;
+	Image* _playerPositionImg;
+	int _returnNum;
+	int _nextNum;
+	vector<tagMiniMapImg> _vMiniMap; //
+	vector<tagMiniMapImg>::iterator _viMiniMap;
 
 public:
 
@@ -60,6 +66,6 @@ public:
 
 	//miniap
 	void minimapCheck();
-	void minimapRender();
+	//void minimapRender();
 };
 
