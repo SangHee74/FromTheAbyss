@@ -6,8 +6,13 @@ class Minotauros : public Monster
 private:
 
 
+
 public:
 	Minotauros();
-	~Minotauros();
+	~Minotauros() {}
+
+	void move();
+	void attack();
+	
 
 };

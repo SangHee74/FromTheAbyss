@@ -99,6 +99,7 @@ GameNode * SceneManager::addLoadingScene(string loadingSceneName, GameNode * sce
 
 // 씬 변경 
 // 페이드 아웃 추가 
+// 플레이어만 인자타입(매개변수로 남기고 나머지는 싹 지운 후 체인지 씬)
 HRESULT SceneManager::changeScene(string sceneName)
 {
 	// 변경하려는 씬을 찾는다.

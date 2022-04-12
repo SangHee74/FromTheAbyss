@@ -241,7 +241,7 @@ void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION dire
 	_direction = direction;
 
 	// 임시 아이템넘버(무기프레임이미지 시트에서 y프레임)
-	itemNum = 0;
+	itemNum = 1;
 	if (itemNum == 0)
 	{
 		_weapon.image = IMG("weapon_sword"); _weapon.type = WEAPONTYPE::SWORD;
@@ -292,6 +292,7 @@ void Player::weaponinStageSetting()
 {
 	// 무기넘버에 따라 무기시트에서 프레임 업데이트
 	_weapon.frameY = itemNum;
+	if (_weapon.type == WEAPONTYPE::AX)  _weapon.frameY = 0;
 
 	// 이동좌표, 렌더좌표 업데이트 
 	_player.drawPosX = _player.movePosX;

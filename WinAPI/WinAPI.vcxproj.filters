@@ -121,9 +121,6 @@
     <ClCompile Include="SubMenu.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClCompile>
     <ClCompile Include="AniClass.cpp">
       <Filter>API\ExamClass</Filter>
     </ClCompile>
@@ -162,6 +159,12 @@
     </ClCompile>
     <ClCompile Include="SubMap.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage11.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,9 +294,6 @@
     <ClInclude Include="SubMenu.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClInclude>
     <ClInclude Include="AniClass.h">
       <Filter>API\ExamClass</Filter>
     </ClInclude>
@@ -332,6 +332,12 @@
     </ClInclude>
     <ClInclude Include="SubMap.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage11.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -398,9 +404,6 @@
     <Filter Include="FromTheAbyss\Scene\Place\ABYSS">
       <UniqueIdentifier>{01cfe9e3-ce8d-4030-8218-a32317f6931d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\Map">
-      <UniqueIdentifier>{5bc7d481-4c57-49bd-b9b6-8638a868ee8b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FromTheAbyss\Tool">
       <UniqueIdentifier>{1bf81a9c-95c0-4a57-bec5-d0368345da28}</UniqueIdentifier>
     </Filter>
@@ -409,6 +412,9 @@
     </Filter>
     <Filter Include="FromTheAbyss\Player\STATE">
       <UniqueIdentifier>{2b7d1599-898c-4ee6-bab5-d2df68860f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\STAGE">
+      <UniqueIdentifier>{5bc7d481-4c57-49bd-b9b6-8638a868ee8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

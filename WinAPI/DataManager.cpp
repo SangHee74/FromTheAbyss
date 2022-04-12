@@ -78,23 +78,31 @@ void DataManager::setStageSetting(void)
 		if (settingStage == 1)
 		{
 			// 스테이지의 맵 정보 세팅
-			_mapData.map		 = IMG("map_stage1");
+			_mapData.map		 = IMG("map_stage11");
 			//_mapData.mapObject   = IMG("map_stage1");
-			_mapData.mapTop	     = IMG("map_stage1_top");
-			_mapData.pixelMap	 = IMG("map_stage1_pixel");
+			_mapData.mapTop	     = IMG("map_stage11_top");
+			_mapData.pixelMap	 = IMG("map_stage11_pixel");
 			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 120, 50);
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, gateInRcWidth, gateInRcHeight);
 			_mapData.gate.drawRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, 120, 50);
 			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
+			//_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
+
+			// 보스방 테스트 용
+			_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
  
 		}
-		if (settingStage == 2)
+		if (settingStage == 4)
 		{
-			cout << "어비스1 - 스테이지2 미구현으로 인해 마을로 돌아갑니다" << endl;
-			SCENEMANAGER->changeScene("main");
+			_mapData.map = IMG("map_stage14");
+			_mapData.pixelMap = IMG("map_stage14_pixel");
+			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 0, 0);
+			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, gateInRcWidth, gateInRcHeight);
+
+			// 플레이어 정보 세팅
+			_player->playerInStageSetting(LSCENTER_X, 400, PLAYERDIRECTION::UP);
 		}
 
 		break;

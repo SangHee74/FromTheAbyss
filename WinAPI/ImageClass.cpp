@@ -6,9 +6,11 @@ HRESULT ImageClass::init(void)
 	//MAGNI :  WINSIZE_X/512   //magnification
 #pragma region BG
 	// ¸Ê ÀÌ¹ÌÁö 
-	IMAGEMANAGER->addImage("map_stage1", "Resources/Images/Map/map_stage1.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
-	IMAGEMANAGER->addImage("map_stage1_top", "Resources/Images/Map/map_stage1_top.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
-	IMAGEMANAGER->addImage("map_stage1_pixel", "Resources/Images/Map/map_stage1_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage11", "Resources/Images/Map/map_stage11.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage11_top", "Resources/Images/Map/map_stage11_top.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage11_pixel", "Resources/Images/Map/map_stage11_pixel.bmp", 0, 0, 1038 * 3, 1025 * 3, MGT);
+	IMAGEMANAGER->addImage("map_stage14", "Resources/Images/Map/map_stage14.bmp", 0, 0, 2628,2123, MGT);
+	IMAGEMANAGER->addImage("map_stage14_pixel", "Resources/Images/Map/map_stage14_pixel.bmp", 0, 0, 2628, 2123, MGT);
 
 	IMAGEMANAGER->addImage("black", "Resources/Images/BackGround/black.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("title", "Resources/Images/BackGround/title.bmp", WINSIZE_X, WINSIZE_Y);
@@ -92,6 +94,13 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Kobold_idle", "Resources/Images/Monster/Kobold_idle.bmp", 40 * MAGNI, 168 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_move", "Resources/Images/Monster/Kobold_move.bmp", 80 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+
+	IMAGEMANAGER->addFrameImage("mino_attack", "Resources/Images/Monster/Boss/mino_attack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 150 * MAGNI, 88 * MAGNI, 1, 1, MGT);
+	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
+	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
+
+
 
 
 #pragma endregion

@@ -32,6 +32,15 @@ HRESULT Stage::init(void)
 	return S_OK;
 }
 
+HRESULT Stage::stageChangeInit(void)
+{
+
+	// 스테이지 세팅 (맵 정보)
+	DATAMANAGER->setStageSetting();
+
+	return S_OK;
+}
+
 void Stage::release(void)
 {
 
@@ -140,13 +149,12 @@ void Stage::render(void)
 	// 오브젝트 - 렌더 순서 확인
 	//
 
-	// 플레이어, 몬스터 이펙트 렌더 
+	// 이펙트 렌더 
 	_monsterEffect->render();
 	_playereEffect->render();
 
-	// 배경 탑 - 임시 닫음
-	//DATAMANAGER->getMapData().mapTop->render
-	//(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
+	// 배경 탑
+	DATAMANAGER->getMapData().mapTop->render(getMemDC(), 0, 0, cameraLeft,	cameraTop,	CENTER_X, WINSIZE_Y);
 	
 
 	if (KEYMANAGER->isToggleKey(VK_F3))
@@ -201,10 +209,13 @@ void Stage::portalOn()
 		{
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
 			// 다음 스테이지를 위해 스테이지 업데이트 해줄 것 
-			DATAMANAGER->getMapData().enterAbyssInfo.stage++;
-			DATAMANAGER->getPlayer()->getPlayerAbyss().stage++;
+			//DATAMANAGER->getMapData().enterAbyssInfo.stage++;
+			//DATAMANAGER->getPlayer()->getPlayerAbyss().stage++;
 
-			SCENEMANAGER->changeScene("stage");
+			DATAMANAGER->getMapData().enterAbyssInfo.stage = 4;
+			DATAMANAGER->getPlayer()->getPlayerAbyss().stage = 4;
+
+			stageChangeInit();
 		}
 
 	}

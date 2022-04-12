@@ -36,11 +36,12 @@ public:
 	Stage() {}
 	~Stage() {}
 	HRESULT init(void);
+	HRESULT stageChangeInit(void);
 	void release(void);
 	void update(void);
 	void render(void);
 
-	void portalOn();
+	virtual void portalOn();
 	void collision();
 	int playerRandomDamage();
 	int monsterRandomDamage(int i);
