@@ -106,14 +106,17 @@ void SubMap::minimapCheck()
 	switch (_settingAbyss)
 	{
 	case 1: // 초원의 심연
-		_vMiniMap[33].OnMiniMapTile.set(0);
-		_vMiniMap[33].pathFrameX = 2;
-		// 1-1 return Point
-		_returnNum = 33;
-		_curIndex = 33;
-		/*
+
 		if (_settingStage == 1)
 		{
+			_vMiniMap[33].OnMiniMapTile.set(0);
+			_vMiniMap[33].pathFrameX = 2;
+			// 1-1 return Point
+			_returnNum = 33;
+			_curIndex = 33;
+
+		}	// 스테이지 1 미니맵 정보 
+			/*
 			_mapMaxWidth = IMG("map_stage1")->getWidth();
 			_mapMaxHeight = IMG("map_stage1")->getHeight();
 
@@ -251,7 +254,11 @@ void SubMap::minimapCheck()
 		}
 		if (_settingStage == 4)
 		{
-
+			_vMiniMap[44].OnMiniMapTile.set(0);
+			_vMiniMap[44].pathFrameX = 0;
+			// 1-4 return Point
+			_returnNum = 44;
+			_curIndex = 44;
 		}
 		break;
 	}

@@ -76,9 +76,6 @@ void EnemyManager::setMoster()
 			dionaea->init({ 280, 330 });
 			_vMonster.push_back(dionaea);
 
-
-
-
 			for (int i = 0; i < 9; i++)
 			{
 				Monster* dionaea;
@@ -100,9 +97,16 @@ void EnemyManager::setMoster()
 
 			}
 		}
-		if (currentStage == 2)
+		if (currentStage == 4)
 		{
-			cout << "어비스1-스테이지2 몬스터 미구현!" << endl;
+
+			Monster* mino;
+			mino = new Minotaur;
+
+			// 어비스 1보스 : 미노타우르스
+			mino->init({DATAMANAGER->getPlayer()->getPlayer().drawPosX, 800});
+			_vMonster.push_back(mino);
+
 		}
 
 		break;

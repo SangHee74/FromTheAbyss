@@ -1,7 +1,8 @@
 #include "Stdafx.h"
 #include "BossMonster.h"
 
-Minotauros::Minotauros()
+
+Minotaur::Minotaur()
 {
 	_curHp = 500;
 	_curAtt = 30;
@@ -10,17 +11,17 @@ Minotauros::Minotauros()
 	_dropItemIndex = 0; // юс╫ц
 
 	_state = MONSTERSTATE::IDLE;
-	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
+	_direction = MONSTERDIRECTION::DOWN;
 	_monster.speed = 2;
 	_monster.frameX = 0;
 	_monster.frameY = (int)_direction;
 	_monster.image = IMG("mino_idle");
 }
 
-void Minotauros::move()
+void Minotaur::move()
 {
 }
 
-void Minotauros::attack()
+void Minotaur::attack()
 {
 }

@@ -1,18 +1,19 @@
 #pragma once
 #include "Monster.h"
 
-class Minotauros : public Monster
+class Minotaur : public Monster
 {
 private:
 
 
 
 public:
-	Minotauros();
-	~Minotauros() {}
+	Minotaur();
+	~Minotaur() {}
 
 	void move();
 	void attack();
+	void speedUp();
 	
 
 };

@@ -12,6 +12,11 @@ HRESULT Stage14::init(void)
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 
+
+	_bossUIBar = new ProgressBarBoss();
+	_bossUIBar->init(_enemyM->getMonsters()[0]->getHp());
+
+
 	_subScreen = new SubMenu();
 	_subScreen->init();
 
@@ -29,6 +34,9 @@ void Stage14::release(void)
 {
 	_UIBar->release();
 	SAFE_DELETE(_UIBar);
+
+	_bossUIBar->release();
+	SAFE_DELETE(_bossUIBar);
 
 	_subScreen->release();
 	SAFE_DELETE(_subScreen);
@@ -58,6 +66,9 @@ void Stage14::update(void)
 	_UIBar->update();
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
+
+	_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp());
+	_bossUIBar->update();
 
 
 	if (KEYOKD('7'))
@@ -95,7 +106,6 @@ void Stage14::render(void)
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 
-	//if()
 	// ¸ó½ºÅÍ
 	_enemyM->render();
 

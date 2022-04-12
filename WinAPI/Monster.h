@@ -33,7 +33,8 @@ protected:
 	tagMonsterData	_monster;	// 몬스터 정보
 	tagPixel		_pixel;		// 몬스터 픽셀충돌
 	tagCollisionRc  _collision; // 몬스터 렉트충돌
-
+	
+	int  _maxHp;
 	int  _curHp;
 	int  _curAtt;
  	int  _dropExp;
@@ -67,6 +68,7 @@ public:
 
 	void setHp(int hp) { _curHp-=hp; }
 	int	 getHp()	   { return _curHp; }
+	int	 getMaxHp()	   { return _maxHp; }
 	int  getAtt()	   { return _curAtt; }
 	int  getExp()	   { return _dropExp; }
 	int  getLufia()	   { return _dropLufia; }

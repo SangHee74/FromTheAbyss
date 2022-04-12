@@ -11,6 +11,7 @@ class Stage14 : public GameNode
 private:
 	EnemyManager* _enemyM;
 	ProgressBar* _UIBar;
+	ProgressBarBoss* _bossUIBar;
 	SubMenu* _subScreen;
 
 	tagEnterStageTextImage _enterInfo;

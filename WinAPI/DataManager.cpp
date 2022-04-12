@@ -29,7 +29,7 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 1; // 임시
+	_mapData.enterAbyssInfo.stage = 4; // 임시
 
 	_mapData.map = nullptr;
 	_mapData.mapObject = nullptr;
@@ -48,8 +48,8 @@ HRESULT DataManager::init(void)
 void DataManager::release(void)
 {
 
-	_player->release();
-	SAFE_DELETE(_player);
+	//_player->release();
+	//SAFE_DELETE(_player);
 }
 
 void DataManager::update(void)

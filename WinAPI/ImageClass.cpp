@@ -167,6 +167,12 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("HPBar", "Resources/Images/Object/HPBar.bmp", 65, 12, 92 * MAGNI, 26 * MAGNI, MGT);
 	//IMAGEMANAGER->addImage("sp", "Resources/Images/Object/hp.bmp", 0, 0, 1 * MAGNI, 4 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("SPBar", "Resources/Images/Object/SPBar.bmp", 360 ,12, 92 * MAGNI, 26 * MAGNI, MGT);
+	
+	//IMAGEMANAGER->addImage("bossHp", "Resources/Images/Object/hpBoss.bmp", 0, 0, 2 * MAGNI, 20 * MAGNI, MGT);
+	//IMAGEMANAGER->addImage("bossHpBg", "Resources/Images/Object/hpBackBoss.bmp", 0, 0, 2 * MAGNI, 20 * MAGNI, MGT);
+
+	
+	
 	IMAGEMANAGER->addImage("Item_select", "Resources/Images/Object/Item_select.bmp", 0, 0, 40 * MAGNI, 40 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_1", "Resources/Images/Object/tap_1.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_2", "Resources/Images/Object/tap_2.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
