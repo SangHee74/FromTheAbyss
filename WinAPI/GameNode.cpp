@@ -53,6 +53,8 @@ HRESULT GameNode::init(bool managerInit)
 		// 데이터 매니저 초기화
 		DATAMANAGER->init();
 
+		// 이펙트 매니저 초기화
+		EFFECTMANAGER->init();
 
 	}
 
@@ -110,6 +112,10 @@ void GameNode::release(void)
 		// 데이터 매니저 해제
 		DATAMANAGER->release();
 		DATAMANAGER->releaseSingleton();
+
+		// 이펙트 매니저 해제
+		EFFECTMANAGER->release();
+		EFFECTMANAGER->releaseSingleton();
 	}
 
 	ReleaseDC(_hWnd, _hdc);

@@ -6,24 +6,24 @@
 #include "SubMenu.h"
 
 
-class Stage11 : public GameNode
+class Stage14 : public GameNode
 {
 private:
 	EnemyManager* _enemyM;
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
-	
+
 	tagEnterStageTextImage _enterInfo;
 
 public:
-	Stage11() {}
-	~Stage11() {}
+	Stage14() {}
+	~Stage14() {}
 
 	HRESULT init(void);
 	void release(void);
 	void update(void);
 	void render(void);
-	
+
 	void enterInfoCheck();
 	void portalOn();
 	void collision();

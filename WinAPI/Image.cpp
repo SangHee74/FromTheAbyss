@@ -712,13 +712,97 @@ void Image::loopRender(HDC hdc, const LPRECT dramArea, int offsetX, int offsetY)
 void Image::loopAlphaRender(HDC hdc, const LPRECT dramaArea, int offsetX, int offsetY, BYTE alpha)
 {
 
-
-
+		
 }
+
+
 
 void Image::aniRender(HDC hdc, int destX, int destY, Animation * ani)
 {
 	render(hdc, destX, destY, ani->getFramePos().x, ani->getFramePos().y,
 		ani->getFrameWidth(), ani->getFrameHeight());
+}
+
+
+// 프레임 알파렌더 수정중
+void Image::frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha)
+{
+	// 알파블랜드를 처음 사용하는지 확인
+	if (!_blendImage) initForAlphaBlend();
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	// 이미지 예외처리
+	_imageInfo->currentFrameX = currentFrameX;
+	_imageInfo->currentFrameY = currentFrameY;
+	if (currentFrameX > _imageInfo->maxFrameX)
+	{
+		_imageInfo->currentFrameX = _imageInfo->maxFrameX;
+	}
+	if (currentFrameY > _imageInfo->maxFrameY)
+	{
+		_imageInfo->currentFrameY = _imageInfo->maxFrameY;
+	}
+
+	if (_isTrans)
+	{
+		// 1 출력해야할 DC에 그려져 있는 내용을 블렌드 이미지에 그린다. 
+		BitBlt
+		(
+			_blendImage->hMemDC,
+			0, 0,
+			_imageInfo->frameWidth,			
+			_imageInfo->frameHeight,
+			hdc,
+			destX, destY, SRCCOPY
+		);
+
+
+		// 2 원본 이미지 배경을 없앤 후 블랜드 이미지에 그린다.
+		GdiTransparentBlt
+		(
+			hdc,
+			destX, destY,
+			_imageInfo->frameWidth,	
+			_imageInfo->frameHeight,
+			//------------------
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,		
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,				
+			_imageInfo->frameHeight,
+			//------------------
+			_transColor
+		);
+
+
+		// 3 블렌드 이미지를 화면에 그린다 
+		AlphaBlend
+		(
+			hdc,
+			destX, destY,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight, 
+			_blendImage->hMemDC, // 지뢰조심
+			0, 0,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight, 
+			_blendFunc
+		);
+
+	}
+	else {
+		AlphaBlend
+		(
+			hdc,
+			destX, destY,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			0, 0,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_blendFunc);
+	}
 }
 

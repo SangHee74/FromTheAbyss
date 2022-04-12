@@ -172,6 +172,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("tap_2", "Resources/Images/Object/tap_2.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_3", "Resources/Images/Object/tap_3.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("UI_pathInfo", "Resources/Images/Object/UI_pathInfo.bmp", 0, 0, 21 * MAGNI, 21 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("enterStage", "Resources/Images/Object/enterStage.bmp", 0, 0, 49 * MAGNI, 11 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("LvUp", "Resources/Images/Object/LvUp.bmp", 0, 0, 83 * MAGNI, 11 * MAGNI, MGT);
 
 	IMAGEMANAGER->addImage("map_abyss", "Resources/Images/Object/map_abyss.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, MGT);

@@ -166,6 +166,12 @@
     <ClCompile Include="Stage.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>FromTheAbyss</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage14.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -337,6 +343,12 @@
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectManager.h">
+      <Filter>FromTheAbyss</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage14.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClInclude>
   </ItemGroup>

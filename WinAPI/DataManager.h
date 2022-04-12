@@ -25,6 +25,14 @@ struct tagMapSettingData
 	Image*  pixelMap;
 };
 
+struct tagEnterStageTextImage
+{
+	Image* abyssTextImg;
+	Image* stageTextImg;
+	int alpha;
+	float showTime;
+};
+
 class DataManager :public SingletonBase<DataManager>
 {
 private:

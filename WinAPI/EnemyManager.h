@@ -8,6 +8,8 @@
 #define ABYSS_MAX 2
 #define STAGE_MAX 4
 
+
+
 struct tagCreateMonsterPos
 {
 	int index;

@@ -1,7 +1,6 @@
 #pragma once
 #include "GameNode.h"
 
-
 struct tagEffect
 {
 	Image* img;
@@ -9,6 +8,24 @@ struct tagEffect
 	int count;
 	float x, y;
 };
+
+
+enum DAMAGEDIGITS
+{
+	UNIT_DIGITS, TENS_DIGITS, HUNDRED_DIGITS,
+	DIGITS_END
+};
+
+struct tagDamageData
+{
+	Image* hundred;
+	Image* tens;
+	Image* unit;
+	int damage;
+	POINT pos[DIGITS_END];
+	bitset<3> fontColor; // RGB 
+};
+
 
 class PlayerEffect :public GameNode
 {

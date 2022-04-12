@@ -94,6 +94,7 @@ using namespace MY_UTIL;
 #define IMGR IMAGEMANAGER->render
 #define IMGFR IMAGEMANAGER->frameRender
 #define IMGAR IMAGEMANAGER->alphaRender
+#define IMGFAR IMAGEMANAGER->frameAlphaRender
 //KEYMANAGER
 #define KEYOKD KEYMANAGER->isOnceKeyDown
 #define KEYOKU KEYMANAGER->isOnceKeyUp
@@ -159,7 +160,10 @@ extern HWND			_hWnd;
 extern POINT		_ptMouse;
 
 //=========================
-// # 게임 데이터 관리 #
+// # 편의를 위한 매니저 #
 //=========================
 #include "DataManager.h"
 #define DATAMANAGER DataManager::getSingleton()
+
+#include "EffectManager.h"
+#define EFFECTMANAGER EffectManager::getSingleton()

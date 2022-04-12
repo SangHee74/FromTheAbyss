@@ -20,10 +20,13 @@
 #include "Square.h"
 #include "Tutorial.h"
 #include "Castle.h"
+#include "Stage11.h"
+#include "Stage14.h"
 
 // ¸ÊÅø 
 #include "MapTool.h"
 #pragma endregion
+
 
 
 
@@ -43,17 +46,20 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("save", new Save);
 	SCENEMANAGER->addScene("main", new MainHall);
 	SCENEMANAGER->addScene("abyss", new Abyss);
-	SCENEMANAGER->addScene("stage", new Stage);
+	//SCENEMANAGER->addScene("stage", new Stage);
 	SCENEMANAGER->addScene("pub", new Pub);
 	SCENEMANAGER->addScene("store", new Store);
 	SCENEMANAGER->addScene("square", new Square);
 	SCENEMANAGER->addScene("tutorial", new Tutorial);
 	SCENEMANAGER->addScene("castle", new Castle);
 
+	SCENEMANAGER->addScene("stage11", new Stage11);
+	SCENEMANAGER->addScene("stage14", new Stage14);
+
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
 
-	SCENEMANAGER->changeScene("stage");
+	SCENEMANAGER->changeScene("stage11");
 
 
 	return S_OK;

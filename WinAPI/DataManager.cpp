@@ -98,11 +98,11 @@ void DataManager::setStageSetting(void)
 		{
 			_mapData.map = IMG("map_stage14");
 			_mapData.pixelMap = IMG("map_stage14_pixel");
-			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 0, 0);
+			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(75, 353, 120, 50);
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			_player->playerInStageSetting(LSCENTER_X, 400, PLAYERDIRECTION::UP);
+			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
 		}
 
 		break;

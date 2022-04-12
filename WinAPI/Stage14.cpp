@@ -1,7 +1,7 @@
 #include "Stdafx.h"
-#include "Stage11.h"
+#include "Stage14.h"
 
-HRESULT Stage11::init(void)
+HRESULT Stage14::init(void)
 {
 	// 스테이지 세팅 (맵+플레이어 정보)
 	DATAMANAGER->setStageSetting();
@@ -22,11 +22,10 @@ HRESULT Stage11::init(void)
 	_enterInfo.alpha = 255;
 	_enterInfo.showTime = 0;
 
-
 	return S_OK;
 }
 
-void Stage11::release(void)
+void Stage14::release(void)
 {
 	_UIBar->release();
 	SAFE_DELETE(_UIBar);
@@ -38,7 +37,7 @@ void Stage11::release(void)
 	SAFE_DELETE(_enemyM);
 }
 
-void Stage11::update(void)
+void Stage14::update(void)
 {
 	enterInfoCheck();
 
@@ -80,10 +79,9 @@ void Stage11::update(void)
 
 	portalOn();
 	collision();
-
 }
 
-void Stage11::render(void)
+void Stage14::render(void)
 {
 	int cameraLeft = CAM->getScreenRect().left;
 	int cameraTop = CAM->getScreenRect().top;
@@ -96,9 +94,6 @@ void Stage11::render(void)
 	IMGR("map_gate", getMemDC(),
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
-	IMGR("map_gate", getMemDC(),
-		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].left - cameraLeft,
-		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].top - cameraTop);
 
 	//if()
 	// 몬스터
@@ -112,9 +107,6 @@ void Stage11::render(void)
 
 	// 이펙트 렌더 
 	EFFECTMANAGER->render();
-
-	// 배경 탑
-	DATAMANAGER->getMapData().mapTop->render(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 
 
 	if (KEYMANAGER->isToggleKey(VK_F3))
@@ -138,25 +130,17 @@ void Stage11::render(void)
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
 	);
 
-	IMGAR("map_abyss", getMemDC(), LSCENTER_X,CENTER_Y-10,_enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
+	IMGAR("map_abyss", getMemDC(), LSCENTER_X, CENTER_Y - 10, _enterInfo.alpha);
+	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
+	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
 
 }
 
-
-void Stage11::enterInfoCheck()
+void Stage14::enterInfoCheck()
 {
-	_enterInfo.showTime += TIMEMANAGER->getElapsedTime();
-	if (_enterInfo.showTime > 0.6f)
-	{
-		_enterInfo.showTime = 0;
-		_enterInfo.alpha -=2 ;
-		if (_enterInfo.alpha <= 0) _enterInfo.alpha = 0;
-	}
 }
 
-void Stage11::portalOn()
+void Stage14::portalOn()
 {
 	RECT tempRc;
 	RECT playerTempRc;
@@ -177,26 +161,10 @@ void Stage11::portalOn()
 		}
 
 	}
-	else if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_NEXTSTAGE], &playerTempRc))
-	{
-		DATAMANAGER->getMapData().gate.inGateCount++;
-		cout << "다음 스테이지 가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
-		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
-		{
-			DATAMANAGER->getMapData().gate.inGateCount = 0;
-			// 다음 스테이지를 위해 스테이지 업데이트 해줄 것 
-			DATAMANAGER->getMapData().enterAbyssInfo.stage = 4;
-			DATAMANAGER->getPlayer()->getPlayerAbyss().stage = 4;
-
-			// 씬체인지 stageChangeInit();
-			SCENEMANAGER->changeScene("stage14");
-		}
-
-	}
 	else DATAMANAGER->getMapData().gate.inGateCount = 0;
 }
 
-void Stage11::collision()
+void Stage14::collision()
 {
 	RECT tempRc;
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
@@ -235,7 +203,7 @@ void Stage11::collision()
 	}
 }
 
-int Stage11::playerRandomDamage()
+int Stage14::playerRandomDamage()
 {
 	int rndPlayerDmg;
 
@@ -246,7 +214,7 @@ int Stage11::playerRandomDamage()
 	return rndPlayerDmg;
 }
 
-int Stage11::monsterRandomDamage(int i)
+int Stage14::monsterRandomDamage(int i)
 {
 	int rndMonsterDmg;
 

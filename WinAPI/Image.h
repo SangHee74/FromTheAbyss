@@ -145,6 +145,7 @@ public:
 
 	// 0214 에니랜더 추가
 	void aniRender(HDC hdc, int destX, int destY, Animation* ani);
+	void frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha);
 
 
 	//=========================
