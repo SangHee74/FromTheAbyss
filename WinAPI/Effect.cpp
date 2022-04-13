@@ -83,12 +83,12 @@ void PlayerEffect::removeEffect(int arrNum)
 
 #pragma region Monster
 
-HRESULT MosterEffect::init(void)
+HRESULT MonsterEffect::init(void)
 {
 	return S_OK;
 }
 
-void MosterEffect::release(void)
+void MonsterEffect::release(void)
 {
 	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
 	{
@@ -97,16 +97,16 @@ void MosterEffect::release(void)
 	_vEffect.clear();
 }
 
-void MosterEffect::update(void)      
+void MonsterEffect::update(void)
 {
 }
 
-void MosterEffect::render(void)
+void MonsterEffect::render(void)
 {
 	draw();
 }
 
-void MosterEffect::show(RECT rc)
+void MonsterEffect::show(RECT rc)
 {
 	tagEffect effect;
 	ZeroMemory(&effect, sizeof(tagEffect));
@@ -129,7 +129,7 @@ void MosterEffect::show(RECT rc)
 	_vEffect.push_back(effect);
 }
 
-void MosterEffect::draw(void)
+void MonsterEffect::draw(void)
 {
 	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
 	{
@@ -149,7 +149,7 @@ void MosterEffect::draw(void)
 	}
 }
 
-void MosterEffect::removeEffect(int arrNum)
+void MonsterEffect::removeEffect(int arrNum)
 {
 	SAFE_DELETE(_vEffect[arrNum].img);
 	_vEffect.erase(_vEffect.begin());

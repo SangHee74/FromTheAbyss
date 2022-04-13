@@ -27,8 +27,7 @@ public:
 	void enterInfoCheck();
 	void portalOn();
 	void collision();
-	int playerRandomDamage();
-	int monsterRandomDamage(int i);
+
 
 
 };

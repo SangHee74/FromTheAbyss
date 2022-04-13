@@ -204,17 +204,15 @@ void Stage11::collision()
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
 		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
-			&& !(_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF))
+			&& ! (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF))
 		{
 
-			// 몬스터 체력감소 + 피격상태로 전환
+			// 몬스터 피격상태로 전환 + 체력감소
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEF;
-			// 몬스터 체력 세팅 함수
 			int temp = 0;
-			temp = playerRandomDamage();
+			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
 			cout << "플레이어 데미지 : " << temp << endl;
-			//_em->getMonsters()[i]->setHp(playerRandomDamage());
-			//EFFECTMANAGER->getPlayer()->show(tempRc);
+			//EFFECTMANAGER->getPlayerEff().show(tempRc); //이펙트 수정중!!!!
 
 			_enemyM->getMonsters()[i]->setHp(temp);
 			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
@@ -224,8 +222,8 @@ void Stage11::collision()
 		// 몬스터 체력이 없으면 
 		if (_enemyM->getMonsters()[i]->getHp() <= 0)
 		{
-			// 몬스터 죽음 이펙트 출력,
-			//_monsterEffect->show(_enemyM->getMonsters()[i]->getMonster().moveRc);
+			// 몬스터 죽음 이펙트 출력, //이펙트 수정중!!!!
+			//EFFECTMANAGER->getMonsterEff()->show(_enemyM->getMonsters()[i]->getMonster().moveRc);
 			// 몬스터 데이터 플레이어에 적용,
 
 			// 삭제 
@@ -233,26 +231,32 @@ void Stage11::collision()
 		}
 
 	}
+
+
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+		// 몬스터 공격이펙트 -> 플레이어 피격박스
+		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().attRc,
+			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc )
+			&& ! (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEF))
+		{
+			// 플레이어 피격상태로 전환 + 체력감소
+			DATAMANAGER->getPlayer()->setState(PLAYERSTATE::DEF);
+
+			// 플레이어 체력 세팅 함수
+			int temp = 0;
+			temp = _enemyM->monsterRandomDamage(i);
+			cout << "몬스터의 데미지 : " << temp << endl;
+
+
+			DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
+			_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
+			//EFFECTMANAGER->getPlayer()->show(tempRc);
+
+			_enemyM->getMonsters()[i]->setHp(temp);
+			cout << "플레이어 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
+			break;
+		}
+	}
 }
 
-int Stage11::playerRandomDamage()
-{
-	int rndPlayerDmg;
-
-	rndPlayerDmg = RND->getFromIntTo(
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt*0.85,
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt);
-
-	return rndPlayerDmg;
-}
-
-int Stage11::monsterRandomDamage(int i)
-{
-	int rndMonsterDmg;
-
-	rndMonsterDmg = RND->getFromIntTo(
-		_enemyM->getMonsters()[i]->getAtt() *0.85,
-		_enemyM->getMonsters()[i]->getAtt());
-
-	return rndMonsterDmg;
-}

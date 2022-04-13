@@ -257,7 +257,7 @@ void SubMap::minimapCheck()
 			_vMiniMap[44].OnMiniMapTile.set(0);
 			_vMiniMap[44].pathFrameX = 0;
 			// 1-4 return Point
-			_returnNum = 44;
+			_returnNum = 0;
 			_curIndex = 44;
 		}
 		break;

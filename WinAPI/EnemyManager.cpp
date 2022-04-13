@@ -178,6 +178,17 @@ POINT EnemyManager::monsterRandomPos(int abyssStage, int monsterCount)
 	return PointMake(rndPos.x, rndPos.y);
 }
 
+int EnemyManager::monsterRandomDamage(int i)
+{
+	int rndMonsterDmg;
+
+	rndMonsterDmg = RND->getFromIntTo(
+		_vMonster[i]->getAtt() *0.85,
+		_vMonster[i]->getAtt());
+
+	return rndMonsterDmg;
+}
+
 
 
 

@@ -2,11 +2,11 @@
 #include "SingletonBase.h"
 #include "Effect.h"
 
-class EffectManager :public SingletonBase<DataManager>
+class EffectManager :public SingletonBase<EffectManager>
 {
 private: 
 	PlayerEffect* _playereEffect;
-	MosterEffect* _monsterEffect;
+	MonsterEffect* _monsterEffect;
 
 public:
 	EffectManager() {}
@@ -18,7 +18,7 @@ public:
 	void render(void);
 
 	PlayerEffect& getPlayerEff() { return (*_playereEffect); }
-	MosterEffect& getMosterEff() { return (*_monsterEffect); }
+	MonsterEffect& getMonsterEff() { return (*_monsterEffect); }
 
 };
 

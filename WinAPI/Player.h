@@ -210,7 +210,7 @@ public:
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
 	void playerAttSetting(bitset<3> combo);
-	int playerDamage();
+	int playerRandomDamage();
 		
 	//юс╫ц
 	int getItemNum() { return itemNum; }

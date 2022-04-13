@@ -70,6 +70,7 @@ void Monster::update(void)
 		}
 	}
 
+
 }
 
 void Monster::render(void)
@@ -118,6 +119,11 @@ void Monster::animation(void)
 		}
 	}
 
+}
+
+void Monster::setAttackRc()
+{
+	// 오버라이딩
 }
 
 

@@ -454,7 +454,7 @@ void Player::playerAttSetting(bitset<3> combo)
 	// 무기타입 -> 캐릭터 방향 -> 콤보단계 -> 캐릭터 프레임X 
 	// 캐릭터 프레임X가 두번째가 되면, 바라보는 방향으로 약간 이동.
 	int tempMoveMax;
-	if (_weapon.type == WEAPONTYPE::AX)
+	if (_weapon.type == WEAPONTYPE::SWORD)
 	{
 		switch (_direction)
 		{
@@ -483,7 +483,7 @@ void Player::playerAttSetting(bitset<3> combo)
 					
 					for (tempMoveMax = 1 ; tempMoveMax < 5 ; tempMoveMax++)
 					{
-						cout << "콤보 X프레임 2nd : 이동 " << endl;
+					//	cout << "콤보 X프레임 2nd : 이동 " << endl;
 					//	_player.movePosY -= tempMoveMax; // 일정구간 이동. 이동이안되면 콤보부분으로 이관
 					}
 				}
@@ -543,19 +543,109 @@ void Player::playerAttSetting(bitset<3> combo)
 			break;
 		}
 	}
+	if (_weapon.type == WEAPONTYPE::AX)
+	{
+		switch (_direction)
+		{
+		case PLAYERDIRECTION::UP:
+			if (combo.test(0))
+			{
+				if (_player.frameX = 0)
+				{
+					_weapon.frameX = 9;
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY - 50;
+					_collision.attPosX = _weapon.drawPosX - 25;
+					_collision.attPosY = _weapon.drawPosY + 16;
+					_collision.attWidth = 122;
+					_collision.attHeight = 113;
+				}
+				else
+				{
+					_weapon.frameX = 10;
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY + 50;
+					_collision.attPosX = _weapon.drawPosX - 25;
+					_collision.attPosY = _weapon.drawPosY + 16;
+					_collision.attWidth = 122;
+					_collision.attHeight = 113;
 
+					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
+					{
+						//cout << "콤보 X프레임 2nd : 이동 " << endl;
+						//	_player.movePosY -= tempMoveMax; // 일정구간 이동. 이동이안되면 콤보부분으로 이관
+					}
+				}
+			}
+			if (combo.test(1))
+			{
+				if (_player.frameX = 0) _weapon.frameX = 6;
+				else _weapon.frameX = 3;
+			}
+			if (combo.test(2))
+			{
+				if (_player.frameX = 0) _weapon.frameX = 3;
+				else _weapon.frameX = 2;
+			}
+			break;
+		case PLAYERDIRECTION::DOWN:
+			break;
+		case PLAYERDIRECTION::LEFT:
+			break;
+		case PLAYERDIRECTION::RIGHT:
+			break;
+		case PLAYERDIRECTION::LEFTUP:
+			break;
+		case PLAYERDIRECTION::RIGHTUP:
+			break;
+		case PLAYERDIRECTION::LEFTDOWN:
+			break;
+		case PLAYERDIRECTION::RIGHTDOWN:
+			if (combo.test(0))
+			{
+				if (_player.frameX = 0)
+				{
+					_weapon.frameX = 25;
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY + 50;
+					_collision.attPosX = _weapon.drawPosX - 20;
+					_collision.attPosY = _weapon.drawPosY + 56;
+					_collision.attWidth = 116;
+					_collision.attHeight = 43;
+				}
+				else // OK!
+				{
+					_weapon.frameX = 4; // 프레임이 끝날때까지 
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY + 50;
+					_collision.attPosX = _weapon.drawPosX + 95;
+					_collision.attPosY = _weapon.drawPosY - 30;
+					_collision.attWidth = 116;
+					_collision.attHeight = 43;
+
+					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
+					{
+						//_player.movePosY += tempMoveMax; // 일정구간 이동
+					}
+				}
+			}
+			break;
+		}
+	}
 
 	_collision.attRc =
 		RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	
 }
 
-int Player::playerDamage()
+int Player::playerRandomDamage()
 {
-	int damage = 0;
+	int rndPlayerDmg;
 
+	rndPlayerDmg = RND->getFromIntTo(
+		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt*0.85,
+		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt);
 
-
-	return damage;
+	return rndPlayerDmg;
 }
 

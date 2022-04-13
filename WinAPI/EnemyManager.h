@@ -51,7 +51,8 @@ public:
 
 	void monsterAttack(void);
 	POINT monsterRandomPos(int abyssStage, int monsterCount);
-	
+	int monsterRandomDamage(int i);
+
 	vector<Monster*> getMonsters(void) { return _vMonster; }
 
 	EnemyManager() {}

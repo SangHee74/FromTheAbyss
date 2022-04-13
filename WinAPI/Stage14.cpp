@@ -59,6 +59,7 @@ void Stage14::update(void)
 
 	DATAMANAGER->getPlayer()->update();
 
+
 	_enemyM->update();
 
 	_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
@@ -67,9 +68,11 @@ void Stage14::update(void)
 	IMG("Num_UI")->setFrameX(11);
 	IMG("Num_UI")->setFrameY(1);
 
-	_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp());
-	_bossUIBar->update();
-
+	if (_enemyM->getMonsters()[0]->getHp() >= 0)
+	{
+		_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp());
+		_bossUIBar->update();
+	}
 
 	if (KEYOKD('7'))
 	{
@@ -77,6 +80,8 @@ void Stage14::update(void)
 		DATAMANAGER->getPlayer()->getPlayer().movePosX = 50;
 		DATAMANAGER->getPlayer()->getPlayer().movePosY = 300;
 	}
+
+	EFFECTMANAGER->update();
 
 	_subScreen->update();
 
@@ -107,7 +112,8 @@ void Stage14::render(void)
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 
 	// 몬스터
-	_enemyM->render();
+	if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
+
 
 	// 플레이어 
 	DATAMANAGER->getPlayer()->render();

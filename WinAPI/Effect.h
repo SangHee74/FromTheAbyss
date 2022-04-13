@@ -49,7 +49,7 @@ public:
 };
 
 
-class MosterEffect :public GameNode
+class MonsterEffect :public GameNode
 {
 private:
 	vector<tagEffect> _vEffect;
@@ -66,6 +66,6 @@ public:
 	void draw(void);
 	void removeEffect(int arrNum);
 
-	MosterEffect() {}
-	~MosterEffect() {}
+	MonsterEffect() {}
+	~MonsterEffect() {}
 };

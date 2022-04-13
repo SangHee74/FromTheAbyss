@@ -8,7 +8,7 @@ HRESULT EffectManager::init(void)
 	_playereEffect = new PlayerEffect();
 	_playereEffect->init();
 
-	_monsterEffect = new MosterEffect();
+	_monsterEffect = new MonsterEffect();
 	_monsterEffect->init();
 
 	return S_OK;
