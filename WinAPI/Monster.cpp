@@ -32,6 +32,7 @@ HRESULT Monster::init(POINT position)
 	_monster.recognitionRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameHeight()*3, _monster.image->getFrameHeight()*3);
 	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+
 		//RectMakeCenter(position.x, position.y,
 		//_monster.image->getFrameWidth()-40, _monster.image->getFrameHeight()-40);
 	return S_OK;
@@ -66,7 +67,6 @@ void Monster::update(void)
 {
 	move();
 	setDirection();
-	setCollisionRange();
 	pixelCollision();
 	if(_state == MONSTERSTATE::ATT) attack();  // 미작성
 
@@ -86,13 +86,18 @@ void Monster::update(void)
 		_monster.frameY = static_cast<int>(_direction);
 	}
 
-	if (_curHp <= 0) _state = MONSTERSTATE::DEAD;
+	if (_state == MONSTERSTATE::DEAD) 
+	{
+		_collision.attWidth = _collision.attHeight = 0;
+		_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+	}
 }
 
 void Monster::render(void)
 {
 	draw();
 	animation();
+	drawEffect();
 }
 
 void Monster::move(void)
@@ -185,6 +190,11 @@ void Monster::setCollisionRange()
 {
 	// 오버라이딩
 	// 방향별 타격, 피격 범위 재조정
+}
+
+void Monster::drawEffect(void)
+{
+	// 오버라이딩
 }
 
 

@@ -25,7 +25,7 @@ void EffectManager::update(void)
 
 void EffectManager::render(void)
 {
-	
+	draw();
 }
 
 void EffectManager::draw(void)
@@ -58,7 +58,7 @@ void EffectManager::show(int x, int y)
 	
 }
 
-void EffectManager::show(RECT rc, EFFECT_TYPE type)
+void EffectManager::addEff(RECT rc, EFFECT_TYPE type)
 {
 	tagEffect effect;
 	ZeroMemory(&effect, sizeof(tagEffect));
@@ -68,8 +68,7 @@ void EffectManager::show(RECT rc, EFFECT_TYPE type)
 	switch (type)
 	{
 	case EFFECT_TYPE::P_EFFECT_COLLISION:
-		//IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
-		effect.img->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f,
+		effect.img->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f, 
 			525, 385, 5, 4, MGT);
 
 		// 카메라 적용 
@@ -82,12 +81,19 @@ void EffectManager::show(RECT rc, EFFECT_TYPE type)
 	case EFFECT_TYPE::M_EFFECT_ATTMOTION:
 		break;
 	case EFFECT_TYPE::M_EFFECT_COLLISION:
+		effect.img->init("Resources/Images/Object/eff_bossCollision.bmp", 0.0f, 0.0f,
+			210, 98 ,2,1, MGT);
+
+		// 카메라 적용 
+		effect.rc = RectMake(rc.left - CAM->getScreenRect().left - 40,
+			rc.top - CAM->getScreenRect().top - 40,
+			rc.right - CAM->getScreenRect().left - 40,
+			rc.top - CAM->getScreenRect().top - 40);
 		
 		break;
 	case EFFECT_TYPE::M_EFFECT_DIE:
-		//IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
 		effect.img->init("Resources/Images/Object/monsterDie.bmp", 0.0f, 0.0f,
-			160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+			160 , 32  , 5, 1, MGT);
 
 		effect.rc = RectMake(rc.left - CAM->getScreenRect().left + 20,
 			rc.top - CAM->getScreenRect().top + 30,
@@ -95,8 +101,13 @@ void EffectManager::show(RECT rc, EFFECT_TYPE type)
 			rc.top - CAM->getScreenRect().top + 30);
 		break;
 	case EFFECT_TYPE::M_EFFECT_BOSSDIE:
-		break;
-	case EFFECT_TYPE::EFFECT_END:
+		effect.img->init("Resources/Images/Object/BossDie.bmp", 0.0f, 0.0f,
+			160, 30, 5, 1, MGT);
+
+		effect.rc = RectMake(rc.left - CAM->getScreenRect().left + 20,
+			rc.top - CAM->getScreenRect().top + 30,
+			rc.right - CAM->getScreenRect().left + 20,
+			rc.top - CAM->getScreenRect().top + 30);
 		break;
 	}
 	

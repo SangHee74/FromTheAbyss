@@ -58,6 +58,7 @@ public:
 	virtual void move(void);
 	virtual void attack(void);
 	virtual void setCollisionRange(void);
+	virtual void drawEffect(void);
 	void draw(void);
 	void animation(void);
 	void setDirection(void);

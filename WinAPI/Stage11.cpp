@@ -6,10 +6,6 @@ HRESULT Stage11::init(void)
 	// 스테이지 세팅 (맵+플레이어 정보)
 	DATAMANAGER->setStageSetting();
 
-
-
-
-
 	_enemyM = new EnemyManager();
 	_enemyM->init();
 

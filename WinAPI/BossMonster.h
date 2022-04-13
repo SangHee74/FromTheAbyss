@@ -17,5 +17,5 @@ public:
 	void speedUp();
 	void setCollisionRange();
 	void monsterMovetoPlayer();
-
+	void drawEffect();
 };

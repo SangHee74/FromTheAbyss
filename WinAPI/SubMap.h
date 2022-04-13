@@ -13,8 +13,8 @@ struct tagMiniMapImg
 {
 	RECT miniMapTile;
 	Image* miniMapPath;
-	bitset<1> OnMiniMapTile;
 	int pathFrameX;
+	bool OnMiniMapTile;
 };
 
 class SubMap : public GameNode

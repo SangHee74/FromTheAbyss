@@ -104,6 +104,7 @@ void EnemyManager::setMoster()
 			mino = new Minotaur;
 
 			// 어비스 1보스 : 미노타우르스
+			//mino->init({ (long)(DATAMANAGER->getMapData().map->getWidth()*0.5) , 800 });
 			mino->init({DATAMANAGER->getPlayer()->getPlayer().drawPosX, 800});
 			_vMonster.push_back(mino);
 

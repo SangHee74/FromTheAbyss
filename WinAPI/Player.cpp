@@ -69,7 +69,14 @@ void Player::update(void)
 		setPlayerState(_pStatePattern);
 	}
 
+	// ·¹º§¾÷
+	if (_status.curExp == _status.maxExp)
+	{
+		_status.lv++;
+		_status.iStatusPoint += 4;
+		_status.curExp = 0;
 
+	}
 }
 
 void Player::render(void)

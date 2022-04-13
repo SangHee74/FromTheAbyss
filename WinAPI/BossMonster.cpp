@@ -5,7 +5,7 @@
 Minotaur::Minotaur()
 {
 	_curHp = 300;
-	_curAtt = 30;
+	_curAtt = 10;
 	_dropExp = 50;
 	_dropLufia = RND->getFromIntTo(80,100);
 	_dropItemIndex = 0; // 임시
@@ -16,11 +16,19 @@ Minotaur::Minotaur()
 	_monster.frameX = 0;
 	_monster.frameY = (int)_direction;
 	_monster.image = IMG("mino_idle");
+	_collision.attEffectImg = IMG("none2");
+
+
+
 
 	_attTimeCount = 0;
-	setCollisionRange();
 
-	// 보스몬스터의 인식범위는 맵의 대부분. 
+	// 보스몬스터의 인식범위는 맵의 대부분.
+	// 초기 피격렉트 초기화
+	_collision.defWidth = 185; 	_collision.defHeight = 168;
+	_collision.defRc = RectMakeCenter(_monster.movePosX, _monster.movePosY - 30, _collision.defWidth, _collision.defHeight);
+
+
 	_monster.recognitionRc = RectMakeCenter
 	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1690, 1060);
 }
@@ -37,7 +45,10 @@ void Minotaur::move()
 
 		
 		// 다 도착하면 공격상태로 변경
-		if ( _monster.attCoolTime >= 180.0f) _state = MONSTERSTATE::ATT;
+		if (_monster.attCoolTime >= 180.0f && _state != MONSTERSTATE::DEAD)
+		{
+			_state = MONSTERSTATE::ATT;
+		}
 	}	
 	else
 	{
@@ -49,6 +60,8 @@ void Minotaur::move()
 	// 공격이 아니면(끝나면) 쿨타임 
 	if (_state != MONSTERSTATE::ATT) _monster.attCoolTime++;
 
+	
+
 }
 
 
@@ -58,7 +71,6 @@ void Minotaur::attack()
 	_monster.image = IMG("mino_attack");
 	_monster.frameX = 0;
 	_monster.frameY = (int)_direction;
-	_collision.attWidth = _collision.attHeight = 0;
 
 	_attTimeCount++;
 	cout << "_attTimeCount : " << _attTimeCount << endl;
@@ -68,11 +80,19 @@ void Minotaur::attack()
 		_monster.frameX++;
 		// 공격렉트 생성 
 		setCollisionRange();
-	
+		
+		// 이펙트 주기와 맞춰서 공격렉트 초기화
+		if (_attTimeCount >= 210)
+		{
+			_collision.attWidth = _collision.attHeight = 0;
+			_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+		}
+
 		if (_monster.frameX >= IMG("mino_attack")->getMaxFrameX() 
 			&& _attTimeCount >= 240) // 공격모션 변경 후 일정시간이 지나면
 		{
 			_attTimeCount = 0;
+			
 			_state = MONSTERSTATE::IDLE; // 공격종료
 			_monster.attCoolTime = 0;
 			_monster.image = IMG("mino_idle");
@@ -92,7 +112,7 @@ void Minotaur::setCollisionRange()
 {
 	switch (_direction)
 	{
-	case MONSTERDIRECTION::UP: // 여기나옴
+	case MONSTERDIRECTION::UP:
 		_collision.defWidth = 185;
 		_collision.defHeight = 168;
 
@@ -111,7 +131,7 @@ void Minotaur::setCollisionRange()
 		_collision.attHeight = 80;
 
 		break;
-	case MONSTERDIRECTION::LEFT: // 여기나옴
+	case MONSTERDIRECTION::LEFT:
 		_collision.defWidth = 140;
 		_collision.defHeight = 168;
 
@@ -157,4 +177,30 @@ void Minotaur::monsterMovetoPlayer()
 	//cout << "보스몬스터 이동렉트 L : " << _monster.moveRc.left << ", T : " << _monster.moveRc.top << endl;
 }
 
+void Minotaur::drawEffect()
+{
+
+	
+	/*
+	switch (_direction)
+	{
+	case MONSTERDIRECTION::UP:
+		_collision.attEffectImg = IMG("eff_bossAttUp");
+		break;
+	case MONSTERDIRECTION::DOWN:
+		_collision.attEffectImg = IMG("eff_bossAttDown");
+		break;
+	case MONSTERDIRECTION::LEFT:
+		_collision.attEffectImg = IMG("eff_bossAttLeft");
+		break;
+	case MONSTERDIRECTION::RIGHT:
+		_collision.attEffectImg = IMG("eff_bossAttRight");
+		break;
+	}
+
+		_collision.attEffectImg->render(getMemDC(),
+			_collision.attRc.left - CAM->getScreenRect().left, 
+			_collision.attRc.top - CAM->getScreenRect().top);
+			*/
+}
 

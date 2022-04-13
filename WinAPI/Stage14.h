@@ -33,6 +33,7 @@ public:
 	void monsterMovetoPlayer();
 	int playerRandomDamage();
 	int monsterRandomDamage(int i);
+	void getPlayerAngle(int i);
 
 
 };
