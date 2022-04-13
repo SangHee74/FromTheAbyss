@@ -3,6 +3,10 @@
 
 HRESULT MainHall::init(void)
 {
+	// 메인홀 입장시 플레이어 hp,sp 회복
+	DATAMANAGER->getPlayer()->getPlayerStatus().curHp = DATAMANAGER->getPlayer()->getPlayerStatus().maxHp;
+	DATAMANAGER->getPlayer()->getPlayerStatus().curSp = DATAMANAGER->getPlayer()->getPlayerStatus().maxSp;
+
 	mainIdx = 1;
 	_textNum = 0;
 	_selectCount = 0;

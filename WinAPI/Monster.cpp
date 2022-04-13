@@ -25,6 +25,7 @@ HRESULT Monster::init(POINT position)
 	_monster.distance = 0;
 	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
+	_monster.attCoolTime = 0.0f;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
@@ -66,7 +67,8 @@ void Monster::update(void)
 	move();
 	setDirection();
 	setCollisionRange();
-
+	pixelCollision();
+	if(_state == MONSTERSTATE::ATT) attack();  // 미작성
 
 	if (_state == MONSTERSTATE::DEF)
 	{
@@ -105,6 +107,14 @@ void Monster::attack(void)
 
 void Monster::draw(void)
 {
+	//인식렉트
+	Rectangle(getMemDC(),
+		_monster.recognitionRc.left - CAM->getScreenRect().left,
+		_monster.recognitionRc.top - CAM->getScreenRect().top,
+		_monster.recognitionRc.right - CAM->getScreenRect().left,
+		_monster.recognitionRc.bottom - CAM->getScreenRect().top
+	);
+
 	// 피격렉트
 	Rectangle(getMemDC(),
 		_collision.defRc.left - CAM->getScreenRect().left,
@@ -112,6 +122,16 @@ void Monster::draw(void)
 		_collision.defRc.right - CAM->getScreenRect().left,
 		_collision.defRc.bottom - CAM->getScreenRect().top
 	);
+
+	// 타격렉트
+	Rectangle(getMemDC(),
+		_collision.attRc.left - CAM->getScreenRect().left,
+		_collision.attRc.top - CAM->getScreenRect().top,
+		_collision.attRc.right - CAM->getScreenRect().left,
+		_collision.attRc.bottom - CAM->getScreenRect().top
+	);
+
+
 
 	_monster.image->frameRender(getMemDC(),
 		_monster.moveRc.left-CAM->getScreenRect().left,
@@ -138,9 +158,9 @@ void Monster::animation(void)
 void Monster::setDirection(void)
 {
 	
-	if (_monster.playerCheck)
+	if (_monster.playerCheck && _state != MONSTERSTATE::ATT)
 	{
-		// 각도에 따라 방향 전환
+		// 플레이어 각도에 따라 방향 전환
 		if (_monster.angle >= 45 * DTR && _monster.angle < 135 * DTR)
 		{
 			_direction = MONSTERDIRECTION::UP;
@@ -169,3 +189,46 @@ void Monster::setCollisionRange()
 
 
 
+void Monster::pixelCollision()
+{
+	//탐지
+	_pixel.probeUp    = (_monster.movePosY + _monster.image->getFrameHeight() / 2) - 16;
+	_pixel.probeDown  = (_monster.movePosY + _monster.image->getFrameHeight() / 2) - 8;
+	_pixel.probeLeft  = _monster.movePosX - 20;
+	_pixel.probeRight = _monster.movePosX + 20;
+
+	switch (_direction)
+	{
+	case MONSTERDIRECTION::UP:
+		if (pixelColorCheck(_monster.movePosX, _pixel.probeUp)) _monster.movePosY += _monster.speed;
+		break;
+	case MONSTERDIRECTION::DOWN:
+		if (pixelColorCheck(_monster.movePosX, _pixel.probeUp)) _monster.movePosY -= _monster.speed;
+		break;
+	case MONSTERDIRECTION::LEFT:
+		if (pixelColorCheck(_pixel.probeLeft, _pixel.probeDown)) _monster.movePosX += _monster.speed;
+		break;
+	case MONSTERDIRECTION::RIGHT:
+		if (pixelColorCheck(_pixel.probeRight, _pixel.probeDown)) _monster.movePosX -= _monster.speed;
+		break;
+	}
+}
+
+bool Monster::pixelColorCheck(int getPixelX, int getPixelY)
+{
+	DATAMANAGER->getMapData().pixelMap->getMemDC();
+
+	COLORREF color = GetPixel(DATAMANAGER->getMapData().pixelMap->getMemDC(), getPixelX, getPixelY);
+	int r = GetRValue(color);
+	int g = GetGValue(color);
+	int b = GetBValue(color);
+
+
+	if (!(r == 255 && g == 0 && b == 255))
+	{
+		// 마젠타가 아니면, 픽셀 충돌임.
+		return true;
+	}
+	else return false;
+
+}

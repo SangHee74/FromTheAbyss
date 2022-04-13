@@ -478,9 +478,6 @@ bool MoveState::pixelColorCheck(int getPixelX, int getPixelY)
 	}
 	else return false;
 
-
-
-
 }
 
 

@@ -6,7 +6,7 @@ class Minotaur : public Monster
 private:
 	int _endX;
 	int _endY;
-
+	float _attTimeCount;
 
 public:
 	Minotaur();

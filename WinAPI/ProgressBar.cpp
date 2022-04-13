@@ -76,6 +76,11 @@ void ProgressBar::renderHpSpNumImg(int curHp, int curSp, int MaxHp, int MaxSp)
 	if (MaxSp > 99)		 IMGFR("Num_UI2", getMemDC(), 524, 21, MaxSp / 100 % 10, 0);
 	if (MaxSp > 9)		 IMGFR("Num_UI2", getMemDC(), 542, 21, MaxSp / 10 % 10, 0);
 						 IMGFR("Num_UI2", getMemDC(), 560, 21, MaxSp % 10, 0);
+
+	if (curHp <= 0)		 IMGFR("Num_UI", getMemDC(), 176, 11, 0, 0);
+	if (curSp <= 0)		 IMGFR("Num_UI", getMemDC(), 468, 11, 0, 0);
+
+
 }
 
 #pragma endregion

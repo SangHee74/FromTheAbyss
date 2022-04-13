@@ -44,7 +44,6 @@ protected:
 	int  _dropLufia;
 	int  _dropItemIndex;
 
-
 public:
 	Monster(void);
 	virtual ~Monster() {};
@@ -58,10 +57,13 @@ public:
 
 	virtual void move(void);
 	virtual void attack(void);
+	virtual void setCollisionRange(void);
 	void draw(void);
 	void animation(void);
 	void setDirection(void);
-	virtual void setCollisionRange(void);
+	void pixelCollision();
+	bool pixelColorCheck(int getPixelX, int getPixelY);
+
 
 	// get/set
 	MONSTERSTATE&	  getState()			  { return _state; }
