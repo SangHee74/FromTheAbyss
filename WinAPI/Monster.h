@@ -18,6 +18,7 @@ struct tagMonsterData
 	int		movePosX, movePosY; // rc업데이트
 	int		frameX, frameY;
 	int		speed;
+	int		distance;
 	float	angle;				// 플레이어를 향해 다가갈 각도
 	float	rndTimeCount;
 	float	worldTimeCount;

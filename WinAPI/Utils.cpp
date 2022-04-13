@@ -24,4 +24,17 @@ namespace MY_UTIL
 		return angle;
 	}
 
+
+	POINT lerp(POINT start, POINT end, float percentage)
+	{
+		if (0 > percentage) percentage = 0;
+		else if (percentage > 1)percentage = 1;
+		LONG x = start.x + (end.x - start.x) * percentage;
+		LONG y = start.y + (end.y - start.y) * percentage;
+	
+		return { x,y };
+	}
+
+
+	
 }

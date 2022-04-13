@@ -97,6 +97,7 @@ void Stage14::update(void)
 
 	portalOn();
 	collision();
+	//monsterMovetoPlayer();
 }
 
 void Stage14::render(void)
@@ -187,22 +188,26 @@ void Stage14::collision()
 	RECT tempRc;
 
 	// 몬스터의 인식범위 내 플레이어 충돌 시
-	// 방향을 바꿔주고, 각도를 설정해 몬스터가 다가오게 한다.
-	// 처음 지정한 인식범위를 초과한 경우 다시 돌아간다.
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 몬스터 인식범위 -> 플레이어 피격범위
 		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonster().recognitionRc,
 			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc))
 		{
+			// 몬스터가 플레이어를 인식 함 -> 선형보간으로 따라다님
 			_enemyM->getMonsters()[i]->getMonster().playerCheck = true;
-			_enemyM->getMonsters()[i]->getMonster().angle = 
-			getAngle(_enemyM->getMonsters()[i]->getMonster().movePosX, _enemyM->getMonsters()[i]->getMonster().movePosY,
-				DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+
+			// 방향전환을 위한 몬스터-플레이어 간 각도 
+			_enemyM->getMonsters()[i]->getMonster().angle =
+				getAngle(_enemyM->getMonsters()[i]->getMonster().movePosX, _enemyM->getMonsters()[i]->getMonster().movePosY,
+					DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY);
 		}
 		else _enemyM->getMonsters()[i]->getMonster().playerCheck = false;
+
 		break;
 	}
+
+	
 
 	// 플레이어가 공격
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
@@ -263,3 +268,134 @@ int Stage14::monsterRandomDamage(int i)
 
 	return rndMonsterDmg;
 }
+
+void Stage14::monsterMovetoPlayer()
+{
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+		if (_enemyM->getMonsters()[i]->getMonster().playerCheck)
+		{
+			// 선형보간 이동
+			float _lerpPercentage = 0;
+			float time = 10.0f;
+			float speed = TIMEMANAGER->getElapsedTime() * time;
+//			float speed = DATAMANAGER->getPlayer()->getPlayer().speed*1.2;
+			_lerpPercentage += speed;
+
+			POINT start = { _enemyM->getMonsters()[i]->getMonster().movePosX, _enemyM->getMonsters()[i]->getMonster().movePosY };
+			POINT end = { DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY };
+
+			_enemyM->getMonsters()[i]->getMonster().moveRc = RectMakeCenter(
+				lerp(start, end, _lerpPercentage).x, lerp(start, end, _lerpPercentage).y,
+				_enemyM->getMonsters()[i]->getMonster().image->getFrameWidth(),
+				_enemyM->getMonsters()[i]->getMonster().image->getFrameWidth());
+
+			//cout << "몬스터 이동렉트 L : " << _enemyM->getMonsters()[i]->getMonster().moveRc.left << ", T : " << _enemyM->getMonsters()[i]->getMonster().moveRc.top << endl;
+		}
+
+	}
+}
+
+//=================================================================================================
+
+// 보간법
+#if 0
+
+
+void FinalScene::rectMoveToPath()
+{
+	/*
+	if (_turnSystem->getStatus() == CHANGINGSTATUS::PLAYERTURN)
+	{
+		if (_moveIndex - 1 < 0)
+		{
+			for (auto iter = _vMoveableTile.begin(); iter != _vMoveableTile.end(); ++iter)
+			{
+				(*iter)->setType(CELL_TYPE::NORMAL);
+			}
+			_vMoveableTile.clear();
+			_vAttackableTile.clear();
+			//_moveTileBit.reset();
+
+			_moveTileBit.reset(1);
+			if (_cMoveStart->getCellX() == _enemyPathGoal.x && _cMoveStart->getCellY() == _enemyPathGoal.y)
+			{
+				_turnSystem->setEnemyBit(2);
+			}
+			else
+			{
+				_turnSystem->changeToPlayer();
+				_player->setPlayerIdle();
+			}
+			_moveIndex = 0;
+			_lerpPercentage = 0.0f;
+			return;
+		}
+		else
+		{
+			changeImage();
+			float time = 4.0f;
+			float speed = TIMEMANAGER->getElapsedTime() * time;
+			_lerpPercentage += speed;
+
+			POINT start = { _check[_moveIndex].x * TILESIZEX, _check[_moveIndex].y * TILESIZEY };
+			POINT end = { _check[_moveIndex - 1].x * TILESIZEX, _check[_moveIndex - 1].y * TILESIZEY };
+			_moveRc = RectMake(lerp(start, end, _lerpPercentage).x,
+				lerp(start, end, _lerpPercentage).y,
+				TILESIZEX, TILESIZEY);
+
+			if (_turnSystem->getStatus() == CHANGINGSTATUS::PLAYERTURN)
+			{
+				_player->setPlayerStateBit(0);
+				_player->setPlayerPos({ _moveRc.right,_moveRc.top });
+			}
+			if (_lerpPercentage >= 1)
+			{
+				_moveIndex--;
+				_lerpPercentage = 0;
+			}
+		}
+	}
+	*/
+
+//=====================================================================================================
+	if (_turnSystem->getStatus() == CHANGINGSTATUS::ENEMYTURN)
+	{
+		if (_moveIndex - 1 < 0)
+		{
+			if (_cMoveStart->getCellX() == _enemyPathGoal.x && _cMoveStart->getCellY() == _enemyPathGoal.y)
+			{
+				_turnSystem->setEnemyBit(2);
+			}
+			else
+			{
+				_turnSystem->changeToPlayer();
+				_saladin->setEnemyIdle();
+				_moveTileBit.reset();
+			}
+
+			_moveIndex = 0;
+			_lerpPercentage = 0.0f;
+			_check.clear();//==============================================================================================
+			return;
+		}
+		else
+		{
+			changeImage();
+		
+			if (_turnSystem->getStatus() == CHANGINGSTATUS::ENEMYTURN)
+			{
+				_saladin->setEnemyStateBit(0);
+				_saladin->setSaladinPos({ _moveRc.right,_moveRc.top });
+			}
+
+			if (_lerpPercentage >= 1)
+			{
+				_moveIndex--;
+				_lerpPercentage = 0;
+			}
+		}
+	}
+}
+
+#endif

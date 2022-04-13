@@ -30,6 +30,7 @@ public:
 	void enterInfoCheck();
 	void portalOn();
 	void collision();
+	void monsterMovetoPlayer();
 	int playerRandomDamage();
 	int monsterRandomDamage(int i);
 

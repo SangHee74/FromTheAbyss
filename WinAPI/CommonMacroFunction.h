@@ -65,3 +65,66 @@ inline POINT rcMiddlePos(RECT &rc)
 
 	return POINT{ posX, posY };
 }
+
+
+// 타일 인덱스 접근
+#pragma region tile
+inline int getTileIndexWithPos(int tileX, int tileY, int tileSize, POINT pos)
+{
+	for (int i = 0; i < tileY; ++i)
+	{
+		for (int j = 0; j < tileX; ++j)
+		{
+			// 좌표를 타일크기로 나눠서 현재 인덱스 추출
+			int iCullX = pos.x / tileSize;
+			int iCullY = pos.y / tileSize;
+			int iIndex = 0;
+
+			iIndex = (i + iCullY) * tileX + (j + iCullX);
+
+			// 예외처리
+			if (iIndex >= tileX * tileY) continue;
+
+			return iIndex;
+		}
+	}
+}
+
+inline int getTileIndexWithPos(int tileX, int tileY, int tileSize, int posX, int posY)
+{
+	for (int i = 0; i < tileY; ++i)
+	{
+		for (int j = 0; j < tileX; ++j)
+		{
+			int iCullX = posX / tileSize;
+			int iCullY = posY / tileSize;
+			int iIndex = 0;
+
+			iIndex = (i + iCullY) * tileX + (j + iCullX);
+
+			if (iIndex >= tileX * tileY) continue;
+
+			return iIndex;
+		}
+	}
+}
+
+inline int getTileIndexWithPos(int tileX, int tileY, int tileXSize, int tileYSize, int posX, int posY)
+{
+	for (int i = 0; i < tileY; ++i)
+	{
+		for (int j = 0; j < tileX; ++j)
+		{
+			int iCullX = posX / tileXSize;
+			int iCullY = posY / tileYSize;
+			int iIndex = 0;
+
+			iIndex = (i + iCullY) * tileX + (j + iCullX);
+
+			if (iIndex >= tileX * tileY) continue;
+
+			return iIndex;
+		}
+	}
+}
+#pragma endregion

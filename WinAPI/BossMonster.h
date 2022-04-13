@@ -4,7 +4,8 @@
 class Minotaur : public Monster
 {
 private:
-
+	int _endX;
+	int _endY;
 
 
 public:
@@ -15,5 +16,6 @@ public:
 	void attack();
 	void speedUp();
 	void setCollisionRange();
+	void monsterMovetoPlayer();
 
 };

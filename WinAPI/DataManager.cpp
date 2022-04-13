@@ -29,7 +29,9 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	_mapData.enterAbyssInfo.stage =4; // 임시
+	//_mapData.enterAbyssInfo.stage = 1; // 임시
+	_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+
 
 	_mapData.map = nullptr;
 	_mapData.mapObject = nullptr;
@@ -88,10 +90,10 @@ void DataManager::setStageSetting(void)
 			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			//_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
+			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
 
 			// 보스방 테스트 용
-			_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
+			//_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
  
 		}
 		if (settingStage == 4)

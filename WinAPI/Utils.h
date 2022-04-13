@@ -37,8 +37,13 @@ namespace MY_UTIL
 	// 두 점 사이의 거리를 구한다.
 	float getDistance(float startX, float statrY, float endX, float endY);
 
-	//start부터 end까지의 각을 라디안으로 구한다.
+	// start부터 end까지의 각을 라디안으로 구한다.
 	float getAngle(float startX, float statrY, float endX, float endY);
+
+	// 선형보간
+	POINT lerp(POINT start, POINT end, float percentage);
+
+
 
 }
 

@@ -21,7 +21,9 @@ HRESULT Monster::init(POINT position)
 
 	_monster.movePosX = position.x;
 	_monster.movePosY = position.y;
-	_monster.speed = 0.0f;
+	_monster.speed = 0;
+	_monster.distance = 0;
+	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,

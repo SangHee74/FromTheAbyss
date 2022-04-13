@@ -58,8 +58,9 @@ HRESULT MainGame::init(void)
 
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
-
 	SCENEMANAGER->changeScene("stage14");
+	//SCENEMANAGER->changeScene("stage11");
+
 
 
 	return S_OK;

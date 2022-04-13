@@ -30,19 +30,23 @@ HRESULT SubMap::init(void)
 
 	for(int i = 0; i < 10 ; i++)
 	{
-		for (int j = 0; j <10 ; j++)
+		for (int j = 0; j < 10 ; j++)
 		{
 		tagMiniMapImg data;
 
 		// 미니맵 그려줄 타일 위치 추가하기 .
 		data.miniMapTile = RectMake(640 + 328 + (25 * j),100 + (25 * i), 25, 25);
 		data.miniMapPath = IMG("map_path");
-		data.OnMiniMapTile.reset(0);
+		data.OnMiniMapTile.reset();
 		data.pathFrameX = 0;
 
 		_vMiniMap.push_back(data);
 		}
 	}
+
+	cout << _vMiniMap.size() << endl;
+
+
 	return S_OK;
 }
 
@@ -109,22 +113,59 @@ void SubMap::minimapCheck()
 
 		if (_settingStage == 1)
 		{
+//#define tempText1
+
+#ifdef tempText1
+
 			_vMiniMap[33].OnMiniMapTile.set(0);
 			_vMiniMap[33].pathFrameX = 2;
 			// 1-1 return Point
 			_returnNum = 33;
 			_curIndex = 33;
 
-		}	// 스테이지 1 미니맵 정보 
-			/*
-			_mapMaxWidth = IMG("map_stage1")->getWidth();
-			_mapMaxHeight = IMG("map_stage1")->getHeight();
+#else
+			// 스테이지 1 미니맵 정보 
+			_mapMaxWidth = IMG("map_stage11")->getWidth();
+			_mapMaxHeight = IMG("map_stage11")->getHeight();
 
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 4 ; i++) // 가로 세로 각 4칸 총 16 범위
 			{
-				_mapRangeX[i] = _mapMaxWidth * (0.25 * (i + 1));
-				_mapRangeY[i] = _mapMaxHeight * (0.25 * (i + 1));
+				_mapRangeX[i] = _mapMaxWidth * (0.25 * (i + 1)); 
+				_mapRangeY[i] = _mapMaxHeight * (0.25 * (i + 1)); 
 			}
+
+			if (DATAMANAGER->getPlayer()->getPlayer().movePosY < _mapRangeY[0])
+			{
+				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[0])
+				{
+					_vMiniMap[33].OnMiniMapTile.set(0);
+					_vMiniMap[33].pathFrameX = 2;
+					// 1-1 return Point
+					_returnNum = 33;
+					_curIndex = 33;
+				}
+				if ( DATAMANAGER->getPlayer()->getPlayer().movePosX > _mapRangeX[0]
+					&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[1])
+				{
+					_vMiniMap[34].OnMiniMapTile.set(0);
+					_vMiniMap[34].pathFrameX = 9;
+					_curIndex = 34;
+				}
+			}
+
+			if (DATAMANAGER->getPlayer()->getPlayer().movePosY > _mapRangeY[0]
+				&& DATAMANAGER->getPlayer()->getPlayer().movePosY < _mapRangeY[1])
+			{
+				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[0])
+				{
+					_vMiniMap[43].OnMiniMapTile.set(0);
+					_vMiniMap[43].pathFrameX = 15;
+					_curIndex = 43;
+				}
+			}
+			// 미니맵 오픈 조건 논리식 전부 정리할 것  (위처럼)
+			// 인덱스 직접 접근하는 계산식.
+			/*
 			if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[0])
 			{
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[0])
@@ -137,88 +178,85 @@ void SubMap::minimapCheck()
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[4])
 				{
-					_vMiniMap[43].OnMiniMapTile.set(1);
+					_vMiniMap[43].OnMiniMapTile.set(0);
 					_vMiniMap[43].pathFrameX = 15;
 					_curIndex = 43;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[8])
 				{
-					_vMiniMap[53].OnMiniMapTile.set(1);
+					_vMiniMap[53].OnMiniMapTile.set(0);
 					_vMiniMap[53].pathFrameX = 15;
 					_curIndex = 53;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[12])
 				{
-					//_vMiniMap[63].OnMiniMapTile.set(1);
-					//_vMiniMap[63].pathFrameX = 8;
-					//_curIndex = 63;
+					_vMiniMap[63].OnMiniMapTile.set(0);
+					_vMiniMap[63].pathFrameX = 8;
+					_curIndex = 63;
 				}
 			}
 			if (DATAMANAGER->getPlayer()->getPlayer().movePosX > _mapRangeX[0]
-				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[1]
-				)
+				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[1])
 			{
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[1])
 				{
-					_vMiniMap[34].OnMiniMapTile.set(1);
+					_vMiniMap[34].OnMiniMapTile.set(0);
 					_vMiniMap[34].pathFrameX = 2;
 					_curIndex = 34;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[5])
 				{
-					_vMiniMap[44].OnMiniMapTile.set(1);
+					_vMiniMap[44].OnMiniMapTile.set(0);
 					_vMiniMap[44].pathFrameX = 16;
 					_curIndex = 44;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[9])
 				{
-					_vMiniMap[54].OnMiniMapTile.set(1);
+					_vMiniMap[54].OnMiniMapTile.set(0);
 					_vMiniMap[54].pathFrameX = 16;
 					_curIndex = 54;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[13])
 				{
-					_vMiniMap[64].OnMiniMapTile.set(1);
+					_vMiniMap[64].OnMiniMapTile.set(0);
 					_vMiniMap[64].pathFrameX = 12;
 					_curIndex = 64;
 				}
 			}
 			if (DATAMANAGER->getPlayer()->getPlayer().movePosX > _mapRangeX[1]
-				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[2]
-				)
+				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[2])
 			{
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[2])
 				{
-					_vMiniMap[35].OnMiniMapTile.set(1);
+					_vMiniMap[35].OnMiniMapTile.set(0);
 					_vMiniMap[35].pathFrameX = 9;
 					_curIndex = 35;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[6])
 				{
-					_vMiniMap[45].OnMiniMapTile.set(1);
+					_vMiniMap[45].OnMiniMapTile.set(0);
 					_vMiniMap[45].pathFrameX = 9;
 					_curIndex = 45;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[10])
 				{
-					_vMiniMap[55].OnMiniMapTile.set(1);
+					_vMiniMap[55].OnMiniMapTile.set(0);
 					_vMiniMap[55].pathFrameX = 10;
 					_curIndex = 55;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[14])
 				{
-					_vMiniMap[65].OnMiniMapTile.set(1);
+					_vMiniMap[65].OnMiniMapTile.set(0);
 					_vMiniMap[65].pathFrameX = 7;
 					_curIndex = 65;
 				}
 			}
 			if (DATAMANAGER->getPlayer()->getPlayer().movePosX > _mapRangeX[2]
-				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[3]
-				)
+				&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[3])
 			{
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[3])
 				{
-					_vMiniMap[36].OnMiniMapTile.set(1);
+					_vMiniMap[36].OnMiniMapTile.set(0);
 					_vMiniMap[36].pathFrameX = 9;
 					// 1-1 next Point
 					_nextNum = 36;
@@ -226,24 +264,26 @@ void SubMap::minimapCheck()
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[7])
 				{
-					_vMiniMap[46].OnMiniMapTile.set(1);
+					_vMiniMap[46].OnMiniMapTile.set(0);
 					_vMiniMap[46].pathFrameX = 5;
 					_curIndex = 46;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[11])
 				{
-					_vMiniMap[56].OnMiniMapTile.set(1);
+					_vMiniMap[56].OnMiniMapTile.set(0);
 					_vMiniMap[56].pathFrameX = 6;
 					_curIndex = 56;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[15])
 				{
-					_vMiniMap[66].OnMiniMapTile.set(1);
+					_vMiniMap[66].OnMiniMapTile.set(0);
 					_vMiniMap[66].pathFrameX = 12;
 					_curIndex = 66;
 				}
-			}
-		}*/
+			}*/
+#endif
+		}
+	//====================================================================================
 		if (_settingStage == 2)
 		{
 

@@ -6,6 +6,10 @@ HRESULT Stage11::init(void)
 	// 스테이지 세팅 (맵+플레이어 정보)
 	DATAMANAGER->setStageSetting();
 
+
+
+
+
 	_enemyM = new EnemyManager();
 	_enemyM->init();
 
@@ -99,6 +103,7 @@ void Stage11::render(void)
 	IMGR("map_gate", getMemDC(),
 		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].left - cameraLeft,
 		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].top - cameraTop);
+
 
 	//if()
 	// 몬스터

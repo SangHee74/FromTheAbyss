@@ -39,6 +39,8 @@ void Abyss::update(void)
 				DATAMANAGER->getMapData().enterAbyssInfo.abyss = 1;
 				DATAMANAGER->getMapData().enterAbyssInfo.stage = 1;
 				_isWaitInput = true;
+
+				// 체인지 씬을 위한 변수 추가 
 			}			
 		}
 		else
@@ -83,7 +85,9 @@ void Abyss::update(void)
 		{
 			_alpha = 255;
 			SOUNDMANAGER->stop("abyss");
-			SCENEMANAGER->changeScene("stage");
+
+			// 스위치문 추가 
+			SCENEMANAGER->changeScene("stage14");
 		}
 	}
 
