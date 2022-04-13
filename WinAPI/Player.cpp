@@ -203,7 +203,11 @@ void Player::stateUpdate()
 		|| _direction == PLAYERDIRECTION::LEFTDOWN
 		|| _direction == PLAYERDIRECTION::RIGHTDOWN)
 	{
-		_isStateCheck.set(5);
+		if(_weapon.type != WEAPONTYPE::AX ) _isStateCheck.set(5); 
+	}
+	else if (_direction == PLAYERDIRECTION::DOWN  && _weapon.type == WEAPONTYPE::AX)
+	{
+		_isStateCheck.reset(5);
 	}
 	else _isStateCheck.reset(5);
 
@@ -447,7 +451,7 @@ void Player::weaponinStageSetting()
 
 }
 
-// 공격 시 캐릭터 위치, 무기위치 이펙트 위치 , 무기프레임 업데이트 
+// 공격 시 캐릭터 위치, 무기위치, 무기 이펙트 위치 , 무기프레임 업데이트 
 void Player::playerAttSetting(bitset<3> combo)
 {
 

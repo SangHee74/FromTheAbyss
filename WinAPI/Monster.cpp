@@ -22,10 +22,12 @@ HRESULT Monster::init(POINT position)
 	_monster.movePosX = position.x;
 	_monster.movePosY = position.y;
 	_monster.speed = 0.0f;
-
+	_monster.playerCheck = false;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
+	_monster.recognitionRc = RectMakeCenter(position.x, position.y,
+		_monster.image->getFrameHeight()*3, _monster.image->getFrameHeight()*3);
 	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
 		//RectMakeCenter(position.x, position.y,
 		//_monster.image->getFrameWidth()-40, _monster.image->getFrameHeight()-40);
@@ -44,9 +46,12 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	_monster.movePosX = position.x;
 	_monster.movePosY = position.y;
 	_monster.speed = 0.0f;
+	_monster.playerCheck = false;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
+
+
 	return S_OK;
 }
 
@@ -57,6 +62,8 @@ void Monster::release(void)
 void Monster::update(void)
 {
 	move();
+	setDirection();
+	setCollisionRange();
 
 
 	if (_state == MONSTERSTATE::DEF)
@@ -70,7 +77,12 @@ void Monster::update(void)
 		}
 	}
 
+	if (_state == MONSTERSTATE::IDLE || _state == MONSTERSTATE::MOVE)
+	{
+		_monster.frameY = static_cast<int>(_direction);
+	}
 
+	if (_curHp <= 0) _state = MONSTERSTATE::DEAD;
 }
 
 void Monster::render(void)
@@ -121,9 +133,37 @@ void Monster::animation(void)
 
 }
 
-void Monster::setAttackRc()
+void Monster::setDirection(void)
+{
+	
+	if (_monster.playerCheck)
+	{
+		// 각도에 따라 방향 전환
+		if (_monster.angle >= 45 * DTR && _monster.angle < 135 * DTR)
+		{
+			_direction = MONSTERDIRECTION::UP;
+		}
+		if (_monster.angle >= 135 * DTR	&& _monster.angle < 225 * DTR)
+		{
+			_direction = MONSTERDIRECTION::LEFT;
+		}
+		if (_monster.angle >= 225 * DTR	&& _monster.angle < 315 * DTR)
+		{
+			_direction = MONSTERDIRECTION::DOWN;
+		}
+		if (_monster.angle >= 315 * DTR || (_monster.angle >= 0 * DTR && _monster.angle < 45 * DTR))
+		{
+			_direction = MONSTERDIRECTION::RIGHT;
+		}
+	}
+
+}
+
+void Monster::setCollisionRange()
 {
 	// 오버라이딩
+	// 방향별 타격, 피격 범위 재조정
 }
+
 
 

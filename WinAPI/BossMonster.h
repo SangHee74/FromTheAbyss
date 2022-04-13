@@ -14,6 +14,6 @@ public:
 	void move();
 	void attack();
 	void speedUp();
-	void setAttackRc();
+	void setCollisionRange();
 
 };

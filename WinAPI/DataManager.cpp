@@ -29,7 +29,7 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 4; // 임시
+	_mapData.enterAbyssInfo.stage =4; // 임시
 
 	_mapData.map = nullptr;
 	_mapData.mapObject = nullptr;
@@ -102,7 +102,8 @@ void DataManager::setStageSetting(void)
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(75, 353, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
+			//_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
+			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-1200, PLAYERDIRECTION::UP);
 		}
 
 		break;

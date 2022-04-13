@@ -27,6 +27,8 @@ HRESULT Stage14::init(void)
 	_enterInfo.alpha = 255;
 	_enterInfo.showTime = 0;
 
+	_lastStageGate = false;
+
 	return S_OK;
 }
 
@@ -107,19 +109,19 @@ void Stage14::render(void)
 	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 
 	// 포탈
-	IMGR("map_gate", getMemDC(),
-		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
-		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
+	if (_enemyM->getMonsters()[0]->getState() == MONSTERSTATE::DEAD)
+	{
+		IMGR("map_gate", getMemDC(),
+			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
+			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
+	}
 
 	// 몬스터
 	if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 
-
 	// 플레이어 
 	DATAMANAGER->getPlayer()->render();
 
-	// 오브젝트 - 렌더 순서 확인
-	//
 
 	// 이펙트 렌더 
 	EFFECTMANAGER->render();
@@ -183,6 +185,26 @@ void Stage14::portalOn()
 void Stage14::collision()
 {
 	RECT tempRc;
+
+	// 몬스터의 인식범위 내 플레이어 충돌 시
+	// 방향을 바꿔주고, 각도를 설정해 몬스터가 다가오게 한다.
+	// 처음 지정한 인식범위를 초과한 경우 다시 돌아간다.
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+		// 몬스터 인식범위 -> 플레이어 피격범위
+		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonster().recognitionRc,
+			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc))
+		{
+			_enemyM->getMonsters()[i]->getMonster().playerCheck = true;
+			_enemyM->getMonsters()[i]->getMonster().angle = 
+			getAngle(_enemyM->getMonsters()[i]->getMonster().movePosX, _enemyM->getMonsters()[i]->getMonster().movePosY,
+				DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+		}
+		else _enemyM->getMonsters()[i]->getMonster().playerCheck = false;
+		break;
+	}
+
+	// 플레이어가 공격
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
@@ -208,6 +230,7 @@ void Stage14::collision()
 		// 몬스터 체력이 없으면 
 		if (_enemyM->getMonsters()[i]->getHp() <= 0)
 		{
+			_lastStageGate = true;
 			// 몬스터 죽음 이펙트 출력,
 			//_monsterEffect->show(_enemyM->getMonsters()[i]->getMonster().moveRc);
 			// 몬스터 데이터 플레이어에 적용,

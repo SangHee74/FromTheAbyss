@@ -190,11 +190,8 @@ public:
 	void render(void);
 
 	// get/set
-	PLAYERSTATE getState()						 { return _state; }
-	void setState(PLAYERSTATE state)		     { _state = state; }
-	
-	PLAYERDIRECTION getDirection()				 { return _direction; }
-	void setDirection(PLAYERDIRECTION direction) { _direction = direction; }
+	PLAYERSTATE&	 getState()						 { return _state; }
+	PLAYERDIRECTION& getDirection()				 { return _direction; }
 	
 	bitset<6>&		 getIsStateCheck()			 { return _isStateCheck; }
 	tagAbyssData&	 getPlayerAbyss()			 { return _abyss; }

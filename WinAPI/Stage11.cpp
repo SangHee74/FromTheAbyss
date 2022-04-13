@@ -241,7 +241,7 @@ void Stage11::collision()
 			&& ! (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEF))
 		{
 			// 플레이어 피격상태로 전환 + 체력감소
-			DATAMANAGER->getPlayer()->setState(PLAYERSTATE::DEF);
+			DATAMANAGER->getPlayer()->getState() = PLAYERSTATE::DEF;
 
 			// 플레이어 체력 세팅 함수
 			int temp = 0;

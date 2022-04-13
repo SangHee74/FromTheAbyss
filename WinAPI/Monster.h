@@ -22,6 +22,7 @@ struct tagMonsterData
 	float	rndTimeCount;
 	float	worldTimeCount;
 	float	attCoolTime;		// 몬스터 공격 주기
+	bool	playerCheck;		// 플레이어를 인식했는지 여부
 	Image*  image;				// 몬스터 이미지
 };
 
@@ -41,7 +42,7 @@ protected:
  	int  _dropExp;
 	int  _dropLufia;
 	int  _dropItemIndex;
-	
+
 
 public:
 	Monster(void);
@@ -58,7 +59,8 @@ public:
 	virtual void attack(void);
 	void draw(void);
 	void animation(void);
-	virtual void setAttackRc(void);
+	void setDirection(void);
+	virtual void setCollisionRange(void);
 
 	// get/set
 	MONSTERSTATE&	  getState()			  { return _state; }

@@ -22,7 +22,7 @@ void OneHandWeaponCombo::stateInit(Player* player)
 	player->getIsStateCheck().reset();
 	player->getIsStateCheck().set(2);
 
-	player->setState(PLAYERSTATE::ATT_ONEHANDCOMBO);
+	player->getState() =PLAYERSTATE::ATT_ONEHANDCOMBO;
 	
 	player->getPlayerCollisionRc().attEffFrameX = 0;
 	player->getPlayerCollisionRc().attEffFrameY = 0;

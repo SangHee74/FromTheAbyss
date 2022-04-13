@@ -19,6 +19,11 @@ Dionaea::Dionaea()
 
 void Dionaea::move()
 {
+	
+
+
+
+	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
 }
 
 void Dionaea::attack()
@@ -48,6 +53,7 @@ void EvilEye::move()
 	//_movePosX += RND->getFloat(5.0f);
 	//if (_movePosX > CENTER_X + 50) _movePosX = 0;
 	//_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
+	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
 
 }
 
@@ -75,6 +81,9 @@ Kobold::Kobold()
 
 void Kobold::move()
 {
+
+	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+
 }
 
 void Kobold::attack()

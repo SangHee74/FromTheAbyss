@@ -16,6 +16,8 @@ private:
 
 	tagEnterStageTextImage _enterInfo;
 
+	bool _lastStageGate;
+
 public:
 	Stage14() {}
 	~Stage14() {}

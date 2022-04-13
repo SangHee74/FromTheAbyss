@@ -5,9 +5,14 @@
 
 // 디그리 1도의 라디안 값 (DEG TO RAD)
 #define DEG_TO_RAD  0.017453f // 
-#define DTR  0.017453f // DEG TO RAD
+#define DTR  0.017453f	  // DEG TO RAD
 #define PI   3.141592593f // PI*2 : 소숫점 6자리 이상은 반올림 오류가 생긴다. 상수 지정할 것 
 #define PI_2 6.283185186f
+
+
+
+
+// RAD TO DEG
 
 // 공학 + 수학의 구세주
 

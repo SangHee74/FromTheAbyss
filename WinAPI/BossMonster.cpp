@@ -17,18 +17,25 @@ Minotaur::Minotaur()
 	_monster.frameY = (int)_direction;
 	_monster.image = IMG("mino_idle");
 
-	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
-
+	// 보스몬스터의 인식범위는 맵의 대부분. 
+	_monster.recognitionRc = RectMakeCenter
+	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1690, 1060);
 }
 
 
 void Minotaur::move()
 {
 	// 탐색
+	//cout << "몬스터 인식 각도: " << _monster.angle*57.32484 << endl;
 
-	// 멈춤
+	// 플레이어를 찾은 경우
 
-	// 피격렉트 세팅
+
+	// 플레이어를 인식하지 못한 경우
+
+
+
+	
 }
 
 
@@ -46,7 +53,6 @@ void Minotaur::attack()
 	timeCount++;
 	if (timeCount % 60 == 0)
 	{
-		setAttackRc();
 		_monster.frameX++;
 		if (_monster.frameX > IMG("mino_att")->getMaxFrameX() && timeCount > 90) // 공격모션 변경 후 일정시간이 지나야 종료
 		{
@@ -65,31 +71,54 @@ void Minotaur::speedUp()
 	_monster.speed = 4;
 }
 
-void Minotaur::setAttackRc()
+void Minotaur::setCollisionRange()
 {
 	switch (_direction)
 	{
 	case MONSTERDIRECTION::UP:
+		_collision.defWidth = 185;
+		_collision.defHeight = 168;
+
+		_collision.attPosX = _monster.movePosX;
+		_collision.attPosY = _monster.moveRc.top - 20;
+		_collision.attWidth = 100;
+		_collision.attHeight = 50;
+		break;
+	case MONSTERDIRECTION::DOWN:
+		_collision.defWidth = 185;
+		_collision.defHeight = 168;
+
 		_collision.attPosX = _monster.movePosX;
 		_collision.attPosY = _monster.moveRc.top - 20;
 		_collision.attWidth = 100;
 		_collision.attHeight = 50;
 
-
-		break;
-	case MONSTERDIRECTION::DOWN:
 		break;
 	case MONSTERDIRECTION::LEFT:
+		_collision.defWidth = 140;
+		_collision.defHeight = 168;
+
 		_collision.attPosX = _monster.moveRc.left - 20;
 		_collision.attPosY = _monster.movePosY;
 		_collision.attWidth = 50;
 		_collision.attHeight = 100;
 		break;
 	case MONSTERDIRECTION::RIGHT:
+		_collision.defWidth = 140;
+		_collision.defHeight = 168;
+
+		_collision.attPosX = _monster.moveRc.left - 20;
+		_collision.attPosY = _monster.movePosY;
+		_collision.attWidth = 50;
+		_collision.attHeight = 100;
 		break;
 
 	}
 
+	if(_state != MONSTERSTATE::ATT) 	_collision.attWidth = _collision.attHeight = 0;
 	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+	_collision.defRc = RectMakeCenter(_monster.movePosX, _monster.movePosY - 30, _collision.defWidth, _collision.defHeight);
 
 }
+
+

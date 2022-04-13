@@ -24,7 +24,7 @@ void IdleState::stateInit(Player* player)
 	player->getIsStateCheck().reset(2);
 	player->getIsStateCheck().reset(3);
 
-	player->setState(PLAYERSTATE::IDLE);
+	player->getState() =PLAYERSTATE::IDLE;
 
 	// 플레이어 무기타입(image), 방향(frameX), 무기번호(frameY)+ 무기좌표 세팅
 	player->weaponinStageSetting();
@@ -160,7 +160,7 @@ void MoveState::stateInit(Player * player)
 	player->getIsStateCheck().reset(3);
 	player->getIsStateCheck().set(1);
 
-	player->setState(PLAYERSTATE::MOVE);
+	player->getState() = PLAYERSTATE::MOVE;
 
 	timeCount = 0;
 	frameIndexX = 0;
@@ -176,27 +176,27 @@ void MoveState::stateUpdate(Player* player)
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		player->getPlayer().movePosY -= player->getPlayer().speed;
-		player->setDirection(PLAYERDIRECTION::UP);
+		player->getDirection() = PLAYERDIRECTION::UP;
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
 			player->getIsStateCheck().set(0);
-			player->setDirection(PLAYERDIRECTION::LEFTUP);
+			player->getDirection() = PLAYERDIRECTION::LEFTUP;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 		{
 			player->getIsStateCheck().set(0);
-			player->setDirection(PLAYERDIRECTION::LEFTUP);
+			player->getDirection() = PLAYERDIRECTION::LEFTUP;
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
 			player->getIsStateCheck().reset(0);
-			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+			player->getDirection() = PLAYERDIRECTION::RIGHTUP;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 		{
 			player->getIsStateCheck().reset(0);
-			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+			player->getDirection() = PLAYERDIRECTION::RIGHTUP;
 		}
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_UP))
@@ -207,27 +207,27 @@ void MoveState::stateUpdate(Player* player)
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		player->getPlayer().movePosY += player->getPlayer().speed;
-		player->setDirection(PLAYERDIRECTION::DOWN);
+		player->getDirection() = PLAYERDIRECTION::DOWN;
 
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
 			player->getIsStateCheck().set(0);
-			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+			player->getDirection() = PLAYERDIRECTION::LEFTDOWN;
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
 			player->getIsStateCheck().reset(0);
-			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+			player->getDirection() = PLAYERDIRECTION::RIGHTDOWN;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 		{
 			player->getIsStateCheck().set(0);
-			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+			player->getDirection() = PLAYERDIRECTION::LEFTDOWN;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 		{
 			player->getIsStateCheck().reset(0);
-			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+			player->getDirection() = PLAYERDIRECTION::RIGHTDOWN;
 		}
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
@@ -239,23 +239,23 @@ void MoveState::stateUpdate(Player* player)
 	{
 		player->getIsStateCheck().set(0);
 		player->getPlayer().movePosX -= player->getPlayer().speed;
-		player->setDirection(PLAYERDIRECTION::LEFT);
+		player->getDirection() = PLAYERDIRECTION::LEFT;
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			player->setDirection(PLAYERDIRECTION::LEFTUP);
+			player->getDirection() = PLAYERDIRECTION::LEFTUP;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_UP))
 		{
-			player->setDirection(PLAYERDIRECTION::LEFTUP);
+			player->getDirection() = PLAYERDIRECTION::LEFTUP;
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+			player->getDirection() = PLAYERDIRECTION::LEFTDOWN;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 		{
-			player->setDirection(PLAYERDIRECTION::LEFTDOWN);
+			player->getDirection() = PLAYERDIRECTION::LEFTDOWN;
 		}
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
@@ -267,23 +267,23 @@ void MoveState::stateUpdate(Player* player)
 	{
 		player->getIsStateCheck().reset(0);
 		player->getPlayer().movePosX += player->getPlayer().speed;
-		player->setDirection(PLAYERDIRECTION::RIGHT);
+		player->getDirection() = PLAYERDIRECTION::RIGHT;
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+			player->getDirection() = PLAYERDIRECTION::RIGHTUP;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_UP))
 		{
-			player->setDirection(PLAYERDIRECTION::RIGHTUP);
+			player->getDirection() = PLAYERDIRECTION::RIGHTUP;
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+			player->getDirection() = PLAYERDIRECTION::RIGHTDOWN;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 		{
-			player->setDirection(PLAYERDIRECTION::RIGHTDOWN);
+			player->getDirection() = PLAYERDIRECTION::RIGHTDOWN;
 		}
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
@@ -494,7 +494,7 @@ DefState* DefState::getInstance()
 void DefState::stateInit(Player* player)
 {
 	player->getIsStateCheck().set(3);
-	player->setState(PLAYERSTATE::DEF);
+	player->getState() =PLAYERSTATE::DEF;
 
 	// 공격범위 초기화
 	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
@@ -595,7 +595,7 @@ void DeadState::stateUpdate(Player* player)
 	if (timeCount % 180 == 0)
 	{
 		player->getIsStateCheck().reset(4);
-		player->setState(PLAYERSTATE::DEAD);
+		player->getState() =PLAYERSTATE::DEAD;
 	}
 }
 
