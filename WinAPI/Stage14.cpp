@@ -141,7 +141,7 @@ void Stage14::render(void)
 	_playerEff->render();
 
 
-	if (KEYMANAGER->isToggleKey(VK_F3))
+	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
@@ -210,11 +210,11 @@ void Stage14::collision()
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 몬스터 인식범위 -> 플레이어 피격범위
-		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonster().recognitionRc,
+		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getReconitionRc(),
 			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc))
 		{
-			// 몬스터가 플레이어를 인식 함 -> 선형보간으로 따라다님
-			_enemyM->getMonsters()[i]->getMonster().playerCheck = true;
+			// 몬스터가 플레이어를 인식 함 -> 따라다님
+			_enemyM->getMonsters()[i]->getPlayerCheck() = true;
 
 			// 몬스터 방향전환을 위한 몬스터-플레이어 간 각도를 몬스터에 전달 
 			getPlayerAngleAndDistance(i);
@@ -225,7 +225,7 @@ void Stage14::collision()
 		}
 		else
 		{
-			_enemyM->getMonsters()[i]->getMonster().playerCheck = false;
+			_enemyM->getMonsters()[i]->getPlayerCheck() = false;
 			_tempMonsterNum = -1;
 		}
 		break;
@@ -233,11 +233,11 @@ void Stage14::collision()
 
 #pragma endregion
 
-	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
-	{
 
 #pragma region 플레이어의 공격
 
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
 		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
@@ -311,24 +311,6 @@ void Stage14::collision()
 
 
 
-void Stage14::getPlayerAngleAndDistance(int i)
-{
-	// angle
-	_enemyM->getMonsters()[i]->getMonster().angle =
-		getAngle(_enemyM->getMonsters()[i]->getMonster().movePosX,
-			_enemyM->getMonsters()[i]->getMonster().movePosY,
-			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
-			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
-
-	// distance 
-	_enemyM->getMonsters()[i]->getMonster().distance = 
-		getDistance(_enemyM->getMonsters()[i]->getMonster().movePosX, 
-			_enemyM->getMonsters()[i]->getMonster().movePosY,
-			DATAMANAGER->getPlayer()->getPlayer().drawPosX, 
-			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
-}
-
-
 // posY를 비교해서 렌더순서 변경
 void Stage14::renderCheck()
 {
@@ -337,9 +319,9 @@ void Stage14::renderCheck()
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 		DATAMANAGER->getPlayer()->render();
 	}
-	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonster().moveRc.bottom  
-		<= DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom 
-		&& (_tempMonsterNum >= 0)  )
+	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMoveRc().bottom  
+				<= DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom 
+			 && (_tempMonsterNum >= 0)  )
 	{
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 		DATAMANAGER->getPlayer()->render();
@@ -351,6 +333,25 @@ void Stage14::renderCheck()
 	}
 
 }
+
+
+void Stage14::getPlayerAngleAndDistance(int i)
+{
+	// angle
+	_enemyM->getMonsters()[i]->getAngle() =
+		getAngle(_enemyM->getMonsters()[i]->getMovePosX(),
+			_enemyM->getMonsters()[i]->getMovePosY(),
+			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
+			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+
+	// distance 
+	_enemyM->getMonsters()[i]->getDistance() =
+		getDistance(_enemyM->getMonsters()[i]->getMovePosX(),
+			_enemyM->getMonsters()[i]->getMovePosY(),
+			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
+			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+}
+
 
 int Stage14::playerRandomDamage()
 {
@@ -375,37 +376,4 @@ int Stage14::monsterRandomDamage(int i)
 }
 
 
-
-void Stage14::monsterMovetoPlayer()
-{
-	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
-	{
-		if (_enemyM->getMonsters()[i]->getMonster().playerCheck)
-		{
-			// 선형보간 이동 XX
-
-			// 계산식으로 접근 할 것 .
-
-
-
-
-			float _lerpPercentage = 0;
-			float time = 10.0f;
-			float speed = TIMEMANAGER->getElapsedTime() * time;
-//			float speed = DATAMANAGER->getPlayer()->getPlayer().speed*1.2;
-			_lerpPercentage += speed;
-
-			POINT start = { _enemyM->getMonsters()[i]->getMonster().movePosX, _enemyM->getMonsters()[i]->getMonster().movePosY };
-			POINT end = { DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY };
-
-			_enemyM->getMonsters()[i]->getMonster().moveRc = RectMakeCenter(
-				lerp(start, end, _lerpPercentage).x, lerp(start, end, _lerpPercentage).y,
-				_enemyM->getMonsters()[i]->getMonster().image->getFrameWidth(),
-				_enemyM->getMonsters()[i]->getMonster().image->getFrameWidth());
-
-			//cout << "몬스터 이동렉트 L : " << _enemyM->getMonsters()[i]->getMonster().moveRc.left << ", T : " << _enemyM->getMonsters()[i]->getMonster().moveRc.top << endl;
-		}
-
-	}
-}
 

@@ -50,14 +50,16 @@ protected:
 	int 	_movePosY;			// rc업데이트
 	int		_frameX;
 	int		_frameY;			// rc-frame업데이트
-	int		_speed;				// 플레이어 쫒아오게
-	int		_distance;			
+	float	_speed;				// 플레이어 쫒아오게
+	float	_distance;
 	float	_angle;				
 	float	_rndTimeCount;		// 각 객체별 프레임 렌더 시간 다르게 
 	float	_worldTimeCount;
 	float	_attCoolTime;		// 몬스터 공격 상태로 변환 주기
 	bool	_playerCheck;		// 플레이어를 인식했는지 여부
 	Image*  _image;				// 몬스터 이미지
+
+
 
 public:
 	Monster(void);
@@ -77,15 +79,14 @@ public:
 	void draw(void);
 	void animation(void);
 	void setDirection(void);
-	void pixelCollision();
+	void pixelCollision(void);
 	bool pixelColorCheck(int getPixelX, int getPixelY);
-
 
 	// get/set
 	MONSTERSTATE&	  getState()			  { return _state; }
 	MONSTERDIRECTION& getDirection()		  { return _direction; }
 
-	tagMonsterData&	  getMonster()			  { return _monster; }
+	//tagMonsterData&	  getMonster()			  { return _monster; }
 	tagPixel&		  getMonsterPixel()		  { return _pixel; }
 	tagCollisionRc&   getMonsterCollisionRc() { return _collision; }
 
@@ -96,6 +97,18 @@ public:
 	int  getExp()	   { return _dropExp; }
 	int  getLufia()	   { return _dropLufia; }
 	int  getItem()	   { return _dropItemIndex; }
+
+	RECT&  getMoveRc()		 { return _moveRc; }
+	RECT&  getReconitionRc() { return _recognitionRc; }
+	int&   getMovePosX()	 { return _movePosX; }
+	int&   getMovePosY()	 { return _movePosY; }
+	int&   getFrameX()		 { return _frameX; }
+	int&   getFrameY()		 { return _frameY; }
+	float& getSpeed()		 { return _speed; }
+	float& getDistance()	 { return _distance; }
+	float& getAngle()		 { return _angle; }
+	bool&  getPlayerCheck()  { return _playerCheck; }
+	Image* getImage()		 { return _image; }
 
 	float timeCount = 0.0f;
 };

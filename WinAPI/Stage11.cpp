@@ -118,7 +118,7 @@ void Stage11::render(void)
 	DATAMANAGER->getMapData().mapTop->render(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 
 
-	if (KEYMANAGER->isToggleKey(VK_F3))
+	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
