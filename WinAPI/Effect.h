@@ -17,10 +17,14 @@ enum class EFFECT_TYPE
 
 struct tagEffect
 {
-	Image* img;
+	Image* image;
 	RECT rc;
 	int count;
+	int curFrameX;
+	int curFrameY;
 	float x, y;
+	bool onEffect;
+
 };
 
 enum class DAMAGECOLOR
@@ -33,15 +37,6 @@ class Effect :public GameNode
 {
 private:
 	tagEffect	  _collisionEff;
-
-	Image* _image;
-	RECT _rc;
-	int _count;
-	int _curFrameX;
-	int _curFrameY;
-	float _x, _y;
-	bool _onEffect;
-
 
 public:
 
@@ -56,17 +51,14 @@ public:
 
 	void draw(void);
 	void animation(void);
+	virtual void aniEff(tagEffect eff, int speed);
 
-
+	tagEffect&	   getTagEffect()     { return _collisionEff; }
 	void centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color);
-	bool getOnEffect() { return _onEffect; }
-
-	//tagEffect&	   getTagEffect()     { return _collisionEff; }
-
 };
 
 
-class PlayerEffect 
+class PlayerEffect : public Effect
 {
 private:
 	vector<tagEffect> _vEffect;
@@ -75,11 +67,13 @@ private:
 public:
 
 	HRESULT init(void);
+	HRESULT init(RECT rc, const char* imageKey);
 	void release(void);
 	void update(void);
 	void render(void);
 
 	void show(RECT rc);
+	void show(RECT rc, const char* imageKey);
 	void draw(void);
 	void removeEffect(int arrNum);
 
@@ -88,7 +82,7 @@ public:
 };
 
 
-class MonsterEffect :public GameNode
+class MonsterEffect : public Effect
 {
 private:
 	vector<tagEffect> _vEffect;
@@ -102,6 +96,7 @@ public:
 	void render(void);
 
 	void show(RECT rc);
+	void show(RECT rc, const char* imageKey);
 	void draw(void);
 	void removeEffect(int arrNum);
 

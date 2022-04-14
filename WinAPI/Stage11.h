@@ -2,7 +2,7 @@
 #include "GameNode.h"
 #include "Stage.h"
 #include "EnemyManager.h"
-#include "EffectManager.h"
+#include "Effect.h"
 #include "ProgressBar.h"
 #include "SubMenu.h"
 
@@ -11,7 +11,8 @@ class Stage11 : public GameNode
 {
 private:
 	EnemyManager* _enemyM;
-	EffectManager* _effectM;
+	MonsterEffect* _enemyEff;
+	PlayerEffect* _playerEff;
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
 	

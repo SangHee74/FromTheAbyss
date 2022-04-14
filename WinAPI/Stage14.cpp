@@ -9,8 +9,11 @@ HRESULT Stage14::init(void)
 	_enemyM = new EnemyManager();
 	_enemyM->init();
 
-	_effectM = new EffectManager();
-	_effectM->init();
+	_enemyEff = new MonsterEffect();
+	_enemyEff->init();
+
+	_playerEff = new PlayerEffect();
+	_playerEff->init();
 
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
@@ -20,6 +23,8 @@ HRESULT Stage14::init(void)
 
 	_subScreen = new SubMenu();
 	_subScreen->init();
+
+	_tempMonsterNum = -1;
 
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, DATAMANAGER->getMapData().map->getWidth());
@@ -47,8 +52,11 @@ void Stage14::release(void)
 	_enemyM->release();
 	SAFE_DELETE(_enemyM);
 
-	_effectM->release();
-	SAFE_DELETE(_effectM);
+	_enemyEff->release();
+	SAFE_DELETE(_enemyEff);
+
+	_playerEff->release();
+	SAFE_DELETE(_playerEff);
 }
 
 void Stage14::update(void)
@@ -67,6 +75,8 @@ void Stage14::update(void)
 
 
 	_enemyM->update();
+	_enemyEff->update();
+	_playerEff->update();
 
 	_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
 	_UIBar->setSpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curSp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
@@ -87,7 +97,8 @@ void Stage14::update(void)
 		DATAMANAGER->getPlayer()->getPlayer().movePosY = 300;
 	}
 
-	_effectM->update();
+
+
 
 	_subScreen->update();
 
@@ -121,16 +132,13 @@ void Stage14::render(void)
 			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 	}
 
+	renderCheck();
 
-	// 몬스터
-	if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
-
-	// 플레이어 
-	DATAMANAGER->getPlayer()->render();
 
 
 	// 이펙트 렌더 
-	_effectM->render();
+	_enemyEff->render();
+	_playerEff->render();
 
 
 	if (KEYMANAGER->isToggleKey(VK_F3))
@@ -138,6 +146,7 @@ void Stage14::render(void)
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 	}
+
 
 	// 서브화면(UI)
 	_UIBar->render();
@@ -205,9 +214,16 @@ void Stage14::collision()
 
 			// 몬스터 방향전환을 위한 몬스터-플레이어 간 각도를 몬스터에 전달 
 			getPlayerAngle(i);
+
+			// 렌더 순서와 비교할 몬스터 변수 저장
+			_tempMonsterNum = i;
 			
 		}
-		else _enemyM->getMonsters()[i]->getMonster().playerCheck = false;
+		else
+		{
+			_enemyM->getMonsters()[i]->getMonster().playerCheck = false;
+			_tempMonsterNum = -1;
+		}
 		break;
 	}
 
@@ -227,7 +243,7 @@ void Stage14::collision()
 			_enemyM->getMonsters()[i]->setHp(temp);
 
 			// 충돌위치 이펙트
-			_effectM->createEffect("eff_collision",tempRc);
+			_enemyEff->createEffect("eff_collision",tempRc);
 
 			cout << "플레이어 데미지 : " << temp << endl;
 			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
@@ -240,7 +256,7 @@ void Stage14::collision()
 			_lastStageGate = true;
 			
 			// 몬스터 죽음 이펙트
-			_effectM->createEffect("bossDie",_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc);
+			_enemyEff->createEffect("bossDie",_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc);
 
 			// 경험치 획득 
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
@@ -267,7 +283,7 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
-				_effectM->createEffect("eff_monsterCollision",tempRc);
+				_enemyEff->createEffect("eff_monsterCollision",tempRc);
 
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 				cout << "몬스터 데미지 : " << temp << endl;
@@ -290,7 +306,40 @@ void Stage14::getPlayerAngle(int i)
 			_enemyM->getMonsters()[i]->getMonster().movePosY,
 			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
 			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
-};
+}
+void Stage14::renderCheck()
+{
+	if (_tempMonsterNum < 0)
+	{
+		// 몬스터
+		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
+
+		// 플레이어 
+		DATAMANAGER->getPlayer()->render();
+	}
+
+	// 플레이어가 밑에 있다면
+	if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonster().moveRc.bottom  
+		<= DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom 
+		&& (_tempMonsterNum >= 0)  )
+	{
+		// 몬스터
+		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
+
+		// 플레이어 
+		DATAMANAGER->getPlayer()->render();
+	}
+	else
+	{
+		// 플레이어 
+		DATAMANAGER->getPlayer()->render();
+
+		// 몬스터
+		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
+	}
+
+}
+
 
 int Stage14::playerRandomDamage()
 {
