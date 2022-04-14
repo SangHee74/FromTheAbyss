@@ -33,16 +33,31 @@ protected:
 	MONSTERSTATE _state;
 	MONSTERDIRECTION _direction;
 
-	tagMonsterData	_monster;	// 몬스터 정보
+	//tagMonsterData	_monster;	// 몬스터 정보
 	tagPixel		_pixel;		// 몬스터 픽셀충돌
 	tagCollisionRc  _collision; // 몬스터 렉트충돌
 	
-	int  _maxHp;
-	int  _curHp;
-	int  _curAtt;
- 	int  _dropExp;
-	int  _dropLufia;
-	int  _dropItemIndex;
+	int		_maxHp;
+	int		_curHp;
+	int		_curAtt;
+ 	int		_dropExp;
+	int		_dropLufia;
+	int		_dropItemIndex;
+
+	RECT	_moveRc;
+	RECT	_recognitionRc;		// 플레이어를 향해 다가갈 인식 범위
+	int		_movePosX;
+	int 	_movePosY;			// rc업데이트
+	int		_frameX;
+	int		_frameY;			// rc-frame업데이트
+	int		_speed;				// 플레이어 쫒아오게
+	int		_distance;			
+	float	_angle;				
+	float	_rndTimeCount;		// 각 객체별 프레임 렌더 시간 다르게 
+	float	_worldTimeCount;
+	float	_attCoolTime;		// 몬스터 공격 상태로 변환 주기
+	bool	_playerCheck;		// 플레이어를 인식했는지 여부
+	Image*  _image;				// 몬스터 이미지
 
 public:
 	Monster(void);
@@ -57,7 +72,7 @@ public:
 
 	virtual void move(void);
 	virtual void attack(void);
-	virtual void setCollisionRange(void);
+	virtual void rcUpdate(void);
 	virtual void drawEffect(void);
 	void draw(void);
 	void animation(void);
