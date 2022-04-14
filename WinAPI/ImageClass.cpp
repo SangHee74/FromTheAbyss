@@ -69,7 +69,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo_01", "Resources/Images/Player/p_twoHandCombo_01.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo_02", "Resources/Images/Player/p_twoHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 
-	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 40 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 0,0,40* MAGNI, 40 * MAGNI, MGT);
 
 	
 #pragma endregion
@@ -106,14 +106,14 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
 
 	IMAGEMANAGER->addFrameImage("eff_monsterCollision", "Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
-	//IMAGEMANAGER->addImage("eff_bossAttUp", "Resources/Images/Object/eff_bossAttUp.bmp", 278, 108, MGT);
-	//IMAGEMANAGER->addImage("eff_bossAttDown", "Resources/Images/Object/eff_bossAttDown.bmp", 278, 108, MGT);
-	//IMAGEMANAGER->addImage("eff_bossAttLeft", "Resources/Images/Object/eff_bossAttLeft.bmp", 108, 278, MGT);
-	//IMAGEMANAGER->addImage("eff_bossAttRight", "Resources/Images/Object/eff_bossAttRight.bmp", 108, 278, MGT);
-	IMAGEMANAGER->addFrameImage("eff_bossAttUp",   "Resources/Images/Object/eff_bossAttUp.bmp",     278, 108, 1,1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_bossAttDown", "Resources/Images/Object/eff_bossAttDown.bmp",   278, 108, 1,1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_bossAttLeft", "Resources/Images/Object/eff_bossAttLeft.bmp",   108, 278, 1,1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_bossAttRight", "Resources/Images/Object/eff_bossAttRight.bmp", 108, 278, 1,1, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttUp", "Resources/Images/eff_bossAttUp.bmp", 278, 108, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttDown", "Resources/Images/eff_bossAttDown.bmp", 278, 108, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttLeft", "Resources/Images/eff_bossAttLeft.bmp", 108, 278, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttRight", "Resources/Images/eff_bossAttRight.bmp", 108, 278, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_bossAttUp",   "Resources/Images/eff_bossAttUp.bmp",     278, 108, 1,1, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_bossAttDown", "Resources/Images/eff_bossAttDown.bmp",   278, 108, 1,1, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_bossAttLeft", "Resources/Images/eff_bossAttLeft.bmp",   108, 278, 1,1, MGT);
+	//IMAGEMANAGER->addFrameImage("eff_bossAttRight", "Resources/Images/eff_bossAttRight.bmp", 108, 278, 1,1, MGT);
 	IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
 	IMAGEMANAGER->addFrameImage("bossDie", "Resources/Images/Object/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
 

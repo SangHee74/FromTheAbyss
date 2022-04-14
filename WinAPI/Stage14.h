@@ -35,7 +35,7 @@ public:
 	void portalOn();
 	void collision();
 	void monsterMovetoPlayer();
-	void getPlayerAngle(int i);
+	void getPlayerAngleAndDistance(int i);
 	void renderCheck();
 	int playerRandomDamage();
 	int monsterRandomDamage(int i);

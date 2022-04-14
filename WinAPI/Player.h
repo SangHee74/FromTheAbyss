@@ -43,17 +43,6 @@ struct tagAbyssData
 	// int AbyssHall[abyss][stage];
 	int abyss; // 입장가능 어비스
 	int stage; // 입장가능 스테이지 
-	int block; // 클리어한 블럭
-
-	// 맵 오픈 방식은 조금 더 고민 해볼 것.
-	// 0000 0000 스테이지 블럭 0~3
-	// 0001 0000 스테이지 블럭 4~7
-	// 0010 0000 스테이지 블럭 8~11
-	// 0100 0000 스테이지 블럭 12~15
-
-	// 1000 0001 1블럭 오픈
-	// 1000 0010 2블럭 오픈
-	bitset<6> blockCheck[8 * 4]; // 8어비스 4스테이지
 };
 
 struct tagPlayerStatus
@@ -130,14 +119,15 @@ struct tagCollisionRc
 {
 	// 충돌 범위 조정 
 	RECT defRc;
-	RECT attRc;
 	int defWidth;
 	int defHeight;
+
+	Image* attEffectImg;
+	RECT attRc;
 	int attPosX;
 	int attPosY;
 	int attWidth;
 	int attHeight;
-	Image* attEffectImg;
 	int attEffFrameX;
 	int attEffFrameY;
 };

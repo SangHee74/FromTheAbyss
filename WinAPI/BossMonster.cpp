@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 #include "BossMonster.h"
 
-
+// 초기화 정리 
 Minotaur::Minotaur()
 {
 	_curHp = 300;
@@ -12,14 +12,17 @@ Minotaur::Minotaur()
 
 	_state = MONSTERSTATE::IDLE;
 	_direction = MONSTERDIRECTION::DOWN;
-	_monster.speed = 2;
+	_monster.speed = 20;
 	_monster.frameX = 0;
 	_monster.frameY = (int)_direction;
 	_monster.image = IMG("mino_idle");
 	_collision.attEffectImg = IMG("none2");
-
-
-
+	_collision.attEffFrameX = 0;
+	_collision.attEffFrameY = 0;
+	_collision.attPosX = _monster.movePosX;
+	_collision.attPosY = _collision.defRc.bottom + 35;
+	_collision.attWidth = 300;
+	_collision.attHeight = 80;
 
 	_attTimeCount = 0;
 
@@ -27,10 +30,13 @@ Minotaur::Minotaur()
 	// 초기 피격렉트 초기화
 	_collision.defWidth = 185; 	_collision.defHeight = 168;
 	_collision.defRc = RectMakeCenter(_monster.movePosX, _monster.movePosY - 30, _collision.defWidth, _collision.defHeight);
-
-
+	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+	
 	_monster.recognitionRc = RectMakeCenter
-	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1690, 1060);
+	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1900, 1350);
+	//(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1690, 1060);
+
+	_attStart = false;
 }
 
 
@@ -40,12 +46,12 @@ void Minotaur::move()
 	{
 		//cout << "인식중! 보스가 따라감" << endl;
 		//cout << "플레이어 좌표 X : " << DATAMANAGER->getPlayer()->getPlayer().drawPosX << " , Y : " << DATAMANAGER->getPlayer()->getPlayer().drawPosY<< endl;
-		//monsterMovetoPlayer();
+		monsterMovetoPlayer();
 
 
 		
 		// 다 도착하면 공격상태로 변경
-		if (_monster.attCoolTime >= 180.0f && _state != MONSTERSTATE::DEAD)
+		if ( _attStart && _monster.attCoolTime >= 180.0f && _state != MONSTERSTATE::DEAD)
 		{
 			_state = MONSTERSTATE::ATT;
 		}
@@ -159,29 +165,57 @@ void Minotaur::setCollisionRange()
 
 void Minotaur::monsterMovetoPlayer()
 {
-	// 선형보간 이동
-	float lerpPercentage = 0;
-	float time = 1.0f;
-	float speed = TIMEMANAGER->getElapsedTime() * time;
-	//			float speed = DATAMANAGER->getPlayer()->getPlayer().speed*1.2;
-	lerpPercentage += speed;
+	switch (_direction)
+	{
+	case MONSTERDIRECTION::UP:
+		if (_monster.movePosY > DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
+		{
+			_monster.movePosY -= _monster.speed;
+			cout << DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30 << endl;
+		}
 
-	POINT start = { _monster.movePosX, _monster.movePosY };
-	POINT end = { DATAMANAGER->getPlayer()->getPlayer().drawPosX, DATAMANAGER->getPlayer()->getPlayer().drawPosY };
 
-	_monster.moveRc = RectMakeCenter(
-		lerp(start, end, lerpPercentage).x, lerp(start, end, lerpPercentage).y,
-		_monster.image->getFrameWidth(),
-		_monster.image->getFrameWidth());
 
-	//cout << "보스몬스터 이동렉트 L : " << _monster.moveRc.left << ", T : " << _monster.moveRc.top << endl;
+
+
+
+		if (_monster.movePosY >= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+			
+			break;
+	case MONSTERDIRECTION::DOWN:
+		if (_monster.movePosY < DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
+		{
+			_monster.movePosY += _monster.speed;
+		}
+		if (_monster.movePosY <= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+
+		break;
+	case MONSTERDIRECTION::LEFT:
+		if ( _monster.movePosX > DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
+		{
+			_monster.movePosX -= _monster.speed;
+		}
+		if (_monster.movePosX >= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
+		break;
+	case MONSTERDIRECTION::RIGHT:
+		if (_monster.movePosX < DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
+		{
+			_monster.movePosX += _monster.speed;
+		}
+		if (_monster.movePosX <= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
+
+		break;
+
+	}
+
+	
+
 }
 
 void Minotaur::drawEffect()
 {
+	_collision.attEffectImg = IMG("none");
 
-	
-	/*
 	switch (_direction)
 	{
 	case MONSTERDIRECTION::UP:
@@ -198,9 +232,12 @@ void Minotaur::drawEffect()
 		break;
 	}
 
+	if (_state == MONSTERSTATE::ATT)
+	{
 		_collision.attEffectImg->render(getMemDC(),
 			_collision.attRc.left - CAM->getScreenRect().left, 
 			_collision.attRc.top - CAM->getScreenRect().top);
-			*/
+	}
+			
 }
 

@@ -8,7 +8,8 @@ HRESULT Player::init(void)
 {
 #pragma region 플레이어 데이터 입출력 영역 
 	// 로드 데이터 하기.....
-	_player.face = IMAGEMANAGER->findImage("p_face"); 
+	//IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40 * MAGNI, 40 * MAGNI, MGT);
+	//_player.face = IMAGEMANAGER->findImage("p_face"); 
 
 	// 제이슨 로더에서 가져오면 좋을거같은데..
 	_status.curHp = 100;

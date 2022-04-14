@@ -49,7 +49,7 @@ void SubMenu::render(void)
 {
 	renderMenu();
 	renderTap();
-	renderStat();
+
 
 	for (int i = 0; i < SUB_END; i++)
 	{
@@ -58,8 +58,9 @@ void SubMenu::render(void)
 
 	if (_subMenuIdx == SUB_ITEM);//
 	if (_subMenuIdx == SUB_SKILL);//
-	if(_subMenuIdx == SUB_MAP) _map->render();
-	if (_subMenuIdx == SUB_STATUS); //
+	if (_subMenuIdx == SUB_MAP) _map->render();
+	if (_subMenuIdx == SUB_STATUS)
+	{	renderStat(); } //
 }
 
 
@@ -168,6 +169,8 @@ void SubMenu::renderTap()
 
 void SubMenu::renderStat()
 {
-	//_playerInfo->getStatus.
+	IMAGEMANAGER->findImage("p_face")->render(getMemDC(), CENTER_X + 35, 75);
+
+
 	
 }

@@ -7,6 +7,7 @@ private:
 	int _endX;
 	int _endY;
 	float _attTimeCount;
+	bool _attStart;
 
 public:
 	Minotaur();

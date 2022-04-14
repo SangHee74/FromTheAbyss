@@ -21,7 +21,9 @@ HRESULT Monster::init(POINT position)
 
 	_monster.movePosX = position.x;
 	_monster.movePosY = position.y;
-	_monster.speed = 0;
+	_monster.frameX = 0;
+	_monster.frameY = 0;
+	_monster.speed = 2;
 	_monster.distance = 0;
 	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
@@ -29,8 +31,8 @@ HRESULT Monster::init(POINT position)
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
-	_monster.recognitionRc = RectMakeCenter(position.x, position.y,
-		_monster.image->getFrameHeight()*3, _monster.image->getFrameHeight()*3);
+	//_monster.recognitionRc = RectMakeCenter(position.x, position.y,
+	//	_monster.image->getFrameHeight()*3, _monster.image->getFrameHeight()*3);
 	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
 
 		//RectMakeCenter(position.x, position.y,
@@ -44,16 +46,22 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	_monster.rndTimeCount = RND->getFromFloatTo(50, 150);
 
 	_monster.image = IMAGEMANAGER->findImage(imageName);
-	_monster.frameX = 0;
-	_monster.frameY = 0;
 
 	_monster.movePosX = position.x;
 	_monster.movePosY = position.y;
-	_monster.speed = 0.0f;
+	_monster.frameX = 0;
+	_monster.frameY = 0;
+	_monster.speed = 2;
+	_monster.distance = 0;
+	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
+	_monster.attCoolTime = 0.0f;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
+	//_monster.recognitionRc = RectMakeCenter(position.x, position.y,
+	//	_monster.image->getFrameHeight() * 3, _monster.image->getFrameHeight() * 3);
+	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
 
 
 	return S_OK;
@@ -91,6 +99,9 @@ void Monster::update(void)
 		_collision.attWidth = _collision.attHeight = 0;
 		_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	}
+
+	
+	//cout << "몬스터 업데이트 ! " << endl;
 }
 
 void Monster::render(void)
@@ -113,20 +124,20 @@ void Monster::attack(void)
 void Monster::draw(void)
 {
 	//인식렉트
-	Rectangle(getMemDC(),
-		_monster.recognitionRc.left - CAM->getScreenRect().left,
-		_monster.recognitionRc.top - CAM->getScreenRect().top,
-		_monster.recognitionRc.right - CAM->getScreenRect().left,
-		_monster.recognitionRc.bottom - CAM->getScreenRect().top
-	);
+	//Rectangle(getMemDC(),
+	//	_monster.recognitionRc.left - CAM->getScreenRect().left,
+	//	_monster.recognitionRc.top - CAM->getScreenRect().top,
+	//	_monster.recognitionRc.right - CAM->getScreenRect().left,
+	//	_monster.recognitionRc.bottom - CAM->getScreenRect().top
+	//);
 
 	// 피격렉트
-	//Rectangle(getMemDC(),
-	//	_collision.defRc.left - CAM->getScreenRect().left,
-	//	_collision.defRc.top - CAM->getScreenRect().top,
-	//	_collision.defRc.right - CAM->getScreenRect().left,
-	//	_collision.defRc.bottom - CAM->getScreenRect().top
-	//);
+	Rectangle(getMemDC(),
+		_collision.defRc.left - CAM->getScreenRect().left,
+		_collision.defRc.top - CAM->getScreenRect().top,
+		_collision.defRc.right - CAM->getScreenRect().left,
+		_collision.defRc.bottom - CAM->getScreenRect().top
+	);
 
 	// 타격렉트
 	Rectangle(getMemDC(),
@@ -135,6 +146,15 @@ void Monster::draw(void)
 		_collision.attRc.right - CAM->getScreenRect().left,
 		_collision.attRc.bottom - CAM->getScreenRect().top
 	);
+
+		// 이동렉트
+	//Rectangle(getMemDC(),
+	//	_monster.moveRc.left - CAM->getScreenRect().left,
+	//	_monster.moveRc.top - CAM->getScreenRect().top,
+	//	_monster.image->getFrameWidth() + _monster.moveRc.left - CAM->getScreenRect().left,
+	//	_monster.image->getFrameHeight() + _monster.moveRc.top - CAM->getScreenRect().top
+	//);
+
 
 
 
@@ -183,7 +203,12 @@ void Monster::setDirection(void)
 			_direction = MONSTERDIRECTION::RIGHT;
 		}
 	}
-
+ 
+	if (_monster.image != nullptr)
+	{
+		_monster.moveRc = RectMakeCenter(_monster.movePosX, _monster.movePosX,
+			_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
+	}
 }
 
 void Monster::setCollisionRange()

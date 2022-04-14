@@ -217,7 +217,7 @@ void Stage14::collision()
 			_enemyM->getMonsters()[i]->getMonster().playerCheck = true;
 
 			// 몬스터 방향전환을 위한 몬스터-플레이어 간 각도를 몬스터에 전달 
-			getPlayerAngle(i);
+			getPlayerAngleAndDistance(i);
 
 			// 렌더 순서와 비교할 몬스터 변수 저장
 			_tempMonsterNum = i;
@@ -311,12 +311,20 @@ void Stage14::collision()
 
 
 
-void Stage14::getPlayerAngle(int i)
+void Stage14::getPlayerAngleAndDistance(int i)
 {
+	// angle
 	_enemyM->getMonsters()[i]->getMonster().angle =
 		getAngle(_enemyM->getMonsters()[i]->getMonster().movePosX,
 			_enemyM->getMonsters()[i]->getMonster().movePosY,
 			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
+			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+
+	// distance 
+	_enemyM->getMonsters()[i]->getMonster().distance = 
+		getDistance(_enemyM->getMonsters()[i]->getMonster().movePosX, 
+			_enemyM->getMonsters()[i]->getMonster().movePosY,
+			DATAMANAGER->getPlayer()->getPlayer().drawPosX, 
 			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
 }
 
