@@ -40,6 +40,9 @@ private:
 	tagMapPos _monsterPos[ABYSS_MAX*STAGE_MAX];
 
 public:
+	EnemyManager() {}
+	~EnemyManager() {}
+
 	HRESULT init(void);
 	void release(void);
 	void update(void);
@@ -55,7 +58,5 @@ public:
 
 	vector<Monster*> getMonsters(void) { return _vMonster; }
 
-	EnemyManager() {}
-	~EnemyManager() {}
 };
 

@@ -163,6 +163,5 @@ extern POINT		_ptMouse;
 // # 편의를 위한 매니저 #
 //=========================
 #include "DataManager.h"
-#include "EffectManager.h"
 #define DATAMANAGER DataManager::getSingleton()
-#define EFFECTMANAGER EffectManager::getSingleton()
+

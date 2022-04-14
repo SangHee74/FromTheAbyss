@@ -1,6 +1,20 @@
 #pragma once
 #include "GameNode.h"
 
+
+enum class EFFECT_TYPE
+{
+	//P_EFFECT_ATTMOTION, // 상태에서 직접 관리
+	P_EFFECT_COLLISION,	  // 플레이어->몬스터 타격성공
+
+	M_EFFECT_ATTMOTION,	  // 몬스터 공격모션
+	M_EFFECT_COLLISION,	  // 몬스터->플레이어 타격성공
+
+	M_EFFECT_DIE,		  // 필드몬스터 죽음
+	M_EFFECT_BOSSDIE,	  // 보스몬스터 죽음
+	EFFECT_END
+};
+
 struct tagEffect
 {
 	Image* img;
@@ -9,25 +23,50 @@ struct tagEffect
 	float x, y;
 };
 
-
-enum DAMAGEDIGITS
+enum class DAMAGECOLOR
 {
-	UNIT_DIGITS, TENS_DIGITS, HUNDRED_DIGITS,
-	DIGITS_END
+	DAMAGE_WHITE, DAMAGE_RED, DAMAGE_GREEN, DAMAGE_BLUE,
+	DAMAGE_END
 };
 
-struct tagDamageData
+class Effect :public GameNode
 {
-	Image* hundred;
-	Image* tens;
-	Image* unit;
-	int damage;
-	POINT pos[DIGITS_END];
-	bitset<3> fontColor; // RGB 
+private:
+	tagEffect	  _collisionEff;
+
+	Image* _image;
+	RECT _rc;
+	int _count;
+	int _curFrameX;
+	int _curFrameY;
+	float _x, _y;
+	bool _onEffect;
+
+
+public:
+
+	Effect();
+	~Effect() {}
+
+	HRESULT init(void);
+	HRESULT init(const char* imageKey, RECT rc);
+	void release(void);
+	void update(void);
+	void render(void);
+
+	void draw(void);
+	void animation(void);
+
+
+	void centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color);
+	bool getOnEffect() { return _onEffect; }
+
+	//tagEffect&	   getTagEffect()     { return _collisionEff; }
+
 };
 
 
-class PlayerEffect :public GameNode
+class PlayerEffect 
 {
 private:
 	vector<tagEffect> _vEffect;

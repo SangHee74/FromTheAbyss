@@ -9,6 +9,9 @@ HRESULT Stage14::init(void)
 	_enemyM = new EnemyManager();
 	_enemyM->init();
 
+	_effectM = new EffectManager();
+	_effectM->init();
+
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 
@@ -43,6 +46,9 @@ void Stage14::release(void)
 
 	_enemyM->release();
 	SAFE_DELETE(_enemyM);
+
+	_effectM->release();
+	SAFE_DELETE(_effectM);
 }
 
 void Stage14::update(void)
@@ -81,7 +87,7 @@ void Stage14::update(void)
 		DATAMANAGER->getPlayer()->getPlayer().movePosY = 300;
 	}
 
-	EFFECTMANAGER->update();
+	_effectM->update();
 
 	_subScreen->update();
 
@@ -124,7 +130,7 @@ void Stage14::render(void)
 
 
 	// 이펙트 렌더 
-	EFFECTMANAGER->render();
+	_effectM->render();
 
 
 	if (KEYMANAGER->isToggleKey(VK_F3))
@@ -221,7 +227,7 @@ void Stage14::collision()
 			_enemyM->getMonsters()[i]->setHp(temp);
 
 			// 충돌위치 이펙트
-			EFFECTMANAGER->addEff(tempRc, EFFECT_TYPE::P_EFFECT_COLLISION);
+			_effectM->createEffect("eff_collision",tempRc);
 
 			cout << "플레이어 데미지 : " << temp << endl;
 			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
@@ -234,7 +240,7 @@ void Stage14::collision()
 			_lastStageGate = true;
 			
 			// 몬스터 죽음 이펙트
-			EFFECTMANAGER->addEff(_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc, EFFECT_TYPE::M_EFFECT_BOSSDIE);
+			_effectM->createEffect("bossDie",_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc);
 
 			// 경험치 획득 
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
@@ -261,7 +267,7 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
-				EFFECTMANAGER->addEff(tempRc,EFFECT_TYPE::M_EFFECT_COLLISION);
+				_effectM->createEffect("eff_monsterCollision",tempRc);
 
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 				cout << "몬스터 데미지 : " << temp << endl;

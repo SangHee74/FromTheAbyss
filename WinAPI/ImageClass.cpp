@@ -70,10 +70,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("p_twoHandCombo_02", "Resources/Images/Player/p_twoHandCombo_02.bmp", 60 * MAGNI, 400 * MAGNI, 2, 8, MGT);
 
 	IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40* MAGNI, 40 * MAGNI, MGT);
-	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword2.bmp", 960 , 88 , 5, 2, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310 , 106 , 2, 1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
 
 	
 #pragma endregion
@@ -100,15 +96,29 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
 
-	//IMAGEMANAGER->addFrameImage("eff_bossCollision", "Resources/Images/Object/eff_bossCollision.bmp", 210, 98, 2, 1, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttUp", "Resources/Images/Object/eff_bossAttUp.bmp", 278 ,108, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttDown", "Resources/Images/Object/eff_bossAttDown.bmp", 278 ,108, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttLeft", "Resources/Images/Object/eff_bossAttLeft.bmp", 108 ,278, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttRight", "Resources/Images/Object/eff_bossAttRight.bmp", 108 ,278,MGT);
+#pragma endregion
 
+#pragma region effect
 
+	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword2.bmp", 960, 88, 5, 2, MGT);
+	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310, 106, 2, 1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
+
+	IMAGEMANAGER->addFrameImage("eff_monsterCollision", "Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
+	//IMAGEMANAGER->addImage("eff_bossAttUp", "Resources/Images/Object/eff_bossAttUp.bmp", 278, 108, MGT);
+	//IMAGEMANAGER->addImage("eff_bossAttDown", "Resources/Images/Object/eff_bossAttDown.bmp", 278, 108, MGT);
+	//IMAGEMANAGER->addImage("eff_bossAttLeft", "Resources/Images/Object/eff_bossAttLeft.bmp", 108, 278, MGT);
+	//IMAGEMANAGER->addImage("eff_bossAttRight", "Resources/Images/Object/eff_bossAttRight.bmp", 108, 278, MGT);
+	IMAGEMANAGER->addFrameImage("eff_bossAttUp",   "Resources/Images/Object/eff_bossAttUp.bmp",     278, 108, 1,1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_bossAttDown", "Resources/Images/Object/eff_bossAttDown.bmp",   278, 108, 1,1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_bossAttLeft", "Resources/Images/Object/eff_bossAttLeft.bmp",   108, 278, 1,1, MGT);
+	IMAGEMANAGER->addFrameImage("eff_bossAttRight", "Resources/Images/Object/eff_bossAttRight.bmp", 108, 278, 1,1, MGT);
+	IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+	IMAGEMANAGER->addFrameImage("bossDie", "Resources/Images/Object/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
 
 #pragma endregion
+
 
 #pragma region object
 
@@ -122,8 +132,6 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Equipment_icon", "Resources/Images/Object/Equipment_icon.bmp", 160 * MAGNI, 52 * MAGNI, 6, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Inven_icon", "Resources/Images/Object/Inven_icon.bmp", 352 * MAGNI, 96 * MAGNI, 11, 3, MGT);
 
-	//IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
-	//IMAGEMANAGER->addFrameImage("bossDie", "Resources/Images/Object/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
 
 	IMAGEMANAGER->addFrameImage("weapon_sword", "Resources/Images/Object/weapon_sword.bmp", 600 * MAGNI, 25 * MAGNI, 25, 1, MGT);
 	IMAGEMANAGER->addFrameImage("weapon_ax", "Resources/Images/Object/weapon_ax.bmp", 675 * MAGNI, 50 * MAGNI, 27, 2, MGT);
@@ -154,7 +162,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Num_R", "Resources/Images/Object/Num_R.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_G", "Resources/Images/Object/Num_G.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_B", "Resources/Images/Object/Num_B.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
-	IMAGEMANAGER->addFrameImage("Num_store", "Resources/Images/Object/Num_store.bmp", 0, 0, 90 , 10 , 10, 1, MGT);
+	IMAGEMANAGER->addFrameImage("Num_W", "Resources/Images/Object/Num_W.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI2.bmp",      0, 0, 297, 30, 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
 	IMAGEMANAGER->addFrameImage("Num_UI2", "Resources/Images/Object/Num_UI.bmp",	  0, 0, 198 , 20 , 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
 
