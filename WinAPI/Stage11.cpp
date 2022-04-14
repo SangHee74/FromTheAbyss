@@ -112,7 +112,7 @@ void Stage11::render(void)
 	//
 
 	// ÀÌÆåÆ® ·»´õ 
-	_effectM->render();
+	//_effectM->render();
 
 	// ¹è°æ Å¾
 	DATAMANAGER->getMapData().mapTop->render(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);

@@ -192,15 +192,18 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("tap_1", "Resources/Images/Object/tap_1.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_2", "Resources/Images/Object/tap_2.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_3", "Resources/Images/Object/tap_3.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);
-	IMAGEMANAGER->addImage("UI_pathInfo", "Resources/Images/Object/UI_pathInfo.bmp", 0, 0, 21 * MAGNI, 21 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("enterStage", "Resources/Images/Object/enterStage.bmp", 0, 0, 49 * MAGNI, 11 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("LvUp", "Resources/Images/Object/LvUp.bmp", 0, 0, 83 * MAGNI, 11 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("UI_pathInfo", "Resources/Images/Object/UI_pathInfo.bmp", 0, 0, 21 * MAGNI, 21 * MAGNI, MGT);
+	IMAGEMANAGER->addFrameImage("UI_path", "Resources/Images/Object/UI_path.bmp", 0, 0, 160 * 3, 10 * 3, 16,1, MGT);
+	IMAGEMANAGER->addFrameImage("UI_point", "Resources/Images/Object/map_point.bmp", 0, 0, 40 * 3, 10 * 3, 4, 1, MGT);
 
 	IMAGEMANAGER->addImage("map_abyss", "Resources/Images/Object/map_abyss.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("map_stage", "Resources/Images/Object/map_stage.bmp", 0, 0, 37 * MAGNI, 10 * MAGNI, MGT);
 	IMAGEMANAGER->addFrameImage("map_thumbnail", "Resources/Images/Object/map_thumbnail.bmp", 0, 0, 512 * MAGNI, 64 * MAGNI, 8, 1, MGT);
-	IMAGEMANAGER->addFrameImage("map_path", "Resources/Images/Object/map_path.bmp", 0, 0, 170 * MAGNI, 10 * MAGNI, 17, 1, MGT);
+	IMAGEMANAGER->addFrameImage("map_path", "Resources/Images/Object/map_path.bmp", 0, 0, 160 * MAGNI, 10 * MAGNI, 16, 1, MGT);
 	IMAGEMANAGER->addFrameImage("map_point", "Resources/Images/Object/map_point.bmp", 0, 0, 40 * MAGNI, 10 * MAGNI, 4, 1, MGT);
+
 
 
 

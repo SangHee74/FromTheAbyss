@@ -132,14 +132,16 @@ void SubMap::minimapCheck()
 					_vMiniMap[33].OnMiniMapTile = true;
 					_vMiniMap[33].pathFrameX = 2;
 					// 1-1 return Point
-					_returnNum = 33;
 					_curIndex = 33;
+
+					
 				}
 				if ( DATAMANAGER->getPlayer()->getPlayer().movePosX > _mapRangeX[0]
 					&& DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[1])
 				{
 					_vMiniMap[34].OnMiniMapTile = true;
-					_vMiniMap[34].pathFrameX = 9;
+					_vMiniMap[34].pathFrameX = 8;
+
 					_curIndex = 34;
 				}
 			}
@@ -150,7 +152,8 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeX[0])
 				{
 					_vMiniMap[43].OnMiniMapTile = true;
-					_vMiniMap[43].pathFrameX = 15;
+					_vMiniMap[43].pathFrameX = 14;
+
 					_curIndex = 43;
 				}
 			}
@@ -170,19 +173,19 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[4])
 				{
 					_vMiniMap[43].OnMiniMapTile = true;
-					_vMiniMap[43].pathFrameX = 15;
+					_vMiniMap[43].pathFrameX = 14;
 					_curIndex = 43;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[8])
 				{
 					_vMiniMap[53].OnMiniMapTile = true;
-					_vMiniMap[53].pathFrameX = 15;
+					_vMiniMap[53].pathFrameX = 14;
 					_curIndex = 53;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[12])
 				{
 					_vMiniMap[63].OnMiniMapTile = true;
-					_vMiniMap[63].pathFrameX = 8;
+					_vMiniMap[63].pathFrameX = 7;
 					_curIndex = 63;
 				}
 			}
@@ -198,19 +201,19 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[5])
 				{
 					_vMiniMap[44].OnMiniMapTile = true;
-					_vMiniMap[44].pathFrameX = 16;
+					_vMiniMap[44].pathFrameX = 15;
 					_curIndex = 44;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[9])
 				{
 					_vMiniMap[54].OnMiniMapTile = true;
-					_vMiniMap[54].pathFrameX = 16;
+					_vMiniMap[54].pathFrameX = 15;
 					_curIndex = 54;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[13])
 				{
 					_vMiniMap[64].OnMiniMapTile = true;
-					_vMiniMap[64].pathFrameX = 12;
+					_vMiniMap[64].pathFrameX = 11;
 					_curIndex = 64;
 				}
 			}
@@ -220,25 +223,25 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[2])
 				{
 					_vMiniMap[35].OnMiniMapTile = true;
-					_vMiniMap[35].pathFrameX = 9;
+					_vMiniMap[35].pathFrameX = 8;
 					_curIndex = 35;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[6])
 				{
 					_vMiniMap[45].OnMiniMapTile = true;
-					_vMiniMap[45].pathFrameX = 9;
+					_vMiniMap[45].pathFrameX = 8;
 					_curIndex = 45;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[10])
 				{
 					_vMiniMap[55].OnMiniMapTile = true;
-					_vMiniMap[55].pathFrameX = 10;
+					_vMiniMap[55].pathFrameX = 9;
 					_curIndex = 55;
 				}
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[14])
 				{
 					_vMiniMap[65].OnMiniMapTile = true;
-					_vMiniMap[65].pathFrameX = 7;
+					_vMiniMap[65].pathFrameX = 6;
 					_curIndex = 65;
 				}
 			}
@@ -248,7 +251,7 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[3])
 				{
 					_vMiniMap[36].OnMiniMapTile = true;
-					_vMiniMap[36].pathFrameX = 9;
+					_vMiniMap[36].pathFrameX = 8;
 					// 1-1 next Point
 					_nextNum = 36;
 					_curIndex = 36;
@@ -268,7 +271,7 @@ void SubMap::minimapCheck()
 				if (DATAMANAGER->getPlayer()->getPlayer().movePosX < _mapRangeY[15])
 				{
 					_vMiniMap[66].OnMiniMapTile = true;
-					_vMiniMap[66].pathFrameX = 12;
+					_vMiniMap[66].pathFrameX = 11;
 					_curIndex = 66;
 				}
 			}*/

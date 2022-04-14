@@ -1,14 +1,6 @@
 #pragma once
 #include "GameNode.h"
 
-// 어비스-스테이지 당 미니맵 
-//struct tagMiniMapCheck
-//{
-//	int _mapRangeX[4];
-//	int _mapRangeY[4];
-//	bitset<16> mapOpen; // 4*4
-//};
-
 struct tagMiniMapImg
 {
 	RECT miniMapTile;
@@ -16,6 +8,7 @@ struct tagMiniMapImg
 	int pathFrameX;
 	bool OnMiniMapTile;
 };
+
 
 class SubMap : public GameNode
 {
@@ -67,5 +60,11 @@ public:
 	//miniap
 	void minimapCheck();
 	//void minimapRender();
+	int getCurrentIndex() { return _curIndex; }
+	int getRetrunIndex() { return _returnNum; }
+	int getNextIndex() { return _nextNum; }
+
+
+
 };
 

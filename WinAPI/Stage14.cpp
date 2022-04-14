@@ -148,11 +148,13 @@ void Stage14::render(void)
 	}
 
 
-	// 서브화면(UI)
+	// 서브화면+UI
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
 		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
-	//IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
+	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
+	IMGFR("UI_path", getMemDC(), 309, 20, _subScreen->getSubMap()->getCurrentIndex(), 0);
+	
 
 	_subScreen->render();
 
@@ -203,6 +205,8 @@ void Stage14::collision()
 	RECT tempRc;
 
 	// 몬스터의 인식범위 내 플레이어 충돌 시
+#pragma region 몬스터의 플레이어 인식 
+
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 몬스터 인식범위 -> 플레이어 피격범위
@@ -227,8 +231,13 @@ void Stage14::collision()
 		break;
 	}
 
+#pragma endregion
+
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
+
+#pragma region 플레이어의 공격
+
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
 		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
@@ -243,7 +252,7 @@ void Stage14::collision()
 			_enemyM->getMonsters()[i]->setHp(temp);
 
 			// 충돌위치 이펙트
-			_enemyEff->createEffect("eff_collision",tempRc);
+			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATTACK_COLLISION);
 
 			cout << "플레이어 데미지 : " << temp << endl;
 			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
@@ -256,7 +265,7 @@ void Stage14::collision()
 			_lastStageGate = true;
 			
 			// 몬스터 죽음 이펙트
-			_enemyEff->createEffect("bossDie",_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc);
+			_enemyEff->createEff(tempRc,EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
 
 			// 경험치 획득 
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
@@ -265,7 +274,9 @@ void Stage14::collision()
 			//_enemyM->removeMonster(i);
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEAD;
 		}
+#pragma endregion 
 
+#pragma region 몬스터의 공격
 
 		// 몬스터 공격이펙트 -> 플레이어 피격박스
 		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATT)
@@ -283,7 +294,7 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
-				_enemyEff->createEffect("eff_monsterCollision",tempRc);
+				_enemyEff->createEff(tempRc,EFFECT_TYPE::M_ATTACK_COLLISION);
 
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 				cout << "몬스터 데미지 : " << temp << endl;
@@ -293,6 +304,7 @@ void Stage14::collision()
 			}
 		}
 		
+#pragma endregion 
 
 	}
 }
@@ -307,39 +319,30 @@ void Stage14::getPlayerAngle(int i)
 			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
 			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
 }
+
+
+// posY를 비교해서 렌더순서 변경
 void Stage14::renderCheck()
 {
 	if (_tempMonsterNum < 0)
 	{
-		// 몬스터
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
-
-		// 플레이어 
 		DATAMANAGER->getPlayer()->render();
 	}
-
-	// 플레이어가 밑에 있다면
-	if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonster().moveRc.bottom  
+	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonster().moveRc.bottom  
 		<= DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom 
 		&& (_tempMonsterNum >= 0)  )
 	{
-		// 몬스터
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
-
-		// 플레이어 
 		DATAMANAGER->getPlayer()->render();
 	}
 	else
 	{
-		// 플레이어 
 		DATAMANAGER->getPlayer()->render();
-
-		// 몬스터
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 	}
 
 }
-
 
 int Stage14::playerRandomDamage()
 {
@@ -364,14 +367,20 @@ int Stage14::monsterRandomDamage(int i)
 }
 
 
-/*
+
 void Stage14::monsterMovetoPlayer()
 {
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		if (_enemyM->getMonsters()[i]->getMonster().playerCheck)
 		{
-			// 선형보간 이동
+			// 선형보간 이동 XX
+
+			// 계산식으로 접근 할 것 .
+
+
+
+
 			float _lerpPercentage = 0;
 			float time = 10.0f;
 			float speed = TIMEMANAGER->getElapsedTime() * time;
@@ -391,109 +400,4 @@ void Stage14::monsterMovetoPlayer()
 
 	}
 }
-*/
 
-
-//=================================================================================================
-
-// 보간법
-#if 0
-
-
-void FinalScene::rectMoveToPath()
-{
-	/*
-	if (_turnSystem->getStatus() == CHANGINGSTATUS::PLAYERTURN)
-	{
-		if (_moveIndex - 1 < 0)
-		{
-			for (auto iter = _vMoveableTile.begin(); iter != _vMoveableTile.end(); ++iter)
-			{
-				(*iter)->setType(CELL_TYPE::NORMAL);
-			}
-			_vMoveableTile.clear();
-			_vAttackableTile.clear();
-			//_moveTileBit.reset();
-
-			_moveTileBit.reset(1);
-			if (_cMoveStart->getCellX() == _enemyPathGoal.x && _cMoveStart->getCellY() == _enemyPathGoal.y)
-			{
-				_turnSystem->setEnemyBit(2);
-			}
-			else
-			{
-				_turnSystem->changeToPlayer();
-				_player->setPlayerIdle();
-			}
-			_moveIndex = 0;
-			_lerpPercentage = 0.0f;
-			return;
-		}
-		else
-		{
-			changeImage();
-			float time = 4.0f;
-			float speed = TIMEMANAGER->getElapsedTime() * time;
-			_lerpPercentage += speed;
-
-			POINT start = { _check[_moveIndex].x * TILESIZEX, _check[_moveIndex].y * TILESIZEY };
-			POINT end = { _check[_moveIndex - 1].x * TILESIZEX, _check[_moveIndex - 1].y * TILESIZEY };
-			_moveRc = RectMake(lerp(start, end, _lerpPercentage).x,
-				lerp(start, end, _lerpPercentage).y,
-				TILESIZEX, TILESIZEY);
-
-			if (_turnSystem->getStatus() == CHANGINGSTATUS::PLAYERTURN)
-			{
-				_player->setPlayerStateBit(0);
-				_player->setPlayerPos({ _moveRc.right,_moveRc.top });
-			}
-			if (_lerpPercentage >= 1)
-			{
-				_moveIndex--;
-				_lerpPercentage = 0;
-			}
-		}
-	}
-	*/
-
-//=====================================================================================================
-	if (_turnSystem->getStatus() == CHANGINGSTATUS::ENEMYTURN)
-	{
-		if (_moveIndex - 1 < 0)
-		{
-			if (_cMoveStart->getCellX() == _enemyPathGoal.x && _cMoveStart->getCellY() == _enemyPathGoal.y)
-			{
-				_turnSystem->setEnemyBit(2);
-			}
-			else
-			{
-				_turnSystem->changeToPlayer();
-				_saladin->setEnemyIdle();
-				_moveTileBit.reset();
-			}
-
-			_moveIndex = 0;
-			_lerpPercentage = 0.0f;
-			_check.clear();//==============================================================================================
-			return;
-		}
-		else
-		{
-			changeImage();
-		
-			if (_turnSystem->getStatus() == CHANGINGSTATUS::ENEMYTURN)
-			{
-				_saladin->setEnemyStateBit(0);
-				_saladin->setSaladinPos({ _moveRc.right,_moveRc.top });
-			}
-
-			if (_lerpPercentage >= 1)
-			{
-				_moveIndex--;
-				_lerpPercentage = 0;
-			}
-		}
-	}
-}
-
-#endif

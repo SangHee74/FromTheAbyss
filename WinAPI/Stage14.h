@@ -40,6 +40,7 @@ public:
 	int playerRandomDamage();
 	int monsterRandomDamage(int i);
 
+	//SubMenu* getSubMenu() { return _subScreen; }
 
 };
 

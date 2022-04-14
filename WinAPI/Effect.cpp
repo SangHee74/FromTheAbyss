@@ -1,82 +1,88 @@
 #include "Stdafx.h"
 #include "Effect.h"
 
+#pragma region player
 
-Effect::Effect()
-{
-}
 
-HRESULT Effect::init(void)
+HRESULT PlayerEffect::init(void)
 {
 	return S_OK;
 }
 
-HRESULT Effect::init(const char* imageKey, RECT rc)
+void PlayerEffect::release(void)
 {
-	_collisionEff.image = IMAGEMANAGER->findImage(imageKey);
-	_collisionEff.x = rc.left + (rc.right - rc.left) / 2;
-	_collisionEff.y = rc.top;
-	_collisionEff.rc = RectMakeCenter(_collisionEff.x, _collisionEff.y, _collisionEff.image->getFrameWidth(), _collisionEff.image->getFrameHeight());
-	_collisionEff.onEffect = true;
-
-	return S_OK;
+	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
+	{
+		SAFE_DELETE(_viEffect->img);
+	}
+	_vEffect.clear();
 }
 
-void Effect::release(void)
-{
-
-}
-
-void Effect::update(void)
+void PlayerEffect::update(void)
 {
 }
 
-void Effect::render(void)
+void PlayerEffect::render(void)
 {
 	draw();
-	animation();
 }
 
-
-void Effect::draw(void)
+// 이펙트 벡터에 이펙트 추가하기.
+// 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
+void PlayerEffect::createEff(RECT rc, EFFECT_TYPE type)
 {
-	_collisionEff.image->frameRender(getMemDC(),
-		_collisionEff.rc.left - CAM->getScreenRect().left, 
-		_collisionEff.rc.top - CAM->getScreenRect().top, _collisionEff.curFrameX, _collisionEff.curFrameY);
-}
+	tagEffect effect;
+	ZeroMemory(&effect, sizeof(tagEffect));
 
-void Effect::animation(void)
-{
-
-}
-
-void Effect::aniEff(tagEffect eff, int speed)
-{
-	// 오버라이딩 내용 
-	eff.count++;
-
-	if (eff.count % speed == 0)
+	effect.img = new Image;
+	switch (type)
 	{
-		if (eff.curFrameX == eff.image->getMaxFrameX())
-		{
-			eff.curFrameX = 0;
-		}
-		else
-		{
-			eff.curFrameX++;
-		}
+	case EFFECT_TYPE::P_ATTACK_COLLISION:
+		effect.img->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f, 525, 385, 5, 4, MGT);
+			
+		break;
+	}
 
-		if (eff.image->getMaxFrameY() < eff.curFrameY)
-		{
-			eff.onEffect = false;
-		}
+	// 카메라 적용 
+	effect.rc = RectMake(rc.left - CAM->getScreenRect().left - 40,
+		rc.top - CAM->getScreenRect().top - 40,
+		rc.right - CAM->getScreenRect().left - 40,
+		rc.top - CAM->getScreenRect().top - 40);
 
-		eff.count = 0;
+
+	_vEffect.push_back(effect);
+}
+
+// show에서 조정한 이펙트rc를 바탕으로 이미지가 출력 됨 .
+void PlayerEffect::draw(void)
+{
+	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
+	{
+		_viEffect->img->frameRender(getMemDC(), _viEffect->rc.left, _viEffect->rc.top);
+
+		_viEffect->count++;
+		if (_viEffect->count % 4 == 0)
+		{
+			_viEffect->img->setFrameX(_viEffect->img->getFrameX() + 1);
+
+			if (_viEffect->img->getFrameX() >= _viEffect->img->getMaxFrameX())
+			{
+				removeEffect(0);
+				break;
+			}
+		}
 	}
 }
 
+void PlayerEffect::removeEffect(int arrNum)
+{
+	SAFE_DELETE(_vEffect[arrNum].img);
+	_vEffect.erase(_vEffect.begin());
+}
 
-void Effect::centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color)
+
+
+void PlayerEffect::centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color)
 {
 	// 기본 화이트
 	Image* damageFontImg = IMG("Num_W");
@@ -105,93 +111,10 @@ void Effect::centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color)
 }
 
 
-#pragma region player
-HRESULT PlayerEffect::init(void)
-{
-	return S_OK;
-}
-
-void PlayerEffect::release(void)
-{
-	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
-	{
-		SAFE_DELETE(_viEffect->image);
-	}
-	_vEffect.clear();
-}
-
-void PlayerEffect::update(void)
-{
-}
-
-void PlayerEffect::render(void)
-{
-	draw();
-}
 
 
-void PlayerEffect::show(RECT rc)
-{
-	tagEffect effect;
-	ZeroMemory(&effect, sizeof(tagEffect));
 
-	effect.image = new Image;
-	//IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
-	effect.image->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f,
-		525, 385, 5, 4, MGT);
 
-	// 카메라 적용 
-	effect.rc = RectMake(rc.left - CAM->getScreenRect().left - 40,
-		rc.top - CAM->getScreenRect().top - 40,
-		rc.right - CAM->getScreenRect().left - 40,
-		rc.top - CAM->getScreenRect().top - 40);
-
-	cout << "플레이어 effect x:  " << effect.x << " , y : " << effect.y << endl;
-
-	_vEffect.push_back(effect);
-}
-
-void PlayerEffect::show(RECT rc, const char* imageKey)
-{
-	tagEffect effect;
-	effect.image = IMG(imageKey);
-
-	// 카메라 적용 
-	effect.rc = RectMake(rc.left - CAM->getScreenRect().left - 40,
-		rc.top - CAM->getScreenRect().top - 40,
-		rc.right - CAM->getScreenRect().left - 40,
-		rc.top - CAM->getScreenRect().top - 40);
-
-	cout << "플레이어 effect x:  " << effect.x << " , y : " << effect.y << endl;
-
-	_vEffect.push_back(effect);
-}
-
-void PlayerEffect::draw(void)
-{
-	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
-	{
-		_viEffect->image->frameRender(_viEffect->image->getMemDC(), _viEffect->rc.left, _viEffect->rc.top);
-
-		_viEffect->count++;
-		if (_viEffect->count % 4 == 0)
-		{
-			_viEffect->image->setFrameX(_viEffect->image->getFrameX() + 1);
-
-			if (_viEffect->image->getFrameX() >= _viEffect->image->getMaxFrameX())
-			{
-				removeEffect(0);
-				break;
-			}
-		}
-	}
-}
-
-void PlayerEffect::removeEffect(int arrNum)
-{
-	SAFE_DELETE(_vEffect[arrNum].image);
-	_vEffect.erase(_vEffect.begin());
-}
 #pragma endregion 
 
 
@@ -207,7 +130,7 @@ void MonsterEffect::release(void)
 {
 	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
 	{
-		SAFE_DELETE(_viEffect->image);
+		SAFE_DELETE(_viEffect->img);
 	}
 	_vEffect.clear();
 }
@@ -221,34 +144,26 @@ void MonsterEffect::render(void)
 	draw();
 }
 
-void MonsterEffect::show(RECT rc)
+void MonsterEffect::createEff(RECT rc, EFFECT_TYPE type)
 {
 	tagEffect effect;
 	ZeroMemory(&effect, sizeof(tagEffect));
 
-	effect.image = new Image;
-	//IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
-	effect.image->init("Resources/Images/Object/monsterDie.bmp", 0.0f, 0.0f,
-		160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+	effect.img = new Image;
 
+	switch (type)
+	{
+	case EFFECT_TYPE::M_ATTACK_COLLISION:
+		effect.img->init("Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
+		break;
+	case EFFECT_TYPE::M_DEFFENSE_DIE:
+		effect.img->init("Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+		break;
+	case EFFECT_TYPE::M_DEFFENSE_BOSSDIE:
+		effect.img->init("Resources/Images/Object/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
+		break;
+	}
 
-
-	effect.rc = RectMake(rc.left - CAM->getScreenRect().left + 20,
-		rc.top - CAM->getScreenRect().top + 30,
-		rc.right - CAM->getScreenRect().left + 20,
-		rc.top - CAM->getScreenRect().top + 30);
-
-
-
-
-	_vEffect.push_back(effect);
-}
-
-void MonsterEffect::show(RECT rc, const char * imageKey)
-{
-
-	tagEffect effect;
-	effect.image = IMG(imageKey);
 
 	// 카메라 적용 
 	effect.rc = RectMake(rc.left - CAM->getScreenRect().left - 40,
@@ -256,7 +171,6 @@ void MonsterEffect::show(RECT rc, const char * imageKey)
 		rc.right - CAM->getScreenRect().left - 40,
 		rc.top - CAM->getScreenRect().top - 40);
 
-	cout << "플레이어 effect x:  " << effect.x << " , y : " << effect.y << endl;
 
 	_vEffect.push_back(effect);
 }
@@ -265,14 +179,14 @@ void MonsterEffect::draw(void)
 {
 	for (_viEffect = _vEffect.begin(); _viEffect != _vEffect.end(); ++_viEffect)
 	{
-		_viEffect->image->frameRender(getMemDC(), _viEffect->rc.left, _viEffect->rc.top);
+		_viEffect->img->frameRender(getMemDC(), _viEffect->rc.left, _viEffect->rc.top);
 
 		_viEffect->count++;
 		if (_viEffect->count % 8 == 0)
 		{
-			_viEffect->image->setFrameX(_viEffect->image->getFrameX() + 1);
+			_viEffect->img->setFrameX(_viEffect->img->getFrameX() + 1);
 
-			if (_viEffect->image->getFrameX() >= _viEffect->image->getMaxFrameX())
+			if (_viEffect->img->getFrameX() >= _viEffect->img->getMaxFrameX())
 			{
 				removeEffect(0);
 				break;
@@ -283,8 +197,25 @@ void MonsterEffect::draw(void)
 
 void MonsterEffect::removeEffect(int arrNum)
 {
-	SAFE_DELETE(_vEffect[arrNum].image);
+	SAFE_DELETE(_vEffect[arrNum].img);
 	_vEffect.erase(_vEffect.begin());
+}
+
+void MonsterEffect::centerDamageEffect(int damage, POINT pos)
+{
+	// 기본 레드
+	Image* damageFontImg = IMG("Num_R");
+	int tempX = 18;
+	//int tempY = 0;
+	
+
+	// 최대 9999
+	if (damage > 999)		 damageFontImg->frameRender(getMemDC(), pos.x - tempX * 2, pos.y, damage / 1000 % 10, 0);
+	if (damage > 99)		 damageFontImg->frameRender(getMemDC(), pos.x - tempX, pos.y, damage / 100 % 10, 0);
+	if (damage > 9)			 damageFontImg->frameRender(getMemDC(), pos.x, pos.y, damage / 10 % 10, 0);
+							 damageFontImg->frameRender(getMemDC(), pos.x + tempX, pos.y, damage % 10, 0);
+	if (damage <= 0)		 damageFontImg->frameRender(getMemDC(), pos.x + tempX, pos.y, 0, 0);
+
 }
 
 

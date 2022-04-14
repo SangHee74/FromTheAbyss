@@ -121,12 +121,12 @@ void Monster::draw(void)
 	);
 
 	// 피격렉트
-	Rectangle(getMemDC(),
-		_collision.defRc.left - CAM->getScreenRect().left,
-		_collision.defRc.top - CAM->getScreenRect().top,
-		_collision.defRc.right - CAM->getScreenRect().left,
-		_collision.defRc.bottom - CAM->getScreenRect().top
-	);
+	//Rectangle(getMemDC(),
+	//	_collision.defRc.left - CAM->getScreenRect().left,
+	//	_collision.defRc.top - CAM->getScreenRect().top,
+	//	_collision.defRc.right - CAM->getScreenRect().left,
+	//	_collision.defRc.bottom - CAM->getScreenRect().top
+	//);
 
 	// 타격렉트
 	Rectangle(getMemDC(),

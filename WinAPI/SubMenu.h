@@ -43,5 +43,7 @@ public:
 
 	void renderSkill();
 	void renderStat();
+
+	SubMap* getSubMap() { return _map; }
 };
 

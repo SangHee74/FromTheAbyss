@@ -11,7 +11,7 @@ class Stage11 : public GameNode
 {
 private:
 	EnemyManager* _enemyM;
-	MonsterEffect* _enemyEff;
+	//MonsterEffect* _enemyEff;
 	PlayerEffect* _playerEff;
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
