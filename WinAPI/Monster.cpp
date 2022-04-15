@@ -6,10 +6,10 @@ Monster::Monster(): _maxHp(0), _curHp(0), _curAtt(0),
 					_moveRc(RectMake(0,0,0,0)), 
 					_recognitionRc(RectMake(0, 0, 0, 0)),
 					_movePosX(0), _movePosY(0),
-					_frameX(0), _frameY(0),
+					_frameX(0), _frameY(0), _attRange(0),
 					_speed(0.0f), _distance(0.0f), _angle(0.0f),
-					_rndTimeCount(0.0f), _worldTimeCount(0.0f),
-					_playerCheck(false) , _image(nullptr)
+					_rndTimeCount(0.0f), _worldTimeCount(0.0f), _attCoolTime(0.0f), _attTimeCount(0.0f),
+					_playerCheck(false), _attStart(false), _image(nullptr)
 {
 }
 
@@ -32,17 +32,11 @@ HRESULT Monster::init(POINT position)
 	_distance = 0;
 	_angle = 0.0f;
 
-	// 렉트 초기화
-	// 이동렉트(프레임렌더), 인식렉트, 타격범위렉트, 피격범위렉트 
-//	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
-//	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
-//	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
-	//_collision.defRc; // 몬스터는 이동렉트와 피격범위 함께 사용.
-
 	// 프레임 업데이트, 공격상태 체크 등 
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 	_worldTimeCount = GetTickCount();
 	_attCoolTime = 0.0f;
+	_attTimeCount = 0.0f;
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
@@ -68,17 +62,11 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	_distance = 0;
 	_angle = 0.0f;
 
-	// 렉트 초기화
-	// 이동렉트(프레임렌더), 인식렉트, 타격범위렉트, 피격범위렉트 
-//	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
-//	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
-//	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
-	//_collision.defRc; // 몬스터는 이동렉트와 피격범위 함께 사용.
-
 	// 프레임 업데이트, 공격상태 체크 등 
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 	_worldTimeCount = GetTickCount();
 	_attCoolTime = 0.0f;
+	_attTimeCount = 0.0f;
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
@@ -98,7 +86,6 @@ void Monster::update(void)
 
 	// 방향전환 + 렉트 초기화
 	setDirection();
-	_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
 	
 	// 플레이어 발견시 따라가기
 	if (_playerCheck) monsterMovetoPlayer();
@@ -109,12 +96,21 @@ void Monster::update(void)
 
 
 	// 공격
-	if (_state == MONSTERSTATE::ATT) attack();
+	if ( _attStart && _attCoolTime >= 120.0f )
+	{
+		_state = MONSTERSTATE::ATT;
+		attack();
+	}
+	if (_state == MONSTERSTATE::ATT) _attTimeCount++;
+	if (_state != MONSTERSTATE::ATT) _attCoolTime++;
+	//cout << "_attTimeCount : " << _attTimeCount << endl;
+	//cout << "_attCoolTime : " << _attCoolTime << endl;
+	
 
 	// 피격
 	if (_state == MONSTERSTATE::DEF)
 	{
-		cout << "몬스터 피격 후 타임카운트 : " << timeCount << endl;
+		//cout << "몬스터 피격 후 타임카운트 : " << timeCount << endl;
 		timeCount += TIMEMANAGER->getElapsedTime();
 
 		if (timeCount >= 1.0f)
@@ -154,15 +150,6 @@ void Monster::render(void)
 void Monster::draw(void)
 {
 
-	if (KEYMANAGER->isOnceKeyDown(VK_F2))
-	{
-		cout << "monster's Angle : " <<		_angle  << endl;
-		cout << "monster's Distance : " <<  _distance << endl;
-
-	}
-
-
-
 	//if (KEYMANAGER->isToggleKey(VK_F3))
 	{
 		//인식렉트
@@ -174,12 +161,12 @@ void Monster::draw(void)
 	//	);
 
 		// 이동렉트
-		Rectangle(getMemDC(),
-			_moveRc.left - CAM->getScreenRect().left,
-			_moveRc.top - CAM->getScreenRect().top,
-			_image->getFrameWidth() + _moveRc.left - CAM->getScreenRect().left,
-			_image->getFrameHeight() + _moveRc.top - CAM->getScreenRect().top
-		);
+		//Rectangle(getMemDC(),
+		//	_moveRc.left - CAM->getScreenRect().left,
+		//	_moveRc.top - CAM->getScreenRect().top,
+		//	_image->getFrameWidth() + _moveRc.left - CAM->getScreenRect().left,
+		//	_image->getFrameHeight() + _moveRc.top - CAM->getScreenRect().top
+		//);
 
 		// 피격렉트
 		Rectangle(getMemDC(),
@@ -237,18 +224,29 @@ void Monster::draw(void)
 	//rcMake(getMemDC(), _moveRc);
 }
 
-void Monster::animation(void)
+void Monster::animation(void) 
 {
-	if (_rndTimeCount + _worldTimeCount <= GetTickCount())
+	switch (_state)
 	{
+	case MONSTERSTATE::ATT:
 
-		_worldTimeCount = GetTickCount();
-		_frameX++;
-		if (_image->getMaxFrameX() < _frameX)
+
+		break;
+
+
+	default:
+		if (_rndTimeCount + _worldTimeCount <= GetTickCount())
 		{
-			_frameX = 0;
+			_worldTimeCount = GetTickCount();
+			_frameX++;
+			if (_image->getMaxFrameX() < _frameX)
+			{
+				_frameX = 0;
+			}
 		}
+		break;
 	}
+	
 
 }
 
@@ -276,56 +274,85 @@ void Monster::setDirection(void)
 		}
 	}
  
-	if (_image != nullptr)
-	{
-		_moveRc = RectMakeCenter
-		(_movePosX, _movePosX, _image->getFrameWidth(), _image->getFrameHeight());
-	}
+	_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
+
 }
 
 void Monster::monsterMovetoPlayer(void)
 {
+	_state = MONSTERSTATE::MOVE;
 
-	switch (_direction)
+	if (_state == MONSTERSTATE::MOVE);
 	{
-	case MONSTERDIRECTION::UP:
-		if (_movePosY > DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)//DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom +30 )
+		switch (_direction)
 		{
-			_movePosY -= _speed;
-			cout << DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30 << endl;
-		}
+		case MONSTERDIRECTION::UP:
+			if (_distance > _attRange)
+			{
+				_movePosY -= _speed;
+			}
+			else if (_distance > _recognitionRc.bottom - _recognitionRc.top)
+			{
+				_distance = 0;
+			}
+			else
+			{
+				if (_attCoolTime >= 120.0f) _attStart = true;
+				if (_attCoolTime < 120.0f) _attStart = false;
+			}
+			break;
 
-			   		 	  
-		if (_movePosY >= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+		case MONSTERDIRECTION::DOWN:
+			if (_distance > _attRange)
+			{
+				_movePosY += _speed;
+			}
+			else if (_distance > _recognitionRc.bottom - _recognitionRc.top)
+			{
+				_distance = 0;
+			}
+			else
+			{
+				if (_attCoolTime >= 120.0f) _attStart = true;
+				if (_attCoolTime < 120.0f) _attStart = false;
+			}
+			break;
 
-		break;
-	case MONSTERDIRECTION::DOWN:
-		if (_movePosY < DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
-		{
-			_movePosY += _speed;
-		}
-		if (_movePosY <= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+		case MONSTERDIRECTION::LEFT:
+			if (_distance > _attRange)
+			{
+				_movePosX -= _speed;
+			}
+			else if (_distance > _recognitionRc.right - _recognitionRc.left)
+			{
+				_distance = 0;
+			}
+			else
+			{
+				if (_attCoolTime >= 120.0f) _attStart = true;
+				if (_attCoolTime < 120.0f) _attStart = false;
+			}
+			break;
 
-		break;
-	case MONSTERDIRECTION::LEFT:
-		if (_movePosX > DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
-		{
-			_movePosX -= _speed;
-		}
-		if (_movePosX >= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
-		break;
-	case MONSTERDIRECTION::RIGHT:
-		if (_movePosX < DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
-		{
-			_movePosX += _speed;
-		}
-		if (_movePosX <= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
+		case MONSTERDIRECTION::RIGHT:
+			if (_distance > _attRange)
+			{
+				_movePosX += _speed;
+			}
+			else if (_distance > _recognitionRc.right - _recognitionRc.left)
+			{
+				_distance = 0;
+			}
+			else
+			{
+				if (_attCoolTime >= 120.0f) _attStart = true;
+				if (_attCoolTime < 120.0f) _attStart = false;
+			}
+			break;
 
-		break;
+		}
 
 	}
-
-
 
 }
 
@@ -486,7 +513,6 @@ void Monster::update(void)
 	}
 
 
-	//cout << "몬스터 업데이트 ! " << endl;
 }
 
 void Monster::render(void)

@@ -50,12 +50,14 @@ protected:
 	int 	_movePosY;			// rc업데이트
 	int		_frameX;
 	int		_frameY;			// rc-frame업데이트
+	int		_attRange;			// 공격사거리
 	float	_speed;				// 플레이어 쫒아오게
-	float	_distance;
+	float	_distance;			
 	float	_angle;				
 	float	_rndTimeCount;		// 각 객체별 프레임 렌더 시간 다르게 
 	float	_worldTimeCount;
 	float	_attCoolTime;		// 몬스터 공격 상태로 변환 주기
+	float	_attTimeCount;		// 몬스터 대기 상태로 변환 주기
 	bool	_playerCheck;		// 플레이어를 인식했는지 여부
 	bool	_attStart;			// 플레이어와 일정거리 이하일때 공격
 	Image*  _image;				// 몬스터 이미지

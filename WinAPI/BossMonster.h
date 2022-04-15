@@ -16,7 +16,8 @@ public:
 	void move();
 	void attack();
 	void drawEffect();
-	void setCollisionRange();
+	void setCollisionAttRange();
+	void setCollisionDefRange();
 
 	void speedUp();
 };

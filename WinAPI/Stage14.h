@@ -38,7 +38,6 @@ public:
 	void getPlayerAngleAndDistance(int i);
 	void renderCheck();
 	int playerRandomDamage();
-	int monsterRandomDamage(int i);
 
 	//SubMenu* getSubMenu() { return _subScreen; }
 

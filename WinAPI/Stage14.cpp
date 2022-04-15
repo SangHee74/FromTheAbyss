@@ -285,12 +285,14 @@ void Stage14::collision()
 				&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc)
 				&& DATAMANAGER->getPlayer()->getState() != PLAYERSTATE::DEF)
 			{
+				cout << "몬스터 타격렉트와 플레이어 피격렉트 충돌" << endl;
+
 				// 플레이어 피격상태로 전환 + 체력감소 + 이펙트
 				DATAMANAGER->getPlayer()->getState() = PLAYERSTATE::DEF;
 
 				// 플레이어 체력 세팅 함수
 				int temp = 0;
-				temp = monsterRandomDamage(i);
+				temp = _enemyM->monsterRandomDamage(i);
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
@@ -311,7 +313,7 @@ void Stage14::collision()
 
 
 
-// posY를 비교해서 렌더순서 변경
+// probeDown(발밑)를 비교해서 렌더순서 변경
 void Stage14::renderCheck()
 {
 	if (_tempMonsterNum < 0)
@@ -319,8 +321,8 @@ void Stage14::renderCheck()
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 		DATAMANAGER->getPlayer()->render();
 	}
-	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMoveRc().bottom  
-				<= DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom 
+	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonsterPixel().probeDown
+				<= DATAMANAGER->getPlayer()->getPlayerPixel().probeDown
 			 && (_tempMonsterNum >= 0)  )
 	{
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
@@ -373,17 +375,4 @@ int Stage14::playerRandomDamage()
 
 	return rndPlayerDmg;
 }
-
-int Stage14::monsterRandomDamage(int i)
-{
-	int rndMonsterDmg;
-
-	rndMonsterDmg = RND->getFromIntTo(
-		_enemyM->getMonsters()[i]->getAtt() *0.85,
-		_enemyM->getMonsters()[i]->getAtt());
-
-	return rndMonsterDmg;
-}
-
-
 
