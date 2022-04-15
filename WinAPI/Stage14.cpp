@@ -19,7 +19,7 @@ HRESULT Stage14::init(void)
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 
 	_bossUIBar = new ProgressBarBoss();
-	_bossUIBar->init(_enemyM->getMonsters()[0]->getHp());
+	_bossUIBar->init(70,90,520,30);
 
 	_subScreen = new SubMenu();
 	_subScreen->init();
@@ -86,9 +86,14 @@ void Stage14::update(void)
 
 	if (_enemyM->getMonsters()[0]->getHp() >= 0)
 	{
-		_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp());
-		_bossUIBar->update();
+		_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp(), _enemyM->getMonsters()[0]->getMaxHp() );
 	}
+
+	cout << "보스 최대 :" << _enemyM->getMonsters()[0]->getMaxHp() << endl;
+	cout << "보스 현재 :" << _enemyM->getMonsters()[0]->getHp() << endl;
+
+
+	_bossUIBar->update();
 
 	if (KEYOKD('7'))
 	{
@@ -112,7 +117,6 @@ void Stage14::update(void)
 
 	if (_lastStageGate) 	portalOn();
 	collision();
-	//monsterMovetoPlayer();
 }
 
 void Stage14::render(void)
@@ -127,13 +131,13 @@ void Stage14::render(void)
 	// 포탈(보스가 죽으면)
 	if (_lastStageGate) 
 	{
+		DATAMANAGER->getPlayer()->getPlayerAbyss().abyss = 2;
 		IMGR("map_gate", getMemDC(),
 			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
 			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 	}
 
 	renderCheck();
-
 
 
 	// 이펙트 렌더 
@@ -152,9 +156,12 @@ void Stage14::render(void)
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
 		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
-		
+
+
+	if (!_lastStageGate) _bossUIBar->render();
 
 	_subScreen->render();
+
 
 	Rectangle(getMemDC(),
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
@@ -252,8 +259,8 @@ void Stage14::collision()
 			// 충돌위치 이펙트
 			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATKACK_COLLISION);
 
-			cout << "플레이어 데미지 : " << temp << endl;
-			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
+			//cout << "플레이어 데미지 : " << temp << endl;
+			//cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
 			break;
 
 		}
@@ -269,8 +276,8 @@ void Stage14::collision()
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
 
 			// 삭제 - 터짐
-			//_enemyM->removeMonster(i);
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEAD;
+			//_enemyM->removeMonster(i);
 		}
 #pragma endregion 
 

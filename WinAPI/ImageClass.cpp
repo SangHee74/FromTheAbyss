@@ -75,23 +75,23 @@ HRESULT ImageClass::init(void)
 #pragma endregion
 
 #pragma region enemy
-	IMAGEMANAGER->addFrameImage("Dionaea_atkack", "Resources/Images/Monster/Dionaea_atkack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Dionaea_attack", "Resources/Images/Monster/Dionaea_attack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_def", "Resources/Images/Monster/Dionaea_def.bmp", 48 * MAGNI, 120 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_idle", "Resources/Images/Monster/Dionaea_idle.bmp", 48 * MAGNI, 240 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_move", "Resources/Images/Monster/Dionaea_move.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
 	
-	IMAGEMANAGER->addFrameImage("evilEye_atkack", "Resources/Images/Monster/evilEye_atkack.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("evilEye_attack", "Resources/Images/Monster/evilEye_attack.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_def", "Resources/Images/Monster/evilEye_def.bmp", 42 * MAGNI, 80 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_idle", "Resources/Images/Monster/evilEye_idle.bmp", 42 * MAGNI, 160 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_move", "Resources/Images/Monster/evilEye_move.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
 	
-	IMAGEMANAGER->addFrameImage("Kobold_atkack", "Resources/Images/Monster/Kobold_atkack.bmp", 84 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_attack", "Resources/Images/Monster/Kobold_attack.bmp", 84 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_def", "Resources/Images/Monster/Kobold_def.bmp", 40 * MAGNI, 84 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_idle", "Resources/Images/Monster/Kobold_idle.bmp", 40 * MAGNI, 168 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_move", "Resources/Images/Monster/Kobold_move.bmp", 80 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 
-	IMAGEMANAGER->addFrameImage("mino_atkack", "Resources/Images/Monster/Boss/mino_atkack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("mino_attack", "Resources/Images/Monster/Boss/mino_attack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 150 * MAGNI, 88 * MAGNI, 1, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);

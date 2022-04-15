@@ -19,7 +19,7 @@ HRESULT Player::init(void)
 	_status.maxSp = _status.curSp;
 	_status.maxExp = 16;
 	_status.lv = 1;
-	_status.iAtk = 10;
+	_status.iAtk = 1;
 	_status.iDef = 12;
 	_status.iInt = 7;
 	_status.iMen = 10;

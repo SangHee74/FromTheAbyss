@@ -46,36 +46,29 @@ class ProgressBarBoss : public GameNode
 {
 private:
 
+	Image* _progressBarUp;
+	Image* _progressBarDown;
+	RECT _rc;
 	int _x;
 	int _y;
-
-	RECT _rc;
-	float _hpMaxWidth;
-	float _hpWidth;
-
-	Image* _hpBarBg;
-	Image* _hpBar;
-
+	float _width;
 
 public:
-	HRESULT init(float hp); // boss
+	HRESULT init(int x, int y, int width, int height); // boss (630,30)
 	void release(void);
 	void update(void);
 	void render(void);
 
-	void setGauge(float currentScore, float maxScore);
-	void setBossHpGauge(float hpScore);
-	POINT getHpMpBar();
+	void setBossHpGauge(float currentScore, float maxScore);
 
 	void setX(int x) { _x = x; }
 	void setY(int y) { _y = y; }
 
-public:
+
 	ProgressBarBoss() {}
 	virtual ~ProgressBarBoss() {}
 
-	float getHpWidth() { return _hpWidth; }
-};
 
+};
 
 

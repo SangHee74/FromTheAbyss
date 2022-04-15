@@ -51,7 +51,7 @@ void IdleState::stateUpdate(Player* player)
 	}
 
 	// АјАн
-	if (KEYMANAGER->isStayKeyDown('X'))
+	if (KEYMANAGER->isOnceKeyDown('X'))
 	{
 		if ((player->getPlayerWeapon().type == WEAPONTYPE::SWORD) ||
 			(player->getPlayerWeapon().type == WEAPONTYPE::AX))

@@ -4,6 +4,7 @@
 // 초기화 정리 
 Minotaur::Minotaur()
 {
+	_maxHp = 300;
 	_curHp = 300;
 	_curAtt = 10;
 	_dropExp = 50;
@@ -31,8 +32,6 @@ Minotaur::Minotaur()
 	_atkTimeCount = 0;
 
 	// 초기 렉트 초기화 : 인식렉트, 이동렉트(프레임렌더), 타격범위렉트, 피격범위렉트 
-
-	// 보스몬스터의 인식범위는 맵의 대부분.
 	_recognitionRc	 = RectMakeCenter
 	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1900, 1350);
 	
@@ -67,7 +66,7 @@ void Minotaur::move()
 void Minotaur::atkack()
 {
 	//_atkCoolTime = 0;
-	_image = IMG("mino_atkack");
+	_image = IMG("mino_attack");
 	_frameX = 0;
 	_frameY = (int)_direction;
 
@@ -87,7 +86,7 @@ void Minotaur::atkack()
 			_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 		}
 
-		if (_frameX >= IMG("mino_atkack")->getMaxFrameX() 
+		if (_frameX >= IMG("mino_attack")->getMaxFrameX() 
 			&& _atkTimeCount >= 4.0f) // 공격모션 변경 후 일정시간이 지나면
 		{
 			_atkTimeCount = 0;
@@ -141,8 +140,6 @@ void Minotaur::setCollisionAttRange()
 	if(_state != MONSTERSTATE::ATK) 	_collision.atkWidth = _collision.atkHeight = 0;
 	_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 
-	cout << "공격위치 달라지는거 확인 " << endl;
-	cout << "atkPosX : " << _collision.atkPosX << ", atkPosY : " << _collision.atkPosY << endl;
 }
 void Minotaur::setCollisionDefRange()
 {
