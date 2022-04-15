@@ -20,7 +20,7 @@ enum class PLAYERDIRECTION
 enum class PLAYERSTATE
 {
 	IDLE, MOVE, DEF, DEAD,
-	ATT_ONEHANDCOMBO, ATT_TWOHANDCOMBO,
+	ATK_ONEHANDCOMBO, ATK_TWOHANDCOMBO,
 	SKILL_SOULCAPTURE,SKILL_SPEARSTRIKE
 	//SKILL1, SKILL2, SKILL3
 };
@@ -48,6 +48,7 @@ struct tagAbyssData
 struct tagPlayerStatus
 {
 	char name[128];
+	//string name;
 	
 	int curHp;
 	int curSp;
@@ -57,7 +58,7 @@ struct tagPlayerStatus
 	int maxExp;
 
 	int lv;
-	int iAtt; //물공
+	int iAtk; //물공
 	int iDef; //물방
 	int iInt; //마공
 	int iMen; //마방
@@ -130,14 +131,14 @@ struct tagCollisionRc
 	int defWidth;
 	int defHeight;
 
-	Image* attEffectImg;
-	RECT attRc;
-	int attPosX;
-	int attPosY;
-	int attWidth;
-	int attHeight;
-	int attEffFrameX;
-	int attEffFrameY;
+	Image* atkEffectImg;
+	RECT atkRc;
+	int atkPosX;
+	int atkPosY;
+	int atkWidth;
+	int atkHeight;
+	int atkEffFrameX;
+	int atkEffFrameY;
 };
 
 class STATE;  // 상태패턴(상호참조-전방선언)
@@ -172,7 +173,7 @@ private:
 	
 public:
 	// 상태패턴
-	STATE* _pStatePattern; 
+	STATE* _pStatePatkern; 
 	void setPlayerState(STATE* state); 
 	void stateUpdate(); 
 	void stateRender(); 

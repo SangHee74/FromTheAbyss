@@ -10,7 +10,7 @@ public:
 	~Dionaea() {};
 
 	void move();
-	void attack();
+	void atkack();
 
 };
 
@@ -24,7 +24,7 @@ public:
 	~EvilEye() {};
 
 	void move();
-	void attack();
+	void atkack();
 
 };
 
@@ -37,6 +37,6 @@ public:
 	~Kobold() {};
 
 	void move();
-	void attack();
+	void atkack();
 
 }; 

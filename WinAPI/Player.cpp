@@ -19,7 +19,7 @@ HRESULT Player::init(void)
 	_status.maxSp = _status.curSp;
 	_status.maxExp = 16;
 	_status.lv = 1;
-	_status.iAtt = 10;
+	_status.iAtk = 10;
 	_status.iDef = 12;
 	_status.iInt = 7;
 	_status.iMen = 10;
@@ -37,8 +37,8 @@ HRESULT Player::init(void)
 	_player.speed = 10;
 	_collision.defWidth = 40;
 	_collision.defHeight = 80;
-	_collision.attWidth = 0;
-	_collision.attHeight = 0;
+	_collision.atkWidth = 0;
+	_collision.atkHeight = 0;
 
 
 	return S_OK;
@@ -46,7 +46,7 @@ HRESULT Player::init(void)
 
 void Player::release(void)
 {
-	//_pStatePattern->stateRelease();
+	//_pStatePatkern->stateRelease();
 }
 
 void Player::update(void)
@@ -55,7 +55,7 @@ void Player::update(void)
 	// weapon pos+frame setting(idle)
 	weaponinStageSetting();
 
-	// state pattern update
+	// state patkern update
 	stateUpdate();
 	
 	// def,dead 상태일때는 Y프레임 세팅 제외.
@@ -66,8 +66,8 @@ void Player::update(void)
 	// 외부에서 맞은 경우 피격모션으로 바꾸기 
 	if (_state == PLAYERSTATE::DEF)
 	{
-		_pStatePattern = DefState::getInstance();
-		setPlayerState(_pStatePattern);
+		_pStatePatkern = DefState::getInstance();
+		setPlayerState(_pStatePatkern);
 	}
 
 	// 레벨업
@@ -87,29 +87,29 @@ void Player::render(void)
 	_camera.playerTop = _player.drawRc.top - _camera.rc.top;
 	_camera.weaponLeft = _weapon.drawRc.left - _camera.rc.left;
 	_camera.weaponTop = _weapon.drawRc.top - _camera.rc.top;
-	_camera.effectLeft = _collision.attRc.left - _camera.rc.left;
-	_camera.effectTop = _collision.attRc.top - _camera.rc.top;
+	_camera.effectLeft = _collision.atkRc.left - _camera.rc.left;
+	_camera.effectTop = _collision.atkRc.top - _camera.rc.top;
 
 	IMGAR("p_shadow", getMemDC(), _camera.playerLeft+20, _camera.playerTop +100 ,_shadowAlpha);
 	// 타격범위 렌더
-	//Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
-	//	_collision.attRc.left - _camera.rc.left + _collision.attWidth,
-	//	_collision.attRc.top - _camera.rc.top + _collision.attHeight);
+	//Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
+	//	_collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
+	//	_collision.atkRc.top - _camera.rc.top + _collision.atkHeight);
 
 	if (_isStateCheck.test(5))
 	{
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
-		if ( _state == PLAYERSTATE::ATT_ONEHANDCOMBO)
+		if ( _state == PLAYERSTATE::ATK_ONEHANDCOMBO)
 		{
-			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
+			_collision.atkEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.atkEffFrameX, _collision.atkEffFrameY);
 		}
 	}
 	if (! _isStateCheck.test(5))
 	{
-		if (_state == PLAYERSTATE::ATT_ONEHANDCOMBO)
+		if (_state == PLAYERSTATE::ATK_ONEHANDCOMBO)
 		{
-			_collision.attEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.attEffFrameX, _collision.attEffFrameY);
+			_collision.atkEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.atkEffFrameX, _collision.atkEffFrameY);
 		}		
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
@@ -151,9 +151,9 @@ void Player::render(void)
 
 
 		// 타격범위 렌더
-		//Rectangle(getMemDC(), _collision.attRc.left - _camera.rc.left, _collision.attRc.top - _camera.rc.top,
-		//					  _collision.attRc.left - _camera.rc.left + _collision.attWidth,
-		//					  _collision.attRc.top  - _camera.rc.top  + _collision.attHeight );
+		//Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
+		//					  _collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
+		//					  _collision.atkRc.top  - _camera.rc.top  + _collision.atkHeight );
 
 
 		// 픽셀충돌 아래 - 를 좌우로 뿌리기 
@@ -174,7 +174,7 @@ void Player::render(void)
 			tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
 
 		//rcMake(getMemDC(), _player.defRc);
-		//rcMake(getMemDC(), _weapon.attRc);
+		//rcMake(getMemDC(), _weapon.atkRc);
 	}
 
 
@@ -190,8 +190,8 @@ void Player::render(void)
 void Player::setPlayerState(STATE* state)
 {
 	// 자동으로 실행
-	this->_pStatePattern = state;
-	_pStatePattern->stateInit(this);
+	this->_pStatePatkern = state;
+	_pStatePatkern->stateInit(this);
 }
 
 // 행동 세팅
@@ -220,7 +220,7 @@ void Player::stateUpdate()
 	else _isStateCheck.reset(5);
 
 	// 상태패턴 업데이트 
-	_pStatePattern->stateUpdate(this);
+	_pStatePatkern->stateUpdate(this);
 
 	// 플레이어 + 무기 위치 업데이트
 	_player.moveRc = RectMakeCenter(_player.movePosX, _player.movePosY, _player.width, _player.height);
@@ -230,7 +230,7 @@ void Player::stateUpdate()
 	
 	// 캐릭터 피격/타격 범위 업데이트
 	_collision.defRc = RectMakeCenter(_player.drawPosX, _player.drawPosY+10, _collision.defWidth, _collision.defHeight);
-	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+	_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 
 
 }
@@ -238,7 +238,7 @@ void Player::stateUpdate()
 // 행동 렌더
 void Player::stateRender()
 {
-	_pStatePattern->stateRender(this);
+	_pStatePatkern->stateRender(this);
 }
 
 #pragma endregion 
@@ -288,8 +288,8 @@ void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION dire
 
 	// 상태패턴 (대기상태로 시작)
 	// 캐릭터 방향, 무기타입, 무기번호(itemNum)
-	_pStatePattern = IdleState::getInstance();
-	setPlayerState(_pStatePattern);
+	_pStatePatkern = IdleState::getInstance();
+	setPlayerState(_pStatePatkern);
 
 	// 픽셀충돌 - 탐색
 	_pixel.probeDown = _player.movePosY + _player.image->getHeight() / 2;
@@ -478,20 +478,20 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.frameX = 9;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY - 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
-					_collision.attPosY = _weapon.drawPosY + 16;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.atkPosX = _weapon.drawPosX - 25;
+					_collision.atkPosY = _weapon.drawPosY + 16;
+					_collision.atkWidth = 122;
+					_collision.atkHeight = 113;
 				}
 				else
 				{
 					_weapon.frameX = 10; 
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
-					_collision.attPosY = _weapon.drawPosY + 16;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.atkPosX = _weapon.drawPosX - 25;
+					_collision.atkPosY = _weapon.drawPosY + 16;
+					_collision.atkWidth = 122;
+					_collision.atkHeight = 113;
 					
 					for (tempMoveMax = 1 ; tempMoveMax < 5 ; tempMoveMax++)
 					{
@@ -531,20 +531,20 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.frameX = 25;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 20;
-					_collision.attPosY = _weapon.drawPosY + 56;
-					_collision.attWidth = 116;
-					_collision.attHeight = 43;
+					_collision.atkPosX = _weapon.drawPosX - 20;
+					_collision.atkPosY = _weapon.drawPosY + 56;
+					_collision.atkWidth = 116;
+					_collision.atkHeight = 43;
 				}
 				else // OK!
 				{
 					_weapon.frameX = 4; // 프레임이 끝날때까지 
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX + 95;
-					_collision.attPosY = _weapon.drawPosY - 30;
-					_collision.attWidth = 116;
-					_collision.attHeight = 43;
+					_collision.atkPosX = _weapon.drawPosX + 95;
+					_collision.atkPosY = _weapon.drawPosY - 30;
+					_collision.atkWidth = 116;
+					_collision.atkHeight = 43;
 
 					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
 					{
@@ -567,20 +567,20 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.frameX = 9;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY - 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
-					_collision.attPosY = _weapon.drawPosY + 16;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.atkPosX = _weapon.drawPosX - 25;
+					_collision.atkPosY = _weapon.drawPosY + 16;
+					_collision.atkWidth = 122;
+					_collision.atkHeight = 113;
 				}
 				else
 				{
 					_weapon.frameX = 10;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 25;
-					_collision.attPosY = _weapon.drawPosY + 16;
-					_collision.attWidth = 122;
-					_collision.attHeight = 113;
+					_collision.atkPosX = _weapon.drawPosX - 25;
+					_collision.atkPosY = _weapon.drawPosY + 16;
+					_collision.atkWidth = 122;
+					_collision.atkHeight = 113;
 
 					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
 					{
@@ -620,20 +620,20 @@ void Player::playerAttSetting(bitset<3> combo)
 					_weapon.frameX = 25;
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX - 20;
-					_collision.attPosY = _weapon.drawPosY + 56;
-					_collision.attWidth = 116;
-					_collision.attHeight = 43;
+					_collision.atkPosX = _weapon.drawPosX - 20;
+					_collision.atkPosY = _weapon.drawPosY + 56;
+					_collision.atkWidth = 116;
+					_collision.atkHeight = 43;
 				}
 				else // OK!
 				{
 					_weapon.frameX = 4; // 프레임이 끝날때까지 
 					_weapon.drawPosX = _weapon.movePosX - 50;
 					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.attPosX = _weapon.drawPosX + 95;
-					_collision.attPosY = _weapon.drawPosY - 30;
-					_collision.attWidth = 116;
-					_collision.attHeight = 43;
+					_collision.atkPosX = _weapon.drawPosX + 95;
+					_collision.atkPosY = _weapon.drawPosY - 30;
+					_collision.atkWidth = 116;
+					_collision.atkHeight = 43;
 
 					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
 					{
@@ -645,8 +645,8 @@ void Player::playerAttSetting(bitset<3> combo)
 		}
 	}
 
-	_collision.attRc =
-		RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+	_collision.atkRc =
+		RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 	
 }
 
@@ -655,8 +655,8 @@ int Player::playerRandomDamage()
 	int rndPlayerDmg;
 
 	rndPlayerDmg = RND->getFromIntTo(
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt*0.85,
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt);
+		DATAMANAGER->getPlayer()->getPlayerStatus().iAtk*0.85,
+		DATAMANAGER->getPlayer()->getPlayerStatus().iAtk);
 
 	return rndPlayerDmg;
 }

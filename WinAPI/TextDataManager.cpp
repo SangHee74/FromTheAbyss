@@ -45,7 +45,7 @@ void TextDataManager::save(const char* fileName, vector<string> vStr)
 	}
 
 	CREATE_ALWAYS: 새로운 파일 생성, 공일한 파일 존재시 덮어쓰기
-	FILE_ATTRIBUTE_NORMAL: 다른 속성값을 가지지 않겠다
+	FILE_ATKRIBUTE_NORMAL: 다른 속성값을 가지지 않겠다
 	*/
 
 

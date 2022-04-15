@@ -3,11 +3,11 @@
 
 enum class EFFECT_TYPE
 {
-	P_ATTACK_ATTMOTION, // 상태에서 직접 관리
-	P_ATTACK_COLLISION,	  // 플레이어->몬스터 타격성공
+	P_ATKACK_ATKMOTION, // 상태에서 직접 관리
+	P_ATKACK_COLLISION,	  // 플레이어->몬스터 타격성공
 
-	M_ATTACK_ATTMOTION,	  // 몬스터 공격모션
-	M_ATTACK_COLLISION,	  // 몬스터->플레이어 타격성공
+	M_ATKACK_ATKMOTION,	  // 몬스터 공격모션
+	M_ATKACK_COLLISION,	  // 몬스터->플레이어 타격성공
 
 	M_DEFFENSE_DIE,		  // 필드몬스터 죽음
 	M_DEFFENSE_BOSSDIE,	  // 보스몬스터 죽음

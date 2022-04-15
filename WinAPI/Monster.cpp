@@ -6,10 +6,10 @@ Monster::Monster(): _maxHp(0), _curHp(0), _curAtt(0),
 					_moveRc(RectMake(0,0,0,0)), 
 					_recognitionRc(RectMake(0, 0, 0, 0)),
 					_movePosX(0), _movePosY(0),
-					_frameX(0), _frameY(0), _attRange(0),
+					_frameX(0), _frameY(0), _atkRange(0),
 					_speed(0.0f), _distance(0.0f), _angle(0.0f),
-					_rndTimeCount(0.0f), _worldTimeCount(0.0f), _attCoolTime(0.0f), _attTimeCount(0.0f),
-					_playerCheck(false), _attStart(false), _image(nullptr)
+					_rndTimeCount(0.0f), _worldTimeCount(0.0f), _atkCoolTime(0.0f), _atkTimeCount(0.0f),
+					_playerCheck(false), _atkStart(false), _image(nullptr)
 {
 }
 
@@ -35,8 +35,8 @@ HRESULT Monster::init(POINT position)
 	// 프레임 업데이트, 공격상태 체크 등 
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 	_worldTimeCount = GetTickCount();
-	_attCoolTime = 0.0f;
-	_attTimeCount = 0.0f;
+	_atkCoolTime = 0.0f;
+	_atkTimeCount = 0.0f;
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
@@ -65,8 +65,8 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	// 프레임 업데이트, 공격상태 체크 등 
 	_rndTimeCount = RND->getFromFloatTo(50, 150);
 	_worldTimeCount = GetTickCount();
-	_attCoolTime = 0.0f;
-	_attTimeCount = 0.0f;
+	_atkCoolTime = 0.0f;
+	_atkTimeCount = 0.0f;
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
@@ -96,15 +96,15 @@ void Monster::update(void)
 
 
 	// 공격
-	if ( _attStart && _attCoolTime >= 120.0f )
+	if ( _atkStart && _atkCoolTime >= 120.0f )
 	{
-		_state = MONSTERSTATE::ATT;
-		attack();
+		_state = MONSTERSTATE::ATK;
+		atkack();
 	}
-	if (_state == MONSTERSTATE::ATT) _attTimeCount++;
-	if (_state != MONSTERSTATE::ATT) _attCoolTime++;
-	//cout << "_attTimeCount : " << _attTimeCount << endl;
-	//cout << "_attCoolTime : " << _attCoolTime << endl;
+	if (_state == MONSTERSTATE::ATK) _atkTimeCount++;
+	if (_state != MONSTERSTATE::ATK) _atkCoolTime++;
+	//cout << "_atkTimeCount : " << _atkTimeCount << endl;
+	//cout << "_atkCoolTime : " << _atkCoolTime << endl;
 	
 
 	// 피격
@@ -130,10 +130,10 @@ void Monster::update(void)
 	if (_state == MONSTERSTATE::DEAD)
 	{
 		_collision.defWidth = _collision.defHeight = 0;
-		_collision.defRc = RectMakeCenter(_movePosX, _movePosY, _collision.attWidth, _collision.attHeight);
+		_collision.defRc = RectMakeCenter(_movePosX, _movePosY, _collision.atkWidth, _collision.atkHeight);
 
-		_collision.attWidth = _collision.attHeight = 0;
-		_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+		_collision.atkWidth = _collision.atkHeight = 0;
+		_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 	}
 
 
@@ -178,10 +178,10 @@ void Monster::draw(void)
 
 		// 타격렉트
 		Rectangle(getMemDC(),
-			_collision.attRc.left - CAM->getScreenRect().left,
-			_collision.attRc.top - CAM->getScreenRect().top,
-			_collision.attRc.right - CAM->getScreenRect().left,
-			_collision.attRc.bottom - CAM->getScreenRect().top
+			_collision.atkRc.left - CAM->getScreenRect().left,
+			_collision.atkRc.top - CAM->getScreenRect().top,
+			_collision.atkRc.right - CAM->getScreenRect().left,
+			_collision.atkRc.bottom - CAM->getScreenRect().top
 		);
 
 		// 임시 플레이어 드로우렉트
@@ -228,7 +228,7 @@ void Monster::animation(void)
 {
 	switch (_state)
 	{
-	case MONSTERSTATE::ATT:
+	case MONSTERSTATE::ATK:
 
 
 		break;
@@ -252,7 +252,7 @@ void Monster::animation(void)
 
 void Monster::setDirection(void)
 {
-	if (_playerCheck && _state != MONSTERSTATE::ATT)
+	if (_playerCheck && _state != MONSTERSTATE::ATK)
 	{
 		// 플레이어 각도에 따라 방향 전환
 		// X 방향으로 상하좌우 
@@ -287,7 +287,7 @@ void Monster::monsterMovetoPlayer(void)
 		switch (_direction)
 		{
 		case MONSTERDIRECTION::UP:
-			if (_distance > _attRange)
+			if (_distance > _atkRange)
 			{
 				_movePosY -= _speed;
 			}
@@ -297,13 +297,13 @@ void Monster::monsterMovetoPlayer(void)
 			}
 			else
 			{
-				if (_attCoolTime >= 120.0f) _attStart = true;
-				if (_attCoolTime < 120.0f) _attStart = false;
+				if (_atkCoolTime >= 120.0f) _atkStart = true;
+				if (_atkCoolTime < 120.0f) _atkStart = false;
 			}
 			break;
 
 		case MONSTERDIRECTION::DOWN:
-			if (_distance > _attRange)
+			if (_distance > _atkRange)
 			{
 				_movePosY += _speed;
 			}
@@ -313,13 +313,13 @@ void Monster::monsterMovetoPlayer(void)
 			}
 			else
 			{
-				if (_attCoolTime >= 120.0f) _attStart = true;
-				if (_attCoolTime < 120.0f) _attStart = false;
+				if (_atkCoolTime >= 120.0f) _atkStart = true;
+				if (_atkCoolTime < 120.0f) _atkStart = false;
 			}
 			break;
 
 		case MONSTERDIRECTION::LEFT:
-			if (_distance > _attRange)
+			if (_distance > _atkRange)
 			{
 				_movePosX -= _speed;
 			}
@@ -329,13 +329,13 @@ void Monster::monsterMovetoPlayer(void)
 			}
 			else
 			{
-				if (_attCoolTime >= 120.0f) _attStart = true;
-				if (_attCoolTime < 120.0f) _attStart = false;
+				if (_atkCoolTime >= 120.0f) _atkStart = true;
+				if (_atkCoolTime < 120.0f) _atkStart = false;
 			}
 			break;
 
 		case MONSTERDIRECTION::RIGHT:
-			if (_distance > _attRange)
+			if (_distance > _atkRange)
 			{
 				_movePosX += _speed;
 			}
@@ -345,8 +345,8 @@ void Monster::monsterMovetoPlayer(void)
 			}
 			else
 			{
-				if (_attCoolTime >= 120.0f) _attStart = true;
-				if (_attCoolTime < 120.0f) _attStart = false;
+				if (_atkCoolTime >= 120.0f) _atkStart = true;
+				if (_atkCoolTime < 120.0f) _atkStart = false;
 			}
 			break;
 
@@ -407,7 +407,7 @@ bool Monster::pixelColorCheck(int getPixelX, int getPixelY)
 void Monster::move(void){
 }
 
-void Monster::attack(void){
+void Monster::atkack(void){
 }
 
 void Monster::drawEffect(void){
@@ -439,7 +439,7 @@ HRESULT Monster::init(POINT position)
 	_monster.distance = 0;
 	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
-	_monster.attCoolTime = 0.0f;
+	_monster.atkCoolTime = 0.0f;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
@@ -467,7 +467,7 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	_monster.distance = 0;
 	_monster.angle = 0.0f;
 	_monster.playerCheck = false;
-	_monster.attCoolTime = 0.0f;
+	_monster.atkCoolTime = 0.0f;
 
 	_monster.moveRc = RectMakeCenter(position.x, position.y,
 		_monster.image->getFrameWidth(), _monster.image->getFrameHeight());
@@ -488,7 +488,7 @@ void Monster::update(void)
 	move();
 	setDirection();
 	pixelCollision();
-	if (_state == MONSTERSTATE::ATT) attack();  // 미작성
+	if (_state == MONSTERSTATE::ATK) atkack();  // 미작성
 
 	if (_state == MONSTERSTATE::DEF)
 	{
@@ -508,8 +508,8 @@ void Monster::update(void)
 
 	if (_state == MONSTERSTATE::DEAD)
 	{
-		_collision.attWidth = _collision.attHeight = 0;
-		_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
+		_collision.atkWidth = _collision.atkHeight = 0;
+		_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 	}
 
 
@@ -527,7 +527,7 @@ void Monster::move(void)
 	// 오버라이딩
 }
 
-void Monster::attack(void)
+void Monster::atkack(void)
 {
 	// 오버라이딩
 }
@@ -552,10 +552,10 @@ void Monster::draw(void)
 
 	// 타격렉트
 	Rectangle(getMemDC(),
-		_collision.attRc.left - CAM->getScreenRect().left,
-		_collision.attRc.top - CAM->getScreenRect().top,
-		_collision.attRc.right - CAM->getScreenRect().left,
-		_collision.attRc.bottom - CAM->getScreenRect().top
+		_collision.atkRc.left - CAM->getScreenRect().left,
+		_collision.atkRc.top - CAM->getScreenRect().top,
+		_collision.atkRc.right - CAM->getScreenRect().left,
+		_collision.atkRc.bottom - CAM->getScreenRect().top
 	);
 
 	// 이동렉트
@@ -594,7 +594,7 @@ void Monster::animation(void)
 void Monster::setDirection(void)
 {
 
-	if (_monster.playerCheck && _state != MONSTERSTATE::ATT)
+	if (_monster.playerCheck && _state != MONSTERSTATE::ATK)
 	{
 		// 플레이어 각도에 따라 방향 전환
 		if (_monster.angle >= 45 * DTR && _monster.angle < 135 * DTR)
@@ -705,8 +705,8 @@ bool Monster::pixelColorCheck(int getPixelX, int getPixelY)
 
 	// 타격렉트
 	Rectangle(getMemDC(),
-		_collision.attRc.left, _collision.attRc.top,
-		_collision.attRc.right, _collision.attRc.bottom);
+		_collision.atkRc.left, _collision.atkRc.top,
+		_collision.atkRc.right, _collision.atkRc.bottom);
 
 	// 임시 플레이어 드로우렉트
 	Rectangle(getMemDC(),

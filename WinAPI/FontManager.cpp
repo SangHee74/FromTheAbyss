@@ -36,6 +36,9 @@ void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fo
 		SetTextColor(hdc, color);
 		TextOutW(hdc, destX, destY, printString, length);
 
+		SelectObject(hdc, oldFont);
+		DeleteObject(hFont);
+
 
 }
 
@@ -60,11 +63,81 @@ void FontManager::firstLineText(HDC hdc, LPCWSTR printString)
 }
 
 
+void FontManager::firstLineText(HDC hdc, LPCWSTR printString, int destX, int destY)
+{
+	SetBkMode(hdc, TRANSPARENT);
+
+	HFONT hFont = CreateFont
+	(
+		21, 0, 0, 5, FW_MEDIUM,
+		0, 0, 0,
+		HANGEUL_CHARSET, 0, 0, 0,
+		VARIABLE_PITCH | FF_ROMAN, TEXT("돋움")
+	);
+
+	auto oldFont = (HFONT)SelectObject(hdc, hFont);
+	auto oldColor = GetTextColor(hdc);
+
+	SetTextColor(hdc, RGB(0, 0, 0));
+	TextOutW(hdc, destX, destY, printString, wcslen(printString));
+
+	SelectObject(hdc, oldFont);
+	DeleteObject(hFont);
+}
+
+
+void FontManager::firstLineText(HDC hdc, RECT rc, string printString, int destX, int destY)
+{
+	SetBkMode(hdc, TRANSPARENT);
+
+	HFONT hFont = CreateFont
+	(
+		21, 0, 0, 5, FW_MEDIUM,
+		0, 0, 0,
+		HANGEUL_CHARSET, 0, 0, 0,
+		VARIABLE_PITCH | FF_ROMAN, TEXT("돋움")
+	);
+
+	auto oldFont = (HFONT)SelectObject(hdc, hFont);
+	auto oldColor = GetTextColor(hdc);
+
+	SetTextColor(hdc, RGB(0, 0, 0));
+	DrawText(hdc, printString.c_str(), strlen(printString.c_str()), &rc, DT_LEFT || DT_NOCLIP);
+
+	SelectObject(hdc, oldFont);
+	DeleteObject(hFont);
+}
+
+
+
 void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fontSize, int fontWidth,
 	LPCWSTR* printStringArr, int length, COLORREF color)
 {
 	// 터짐방지
 	int arraySize = sizeof(printStringArr) / sizeof(*printStringArr);
 } // <-정의는 cpp에서 수정할 것 
+
+
+void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, string str, COLORREF color)
+{
+	SetBkMode(hdc, TRANSPARENT);
+
+	HFONT hFont = CreateFont
+	(
+		21, 0, 0, 5, fontWidth,
+		0, 0, 0,
+		HANGEUL_CHARSET, 0, 0, 0,
+		VARIABLE_PITCH | FF_ROMAN, TEXT(fontName)
+	);
+
+	auto oldFont = (HFONT)SelectObject(hdc, hFont);
+	auto oldColor = GetTextColor(hdc);
+
+	SetTextColor(hdc, color);
+	DrawText(hdc,str.c_str(), strlen(str.c_str()), &rc, DT_LEFT|| DT_NOCLIP);
+
+	SelectObject(hdc, oldFont);
+	DeleteObject(hFont);
+}
 
 

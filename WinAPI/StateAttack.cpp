@@ -22,14 +22,14 @@ void OneHandWeaponCombo::stateInit(Player* player)
 	player->getIsStateCheck().reset();
 	player->getIsStateCheck().set(2);
 
-	player->getState() =PLAYERSTATE::ATT_ONEHANDCOMBO;
+	player->getState() =PLAYERSTATE::ATK_ONEHANDCOMBO;
 	
-	player->getPlayerCollisionRc().attEffFrameX = 0;
-	player->getPlayerCollisionRc().attEffFrameY = 0;
-	player->getPlayerCollisionRc().attPosX = 0;
-	player->getPlayerCollisionRc().attPosY = 0;
-	player->getPlayerCollisionRc().attWidth = 0;
-	player->getPlayerCollisionRc().attHeight = 0;
+	player->getPlayerCollisionRc().atkEffFrameX = 0;
+	player->getPlayerCollisionRc().atkEffFrameY = 0;
+	player->getPlayerCollisionRc().atkPosX = 0;
+	player->getPlayerCollisionRc().atkPosY = 0;
+	player->getPlayerCollisionRc().atkWidth = 0;
+	player->getPlayerCollisionRc().atkHeight = 0;
 
 	
 	// 콤보 비트셋 초기화 + 1단 공격 실행
@@ -120,7 +120,7 @@ void OneHandWeaponCombo::comboOne(Player* player)
 
 	// 이미지 세팅 
 	player->getPlayer().image = IMG("p_oneHandCombo_01");
-	player->getPlayerCollisionRc().attEffectImg = IMG("eff_sword");
+	player->getPlayerCollisionRc().atkEffectImg = IMG("eff_sword");
 
 	
 	// 프레임 세팅  
@@ -132,16 +132,16 @@ void OneHandWeaponCombo::comboOne(Player* player)
 		//	cout << "player FrameX 1-1 , Left " << endl;
 			_playerMotionTime++; // 프레임이 있는 경우에만 증가
 			player->getPlayer().frameX = 0;
-			player->getPlayerCollisionRc().attEffFrameX = 1;
-			player->getPlayerCollisionRc().attEffFrameY = 1;
+			player->getPlayerCollisionRc().atkEffFrameX = 1;
+			player->getPlayerCollisionRc().atkEffFrameY = 1;
 		}
 		if (!player->getIsStateCheck().test(0)) // R
 		{
 		//	cout << "player FrameX 1-1 , Right " << endl;
 			_playerMotionTime++;
 			player->getPlayer().frameX = 1;						// 캐릭터 프레임
-			player->getPlayerCollisionRc().attEffFrameX = 0;	// 이펙트 프레임 
-			player->getPlayerCollisionRc().attEffFrameY = 0;
+			player->getPlayerCollisionRc().atkEffFrameX = 0;	// 이펙트 프레임 
+			player->getPlayerCollisionRc().atkEffFrameY = 0;
 
 		}
 		// 콤보-프레임 별 무기 프레임 업데이트 + 타격범위 업데이트
@@ -159,7 +159,7 @@ void OneHandWeaponCombo::comboOne(Player* player)
 		//	cout << "player FrameX 1-2 , Left " << endl;
 			_playerMotionTime++;
 			player->getPlayer().frameX += 1;
-			player->getPlayerCollisionRc().attEffFrameX += 1;
+			player->getPlayerCollisionRc().atkEffFrameX += 1;
 			if (player->getPlayer().frameX == player->getPlayer().image->getMaxFrameX())
 			{
 				player->getPlayer().frameX = player->getPlayer().image->getMaxFrameX();
@@ -172,7 +172,7 @@ void OneHandWeaponCombo::comboOne(Player* player)
 		//	cout << "player FrameX 1-2 , Right " << endl;
 			_playerMotionTime++;
 			player->getPlayer().frameX -= 1;
-			player->getPlayerCollisionRc().attEffFrameX -= 1;
+			player->getPlayerCollisionRc().atkEffFrameX -= 1;
 			if (player->getPlayer().frameX < 0)
 			{
 				player->getPlayer().frameX = 0;

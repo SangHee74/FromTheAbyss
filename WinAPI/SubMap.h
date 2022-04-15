@@ -31,6 +31,7 @@ private: // miniMap
 	int _mapRangeX[4];
 	int _mapRangeY[4];
 	int _curIndex;
+	int _curPathFrameX;
 
 	Image* _returnImg;
 	Image* _nextImg;
@@ -59,11 +60,10 @@ public:
 
 	//miniap
 	void minimapCheck();
-	//void minimapRender();
-	int getCurrentIndex() { return _curIndex; }
-	int getRetrunIndex() { return _returnNum; }
-	int getNextIndex() { return _nextNum; }
-
+	int getCurrentIndex()  { return _curIndex; }
+	int getRetrunIndex()   { return _returnNum; }
+	int getNextIndex()	   { return _nextNum; }
+	int getCurPathFrameX() { return _curPathFrameX; }
 
 
 };

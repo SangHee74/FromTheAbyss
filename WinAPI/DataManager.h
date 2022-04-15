@@ -64,6 +64,7 @@ public:
 	tagMapSettingData& getMapData() {	return _mapData;	}
 	void setStageSetting(void) ; // 스테이지 세팅
 
-
+	// 숫자를 이미지로 보여주기
+	void showNumberImgAlignLeft(int number, POINT rightTopPos);
 };
 

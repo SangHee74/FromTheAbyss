@@ -15,7 +15,7 @@ struct  tagItemOption
 {
 	int hp;
 	int mp;
-	int att;
+	int atk;
 	int dff;
 };
 

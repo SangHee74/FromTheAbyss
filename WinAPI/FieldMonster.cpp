@@ -26,7 +26,7 @@ void Dionaea::move()
 	_collision.defRc = CollisionAreaResizing(_moveRc, 40, 40);
 }
 
-void Dionaea::attack()
+void Dionaea::atkack()
 {
 }
 
@@ -57,7 +57,7 @@ void EvilEye::move()
 
 }
 
-void EvilEye::attack()
+void EvilEye::atkack()
 {
 }
 
@@ -86,6 +86,6 @@ void Kobold::move()
 
 }
 
-void Kobold::attack()
+void Kobold::atkack()
 {
 }

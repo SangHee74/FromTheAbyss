@@ -28,6 +28,8 @@ HRESULT SubMenu::init(void)
 	_map->init();
 
 
+	HFONT font2;
+	HFONT oldFont2;
 	return S_OK;
 }
 
@@ -61,6 +63,12 @@ void SubMenu::render(void)
 	if (_subMenuIdx == SUB_MAP) _map->render();
 	if (_subMenuIdx == SUB_STATUS)
 	{	renderStat(); } //
+
+	// 체력바 맵 UI
+	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X - 21, 10);
+	IMGFR("UI_path", getMemDC(), 309, 20, _map->getCurPathFrameX(), 0);
+	//IMGFR("UI_point", getMemDC(), 309, 20, _map->getCurPathFrameX(), 0);
+
 }
 
 
@@ -171,6 +179,56 @@ void SubMenu::renderStat()
 {
 	IMAGEMANAGER->findImage("p_face")->render(getMemDC(), CENTER_X + 35, 75);
 
+	// 이름 출력하기......
+	FONTMANAGER->drawText(getMemDC(),RectMake(CENTER_X+120,85,100,50),"돋움",40,FW_EXTRABOLD,"SH",RGB(0,0,0));
 
+	// Left 
+	// lv, hp, sp, exp, next, lufia 
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().lv,     CENTER_X+ 272, 144);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().curHp,  CENTER_X+ 155, 196);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().curSp,  CENTER_X+ 155, 230);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp,  CENTER_X+ 280, 196);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().maxSp,  CENTER_X+ 280, 230);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().curExp, CENTER_X+ 280, 360);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().maxExp, CENTER_X+ 280, 394);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().lufia,  CENTER_X+ 254, 426);
+
+
+	// Right
+	// point, atk, def,int,men,agi,luk
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iStatusPoint, RSCENTER_X + 250, 108);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iAtk, RSCENTER_X + 120, 150);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iDef, RSCENTER_X + 120, 193);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iInt, RSCENTER_X + 120, 236);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iMen, RSCENTER_X + 120, 279);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iAgi, RSCENTER_X + 120, 322);
+	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iLuk, RSCENTER_X + 120, 365);
+
+
+	if (KEYMANAGER->isOnceKeyDown(VK_F5))
+	{
+		cout << "이미지 조정용 마우스좌표 -----------------------------------" << endl;
+		cout << "X : " << _ptMouse.x  << " ,  Y : "<< _ptMouse.y << endl;
+	}
+
+}
+
+
+void SubMenu::showNumberImgAlignLeft(int number, int destX, int destY)
+{
+	// 기본 화이트
+	Image* numberImg = IMG("Num_W2");
+	//Image* numberImg;
+	//numberImg = new Image;
+	//numberImg->init("Num_W",);
+
+	int tempX = 22;
 	
+	// 최대 9999
+	if (number > 999)		 numberImg->frameRender(getMemDC(), destX - tempX * 3, destY, number / 1000 % 10, 0);
+	if (number > 99)		 numberImg->frameRender(getMemDC(), destX - tempX * 2, destY, number / 100 % 10, 0);
+	if (number > 9)			 numberImg->frameRender(getMemDC(), destX - tempX, destY, number / 10 % 10, 0);
+							 numberImg->frameRender(getMemDC(), destX, destY, number % 10, 0);
+	if (number <= 0)		 numberImg->frameRender(getMemDC(), destX, destY, 0, 0);
+
 }

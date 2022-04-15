@@ -203,7 +203,7 @@ void Stage11::collision()
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
-		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
+		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
 			&& ! (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF))
 		{
@@ -237,7 +237,7 @@ void Stage11::collision()
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 몬스터 공격이펙트 -> 플레이어 피격박스
-		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().attRc,
+		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().atkRc,
 			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc )
 			&& ! (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEF))
 		{

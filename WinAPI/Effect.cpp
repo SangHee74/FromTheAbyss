@@ -37,7 +37,7 @@ void PlayerEffect::createEff(RECT rc, EFFECT_TYPE type)
 	effect.img = new Image;
 	switch (type)
 	{
-	case EFFECT_TYPE::P_ATTACK_COLLISION:
+	case EFFECT_TYPE::P_ATKACK_COLLISION:
 		effect.img->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f, 525, 385, 5, 4, MGT);
 			
 		break;
@@ -153,7 +153,7 @@ void MonsterEffect::createEff(RECT rc, EFFECT_TYPE type)
 
 	switch (type)
 	{
-	case EFFECT_TYPE::M_ATTACK_COLLISION:
+	case EFFECT_TYPE::M_ATKACK_COLLISION:
 		effect.img->init("Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
 		break;
 	case EFFECT_TYPE::M_DEFFENSE_DIE:

@@ -75,23 +75,23 @@ HRESULT ImageClass::init(void)
 #pragma endregion
 
 #pragma region enemy
-	IMAGEMANAGER->addFrameImage("Dionaea_attack", "Resources/Images/Monster/Dionaea_attack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Dionaea_atkack", "Resources/Images/Monster/Dionaea_atkack.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_def", "Resources/Images/Monster/Dionaea_def.bmp", 48 * MAGNI, 120 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_idle", "Resources/Images/Monster/Dionaea_idle.bmp", 48 * MAGNI, 240 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Dionaea_move", "Resources/Images/Monster/Dionaea_move.bmp", 96 * MAGNI, 240 * MAGNI, 2, 4, MGT);
 	
-	IMAGEMANAGER->addFrameImage("evilEye_attack", "Resources/Images/Monster/evilEye_attack.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("evilEye_atkack", "Resources/Images/Monster/evilEye_atkack.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_def", "Resources/Images/Monster/evilEye_def.bmp", 42 * MAGNI, 80 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_idle", "Resources/Images/Monster/evilEye_idle.bmp", 42 * MAGNI, 160 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("evilEye_move", "Resources/Images/Monster/evilEye_move.bmp", 84 * MAGNI, 160 * MAGNI, 2, 4, MGT);
 	
-	IMAGEMANAGER->addFrameImage("Kobold_attack", "Resources/Images/Monster/Kobold_attack.bmp", 84 * MAGNI, 168 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("Kobold_atkack", "Resources/Images/Monster/Kobold_atkack.bmp", 84 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_def", "Resources/Images/Monster/Kobold_def.bmp", 40 * MAGNI, 84 * MAGNI, 1, 2, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_idle", "Resources/Images/Monster/Kobold_idle.bmp", 40 * MAGNI, 168 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_move", "Resources/Images/Monster/Kobold_move.bmp", 80 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 
-	IMAGEMANAGER->addFrameImage("mino_attack", "Resources/Images/Monster/Boss/mino_attack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addFrameImage("mino_atkack", "Resources/Images/Monster/Boss/mino_atkack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 150 * MAGNI, 88 * MAGNI, 1, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
@@ -163,7 +163,8 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Num_G", "Resources/Images/Object/Num_G.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_B", "Resources/Images/Object/Num_B.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
 	IMAGEMANAGER->addFrameImage("Num_W", "Resources/Images/Object/Num_W.bmp",		  0, 0, 90 , 10 , 10, 1, MGT);
-	IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI2.bmp",      0, 0, 297, 30, 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
+	IMAGEMANAGER->addFrameImage("Num_W2", "Resources/Images/Object/Num_W2.bmp",		  0, 0, 243 , 27 , 10, 1, MGT);
+	IMAGEMANAGER->addFrameImage("Num_UI", "Resources/Images/Object/Num_UI2.bmp",      0, 0, 297 , 30 , 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
 	IMAGEMANAGER->addFrameImage("Num_UI2", "Resources/Images/Object/Num_UI.bmp",	  0, 0, 198 , 20 , 11, 1, MGT); //99 * MAGNI, 10 * MAGNI
 
 	IMAGEMANAGER->addImage("abyss1", "Resources/Images/Object/abyss1.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
@@ -173,7 +174,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("stage2", "Resources/Images/Object/stage2.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("stage3", "Resources/Images/Object/stage3.bmp", 0, 0, 144 * MAGNI, 48 * MAGNI, MGT);
 
-	IMAGEMANAGER->addFrameImage("skill_att_Icon", "Resources/Images/Object/skill_att_Icon.bmp", 0, 0, 297 * MAGNI, 99 * MAGNI, 9, 3, MGT);
+	IMAGEMANAGER->addFrameImage("skill_atk_Icon", "Resources/Images/Object/skill_atk_Icon.bmp", 0, 0, 297 * MAGNI, 99 * MAGNI, 9, 3, MGT);
 	IMAGEMANAGER->addFrameImage("skill_utill_Icon", "Resources/Images/Object/skill_utill_Icon.bmp", 0, 0, 256 * MAGNI, 32 * MAGNI, 8, 1, MGT);
 	IMAGEMANAGER->addFrameImage("store_icon", "Resources/Images/Object/store_icon.bmp", 0, 0, 240 * MAGNI, 20 * MAGNI, 15, 2, MGT);
 

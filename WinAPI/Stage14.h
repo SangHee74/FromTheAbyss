@@ -34,10 +34,8 @@ public:
 	void enterInfoCheck();
 	void portalOn();
 	void collision();
-	//void monsterMovetoPlayer();
 	void getPlayerAngleAndDistance(int i);
 	void renderCheck();
-	int playerRandomDamage();
 
 	//SubMenu* getSubMenu() { return _subScreen; }
 

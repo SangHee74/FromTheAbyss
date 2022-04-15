@@ -6,15 +6,15 @@ class Minotaur : public Monster
 private:
 	int _endX;
 	int _endY;
-	float _attTimeCount;
-	bool _attStart;
+	float _atkTimeCount;
+	bool _atkStart;
 
 public:
 	Minotaur();
 	~Minotaur() {}
 
 	void move();
-	void attack();
+	void atkack();
 	void drawEffect();
 	void setCollisionAttRange();
 	void setCollisionDefRange();

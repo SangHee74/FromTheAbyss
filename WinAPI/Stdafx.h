@@ -86,7 +86,7 @@ using namespace MY_UTIL;
 //============================
 // # 매크로 # (윈도우창 초기화)
 //============================
-#define WINNAME		 (LPTSTR)(TEXT("WindowsAPI"))
+#define WINNAME		 (LPTSTR)(TEXT("From The Abyss"))
 
 #define MGT true,RGB(255,0,255)
 //IMAGEMANAGER

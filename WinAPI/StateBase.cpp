@@ -30,11 +30,11 @@ void IdleState::stateInit(Player* player)
 	player->weaponinStageSetting();
 
 	// 공격범위 초기화
-	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
-	player->getPlayerCollisionRc().attEffFrameX = 0;
-	player->getPlayerCollisionRc().attEffFrameY = 0;
-	player->getPlayerCollisionRc().attWidth = 0;
-	player->getPlayerCollisionRc().attHeight = 0;
+	player->getPlayerCollisionRc().atkEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().atkEffFrameX = 0;
+	player->getPlayerCollisionRc().atkEffFrameY = 0;
+	player->getPlayerCollisionRc().atkWidth = 0;
+	player->getPlayerCollisionRc().atkHeight = 0;
 
 }
 
@@ -494,11 +494,11 @@ void DefState::stateInit(Player* player)
 	player->getState() =PLAYERSTATE::DEF;
 
 	// 공격범위 초기화
-	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
-	player->getPlayerCollisionRc().attEffFrameX = 0;
-	player->getPlayerCollisionRc().attEffFrameY = 0;
+	player->getPlayerCollisionRc().atkEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().atkEffFrameX = 0;
+	player->getPlayerCollisionRc().atkEffFrameY = 0;
 
-//	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
+//	player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().atkEffFrameX);
 
 
 }
@@ -561,11 +561,11 @@ DeadState* DeadState::getInstance()
 void DeadState::stateInit(Player * player)
 {
 	// 공격범위 초기화
-	player->getPlayerCollisionRc().attEffectImg = IMG("weapon_none");
-	player->getPlayerCollisionRc().attEffFrameX = 0;
-	player->getPlayerCollisionRc().attEffFrameY = 0;
+	player->getPlayerCollisionRc().atkEffectImg = IMG("weapon_none");
+	player->getPlayerCollisionRc().atkEffFrameX = 0;
+	player->getPlayerCollisionRc().atkEffFrameY = 0;
 
-	//player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().attEffFrameX);
+	//player->playerCollisionAttDataSetting(player->getPlayerCollisionRc().atkEffFrameX);
 
 }
 

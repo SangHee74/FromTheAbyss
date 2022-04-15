@@ -29,8 +29,8 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	//_mapData.enterAbyssInfo.stage = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+	_mapData.enterAbyssInfo.stage = 1; // 임시
+	//_mapData.enterAbyssInfo.stage = 4; // 보스테스트
 
 
 	_mapData.map = nullptr;
@@ -115,4 +115,19 @@ void DataManager::setStageSetting(void)
 
 }
 
+
+void DataManager::showNumberImgAlignLeft(int number, POINT rightTopPos)
+{
+	// 기본 화이트
+	Image* numberImg = IMG("Num_W");
+	int tempX = 22;
+
+	// 최대 9999
+	if (number > 999)		 numberImg->frameRender(numberImg->getMemDC(), rightTopPos.x - tempX * 3, rightTopPos.y, number / 1000 % 10, 0);
+	if (number > 99)		 numberImg->frameRender(numberImg->getMemDC(), rightTopPos.x - tempX * 2, rightTopPos.y, number / 100 % 10, 0);
+	if (number > 9)			 numberImg->frameRender(numberImg->getMemDC(), rightTopPos.x - tempX, rightTopPos.y, number / 10 % 10, 0);
+							 numberImg->frameRender(numberImg->getMemDC(), rightTopPos.x, rightTopPos.y, number % 10, 0);
+	if (number <= 0)		 numberImg->frameRender(numberImg->getMemDC(), rightTopPos.x, rightTopPos.y, 0, 0);
+
+}
 

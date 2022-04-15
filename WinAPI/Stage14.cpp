@@ -152,9 +152,7 @@ void Stage14::render(void)
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
 		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
-	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
-	IMGFR("UI_path", getMemDC(), 309, 20, _subScreen->getSubMap()->getCurrentIndex(), 0);
-	
+		
 
 	_subScreen->render();
 
@@ -165,6 +163,7 @@ void Stage14::render(void)
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
 	);
 
+	// 맵 진입 시 초반 프레임 알파렌더이미지
 	IMGAR("map_abyss", getMemDC(), LSCENTER_X, CENTER_Y - 10, _enterInfo.alpha);
 	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
 	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
@@ -233,13 +232,12 @@ void Stage14::collision()
 
 #pragma endregion
 
-
 #pragma region 플레이어의 공격
 
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
-		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().attRc,
+		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
 			&& _enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF )
 		{
@@ -248,11 +246,11 @@ void Stage14::collision()
 			
 			// 몬스터 체력 세팅 함수
 			int temp = 0;
-			temp = playerRandomDamage();
+			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
 			_enemyM->getMonsters()[i]->setHp(temp);
 
 			// 충돌위치 이펙트
-			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATTACK_COLLISION);
+			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATKACK_COLLISION);
 
 			cout << "플레이어 데미지 : " << temp << endl;
 			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
@@ -279,9 +277,9 @@ void Stage14::collision()
 #pragma region 몬스터의 공격
 
 		// 몬스터 공격이펙트 -> 플레이어 피격박스
-		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATT)
+		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATK)
 		{
-			if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().attRc,
+			if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().atkRc,
 				&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc)
 				&& DATAMANAGER->getPlayer()->getState() != PLAYERSTATE::DEF)
 			{
@@ -296,7 +294,7 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
-				_enemyEff->createEff(tempRc,EFFECT_TYPE::M_ATTACK_COLLISION);
+				_enemyEff->createEff(tempRc,EFFECT_TYPE::M_ATKACK_COLLISION);
 
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 				cout << "몬스터 데미지 : " << temp << endl;
@@ -365,14 +363,4 @@ void Stage14::getPlayerAngleAndDistance(int i)
 }
 
 
-int Stage14::playerRandomDamage()
-{
-	int rndPlayerDmg;
-
-	rndPlayerDmg = RND->getFromIntTo(
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt*0.85,
-		DATAMANAGER->getPlayer()->getPlayerStatus().iAtt);
-
-	return rndPlayerDmg;
-}
 

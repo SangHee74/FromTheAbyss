@@ -40,10 +40,13 @@ public:
 	void renderTap();
 
 	void renderInven();
-
 	void renderSkill();
 	void renderStat();
 
+	void showNumberImgAlignLeft(int number, int destX, int destY);
+
+
 	SubMap* getSubMap() { return _map; }
+
 };
 
