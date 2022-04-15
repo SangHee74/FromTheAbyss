@@ -11,7 +11,7 @@ enum class MONSTERSTATE
 	IDLE, MOVE, DEF, DEAD, ATT
 };
 
-struct tagMonsterData
+ struct tagMonsterData
 {
 	RECT	moveRc;
 	RECT	recognitionRc;		// 플레이어를 향해 다가갈 인식 범위
@@ -57,6 +57,7 @@ protected:
 	float	_worldTimeCount;
 	float	_attCoolTime;		// 몬스터 공격 상태로 변환 주기
 	bool	_playerCheck;		// 플레이어를 인식했는지 여부
+	bool	_attStart;			// 플레이어와 일정거리 이하일때 공격
 	Image*  _image;				// 몬스터 이미지
 
 
@@ -74,11 +75,11 @@ public:
 
 	virtual void move(void);
 	virtual void attack(void);
-	virtual void rcUpdate(void);
 	virtual void drawEffect(void);
 	void draw(void);
 	void animation(void);
 	void setDirection(void);
+	void monsterMovetoPlayer(void);
 	void pixelCollision(void);
 	bool pixelColorCheck(int getPixelX, int getPixelY);
 

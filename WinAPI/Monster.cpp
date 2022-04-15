@@ -7,8 +7,8 @@ Monster::Monster(): _maxHp(0), _curHp(0), _curAtt(0),
 					_recognitionRc(RectMake(0, 0, 0, 0)),
 					_movePosX(0), _movePosY(0),
 					_frameX(0), _frameY(0),
-					_speed(0), _distance(0), _angle(0),
-					_rndTimeCount(0), _worldTimeCount(0),
+					_speed(0.0f), _distance(0.0f), _angle(0.0f),
+					_rndTimeCount(0.0f), _worldTimeCount(0.0f),
 					_playerCheck(false) , _image(nullptr)
 {
 }
@@ -23,14 +23,6 @@ HRESULT Monster::init(POINT position)
 	// 임시변수 
 	timeCount = 0.0f;
 
-	// 스테이터스 관련
-	_maxHp = 0;
-	_curHp = 0;
-	_curAtt = 0;
-	_dropExp = 0;
-	_dropLufia = 0;
-	_dropItemIndex = 0;
-
 	// 이동 및 업데이트 관련 
 	_movePosX = position.x;
 	_movePosY = position.y;
@@ -42,9 +34,9 @@ HRESULT Monster::init(POINT position)
 
 	// 렉트 초기화
 	// 이동렉트(프레임렌더), 인식렉트, 타격범위렉트, 피격범위렉트 
-	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
-	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
-	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
+//	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
+//	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
+//	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
 	//_collision.defRc; // 몬스터는 이동렉트와 피격범위 함께 사용.
 
 	// 프레임 업데이트, 공격상태 체크 등 
@@ -67,14 +59,6 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	// 이미지 지정
 	_image= IMAGEMANAGER->findImage(imageName);
 
-	// 스테이터스 관련
-	_maxHp = 0;
-	_curHp = 0;
-	_curAtt = 0;
-	_dropExp = 0;
-	_dropLufia = 0;
-	_dropItemIndex = 0;
-
 	// 이동 및 업데이트 관련 
 	_movePosX = position.x;
 	_movePosY = position.y;
@@ -86,9 +70,9 @@ HRESULT Monster::init(const char* imageName, POINT position)
 
 	// 렉트 초기화
 	// 이동렉트(프레임렌더), 인식렉트, 타격범위렉트, 피격범위렉트 
-	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
-	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
-	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
+//	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
+//	_recognitionRc = RectMakeCenter(_movePosX, _movePosY, 100, 100);
+//	_collision.attRc = RectMakeCenter(_movePosX, _movePosY, 20, 20);
 	//_collision.defRc; // 몬스터는 이동렉트와 피격범위 함께 사용.
 
 	// 프레임 업데이트, 공격상태 체크 등 
@@ -112,12 +96,17 @@ void Monster::update(void)
 	// 이동
 	move();
 
+	// 방향전환 + 렉트 초기화
+	setDirection();
+	_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
+	
+	// 플레이어 발견시 따라가기
+	if (_playerCheck) monsterMovetoPlayer();
+	
 	// 픽셀충돌
 	pixelCollision();
 
-	// 방향전환 + 렉트 초기화
-	setDirection();
-	rcUpdate();
+
 
 	// 공격
 	if (_state == MONSTERSTATE::ATT) attack();
@@ -150,6 +139,8 @@ void Monster::update(void)
 		_collision.attWidth = _collision.attHeight = 0;
 		_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	}
+
+
 }
 
 void Monster::render(void)
@@ -162,77 +153,95 @@ void Monster::render(void)
 
 void Monster::draw(void)
 {
-	if (KEYMANAGER->isToggleKey(VK_F3))
+
+	if (KEYMANAGER->isOnceKeyDown(VK_F2))
 	{
-			//인식렉트
-		//	Rectangle(getMemDC(),
-		//	_monster.recognitionRc.left - CAM->getScreenRect().left,
-		//	_monster.recognitionRc.top - CAM->getScreenRect().top,
-		//	_monster.recognitionRc.right - CAM->getScreenRect().left,
-		//	_monster.recognitionRc.bottom - CAM->getScreenRect().top
-		//	);
+		cout << "monster's Angle : " <<		_angle  << endl;
+		cout << "monster's Distance : " <<  _distance << endl;
 
-			// 이동렉트
-		//	Rectangle(getMemDC(),
-		//	_monster.moveRc.left - CAM->getScreenRect().left,
-		//	_monster.moveRc.top - CAM->getScreenRect().top,
-		//	_monster.image->getFrameWidth() + _monster.moveRc.left - CAM->getScreenRect().left,
-		//	_monster.image->getFrameHeight() + _monster.moveRc.top - CAM->getScreenRect().top
-		//	);
+	}
 
-			// 피격렉트
-			Rectangle(getMemDC(),
+
+
+	//if (KEYMANAGER->isToggleKey(VK_F3))
+	{
+		//인식렉트
+	//	Rectangle(getMemDC(),
+	//	_recognitionRc.left - CAM->getScreenRect().left,
+	//	_recognitionRc.top - CAM->getScreenRect().top,
+	//	_recognitionRc.right - CAM->getScreenRect().left,
+	//	_recognitionRc.bottom - CAM->getScreenRect().top
+	//	);
+
+		// 이동렉트
+		Rectangle(getMemDC(),
+			_moveRc.left - CAM->getScreenRect().left,
+			_moveRc.top - CAM->getScreenRect().top,
+			_image->getFrameWidth() + _moveRc.left - CAM->getScreenRect().left,
+			_image->getFrameHeight() + _moveRc.top - CAM->getScreenRect().top
+		);
+
+		// 피격렉트
+		Rectangle(getMemDC(),
 			_collision.defRc.left - CAM->getScreenRect().left,
 			_collision.defRc.top - CAM->getScreenRect().top,
 			_collision.defRc.right - CAM->getScreenRect().left,
 			_collision.defRc.bottom - CAM->getScreenRect().top
-			);
-	
-			// 타격렉트
-			Rectangle(getMemDC(),
+		);
+
+		// 타격렉트
+		Rectangle(getMemDC(),
 			_collision.attRc.left - CAM->getScreenRect().left,
 			_collision.attRc.top - CAM->getScreenRect().top,
 			_collision.attRc.right - CAM->getScreenRect().left,
 			_collision.attRc.bottom - CAM->getScreenRect().top
-			);
+		);
 
-			RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
-			tempPos = RectMakeCenter(_movePosX, _movePosY, 4, 4);
-			Rectangle(getMemDC(), tempPos.left -CAM->getScreenRect().left, tempPos.top -CAM->getScreenRect().top,
-				tempPos.left -CAM->getScreenRect().left + 4, tempPos.top -CAM->getScreenRect().top + 4);
+		// 임시 플레이어 드로우렉트
+		//Rectangle(getMemDC(),
+		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.left - CAM->getScreenRect().left,
+		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.top - CAM->getScreenRect().top,
+		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.right - CAM->getScreenRect().left,
+		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom - CAM->getScreenRect().top
+		//);
 
-			// 픽셀충돌 아래 - 를 좌우로 뿌리기 
-			tempPos2 = RectMakeCenter(_movePosX, _pixel.probeUp, 4, 4);
-			Rectangle(getMemDC(), tempPos2.left -CAM->getScreenRect().left, tempPos2.top -CAM->getScreenRect().top,
-				tempPos2.left -CAM->getScreenRect().left + 4, tempPos2.top -CAM->getScreenRect().top + 4);
+		RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
+		tempPos = RectMakeCenter(_movePosX, _movePosY, 4, 4);
+		Rectangle(getMemDC(), tempPos.left - CAM->getScreenRect().left, tempPos.top - CAM->getScreenRect().top,
+			tempPos.left - CAM->getScreenRect().left + 4, tempPos.top - CAM->getScreenRect().top + 4);
 
-			tempPos3 = RectMakeCenter(_movePosX, _pixel.probeDown, 4, 4);
-			Rectangle(getMemDC(), tempPos3.left -CAM->getScreenRect().left, tempPos3.top -CAM->getScreenRect().top,
-				tempPos3.left -CAM->getScreenRect().left + 4, tempPos3.top -CAM->getScreenRect().top + 4);
-			// 픽셀충돌 좌
-			tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
-			Rectangle(getMemDC(), tempPos4.left -CAM->getScreenRect().left, tempPos4.top -CAM->getScreenRect().top,
-				tempPos4.left -CAM->getScreenRect().left + 4, tempPos4.top -CAM->getScreenRect().top + 4);
-			// 픽셀충돌 우
-			tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
-			Rectangle(getMemDC(), tempPos5.left -CAM->getScreenRect().left, tempPos5.top -CAM->getScreenRect().top,
-				tempPos5.left -CAM->getScreenRect().left + 4, tempPos5.top -CAM->getScreenRect().top + 4);
+		// 픽셀충돌 아래 - 를 좌우로 뿌리기 
+		tempPos2 = RectMakeCenter(_movePosX, _pixel.probeUp, 4, 4);
+		Rectangle(getMemDC(), tempPos2.left - CAM->getScreenRect().left, tempPos2.top - CAM->getScreenRect().top,
+			tempPos2.left - CAM->getScreenRect().left + 4, tempPos2.top - CAM->getScreenRect().top + 4);
+
+		tempPos3 = RectMakeCenter(_movePosX, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos3.left - CAM->getScreenRect().left, tempPos3.top - CAM->getScreenRect().top,
+			tempPos3.left - CAM->getScreenRect().left + 4, tempPos3.top - CAM->getScreenRect().top + 4);
+		// 픽셀충돌 좌
+		tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos4.left - CAM->getScreenRect().left, tempPos4.top - CAM->getScreenRect().top,
+			tempPos4.left - CAM->getScreenRect().left + 4, tempPos4.top - CAM->getScreenRect().top + 4);
+		// 픽셀충돌 우
+		tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
+		Rectangle(getMemDC(), tempPos5.left - CAM->getScreenRect().left, tempPos5.top - CAM->getScreenRect().top,
+			tempPos5.left - CAM->getScreenRect().left + 4, tempPos5.top - CAM->getScreenRect().top + 4);
 	}
+
 
 	_image->frameRender(getMemDC(),
 		_moveRc.left - CAM->getScreenRect().left,
 		_moveRc.top  - CAM->getScreenRect().top,
 		_frameX, _frameY);
-
+	
 	//rcMake(getMemDC(), _moveRc);
 }
 
 void Monster::animation(void)
 {
-	cout << "if 조건 랜덤+월드 : " <<  _rndTimeCount + _worldTimeCount << endl;
 	if (_rndTimeCount + _worldTimeCount <= GetTickCount())
 	{
-		cout << "월드타임 카운트(겟틱) : " << _worldTimeCount << endl;
+
 		_worldTimeCount = GetTickCount();
 		_frameX++;
 		if (_image->getMaxFrameX() < _frameX)
@@ -274,14 +283,60 @@ void Monster::setDirection(void)
 	}
 }
 
+void Monster::monsterMovetoPlayer(void)
+{
+
+	switch (_direction)
+	{
+	case MONSTERDIRECTION::UP:
+		if (_movePosY > DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)//DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom +30 )
+		{
+			_movePosY -= _speed;
+			cout << DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30 << endl;
+		}
+
+			   		 	  
+		if (_movePosY >= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+
+		break;
+	case MONSTERDIRECTION::DOWN:
+		if (_movePosY < DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
+		{
+			_movePosY += _speed;
+		}
+		if (_movePosY <= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
+
+		break;
+	case MONSTERDIRECTION::LEFT:
+		if (_movePosX > DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
+		{
+			_movePosX -= _speed;
+		}
+		if (_movePosX >= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
+		break;
+	case MONSTERDIRECTION::RIGHT:
+		if (_movePosX < DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
+		{
+			_movePosX += _speed;
+		}
+		if (_movePosX <= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
+
+		break;
+
+	}
+
+
+
+}
 
 void Monster::pixelCollision()
 {
 	//탐지
-	_pixel.probeUp    = (_movePosY + _image->getFrameHeight() / 2) - 16;
-	_pixel.probeDown  = (_movePosY + _image->getFrameHeight() / 2) - 8;
-	_pixel.probeLeft  =  _movePosX - 20;
-	_pixel.probeRight =  _movePosX + 20;
+	_pixel.probeUp	  =  _movePosY - _pixel.space.TB;
+	_pixel.probeDown  =  _movePosY + _pixel.space.TB;
+	_pixel.probeLeft  =  _movePosX - _pixel.space.LR;
+	_pixel.probeRight =  _movePosX + _pixel.space.LR;
+
 
 	switch (_direction)
 	{
@@ -320,6 +375,7 @@ bool Monster::pixelColorCheck(int getPixelX, int getPixelY)
 
 }
 
+
 // 오버라이딩 함수
 void Monster::move(void){
 }
@@ -327,11 +383,10 @@ void Monster::move(void){
 void Monster::attack(void){
 }
 
-void Monster::rcUpdate(void){ // 방향별 타격, 피격 범위 재조정
-}	
-
 void Monster::drawEffect(void){
 }
+
+
 
 
 // 몬스터 수정 전 
@@ -596,5 +651,64 @@ bool Monster::pixelColorCheck(int getPixelX, int getPixelY)
 	}
 	else return false;
 
+}
+
+
+
+
+
+//if (KEYMANAGER->isToggleKey(VK_F3))
+{
+	//인식렉트
+//	Rectangle(getMemDC(),
+//	_recognitionRc.left - CAM->getScreenRect().left,
+//	_recognitionRc.top - CAM->getScreenRect().top,
+//	_recognitionRc.right - CAM->getScreenRect().left,
+//	_recognitionRc.bottom - CAM->getScreenRect().top
+//	);
+
+	// 이동렉트
+	Rectangle(getMemDC(),
+		_moveRc.left, _moveRc.top,
+		_image->getFrameWidth() + _moveRc.left, _image->getFrameHeight() + _moveRc.top);
+
+	// 피격렉트
+	Rectangle(getMemDC(),
+		_collision.defRc.left, _collision.defRc.top,
+		_collision.defRc.right, _collision.defRc.bottom);
+
+	// 타격렉트
+	Rectangle(getMemDC(),
+		_collision.attRc.left, _collision.attRc.top,
+		_collision.attRc.right, _collision.attRc.bottom);
+
+	// 임시 플레이어 드로우렉트
+	Rectangle(getMemDC(),
+		DATAMANAGER->getPlayer()->getPlayer().drawRc.left,
+		DATAMANAGER->getPlayer()->getPlayer().drawRc.top,
+		DATAMANAGER->getPlayer()->getPlayer().drawRc.right,
+		DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom);
+
+	RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
+	tempPos = RectMakeCenter(_movePosX, _movePosY, 4, 4);
+	Rectangle(getMemDC(), tempPos.left, tempPos.top,
+		tempPos.left + 4, tempPos.top + 4);
+
+	// 픽셀충돌 아래 - 를 좌우로 뿌리기 
+	tempPos2 = RectMakeCenter(_movePosX, _pixel.probeUp, 4, 4);
+	Rectangle(getMemDC(), tempPos2.left, tempPos2.top,
+		tempPos2.left + 4, tempPos2.top + 4);
+
+	tempPos3 = RectMakeCenter(_movePosX, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos3.left, tempPos3.top,
+		tempPos3.left + 4, tempPos3.top + 4);
+	// 픽셀충돌 좌
+	tempPos4 = RectMakeCenter(_pixel.probeLeft, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos4.left, tempPos4.top,
+		tempPos4.left + 4, tempPos4.top + 4);
+	// 픽셀충돌 우
+	tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
+	Rectangle(getMemDC(), tempPos5.left, tempPos5.top,
+		tempPos5.left + 4, tempPos5.top + 4);
 }
 #endif

@@ -24,17 +24,24 @@ Minotaur::Minotaur()
 	_collision.attWidth = 300;
 	_collision.attHeight = 80;
 
+	_pixel.space.LR = 105;
+	_pixel.space.TB = 70;
+
 	_attTimeCount = 0;
 
+	// 초기 렉트 초기화 : 인식렉트, 이동렉트(프레임렌더), 타격범위렉트, 피격범위렉트 
+
 	// 보스몬스터의 인식범위는 맵의 대부분.
-	// 초기 피격렉트 초기화
+	_recognitionRc	 = RectMakeCenter
+	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1900, 1350);
+	
 	_collision.defWidth = 185; 	_collision.defHeight = 168;
+
+	_moveRc			 = RectMakeCenter(_movePosX, _movePosY, 30, 30);
 	_collision.defRc = RectMakeCenter(_movePosX, _movePosY - 30, _collision.defWidth, _collision.defHeight);
 	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	
-	_recognitionRc = RectMakeCenter
-	(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1900, 1350);
-	//(DATAMANAGER->getMapData().map->getWidth()*0.5, DATAMANAGER->getMapData().map->getHeight()*0.5, 1690, 1060);
+
 
 	_attStart = false;
 }
@@ -46,7 +53,7 @@ void Minotaur::move()
 	{
 		//cout << "인식중! 보스가 따라감" << endl;
 		//cout << "플레이어 좌표 X : " << DATAMANAGER->getPlayer()->getPlayer().drawPosX << " , Y : " << DATAMANAGER->getPlayer()->getPlayer().drawPosY<< endl;
-		monsterMovetoPlayer();
+		//monsterMovetoPlayer();
 
 
 		
@@ -111,7 +118,7 @@ void Minotaur::attack()
 
 void Minotaur::speedUp()
 {
-	_speed = 4;
+	_speed = _speed * 1.5;
 }
 
 void Minotaur::setCollisionRange()
@@ -158,59 +165,11 @@ void Minotaur::setCollisionRange()
 	}
 
 	if(_state != MONSTERSTATE::ATT) 	_collision.attWidth = _collision.attHeight = 0;
-	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 	_collision.defRc = RectMakeCenter(_movePosX, _movePosY - 30, _collision.defWidth, _collision.defHeight);
+	_collision.attRc = RectMakeCenter(_collision.attPosX, _collision.attPosY, _collision.attWidth, _collision.attHeight);
 
 }
 
-void Minotaur::monsterMovetoPlayer()
-{
-	switch (_direction)
-	{
-	case MONSTERDIRECTION::UP:
-		if (_movePosY > DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
-		{
-			_movePosY -= _speed;
-			cout << DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30 << endl;
-		}
-
-
-
-
-
-
-		if (_movePosY >= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
-			
-			break;
-	case MONSTERDIRECTION::DOWN:
-		if (_movePosY < DATAMANAGER->getPlayer()->getPlayer().drawPosY + 30)
-		{
-			_movePosY += _speed;
-		}
-		if (_movePosY <= DATAMANAGER->getPlayer()->getPlayer().drawPosY + 50) _attStart = true;
-
-		break;
-	case MONSTERDIRECTION::LEFT:
-		if ( _movePosX > DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
-		{
-			_movePosX -= _speed;
-		}
-		if (_movePosX >= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
-		break;
-	case MONSTERDIRECTION::RIGHT:
-		if (_movePosX < DATAMANAGER->getPlayer()->getPlayer().drawPosX + 30)
-		{
-			_movePosX += _speed;
-		}
-		if (_movePosX <= DATAMANAGER->getPlayer()->getPlayer().drawPosX + 60) _attStart = true;
-
-		break;
-
-	}
-
-	
-
-}
 
 void Minotaur::drawEffect()
 {
@@ -240,6 +199,8 @@ void Minotaur::drawEffect()
 	}
 			
 }
+
+
 
 
 // 수정전

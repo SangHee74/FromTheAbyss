@@ -15,8 +15,8 @@ public:
 
 	void move();
 	void attack();
-	void speedUp();
-	void setCollisionRange();
-	void monsterMovetoPlayer();
 	void drawEffect();
+	void setCollisionRange();
+
+	void speedUp();
 };

@@ -11,10 +11,10 @@ Dionaea::Dionaea()
 
 	_state = MONSTERSTATE::IDLE;
 	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
-	_monster.speed = 2;
-	_monster.frameX = 0;
-	_monster.frameY = (int)_direction;
-	_monster.image = IMG("Dionaea_move");
+	_speed = 2;
+	_frameX = 0;
+	_frameY = (int)_direction;
+	_image = IMG("Dionaea_move");
 }
 
 void Dionaea::move()
@@ -23,7 +23,7 @@ void Dionaea::move()
 
 
 
-	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+	_collision.defRc = CollisionAreaResizing(_moveRc, 40, 40);
 }
 
 void Dionaea::attack()
@@ -41,10 +41,10 @@ EvilEye::EvilEye()
 
 	_state = MONSTERSTATE::IDLE;
 	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
-	_monster.speed = 3;
-	_monster.frameX = 0;
-	_monster.frameY = (int)_direction;
-	_monster.image = IMG("evilEye_idle");
+	_speed = 3;
+	_frameX = 0;
+	_frameY = (int)_direction;
+	_image = IMG("evilEye_idle");
 }
 
 void EvilEye::move()
@@ -53,7 +53,7 @@ void EvilEye::move()
 	//_movePosX += RND->getFloat(5.0f);
 	//if (_movePosX > CENTER_X + 50) _movePosX = 0;
 	//_moveRc = RectMakeCenter(_movePosX, _movePosY, _image->getFrameWidth(), _image->getFrameHeight());
-	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+	_collision.defRc = CollisionAreaResizing(_moveRc, 40, 40);
 
 }
 
@@ -72,17 +72,17 @@ Kobold::Kobold()
 
 	_state = MONSTERSTATE::IDLE;
 	_direction = static_cast<MONSTERDIRECTION> (RND->getInt(3));
-	_monster.speed = 3;
-	_monster.frameX = 0;
-	_monster.frameY = (int)_direction;
-	_monster.image = IMG("Kobold_idle");
+	_speed = 3;
+	_frameX = 0;
+	_frameY = (int)_direction;
+	_image = IMG("Kobold_idle");
 
 }
 
 void Kobold::move()
 {
 
-	_collision.defRc = CollisionAreaResizing(_monster.moveRc, 40, 40);
+	_collision.defRc = CollisionAreaResizing(_moveRc, 40, 40);
 
 }
 

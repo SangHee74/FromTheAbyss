@@ -350,6 +350,16 @@ void Stage14::getPlayerAngleAndDistance(int i)
 			_enemyM->getMonsters()[i]->getMovePosY(),
 			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
 			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
+
+	// distance view
+	LineMake(getMemDC(), 
+		_enemyM->getMonsters()[i]->getMovePosX(),
+		_enemyM->getMonsters()[i]->getMovePosY(),
+		DATAMANAGER->getPlayer()->getPlayer().drawPosX,
+		DATAMANAGER->getPlayer()->getPlayer().drawPosY
+		);
+
+	
 }
 
 

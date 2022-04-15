@@ -112,6 +112,14 @@ struct tagPixel
 	int probeDown;
 	int probeLeft;
 	int probeRight;
+
+	// 몬스터용 조정값
+	struct tagDirectionSpace
+	{
+		int LR;
+		int TB;
+	}; 
+	tagDirectionSpace space;
 };
 
 // 렉트충돌
