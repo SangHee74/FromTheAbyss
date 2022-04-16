@@ -23,6 +23,7 @@ inline RECT RectMake(int x, int y, int width, int height)
 
 inline RECT RectMakeCenter(int x, int y, int width, int height)
 {
+
 	RECT rc = { x - width / 2, y - height / 2, x + width / 2, y + height / 2 };
 	return rc;
 }
@@ -127,4 +128,7 @@ inline int getTileIndexWithPos(int tileX, int tileY, int tileXSize, int tileYSiz
 		}
 	}
 }
+
+
+
 #pragma endregion

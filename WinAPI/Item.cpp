@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 #include "Item.h"
 
-void Item::init(string name, string description, int gold, int frameX, int frameY, tagItemOption option)
+void ItemJson::init(string name, string description, int gold, int frameX, int frameY, tagItemOption option)
 {
 	_name = name;
 	_description = description;

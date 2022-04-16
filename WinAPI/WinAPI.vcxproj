@@ -160,7 +160,10 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageClass.cpp" />
     <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemClass.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="JsonDataScene.cpp" />
     <ClCompile Include="JsonSaveLoader.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -193,8 +196,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Store.cpp" />
+    <ClCompile Include="SubInven.cpp" />
     <ClCompile Include="SubMap.cpp" />
     <ClCompile Include="SubMenu.cpp" />
+    <ClCompile Include="SubStatus.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextDataManager.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -226,7 +231,10 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageClass.h" />
     <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemClass.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="JsonDataScene.h" />
     <ClInclude Include="JsonSaveLoader.h" />
     <ClInclude Include="KeyManager.h" />
@@ -258,8 +266,10 @@
     <ClInclude Include="StateBase.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Store.h" />
+    <ClInclude Include="SubInven.h" />
     <ClInclude Include="SubMap.h" />
     <ClInclude Include="SubMenu.h" />
+    <ClInclude Include="SubStatus.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextDataManager.h" />
     <ClInclude Include="Tile.h" />

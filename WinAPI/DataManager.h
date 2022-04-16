@@ -2,12 +2,14 @@
 #include "SingletonBase.h"
 #include "Player.h"
 
+
 enum GATE
 {
 	// 마을 , 다음게이트, 임시 통로 
 	GATE_HOME, GATE_BEFORESTAGE, GATE_NEXTSTAGE,
 	GATE_TEMP, GATE_END
 };
+
 struct tagGate
 {
 	RECT drawRc[GATE_END]; // 0메인홀, 1다음맵 , 2 임시통로
@@ -38,8 +40,9 @@ class DataManager :public SingletonBase<DataManager>
 private:
 
 	// 플레이어 데이터
-	PLAYERNUMBER _playerNum; // 세이브용 데이터
+	PLAYERNUMBER _playerNumber;
 	Player* _player;		 // 현재 플레이어 데이터
+
 
 	// 던전, 맵 데이터 
 	tagMapSettingData _mapData; // 어비스, 스테이지 데이터 
@@ -48,14 +51,14 @@ private:
 
 public:
 	// 세이브 슬롯별 이닛
-	HRESULT init(PLAYERNUMBER playerNum);
+	HRESULT init(PLAYERNUMBER playerNumber);
 	HRESULT init(void);
 	void release(void);
 	void update(void);
 	void render(void);
 
 	// 플레이어 데이터 관리
-	PLAYERNUMBER& getPlayerNumber() { return _playerNum; }
+	PLAYERNUMBER& getPlayerNumber() { return _playerNumber; }
 	Player* getPlayer() { return _player; }
 	void setPlayer(Player* User) { _player = User; }
 	void clearPlayer() { _player = nullptr; }

@@ -118,9 +118,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SubMenu.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClCompile>
     <ClCompile Include="AniClass.cpp">
       <Filter>API\ExamClass</Filter>
     </ClCompile>
@@ -157,9 +154,6 @@
     <ClCompile Include="Effect.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClCompile>
-    <ClCompile Include="SubMap.cpp">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClCompile>
     <ClCompile Include="Stage11.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClCompile>
@@ -168,6 +162,27 @@
     </ClCompile>
     <ClCompile Include="Stage14.cpp">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemClass.cpp">
+      <Filter>FromTheAbyss\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SubInven.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="SubMap.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="SubMenu.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="SubStatus.cpp">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>FromTheAbyss\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>FromTheAbyss\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -294,9 +309,6 @@
     <ClInclude Include="Camera.h">
       <Filter>API\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SubMenu.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClInclude>
     <ClInclude Include="AniClass.h">
       <Filter>API\ExamClass</Filter>
     </ClInclude>
@@ -333,9 +345,6 @@
     <ClInclude Include="Effect.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
     </ClInclude>
-    <ClInclude Include="SubMap.h">
-      <Filter>FromTheAbyss\Scene\Place\ABYSS</Filter>
-    </ClInclude>
     <ClInclude Include="Stage11.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
     </ClInclude>
@@ -344,6 +353,27 @@
     </ClInclude>
     <ClInclude Include="Stage14.h">
       <Filter>FromTheAbyss\Scene\Place\ABYSS\STAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemClass.h">
+      <Filter>FromTheAbyss\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="SubInven.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="SubMap.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="SubMenu.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="SubStatus.h">
+      <Filter>FromTheAbyss\Scene\Place\ABYSS\SubScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>FromTheAbyss\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>FromTheAbyss\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +451,9 @@
     </Filter>
     <Filter Include="FromTheAbyss\Scene\Place\ABYSS\STAGE">
       <UniqueIdentifier>{5bc7d481-4c57-49bd-b9b6-8638a868ee8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FromTheAbyss\Scene\Place\ABYSS\SubScreen">
+      <UniqueIdentifier>{6e18599b-0d9d-47ad-87b0-271ce24e6ee9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

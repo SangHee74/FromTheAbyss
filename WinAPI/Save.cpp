@@ -17,7 +17,6 @@ HRESULT Save::init(void)
 		_slot[i].isSelected = false;
 	}
 
-	DATAMANAGER->getPlayerNumber() = PLAYER_NONE;
 	_nextScene = false;
 
 	return S_OK;

@@ -1,7 +1,7 @@
 #pragma once
 
 
-enum ITEM_TYPE
+enum ITEM_TYPE_JSON
 {
 	WEAPON = 1,
 	ARMOR,
@@ -19,7 +19,7 @@ struct  tagItemOption
 	int dff;
 };
 
-class Item
+class ItemJson
 {
 protected:
 
@@ -30,12 +30,12 @@ protected:
 	int _frameY;
 	tagItemOption _option;
 
-	ITEM_TYPE _itemType;
+	ITEM_TYPE_JSON _itemType;
 
 
 public:
-	Item() {}
-	~Item() {}
+	ItemJson() {}
+	~ItemJson() {}
 
 	void init(string name, string description, int gold, int frameX, int frameY, tagItemOption option);
 
@@ -47,7 +47,7 @@ public:
 	int getFrameY() { return this->_frameY; }
 
 	tagItemOption getOption() { return this->_option; }
-	ITEM_TYPE getType() { return this->_itemType; }
+	ITEM_TYPE_JSON getType() { return this->_itemType; }
 
 };
 

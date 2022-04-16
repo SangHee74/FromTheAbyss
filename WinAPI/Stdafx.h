@@ -80,7 +80,6 @@ using namespace MY_UTIL;
 #define SOUNDMANAGER SoundManager::getSingleton()
 #define JSONDATAMANAGER JsonSaveLoader::getSingleton()
 #define CAM Camera::getSingleton()
-#define OBJMANAGER ObjectManager::getSingleton()
 
 
 //============================

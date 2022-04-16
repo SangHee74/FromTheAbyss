@@ -1,9 +1,10 @@
 #pragma once
 #include "GameNode.h"
+#include "Inventory.h"
 
 enum PLAYERNUMBER
 {
-	PLAYER_NONE, PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_END
+	PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_END
 };
 
 enum class WEAPONTYPE
@@ -25,17 +26,6 @@ enum class PLAYERSTATE
 	//SKILL1, SKILL2, SKILL3
 };
 
-// item data
-struct tagInventory
-{
-
-};
-
-struct tagEquip
-{
-
-};
-
 // player data
 struct tagAbyssData
 {
@@ -47,9 +37,6 @@ struct tagAbyssData
 
 struct tagPlayerStatus
 {
-	char name[128];
-	//string name;
-	
 	int curHp;
 	int curSp;
 	int curExp;
@@ -66,11 +53,8 @@ struct tagPlayerStatus
 	int iLuk; //크리
 	int iStatusPoint; 
 	int lufia; //소지금
-
-	tagEquip tEquip;
-	tagInventory tInven;
 };
-
+	
 struct tagPlayerData
 {
 	RECT	moveRc;
@@ -149,6 +133,10 @@ class STATE;  // 상태패턴(상호참조-전방선언)
 class Player :public GameNode
 {
 private:
+
+	char name[128];
+	string _name;
+
 	PLAYERSTATE		_state;		// 플레이어 상태
 	PLAYERDIRECTION _direction; // 플레이어 방향
 	
@@ -159,9 +147,6 @@ private:
 	tagCamera		_camera;	// 플레이어 카메라
 	tagPixel		_pixel;		// 플레이어 픽셀충돌
 	tagCollisionRc  _collision; // 플레이어 렉트충돌
-
-	// 아이템 임시 변수
-	int itemNum;
 
 	// 1 = true;
 	// 000001 : isLeft		// 0
@@ -174,6 +159,13 @@ private:
 
 	int _shadowAlpha;
 	
+private:
+	// 인벤토리
+	Inventory* _inven;
+	
+	// 아이템 임시 변수
+	int itemNum;
+
 public:
 	// 상태패턴
 	STATE* _pStatePatkern; 
@@ -192,7 +184,8 @@ public:
 	void render(void);
 
 	// get/set
-	PLAYERSTATE&	 getState()						 { return _state; }
+	Inventory*		 getInventory()				 { return _inven; }
+	PLAYERSTATE&	 getState()					 { return _state; }
 	PLAYERDIRECTION& getDirection()				 { return _direction; }
 	
 	bitset<6>&		 getIsStateCheck()			 { return _isStateCheck; }
@@ -203,15 +196,16 @@ public:
 	tagCamera&		 getPlayerCAM()				 { return _camera; }
 	tagPixel&		 getPlayerPixel()			 { return _pixel; }
 	tagCollisionRc&  getPlayerCollisionRc()		 { return _collision; }
-
+	//char			 getName()					 { return name[128];}
+	//string		 getName2()					 { return _name;}
 
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
 	void playerAttSetting(bitset<3> combo);
 	void playerAttSetting() { _collision.atkRc = { 0,0,0,0 };  }
-	int playerRandomDamage();
 	void drawEffect();
+	int  playerRandomDamage();
 		
 	//임시
 	int getItemNum() { return itemNum; }
