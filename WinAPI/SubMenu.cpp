@@ -179,8 +179,8 @@ void SubMenu::renderStat()
 {
 	IMAGEMANAGER->findImage("p_face")->render(getMemDC(), CENTER_X + 35, 75);
 
-	// 이름 출력하기......
-	FONTMANAGER->drawText(getMemDC(),RectMake(CENTER_X+120,85,100,50),"돋움",40,FW_EXTRABOLD,"DAHLIA",RGB(0,0,0));
+	// name
+	FONTMANAGER->drawText(getMemDC(),RectMake(CENTER_X+160,85,80,50),"돋움",40,FW_EXTRABOLD,"DAHLIA",RGB(0,0,0));
 
 	// Left 
 	// lv, hp, sp, exp, next, lufia 
@@ -203,13 +203,6 @@ void SubMenu::renderStat()
 	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iMen, RSCENTER_X + 120, 279);
 	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iAgi, RSCENTER_X + 120, 322);
 	showNumberImgAlignLeft(DATAMANAGER->getPlayer()->getPlayerStatus().iLuk, RSCENTER_X + 120, 365);
-
-
-	if (KEYMANAGER->isOnceKeyDown(VK_F5))
-	{
-		cout << "이미지 조정용 마우스좌표 -----------------------------------" << endl;
-		cout << "X : " << _ptMouse.x  << " ,  Y : "<< _ptMouse.y << endl;
-	}
 
 }
 
