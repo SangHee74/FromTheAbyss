@@ -100,22 +100,25 @@ HRESULT ImageClass::init(void)
 
 #pragma region effect
 
-	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword2.bmp", 960, 88, 5, 2, MGT);
-	IMAGEMANAGER->addFrameImage("eff_sword", "Resources/Images/eff_sword.bmp", 310, 106, 2, 1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_spear", "Resources/Images/eff_spear.bmp", 40 * MAGNI, 47 * MAGNI, 2, 1, MGT);
-	IMAGEMANAGER->addFrameImage("eff_collision", "Resources/Images/Object/eff_collision.bmp", 525, 385, 5, 4, MGT);
-
-	IMAGEMANAGER->addFrameImage("eff_monsterCollision", "Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttUp", "Resources/Images/eff_bossAttUp.bmp", 278, 108, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttDown", "Resources/Images/eff_bossAttDown.bmp", 278, 108, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttLeft", "Resources/Images/eff_bossAttLeft.bmp", 108, 278, MGT);
-	IMAGEMANAGER->addImage("eff_bossAttRight", "Resources/Images/eff_bossAttRight.bmp", 108, 278, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_bossAttUp",   "Resources/Images/eff_bossAttUp.bmp",     278, 108, 1,1, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_bossAttDown", "Resources/Images/eff_bossAttDown.bmp",   278, 108, 1,1, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_bossAttLeft", "Resources/Images/eff_bossAttLeft.bmp",   108, 278, 1,1, MGT);
-	//IMAGEMANAGER->addFrameImage("eff_bossAttRight", "Resources/Images/eff_bossAttRight.bmp", 108, 278, 1,1, MGT);
-	IMAGEMANAGER->addFrameImage("monsterDie", "Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
-	IMAGEMANAGER->addFrameImage("bossDie", "Resources/Images/Object/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
+	IMAGEMANAGER->addImage("eff_AttUp",	                "Resources/Images/Effect/eff_AttUp.bmp", 130, 70, MGT);
+	IMAGEMANAGER->addImage("eff_AttDown",               "Resources/Images/Effect/eff_AttDown.bmp", 130, 70, MGT);
+	IMAGEMANAGER->addImage("eff_AttLeft",               "Resources/Images/Effect/eff_AttLeft.bmp", 70, 130, MGT);
+	IMAGEMANAGER->addImage("eff_AttLeftDown",           "Resources/Images/Effect/eff_AttLeftDown.bmp", 100, 90, MGT);
+	IMAGEMANAGER->addImage("eff_AttLeftUp",             "Resources/Images/Effect/eff_AttLeftUp.bmp", 100, 90, MGT);
+	IMAGEMANAGER->addImage("eff_AttRight",              "Resources/Images/Effect/eff_AttRight.bmp", 70, 130, MGT);
+	IMAGEMANAGER->addImage("eff_AttRightDown",          "Resources/Images/Effect/eff_AttRightDown.bmp", 100, 90, MGT);
+	IMAGEMANAGER->addImage("eff_AttRightUp",            "Resources/Images/Effect/eff_AttRightUp.bmp", 100, 90, MGT);
+	IMAGEMANAGER->addFrameImage("eff_collision",        "Resources/Images/Effect/eff_collision.bmp", 525, 385, 5, 4, MGT);
+	IMAGEMANAGER->addFrameImage("eff_Collision2",		"Resources/Images/Effect/eff_Collision2.bmp", 210, 98, 2, 1, MGT);
+												        
+												        
+												        
+	IMAGEMANAGER->addImage("eff_bossAttUp",             "Resources/Images/Effect/eff_bossAttUp.bmp", 278, 108, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttDown",			"Resources/Images/Effect/eff_bossAttDown.bmp", 278, 108, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttLeft",			"Resources/Images/Effect/eff_bossAttLeft.bmp", 108, 278, MGT);
+	IMAGEMANAGER->addImage("eff_bossAttRight",          "Resources/Images/Effect/eff_bossAttRight.bmp", 108, 278, MGT);
+	IMAGEMANAGER->addFrameImage("monsterDie",           "Resources/Images/Effect/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
+	IMAGEMANAGER->addFrameImage("bossDie",	            "Resources/Images/Effect/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
 
 #pragma endregion
 

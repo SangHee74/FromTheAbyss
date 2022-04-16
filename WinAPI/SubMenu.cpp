@@ -180,7 +180,7 @@ void SubMenu::renderStat()
 	IMAGEMANAGER->findImage("p_face")->render(getMemDC(), CENTER_X + 35, 75);
 
 	// ÀÌ¸§ Ãâ·ÂÇÏ±â......
-	FONTMANAGER->drawText(getMemDC(),RectMake(CENTER_X+120,85,100,50),"µ¸¿ò",40,FW_EXTRABOLD,"SH",RGB(0,0,0));
+	FONTMANAGER->drawText(getMemDC(),RectMake(CENTER_X+120,85,100,50),"µ¸¿ò",40,FW_EXTRABOLD,"DAHLIA",RGB(0,0,0));
 
 	// Left 
 	// lv, hp, sp, exp, next, lufia 

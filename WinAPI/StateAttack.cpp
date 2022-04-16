@@ -30,7 +30,6 @@ void OneHandWeaponCombo::stateInit(Player* player)
 	player->getPlayerCollisionRc().atkPosY = 0;
 	player->getPlayerCollisionRc().atkWidth = 0;
 	player->getPlayerCollisionRc().atkHeight = 0;
-
 	
 	// 콤보 비트셋 초기화 + 1단 공격 실행
 	_comboStart.reset();
@@ -41,9 +40,6 @@ void OneHandWeaponCombo::stateInit(Player* player)
 	_comboInputMinTime = 0.0f;
 	_comboInputMaxTime = 0.0f;
 	_playerMotionTime = 0.0f;
-
-	// 방향별 무기 프레임 지정(comboOne 1,2 /  comboTwo 1,2 / comboThree 1,2 ) : 총 6개
-	// 스위치로 플레이어 방향 받아서 지정.
 
 }
 
@@ -56,37 +52,24 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 	_comboInputMinTime += TIMEMANAGER->getElapsedTime();
 	
 	if (_comboStart.test(0)) comboOne(player);
-	if (KEYSKD('x') && _comboInputMinTime > 0.5f && _comboEnd.test(0) )
-	{
-		player->getIsStateCheck().set(2);
-		_comboInputMinTime = 0;
-		_comboInputMaxTime = 0;
-		cout << "한손공격 - 2단 콤보" << endl;
-		_comboStart.set(1);
-	}
-	if (KEYSKD('x') && _comboInputMinTime > 1.0f && _comboEnd.test(1) )
-	{
-		player->getIsStateCheck().set(2);
-		_comboInputMinTime = 0;
-		_comboInputMaxTime = 0;
-		cout << "한손공격 - 3단 콤보" << endl;
-		_comboStart.set(2);
-	}
-	//cout << "--------------------------------------------------" << endl;
-//	cout << "콤보 종료까지 걸리는 시간 :" << _comboInputMinTime << endl;
-	//프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	if ( _comboInputMinTime > 0.7f					 // 키입력 시간 초과
+	
+	if ( _comboInputMinTime > 2.4f					 // 키입력 시간 초과
 		 && !player->getIsStateCheck().test(2)    )  // 공격상태 아님
 	{
 		_comboStart.reset();
 		_comboEnd.reset();
 
-		cout << " 키 입력 시간초과! 대기상태로 전환합니다." << endl;
 		SetPlayerState(player, IdleState::getInstance());
-
 	}
 
+	// 콤보 시간 중 타격범위 업데이트 여부 
+	if (_playerMotionTime >= 0.9f && _playerMotionTime <= 1.0f) player->getPlayerCollisionRc().atkRangeUpdate = true;
+	if (_playerMotionTime >= 1.8f) player->getPlayerCollisionRc().atkRangeUpdate = false;
 
+
+	// 콤보-프레임 별 무기 프레임 업데이트 + 타격범위 업데이트
+	player->playerAttSetting(_comboStart);					// 공격범위 업데이트 		
+	
 }
 
 void OneHandWeaponCombo::stateRelease()
@@ -104,94 +87,48 @@ void OneHandWeaponCombo::stateRender(Player* player)
 
 void OneHandWeaponCombo::comboOne(Player* player)
 {
-	// 좌우 비트셋
-	if (player->getDirection() == PLAYERDIRECTION::RIGHT
-		|| player->getDirection() == PLAYERDIRECTION::RIGHTUP
-		|| player->getDirection() == PLAYERDIRECTION::RIGHTDOWN)
-	{
-	//	cout << "오른쪽임! 프레임을 1부터 시작, -1" << endl;
-	}
-	else
-	{
-		player->getIsStateCheck().set(0);
-	//	cout << "왼쪽임!!!!! 프레임을 0부터 시작, +1" << endl;
-	}
-
-
 	// 이미지 세팅 
 	player->getPlayer().image = IMG("p_oneHandCombo_01");
-	player->getPlayerCollisionRc().atkEffectImg = IMG("eff_sword");
 
-	
 	// 프레임 세팅  
 	// 1콤보 첫번째 프레임 
-	if (_playerMotionTime <= 3.0f)
+	if (_playerMotionTime <= 1.0f)
 	{
 		if (player->getIsStateCheck().test(0)) // L
 		{
-		//	cout << "player FrameX 1-1 , Left " << endl;
-			_playerMotionTime++; // 프레임이 있는 경우에만 증가
+			_playerMotionTime+=TIMEMANAGER->getElapsedTime(); // 프레임이 있는 경우에만 증가
 			player->getPlayer().frameX = 0;
-			player->getPlayerCollisionRc().atkEffFrameX = 1;
-			player->getPlayerCollisionRc().atkEffFrameY = 1;
 		}
 		if (!player->getIsStateCheck().test(0)) // R
 		{
-		//	cout << "player FrameX 1-1 , Right " << endl;
-			_playerMotionTime++;
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
 			player->getPlayer().frameX = 1;						// 캐릭터 프레임
-			player->getPlayerCollisionRc().atkEffFrameX = 0;	// 이펙트 프레임 
-			player->getPlayerCollisionRc().atkEffFrameY = 0;
-
 		}
-		// 콤보-프레임 별 무기 프레임 업데이트 + 타격범위 업데이트
-		player->playerAttSetting(_comboStart);						// 공격범위 업데이트 		
 	}
 
-
 	// 1콤보 두번째 프레임
-	if (_playerMotionTime >= 3.1f && _playerMotionTime <= 7.4f)
+	if (_playerMotionTime >= 1.0f && _playerMotionTime <= 2.4f)
 	{
 		_comboInputMaxTime = 0;
 		// 왼쪽이고, 콤보 1단 중임
 		if (player->getIsStateCheck().test(0) && _comboStart.test(0)) // L
 		{
-		//	cout << "player FrameX 1-2 , Left " << endl;
-			_playerMotionTime++;
-			player->getPlayer().frameX += 1;
-			player->getPlayerCollisionRc().atkEffFrameX += 1;
-			if (player->getPlayer().frameX == player->getPlayer().image->getMaxFrameX())
-			{
-				player->getPlayer().frameX = player->getPlayer().image->getMaxFrameX();
-				//_comboInputMaxTime++;
-			}
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 1;
 		}
 		// 오른쪽이고, 콤보 1단 중임
 		if (!player->getIsStateCheck().test(0) && _comboStart.test(0)) // R 
 		{
-		//	cout << "player FrameX 1-2 , Right " << endl;
-			_playerMotionTime++;
-			player->getPlayer().frameX -= 1;
-			player->getPlayerCollisionRc().atkEffFrameX -= 1;
-			if (player->getPlayer().frameX < 0)
-			{
-				player->getPlayer().frameX = 0;
-				//_comboInputMaxTime++;
-			}
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 0;
 		}
-		player->playerAttSetting(_comboStart);
 	}
 
-
-	if (_playerMotionTime > 7.5f)			// 콤보 1단 모션이 모두 끝나면
+	if (_playerMotionTime >= 2.4f)			// 콤보 1단 모션이 모두 끝나면
 	{
 		_comboEnd.set(0);				    // 1단콤보 종료됨
 		player->getIsStateCheck().reset(2); // 공격상태 꺼짐
-	//	cout << "1단 콤보 종료됨 " << endl;
-
-
 	}
-
 
 }
 
@@ -226,31 +163,49 @@ TwoHandWeaponCombo * TwoHandWeaponCombo::getInstance()
 
 void TwoHandWeaponCombo::stateInit(Player* player)
 {
-	// 비트셋 초기화 + 공격으로 전환
-	player->getIsStateCheck().reset(0);
+	// 플레이어 상태 비트셋 초기화 + 공격으로 전환
+	player->getIsStateCheck().reset();
 	player->getIsStateCheck().set(2);
-	
-	timeCount = 0;
+
+	player->getState() = PLAYERSTATE::ATK_ONEHANDCOMBO;
+
+	player->getPlayerCollisionRc().atkEffFrameX = 0;
+	player->getPlayerCollisionRc().atkEffFrameY = 0;
+	player->getPlayerCollisionRc().atkPosX = 0;
+	player->getPlayerCollisionRc().atkPosY = 0;
+	player->getPlayerCollisionRc().atkWidth = 0;
+	player->getPlayerCollisionRc().atkHeight = 0;
+
+	// 콤보 비트셋 초기화 + 1단 공격 실행
+	_comboStart.reset();
+	_comboStart.set(0);
+	_comboEnd.reset(0);
+
+	//_timeCount = 0;
+	_comboInputMinTime = 0.0f;
+	_comboInputMaxTime = 0.0f;
+	_playerMotionTime = 0.0f;
 }
 
 void TwoHandWeaponCombo::stateUpdate(Player* player)
 {
 
-	// 30카운트(0.5초)지나기 전 재입력하면 다음콤보
-	timeCount++;
-	player->getPlayer().image = IMG("p_oneHandCombo_02");
+	_comboInputMaxTime += TIMEMANAGER->getElapsedTime();
+	_comboInputMinTime += TIMEMANAGER->getElapsedTime();
 
-	cout << "두손무기 1단 공격" << endl;
-	if (KEYMANAGER->isStayKeyDown('X'))
-	{
-		// 2단 공격 실행
+	if (_comboStart.test(0)) comboOne(player);
 
-	}
-	//프레임 종료 or 카운트 끝나면 대기모션으로 전환)
-	if (KEYOKU('X') && timeCount >= 30)
+	if (_comboInputMinTime > 2.4f && !player->getIsStateCheck().test(2))	
 	{
+		_comboStart.reset();
+		_comboEnd.reset();
 		SetPlayerState(player, IdleState::getInstance());
 	}
+
+	if (_playerMotionTime >= 0.9f && _playerMotionTime <= 1.0f) player->getPlayerCollisionRc().atkRangeUpdate = true;
+	if (_playerMotionTime >= 1.8f) player->getPlayerCollisionRc().atkRangeUpdate = false;
+
+	player->playerAttSetting(_comboStart);
 }
 
 void TwoHandWeaponCombo::stateRelease()
@@ -264,6 +219,49 @@ void TwoHandWeaponCombo::stateRelease()
 
 void TwoHandWeaponCombo::stateRender(Player* player)
 {
+}
+
+void TwoHandWeaponCombo::comboOne(Player * player)
+{
+	// 이미지 세팅 
+	player->getPlayer().image = IMG("p_twoHandCombo_01");
+
+
+	// 프레임 세팅  
+	if (_playerMotionTime <= 1.0f) // 1 combo 1st FrameX
+	{
+		if (player->getIsStateCheck().test(0)) // L
+		{
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 0;
+		}
+		if (!player->getIsStateCheck().test(0)) // R
+		{
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 1;
+		}
+	}
+
+	if (_playerMotionTime >= 1.0f && _playerMotionTime <= 2.4f) // 1 combo 2nd FrameX
+	{
+		_comboInputMaxTime = 0;
+		if (player->getIsStateCheck().test(0) && _comboStart.test(0)) // L
+		{
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 1;
+		}
+		if (!player->getIsStateCheck().test(0) && _comboStart.test(0)) // R 
+		{
+			_playerMotionTime += TIMEMANAGER->getElapsedTime();
+			player->getPlayer().frameX = 0;
+		}
+	}
+	cout << _playerMotionTime << endl;
+	if (_playerMotionTime >= 2.3f)
+	{
+		_comboEnd.set(0);
+		player->getIsStateCheck().reset(2);
+	}
 }
 
 #if 0

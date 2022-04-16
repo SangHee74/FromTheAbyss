@@ -24,6 +24,12 @@ void PlayerEffect::update(void)
 
 void PlayerEffect::render(void)
 {
+	if (DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRangeUpdate)
+	{
+		DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkEffImg->render(getMemDC(),
+			DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc.left - CAM->getScreenRect().left,
+			DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc.top - CAM->getScreenRect().top);
+	}
 	draw();
 }
 
@@ -38,8 +44,9 @@ void PlayerEffect::createEff(RECT rc, EFFECT_TYPE type)
 	switch (type)
 	{
 	case EFFECT_TYPE::P_ATKACK_COLLISION:
-		effect.img->init("Resources/Images/Object/eff_collision.bmp", 0.0f, 0.0f, 525, 385, 5, 4, MGT);
-			
+		//effect.img->init("Resources/Images/Effect/eff_collision.bmp", 0.0f, 0.0f, 525, 385, 5, 4, MGT);
+		effect.img->init("Resources/Images/Effect/eff_Collision2.bmp", 0.0f, 0.0f, 210, 98, 2, 1, MGT);
+
 		break;
 	}
 
@@ -48,8 +55,7 @@ void PlayerEffect::createEff(RECT rc, EFFECT_TYPE type)
 		rc.top - CAM->getScreenRect().top - 40,
 		rc.right - CAM->getScreenRect().left - 40,
 		rc.top - CAM->getScreenRect().top - 40);
-
-
+	
 	_vEffect.push_back(effect);
 }
 
@@ -154,7 +160,7 @@ void MonsterEffect::createEff(RECT rc, EFFECT_TYPE type)
 	switch (type)
 	{
 	case EFFECT_TYPE::M_ATKACK_COLLISION:
-		effect.img->init("Resources/Images/Object/eff_monsterCollision.bmp", 210, 98, 2, 1, MGT);
+		effect.img->init("Resources/Images/Object/eff_Collision2.bmp", 210, 98, 2, 1, MGT);
 		break;
 	case EFFECT_TYPE::M_DEFFENSE_DIE:
 		effect.img->init("Resources/Images/Object/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);

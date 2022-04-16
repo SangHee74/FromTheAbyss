@@ -13,11 +13,11 @@ Minotaur::Minotaur()
 
 	_state = MONSTERSTATE::IDLE;
 	_direction = MONSTERDIRECTION::DOWN;
-	_speed = 5;
+	_speed = 1;
 	_frameX = 0;
 	_frameY = (int)_direction;
-	_atkRange = 40;
-	_image = IMG("mino_idle");
+	_atkRange = 25;
+	_image = IMG("mino_move");
 	_collision.atkEffectImg = IMG("none2");
 	_collision.atkEffFrameX = 0;
 	_collision.atkEffFrameY = 0;
@@ -52,12 +52,17 @@ void Minotaur::move()
 	// 피격렉트 재설정
 	setCollisionDefRange();
 
+	_image = IMG("mino_move");
+
 
 	if (KEYMANAGER->isOnceKeyDown(VK_F4))
 	{
 		_movePosX = DATAMANAGER->getPlayer()->getPlayer().drawPosX + 40;
 		_movePosY = DATAMANAGER->getPlayer()->getPlayer().drawPosY + 90;
 	}
+
+
+
 	
 }
 
@@ -65,6 +70,9 @@ void Minotaur::move()
 // 플레이어 피격 범위가 인식범위 안에 들어왔을때
 void Minotaur::atkack()
 {
+	_state = MONSTERSTATE::ATK;
+	cout << "공격 " << endl;
+
 	//_atkCoolTime = 0;
 	_image = IMG("mino_attack");
 	_frameX = 0;
@@ -72,22 +80,22 @@ void Minotaur::atkack()
 
 	_atkTimeCount += TIMEMANAGER->getElapsedTime();
 
-
 	if (_atkTimeCount >= 1.0f)
 	{
 		_frameX++;
 		// 공격렉트 생성 
 		setCollisionAttRange();
-		
+	
 		// 이펙트 주기와 맞춰서 공격렉트 초기화
-		if (_atkTimeCount >= 2.5f)
+		if (_atkTimeCount >= 1.5f)
 		{
 			_collision.atkWidth = _collision.atkHeight = 0;
 			_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
+			_collision.atkEffectImg = IMG("none2");
 		}
 
 		if (_frameX >= IMG("mino_attack")->getMaxFrameX() 
-			&& _atkTimeCount >= 4.0f) // 공격모션 변경 후 일정시간이 지나면
+			&& _atkTimeCount >= 3.8f) // 공격모션 변경 후 일정시간이 지나면
 		{
 			_atkTimeCount = 0;
 			_atkCoolTime = 0;
@@ -112,7 +120,7 @@ void Minotaur::setCollisionAttRange()
 	{
 	case MONSTERDIRECTION::UP:
 		_collision.atkPosX = _movePosX;
-		_collision.atkPosY = _collision.defRc.top-35;
+		_collision.atkPosY = _collision.defRc.top-25;
 		_collision.atkWidth = 300;
 		_collision.atkHeight = 80;
 		break;
@@ -163,7 +171,6 @@ void Minotaur::setCollisionDefRange()
 		break;
 	}
 
-	if (_state != MONSTERSTATE::ATK) 	_collision.atkWidth = _collision.atkHeight = 0;
 	_collision.defRc = RectMakeCenter(_movePosX, _movePosY - 30, _collision.defWidth, _collision.defHeight);
 
 }
@@ -186,15 +193,13 @@ void Minotaur::drawEffect()
 		break;
 	}
 
-	if (_atkTimeCount >= 1.0f  &&  _state == MONSTERSTATE::ATK)
+	if (_atkTimeCount >= 1.0f  )
 	{
 		_collision.atkEffectImg->render(getMemDC(),
 			_collision.atkRc.left - CAM->getScreenRect().left, 
 			_collision.atkRc.top - CAM->getScreenRect().top);
 	}
-	else _collision.atkEffectImg = IMG("none");
-
-			
+		
 }
 
 

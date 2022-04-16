@@ -88,7 +88,7 @@ void Monster::update(void)
 	setDirection();
 	
 	// 플레이어 발견시 따라가기
-	if (_playerCheck) monsterMovetoPlayer();
+	if (_playerCheck && _state != MONSTERSTATE::ATK) monsterMovetoPlayer();
 	
 	// 픽셀충돌
 	pixelCollision();
@@ -144,31 +144,32 @@ void Monster::render(void)
 	draw();
 	animation();
 	drawEffect();
+
 }
 
 
 void Monster::draw(void)
 {
 
-	//if (KEYMANAGER->isToggleKey(VK_F3))
+	if (KEYMANAGER->isToggleKey(VK_F3))
 	{
 		//인식렉트
-	//	Rectangle(getMemDC(),
-	//	_recognitionRc.left - CAM->getScreenRect().left,
-	//	_recognitionRc.top - CAM->getScreenRect().top,
-	//	_recognitionRc.right - CAM->getScreenRect().left,
-	//	_recognitionRc.bottom - CAM->getScreenRect().top
-	//	);
+		Rectangle(getMemDC(),
+		_recognitionRc.left - CAM->getScreenRect().left,
+		_recognitionRc.top - CAM->getScreenRect().top,
+		_recognitionRc.right - CAM->getScreenRect().left,
+		_recognitionRc.bottom - CAM->getScreenRect().top
+		);
 
-		// 이동렉트
-		//Rectangle(getMemDC(),
-		//	_moveRc.left - CAM->getScreenRect().left,
-		//	_moveRc.top - CAM->getScreenRect().top,
-		//	_image->getFrameWidth() + _moveRc.left - CAM->getScreenRect().left,
-		//	_image->getFrameHeight() + _moveRc.top - CAM->getScreenRect().top
-		//);
+		 //이동렉트
+		Rectangle(getMemDC(),
+			_moveRc.left - CAM->getScreenRect().left,
+			_moveRc.top - CAM->getScreenRect().top,
+			_image->getFrameWidth() + _moveRc.left - CAM->getScreenRect().left,
+			_image->getFrameHeight() + _moveRc.top - CAM->getScreenRect().top
+		);
 
-		// 피격렉트
+		 //피격렉트
 		Rectangle(getMemDC(),
 			_collision.defRc.left - CAM->getScreenRect().left,
 			_collision.defRc.top - CAM->getScreenRect().top,
@@ -184,13 +185,13 @@ void Monster::draw(void)
 			_collision.atkRc.bottom - CAM->getScreenRect().top
 		);
 
-		// 임시 플레이어 드로우렉트
-		//Rectangle(getMemDC(),
-		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.left - CAM->getScreenRect().left,
-		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.top - CAM->getScreenRect().top,
-		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.right - CAM->getScreenRect().left,
-		//	DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom - CAM->getScreenRect().top
-		//);
+		 //임시 플레이어 드로우렉트
+		Rectangle(getMemDC(),
+			DATAMANAGER->getPlayer()->getPlayer().drawRc.left - CAM->getScreenRect().left,
+			DATAMANAGER->getPlayer()->getPlayer().drawRc.top - CAM->getScreenRect().top,
+			DATAMANAGER->getPlayer()->getPlayer().drawRc.right - CAM->getScreenRect().left,
+			DATAMANAGER->getPlayer()->getPlayer().drawRc.bottom - CAM->getScreenRect().top
+		);
 
 		RECT tempPos, tempPos2, tempPos3, tempPos4, tempPos5;
 		tempPos = RectMakeCenter(_movePosX, _movePosY, 4, 4);
@@ -215,13 +216,11 @@ void Monster::draw(void)
 			tempPos5.left - CAM->getScreenRect().left + 4, tempPos5.top - CAM->getScreenRect().top + 4);
 	}
 
-
 	_image->frameRender(getMemDC(),
 		_moveRc.left - CAM->getScreenRect().left,
 		_moveRc.top  - CAM->getScreenRect().top,
 		_frameX, _frameY);
 	
-	//rcMake(getMemDC(), _moveRc);
 }
 
 void Monster::animation(void) 
@@ -281,21 +280,22 @@ void Monster::setDirection(void)
 void Monster::monsterMovetoPlayer(void)
 {
 	_state = MONSTERSTATE::MOVE;
-
+	
 	if (_state == MONSTERSTATE::MOVE);
 	{
 		switch (_direction)
 		{
 		case MONSTERDIRECTION::UP:
+			cout << "몬스터 방향 : UP" << endl;
 			if (_distance > _atkRange)
 			{
 				_movePosY -= _speed;
 			}
-			else if (_distance > _recognitionRc.bottom - _recognitionRc.top)
+			if (_distance > (_recognitionRc.bottom - _recognitionRc.top) *0.5 )
 			{
-				_distance = 0;
+				_speed * -1;
 			}
-			else
+			else 
 			{
 				if (_atkCoolTime >= 120.0f) _atkStart = true;
 				if (_atkCoolTime < 120.0f) _atkStart = false;
@@ -303,13 +303,14 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::DOWN:
+			cout << "몬스터 방향 : DOWN" << endl;
 			if (_distance > _atkRange)
 			{
 				_movePosY += _speed;
 			}
-			else if (_distance > _recognitionRc.bottom - _recognitionRc.top)
+			if (_distance > (_recognitionRc.bottom - _recognitionRc.top) *0.5)
 			{
-				_distance = 0;
+				_speed * -1;
 			}
 			else
 			{
@@ -319,13 +320,15 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::LEFT:
+			cout << "몬스터 방향 : LEFT" << endl;
+
 			if (_distance > _atkRange)
 			{
 				_movePosX -= _speed;
 			}
-			else if (_distance > _recognitionRc.right - _recognitionRc.left)
+			else if (_distance > (_recognitionRc.right - _recognitionRc.left) *0.5 )
 			{
-				_distance = 0;
+				_speed * -1;
 			}
 			else
 			{
@@ -335,13 +338,15 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::RIGHT:
+			cout << "몬스터 방향 : RIGHT" << endl;
+
 			if (_distance > _atkRange)
 			{
 				_movePosX += _speed;
 			}
-			else if (_distance > _recognitionRc.right - _recognitionRc.left)
+			else if (_distance > (_recognitionRc.right - _recognitionRc.left) *0.5)
 			{
-				_distance = 0;
+				_speed * -1;
 			}
 			else
 			{
@@ -351,7 +356,6 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		}
-
 	}
 
 }

@@ -19,7 +19,7 @@ HRESULT Stage14::init(void)
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
 
 	_bossUIBar = new ProgressBarBoss();
-	_bossUIBar->init(70,90,520,30);
+	_bossUIBar->init(70,75,520,15);
 
 	_subScreen = new SubMenu();
 	_subScreen->init();
@@ -89,10 +89,6 @@ void Stage14::update(void)
 		_bossUIBar->setBossHpGauge(_enemyM->getMonsters()[0]->getHp(), _enemyM->getMonsters()[0]->getMaxHp() );
 	}
 
-	cout << "보스 최대 :" << _enemyM->getMonsters()[0]->getMaxHp() << endl;
-	cout << "보스 현재 :" << _enemyM->getMonsters()[0]->getHp() << endl;
-
-
 	_bossUIBar->update();
 
 	if (KEYOKD('7'))
@@ -102,11 +98,7 @@ void Stage14::update(void)
 		DATAMANAGER->getPlayer()->getPlayer().movePosY = 300;
 	}
 
-
-
-
 	_subScreen->update();
-
 
 	// 죽으면 메인홀로 이동
 	if (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD)
@@ -121,6 +113,15 @@ void Stage14::update(void)
 
 void Stage14::render(void)
 {
+
+	// distance view
+	LineMake(getMemDC(),
+		_enemyM->getMonsters()[0]->getMovePosX(),
+		_enemyM->getMonsters()[0]->getMovePosY(),
+		DATAMANAGER->getPlayer()->getPlayer().drawPosX,
+		DATAMANAGER->getPlayer()->getPlayer().drawPosY
+	);
+
 	int cameraLeft = CAM->getScreenRect().left;
 	int cameraTop = CAM->getScreenRect().top;
 
@@ -139,10 +140,10 @@ void Stage14::render(void)
 
 	renderCheck();
 
-
 	// 이펙트 렌더 
 	_enemyEff->render();
 	_playerEff->render();
+	
 
 
 	if (KEYMANAGER->isToggleKey(VK_F2))
@@ -246,31 +247,53 @@ void Stage14::collision()
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
 		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc,
 			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
-			&& _enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF )
+			&& _enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF)
 		{
-			// 몬스터 피격상태로 전환 + 체력감소 + 이펙트
+			// 몬스터 피격상태로 전환 
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEF;
-			
-			// 몬스터 체력 세팅 함수
-			int temp = 0;
-			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
-			_enemyM->getMonsters()[i]->setHp(temp);
 
 			// 충돌위치 이펙트
 			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATKACK_COLLISION);
-
-			//cout << "플레이어 데미지 : " << temp << endl;
-			//cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
+			
 			break;
-
 		}
+	}
+
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+
+		// 피격된 몬스터는 체력감소 + 이펙트.
+		if (_enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF) continue;
+		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF)
+		{
+			
+			int temp = 0;
+			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
+			// 랜덤 데미지 이펙트 
+			_playerEff->centerDamageEffect(temp,
+				PointMake(DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkPosX,
+					DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkPosY)
+				, DAMAGECOLOR::DAMAGE_RED);
+
+			// 몬스터 체력 세팅
+			_enemyM->getMonsters()[i]->setHp(temp);
+			cout << "플레이어 데미지 : " << temp << endl;
+			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
+			break;
+			
+		}
+	}
+			
+			
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
 		// 몬스터 체력이 없으면 
 		if (_enemyM->getMonsters()[i]->getHp() <= 0)
 		{
 			_lastStageGate = true;
-			
+
 			// 몬스터 죽음 이펙트
-			_enemyEff->createEff(tempRc,EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
+			_enemyEff->createEff(tempRc, EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
 
 			// 경험치 획득 
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
@@ -278,6 +301,10 @@ void Stage14::collision()
 			// 삭제 - 터짐
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEAD;
 			//_enemyM->removeMonster(i);
+		}
+		else
+		{
+			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::IDLE;
 		}
 #pragma endregion 
 
@@ -352,20 +379,44 @@ void Stage14::getPlayerAngleAndDistance(int i)
 			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
 
 	// distance 
+	MONSTERDIRECTION tempDirection;
+	int sMPosX, sMPosY, ePPosX, ePPosY;
+	sMPosX = sMPosY = ePPosX = ePPosY = 0;
+	tempDirection = _enemyM->getMonsters()[i]->getDirection();
+
+	switch (tempDirection)
+	{
+	case MONSTERDIRECTION::UP:
+		sMPosX = _enemyM->getMonsters()[i]->getMovePosX();
+		sMPosY = _enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc.top;
+		ePPosX = DATAMANAGER->getPlayer()->getPlayer().drawPosX;
+		ePPosY = DATAMANAGER->getPlayer()->getPlayer().drawPosY;
+		break;
+	case MONSTERDIRECTION::DOWN:
+		sMPosX = _enemyM->getMonsters()[i]->getMovePosX();
+		sMPosY = _enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc.bottom;
+		ePPosX = DATAMANAGER->getPlayer()->getPlayer().drawPosX;
+		ePPosY = DATAMANAGER->getPlayer()->getPlayer().drawPosY;
+		break;
+	case MONSTERDIRECTION::LEFT:
+		sMPosX = _enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc.left;
+		sMPosY = _enemyM->getMonsters()[i]->getMovePosY();
+		ePPosX = DATAMANAGER->getPlayer()->getPlayer().drawPosX;
+		ePPosY = DATAMANAGER->getPlayer()->getPlayer().drawPosY;
+		break;
+	case MONSTERDIRECTION::RIGHT:		
+		sMPosX = _enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc.right;
+		sMPosY = _enemyM->getMonsters()[i]->getMovePosY();
+		ePPosX = DATAMANAGER->getPlayer()->getPlayer().drawPosX;
+		ePPosY = DATAMANAGER->getPlayer()->getPlayer().drawPosY;
+		break;
+
+	}
+
+	cout << " sMPosX : " << sMPosX << endl;
+
 	_enemyM->getMonsters()[i]->getDistance() =
-		getDistance(_enemyM->getMonsters()[i]->getMovePosX(),
-			_enemyM->getMonsters()[i]->getMovePosY(),
-			DATAMANAGER->getPlayer()->getPlayer().drawPosX,
-			DATAMANAGER->getPlayer()->getPlayer().drawPosY);
-
-	// distance view
-	LineMake(getMemDC(), 
-		_enemyM->getMonsters()[i]->getMovePosX(),
-		_enemyM->getMonsters()[i]->getMovePosY(),
-		DATAMANAGER->getPlayer()->getPlayer().drawPosX,
-		DATAMANAGER->getPlayer()->getPlayer().drawPosY
-		);
-
+		getDistance(sMPosX, sMPosY, ePPosX, ePPosY);
 	
 }
 

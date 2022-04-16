@@ -40,6 +40,7 @@ HRESULT Player::init(void)
 	_collision.atkWidth = 0;
 	_collision.atkHeight = 0;
 
+	_collision.atkEffImg = IMAGEMANAGER->addImage("none2", "Resources/Images/Object/none.bmp", 25 * MAGNI, 25 * MAGNI, MGT);
 
 	return S_OK;
 }
@@ -51,12 +52,21 @@ void Player::release(void)
 
 void Player::update(void)
 {
+	// direction check
+	if (_direction == PLAYERDIRECTION::RIGHT
+		|| _direction == PLAYERDIRECTION::RIGHTUP
+		|| _direction == PLAYERDIRECTION::RIGHTDOWN)
+	{
+		_isStateCheck.reset(0);
+	}
+	else _isStateCheck.set(0);
 
 	// weapon pos+frame setting(idle)
 	weaponinStageSetting();
 
 	// state patkern update
 	stateUpdate();
+
 	
 	// def,dead 상태일때는 Y프레임 세팅 제외.
 	if (_state == PLAYERSTATE::DEF || _state == PLAYERSTATE::DEAD) {}
@@ -74,10 +84,15 @@ void Player::update(void)
 	if (_status.curExp == _status.maxExp)
 	{
 		_status.lv++;
-		_status.iStatusPoint += 4;
+		_status.maxHp = _status.maxHp*1.1;
+		_status.curHp = _status.maxHp;
+		_status.maxSp = _status.maxSp*1.1;
+		_status.curSp = _status.maxSp;
+		_status.maxExp = _status.maxExp*1.2;
 		_status.curExp = 0;
-
+		_status.iStatusPoint += 4;
 	}
+
 }
 
 void Player::render(void)
@@ -91,30 +106,19 @@ void Player::render(void)
 	_camera.effectTop = _collision.atkRc.top - _camera.rc.top;
 
 	IMGAR("p_shadow", getMemDC(), _camera.playerLeft+20, _camera.playerTop +100 ,_shadowAlpha);
-	// 타격범위 렌더
-	//Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
-	//	_collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
-	//	_collision.atkRc.top - _camera.rc.top + _collision.atkHeight);
+	
 
 	if (_isStateCheck.test(5))
 	{
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
-		if ( _state == PLAYERSTATE::ATK_ONEHANDCOMBO)
-		{
-			_collision.atkEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.atkEffFrameX, _collision.atkEffFrameY);
-		}
+		
 	}
 	if (! _isStateCheck.test(5))
 	{
-		if (_state == PLAYERSTATE::ATK_ONEHANDCOMBO)
-		{
-			_collision.atkEffectImg->frameRender(getMemDC(), _camera.effectLeft, _camera.effectTop, _collision.atkEffFrameX, _collision.atkEffFrameY);
-		}		
 		_weapon.image->frameRender(getMemDC(), _camera.weaponLeft, _camera.weaponTop, _weapon.frameX, _weapon.frameY);
 		_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 	}
-
 
 	//=======================================================================================================
 	// # 피격범위, 픽셀충돌체크 프로비 범위 토글키
@@ -132,7 +136,13 @@ void Player::render(void)
 		// 피격범위 렌더 
 		//Rectangle(getMemDC(), _collision.defRc.left - _camera.rc.left, _collision.defRc.top - _camera.rc.top,
 		//	_collision.defRc.left - _camera.rc.left + _collision.defWidth, _collision.defRc.top - _camera.rc.top + _collision.defHeight);
+		
+		// 무기이미지 범위 렌더
+	   //Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
+	   //	 _weapon.drawRc.left - _camera.rc.left + _weapon.width,
+	   //	 _weapon.drawRc.top - _camera.rc.top + _weapon.height);
 
+		
 		if (_isStateCheck.test(5))
 		{
 			_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
@@ -144,16 +154,10 @@ void Player::render(void)
 			_player.image->frameRender(getMemDC(), _camera.playerLeft, _camera.playerTop, _player.frameX, _player.frameY);
 		}
 
-		// 무기이미지 렌더
-		//Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
-		//	_weapon.drawRc.left - _camera.rc.left + _weapon.width,
-		//	_weapon.drawRc.top - _camera.rc.top + _weapon.height);
-
-
 		// 타격범위 렌더
 		//Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
-		//					  _collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
-		//					  _collision.atkRc.top  - _camera.rc.top  + _collision.atkHeight );
+		//					    _collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
+		//					    _collision.atkRc.top  - _camera.rc.top  + _collision.atkHeight );
 
 
 		// 픽셀충돌 아래 - 를 좌우로 뿌리기 
@@ -181,7 +185,6 @@ void Player::render(void)
 #pragma endregion
 
 
-
 }
 
 #pragma region 상태관련 
@@ -197,25 +200,12 @@ void Player::setPlayerState(STATE* state)
 // 행동 세팅
 void Player::stateUpdate()
 {
-	// 방향은 상시 체크 
-	if (_direction == PLAYERDIRECTION::LEFT 
-		|| _direction == PLAYERDIRECTION::LEFTUP 
-		|| _direction == PLAYERDIRECTION::LEFTDOWN)
-	{
-		_isStateCheck.set(0);
-	}
-	else _isStateCheck.reset(0);
-
 	// playerDirection = DOWN : 플레이어가 무기 아래에 렌더
 	if (_direction == PLAYERDIRECTION::DOWN
 		|| _direction == PLAYERDIRECTION::LEFTDOWN
 		|| _direction == PLAYERDIRECTION::RIGHTDOWN)
 	{
-		if(_weapon.type != WEAPONTYPE::AX ) _isStateCheck.set(5); 
-	}
-	else if (_direction == PLAYERDIRECTION::DOWN  && _weapon.type == WEAPONTYPE::AX)
-	{
-		_isStateCheck.reset(5);
+		_isStateCheck.set(5); 
 	}
 	else _isStateCheck.reset(5);
 
@@ -254,18 +244,9 @@ void Player::playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION dire
 
 	// 임시 아이템넘버(무기프레임이미지 시트에서 y프레임)
 	itemNum = 1;
-	if (itemNum == 0)
-	{
-		_weapon.image = IMG("weapon_sword"); _weapon.type = WEAPONTYPE::SWORD;
-	}
-	if (itemNum == 1)
-	{
-		_weapon.image = IMG("weapon_ax"); _weapon.type = WEAPONTYPE::AX;
-	}
-	if (itemNum == 2)
-	{
-		_weapon.image = IMG("weapon_spear");  _weapon.type = WEAPONTYPE::SPEAR;
-	}
+	if (itemNum == 0) _weapon.image = IMG("weapon_sword");  _weapon.type = WEAPONTYPE::SWORD;
+	if (itemNum == 1) _weapon.image = IMG("weapon_ax");		_weapon.type = WEAPONTYPE::AX;
+//	if (itemNum == 2) _weapon.image = IMG("weapon_spear");  _weapon.type = WEAPONTYPE::SPEAR;
 
 	if (_weapon.type == WEAPONTYPE::SPEAR) _player.image = IMG("p_idle_twoHand");
 	else _player.image = IMG("p_idle_oneHand");
@@ -304,14 +285,13 @@ void Player::weaponinStageSetting()
 {
 	// 무기넘버에 따라 무기시트에서 프레임 업데이트
 	_weapon.frameY = itemNum;
-	if (_weapon.type == WEAPONTYPE::AX)  _weapon.frameY = 0;
+	if (_weapon.type == WEAPONTYPE::AX)  _weapon.frameY = 1;
 
 	// 이동좌표, 렌더좌표 업데이트 
 	_player.drawPosX = _player.movePosX;
 	_player.drawPosY = _player.movePosY;
 
 	// 대기 :플레이어 이미지,  무기-> 방향 -> 프레임 업데이트 + 렌더좌표 수정
-#pragma region 좌표 맞춤
 	if (_weapon.type == WEAPONTYPE::SWORD && _state == PLAYERSTATE::IDLE)
 	{
 		_player.image = IMG("p_idle_oneHand");
@@ -376,7 +356,7 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 36;
 			break;
 		case PLAYERDIRECTION::RIGHT:
-			_weapon.frameX = 1;
+			_weapon.frameX = 26;
 			_weapon.drawPosX = _weapon.movePosX + 12;
 			_weapon.drawPosY = _weapon.movePosY - 36;
 			break;
@@ -386,7 +366,7 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 40;
 			break;
 		case PLAYERDIRECTION::RIGHTUP:
-			_weapon.frameX = 1;
+			_weapon.frameX = 26;
 			_weapon.drawPosX = _weapon.movePosX - 14;
 			_weapon.drawPosY = _weapon.movePosY - 40;
 			break;
@@ -396,13 +376,12 @@ void Player::weaponinStageSetting()
 			_weapon.drawPosY = _weapon.movePosY - 28;
 			break;
 		case PLAYERDIRECTION::RIGHTDOWN:
-			_weapon.frameX = 1;
+			_weapon.frameX = 26;
 			_weapon.drawPosX = _weapon.movePosX + 13;
 			_weapon.drawPosY = _weapon.movePosY - 28;
 
 		}
 	}
-#pragma endregion
 	if (_weapon.type == WEAPONTYPE::SPEAR && _state == PLAYERSTATE::IDLE)
 	{
 		_player.image = IMG("p_idle_twoHand");
@@ -455,56 +434,47 @@ void Player::weaponinStageSetting()
 			break;
 		}
 	}
-
-
 }
 
 // 공격 시 캐릭터 위치, 무기위치, 무기 이펙트 위치 , 무기프레임 업데이트 
 void Player::playerAttSetting(bitset<3> combo)
 {
-
 	// 무기타입 -> 캐릭터 방향 -> 콤보단계 -> 캐릭터 프레임X 
 	// 캐릭터 프레임X가 두번째가 되면, 바라보는 방향으로 약간 이동.
 	int tempMoveMax;
-	if (_weapon.type == WEAPONTYPE::SWORD)
+	
+	if (_weapon.type == WEAPONTYPE::AX )
 	{
 		switch (_direction)
 		{
 		case PLAYERDIRECTION::UP:
+			_collision.atkEffImg = IMG("eff_AttUp");
 			if (combo.test(0))
 			{
-				if (_player.frameX = 0)
+				if (_player.frameX == 0)
+				{
+					_weapon.frameX = 4;
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY + 43;
+				}
+				if (_player.frameX == 1)
 				{
 					_weapon.frameX = 9;
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY - 50;
-					_collision.atkPosX = _weapon.drawPosX - 25;
-					_collision.atkPosY = _weapon.drawPosY + 16;
-					_collision.atkWidth = 122;
-					_collision.atkHeight = 113;
+					_weapon.drawPosX = _weapon.movePosX + 54;
+					_weapon.drawPosY = _weapon.movePosY - 43;
 				}
-				else
+
+				if (_collision.atkRangeUpdate)
 				{
-					_weapon.frameX = 10; 
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX - 25;
-					_collision.atkPosY = _weapon.drawPosY + 16;
-					_collision.atkWidth = 122;
-					_collision.atkHeight = 113;
-					
-					for (tempMoveMax = 1 ; tempMoveMax < 5 ; tempMoveMax++)
-					{
-					//	cout << "콤보 X프레임 2nd : 이동 " << endl;
-					//	_player.movePosY -= tempMoveMax; // 일정구간 이동. 이동이안되면 콤보부분으로 이관
-					}
+					_collision.atkPosX = _player.drawPosX;
+					_collision.atkPosY = _player.drawPosY -40 ;
 				}
 			}
 			if (combo.test(1))
 			{
 				if (_player.frameX = 0) _weapon.frameX = 6;
 				else _weapon.frameX = 3;
-			}	
+			}
 			if (combo.test(2))
 			{
 				if (_player.frameX = 0) _weapon.frameX = 3;
@@ -512,143 +482,193 @@ void Player::playerAttSetting(bitset<3> combo)
 			}
 			break;
 		case PLAYERDIRECTION::DOWN:
-			break;
-		case PLAYERDIRECTION::LEFT:
-			break;
-		case PLAYERDIRECTION::RIGHT:
-			break;
-		case PLAYERDIRECTION::LEFTUP:
-			break;
-		case PLAYERDIRECTION::RIGHTUP:
-			break;
-		case PLAYERDIRECTION::LEFTDOWN:
-			break;
-		case PLAYERDIRECTION::RIGHTDOWN:
+			_collision.atkEffImg = IMG("eff_AttDown");
 			if (combo.test(0))
 			{
-				if (_player.frameX = 0)
+				if (_player.frameX == 0)
 				{
-					_weapon.frameX = 25;
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX - 20;
-					_collision.atkPosY = _weapon.drawPosY + 56;
-					_collision.atkWidth = 116;
-					_collision.atkHeight = 43;
+					_weapon.frameX = 9;
+					_weapon.drawPosX = _weapon.movePosX + 40;
+					_weapon.drawPosY = _weapon.movePosY - 16;
 				}
-				else // OK!
+				if (_player.frameX == 1)
 				{
-					_weapon.frameX = 4; // 프레임이 끝날때까지 
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX + 95;
-					_collision.atkPosY = _weapon.drawPosY - 30;
-					_collision.atkWidth = 116;
-					_collision.atkHeight = 43;
+					_weapon.frameX = 4;
+					_weapon.drawPosX = _weapon.movePosX - 62;
+					_weapon.drawPosY = _weapon.movePosY + 41;
+				}
 
-					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
-					{
-						//_player.movePosY += tempMoveMax; // 일정구간 이동
-					}
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX;
+					_collision.atkPosY = _player.drawPosY + 60;
 				}
 			}
 			break;
-		}
-	}
-	if (_weapon.type == WEAPONTYPE::AX)
-	{
-		switch (_direction)
-		{
-		case PLAYERDIRECTION::UP:
+		case PLAYERDIRECTION::LEFT:
+			_collision.atkEffImg = IMG("eff_AttLeft");
 			if (combo.test(0))
 			{
-				if (_player.frameX = 0)
+				if (_player.frameX == 0)
 				{
-					_weapon.frameX = 9;
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY - 50;
-					_collision.atkPosX = _weapon.drawPosX - 25;
-					_collision.atkPosY = _weapon.drawPosY + 16;
-					_collision.atkWidth = 122;
-					_collision.atkHeight = 113;
+					_weapon.frameX = 7;
+					_weapon.drawPosX = _weapon.movePosX + 30;
+					_weapon.drawPosY = _weapon.movePosY + 46;
 				}
-				else
+				if (_player.frameX == 1)
 				{
 					_weapon.frameX = 10;
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX - 25;
-					_collision.atkPosY = _weapon.drawPosY + 16;
-					_collision.atkWidth = 122;
-					_collision.atkHeight = 113;
+					_weapon.drawPosX = _weapon.movePosX - 62;
+					_weapon.drawPosY = _weapon.movePosY - 41;
+				}
 
-					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
-					{
-						//cout << "콤보 X프레임 2nd : 이동 " << endl;
-						//	_player.movePosY -= tempMoveMax; // 일정구간 이동. 이동이안되면 콤보부분으로 이관
-					}
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX - 60;
+					_collision.atkPosY = _player.drawPosY ;
 				}
 			}
-			if (combo.test(1))
-			{
-				if (_player.frameX = 0) _weapon.frameX = 6;
-				else _weapon.frameX = 3;
-			}
-			if (combo.test(2))
-			{
-				if (_player.frameX = 0) _weapon.frameX = 3;
-				else _weapon.frameX = 2;
-			}
-			break;
-		case PLAYERDIRECTION::DOWN:
-			break;
-		case PLAYERDIRECTION::LEFT:
 			break;
 		case PLAYERDIRECTION::RIGHT:
-			break;
-		case PLAYERDIRECTION::LEFTUP:
-			break;
-		case PLAYERDIRECTION::RIGHTUP:
-			break;
-		case PLAYERDIRECTION::LEFTDOWN:
-			break;
-		case PLAYERDIRECTION::RIGHTDOWN:
+			_collision.atkEffImg = IMG("eff_AttRight");
 			if (combo.test(0))
 			{
-				if (_player.frameX = 0)
+				if (_player.frameX == 1)
+				{
+					_weapon.frameX = 6;
+					_weapon.drawPosX = _weapon.movePosX - 42;
+					_weapon.drawPosY = _weapon.movePosY + 46;
+				}
+				if (_player.frameX == 0)
+				{
+					_weapon.frameX = 11;
+					_weapon.drawPosX = _weapon.movePosX + 42;
+					_weapon.drawPosY = _weapon.movePosY - 41;
+				}
+
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX + 60;
+					_collision.atkPosY = _player.drawPosY;
+				}
+			}
+			break;
+		case PLAYERDIRECTION::LEFTUP:
+			_collision.atkEffImg = IMG("eff_AttLeftUp");
+			if (combo.test(0))
+			{
+				if (_player.frameX == 0)
+				{
+					_weapon.frameX = 4;
+					_weapon.drawPosX = _weapon.movePosX - 32;
+					_weapon.drawPosY = _weapon.movePosY + 52;
+				}
+				if (_player.frameX == 1)
+				{
+					_weapon.frameX = 26;
+					_weapon.drawPosX = _weapon.movePosX + 18;
+					_weapon.drawPosY = _weapon.movePosY - 51;
+				}
+				
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX - 34;
+					_collision.atkPosY = _player.drawPosY - 30;
+				}
+			}
+			break;
+		case PLAYERDIRECTION::RIGHTUP:
+			_collision.atkEffImg = IMG("eff_AttRightUp");
+			if (combo.test(0))
+			{
+				if (_player.frameX == 1) // 1st Frame
+				{
+					_weapon.frameX = 5; // 프레임이 끝날때까지 
+					_weapon.drawPosX = _weapon.movePosX + 30;
+					_weapon.drawPosY = _weapon.movePosY + 52;
+				}
+				if (_player.frameX == 0) // 2nd Frame
+				{
+					_weapon.frameX = 1;
+					_weapon.drawPosX = _weapon.movePosX - 20;
+					_weapon.drawPosY = _weapon.movePosY - 51;
+				}
+
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX + 44;
+					_collision.atkPosY = _player.drawPosY - 30;
+				}
+			}
+			break;
+		case PLAYERDIRECTION::LEFTDOWN:
+			_collision.atkEffImg = IMG("eff_AttLeftDown");
+			if (combo.test(0))
+			{
+				if (_player.frameX == 0)
 				{
 					_weapon.frameX = 25;
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX - 20;
-					_collision.atkPosY = _weapon.drawPosY + 56;
-					_collision.atkWidth = 116;
-					_collision.atkHeight = 43;
-				}
-				else // OK!
-				{
-					_weapon.frameX = 4; // 프레임이 끝날때까지 
-					_weapon.drawPosX = _weapon.movePosX - 50;
-					_weapon.drawPosY = _weapon.movePosY + 50;
-					_collision.atkPosX = _weapon.drawPosX + 95;
-					_collision.atkPosY = _weapon.drawPosY - 30;
-					_collision.atkWidth = 116;
-					_collision.atkHeight = 43;
+					_weapon.drawPosX = _weapon.movePosX + 45;
+					_weapon.drawPosY = _weapon.movePosY + 20;
 
-					for (tempMoveMax = 1; tempMoveMax < 5; tempMoveMax++)
-					{
-						//_player.movePosY += tempMoveMax; // 일정구간 이동
-					}
+				}
+				if (_player.frameX == 1)
+				{
+					_weapon.frameX = 2;
+					_weapon.drawPosX = _weapon.movePosX - 55;
+					_weapon.drawPosY = _weapon.movePosY - 10;
+				}
+
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX - 44;
+					_collision.atkPosY = _player.drawPosY + 50;
+				}
+			}
+			break;
+		case PLAYERDIRECTION::RIGHTDOWN:
+			_collision.atkEffImg = IMG("eff_AttRightDown");
+			if (combo.test(0))
+			{
+				if (_player.frameX == 1) // 1st Frame
+				{
+					_weapon.frameX = 24; // 프레임이 끝날때까지 
+					_weapon.drawPosX = _weapon.movePosX - 50;
+					_weapon.drawPosY = _weapon.movePosY +20;
+				}
+				if (_player.frameX == 0) // 2nd Frame
+				{
+					_weapon.frameX = 3;
+					_weapon.drawPosX = _weapon.movePosX + 50;
+					_weapon.drawPosY = _weapon.movePosY;
+				}
+
+				if (_collision.atkRangeUpdate)
+				{
+					_collision.atkPosX = _player.drawPosX + 44;
+					_collision.atkPosY = _player.drawPosY + 50;
 				}
 			}
 			break;
 		}
 	}
 
+
+	if (_collision.atkRangeUpdate)
+	{
+		_collision.atkWidth = _collision.atkEffImg->getWidth();
+		_collision.atkHeight = _collision.atkEffImg->getHeight();
+	}
+	else 
+	{
+		_collision.atkWidth = 0;
+		_collision.atkHeight = 0;
+	}
 	_collision.atkRc =
 		RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
-	
 }
+
+
 
 int Player::playerRandomDamage()
 {
@@ -661,3 +681,13 @@ int Player::playerRandomDamage()
 	return rndPlayerDmg;
 }
 
+
+// 이펙트 프레임 
+void Player::drawEffect()
+{
+	
+
+
+
+
+}

@@ -131,6 +131,7 @@ struct tagCollisionRc
 	int defWidth;
 	int defHeight;
 
+	Image* atkEffImg; // notFrameImg
 	Image* atkEffectImg;
 	RECT atkRc;
 	int atkPosX;
@@ -139,6 +140,8 @@ struct tagCollisionRc
 	int atkHeight;
 	int atkEffFrameX;
 	int atkEffFrameY;
+
+	bool atkRangeUpdate;
 };
 
 class STATE;  // 상태패턴(상호참조-전방선언)
@@ -206,7 +209,9 @@ public:
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);
 	void weaponinStageSetting();
 	void playerAttSetting(bitset<3> combo);
+	void playerAttSetting() { _collision.atkRc = { 0,0,0,0 };  }
 	int playerRandomDamage();
+	void drawEffect();
 		
 	//임시
 	int getItemNum() { return itemNum; }
