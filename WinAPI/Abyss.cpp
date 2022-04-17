@@ -40,7 +40,6 @@ void Abyss::update(void)
 				DATAMANAGER->getMapData().enterAbyssInfo.stage = 1;
 				_isWaitInput = true;
 
-				// 체인지 씬을 위한 변수 추가 
 			}			
 		}
 		else

@@ -17,8 +17,8 @@ void Store::update(void)
 void Store::render(void)
 {
 	IMGR("store",getMemDC());
-	IMGR("store2",getMemDC());
-	IMGR("store3",getMemDC());
+	//IMGR("store2",getMemDC());
+	//IMGR("store3",getMemDC());
 
 
 }

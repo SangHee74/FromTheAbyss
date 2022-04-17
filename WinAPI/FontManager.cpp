@@ -141,3 +141,5 @@ void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int f
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
 }
+
+

@@ -19,6 +19,8 @@ struct tagSlot
 	Image* newGame;
 	Image* face;
 	bool isSaved;
+
+	string info[SAVETEXT_END];
 };
 
 class Save :public GameNode
@@ -31,7 +33,6 @@ private:
 	RECT _selectRc;
 	RECT _deleteRc;
 
-	float _count;
 	bool _nextScene;
 	int _chooseIndex;
 	tagOnlyText _rScreenMBox;

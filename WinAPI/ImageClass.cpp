@@ -22,6 +22,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("pub3", "Resources/Images/BackGround/pub3.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("pub4", "Resources/Images/BackGround/pub4.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("pub5", "Resources/Images/BackGround/pub5.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("pub6", "Resources/Images/BackGround/pub6.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("store", "Resources/Images/BackGround/store.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("store2", "Resources/Images/BackGround/store2.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("store3", "Resources/Images/BackGround/store3.bmp", WINSIZE_X, WINSIZE_Y);

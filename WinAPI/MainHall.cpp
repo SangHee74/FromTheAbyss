@@ -3,13 +3,13 @@
 
 HRESULT MainHall::init(void)
 {
+	SOUNDMANAGER->addSound("mainHall", "Resources/sounds/mainHall.wav", true, true);
+	SOUNDMANAGER->play("mainHall", 0.2);
+
 	// 메인홀 입장시 플레이어 hp,sp 회복
 	DATAMANAGER->getPlayer()->getPlayerStatus().curHp = DATAMANAGER->getPlayer()->getPlayerStatus().maxHp;
 	DATAMANAGER->getPlayer()->getPlayerStatus().curSp = DATAMANAGER->getPlayer()->getPlayerStatus().maxSp;
 
-	mainIdx = 1;
-	_textNum = 0;
-	_selectCount = 0;
 
 	_icon[MAINSCENE_ABYSS] = RectMake(756, 132, 110, 90);
 	_icon[MAINSCENE_PUB] = RectMake(720, 354, 90, 70);
@@ -17,6 +17,16 @@ HRESULT MainHall::init(void)
 	_icon[MAINSCENE_SQURE] = RectMake(972, 377, 90, 70);
 	_icon[MAINSCENE_TUTO] = RectMake(1095, 354, 90, 70);
 	_icon[MAINSCENE_CASTLE] = RectMake(1155, 262, 90, 70);
+
+	_textNum = 0;
+
+	_buttonCheck.reset();
+	_buttonCheck.set(MAINSCENE_ABYSS);
+	_chooseIndex = 0;
+	_nextScene = false;
+
+	fadeOut.init();
+	fingerPointer.init();
 
 	return S_OK;
 }
@@ -27,143 +37,146 @@ void MainHall::release(void)
 
 void MainHall::update(void)
 {
-	menuSelect();
-	//_isWaitInput = false;
+	selectSlot();
+	selectMenue();
 
+	// fingerMouse
+	fingerPointer.update();
+
+	// Next Scene FadeOut
+	fadeOut.update();
+	if (fadeOut.onOff.test(NEXT)) // 씬체인지
+	{
+		SOUNDMANAGER->stop("mainHall");
+		switch (_chooseIndex)
+		{
+		case MAINSCENE_ABYSS:
+			SCENEMANAGER->changeScene("abyss");
+			break;
+		case MAINSCENE_PUB:
+			SCENEMANAGER->changeScene("pub");
+			break;
+		case MAINSCENE_STORE:
+			SCENEMANAGER->changeScene("store");
+			break;
+		case MAINSCENE_SQURE:
+			SCENEMANAGER->changeScene("square");
+			break;
+		case MAINSCENE_TUTO:
+			SCENEMANAGER->changeScene("tutorial");
+			break;
+		case MAINSCENE_CASTLE:
+			SCENEMANAGER->changeScene("castle");
+			break;
+		}
+	}
+	
 }
 
 void MainHall::render(void)
 {
 	menuInfo(_textNum);
-	
 
-	for (int i = 0; i < 6; i++)
-	{
-	//	rcMake(getMemDC(), _icon[i]);
-	}
+	fingerPointer.img->render(getMemDC(), fingerPointer.pos.x, fingerPointer.pos.y);
+
+	// fadeOut
+	fadeOut.blackImg->alphaRender(getMemDC(), fadeOut.alpha);
+
 }
 
-void MainHall::menuSelect()
+void MainHall::selectSlot()
 {
+	int tempX = 0;
+	int tempY = 0;
 	
 	if (PtInRect(&_icon[MAINSCENE_ABYSS], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_ABYSS;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
+			_textNum = MAINSCENE_ABYSS;
+			_chooseIndex = MAINSCENE_ABYSS;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_ABYSS);
 		}
-		else
-		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				SCENEMANAGER->changeScene("abyss");
-			}
-		}
-
 	}
 	if (PtInRect(&_icon[MAINSCENE_PUB], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_PUB;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
-		}
-		else
-		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				SCENEMANAGER->changeScene("pub");
-			}
+			_textNum = MAINSCENE_PUB;
+			_chooseIndex = MAINSCENE_PUB;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_PUB);
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_STORE], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_STORE;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
-		}
-		else
-		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				SCENEMANAGER->changeScene("store");
-			}
+			_textNum = MAINSCENE_STORE;
+			_chooseIndex = MAINSCENE_STORE;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_STORE);
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_SQURE], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_SQURE;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
-		}
-		else
-		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				SCENEMANAGER->changeScene("square");
-			}
+			_textNum = MAINSCENE_SQURE;
+			_chooseIndex = MAINSCENE_SQURE;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_SQURE);
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_TUTO], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_TUTO;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
-		}
-		else
-		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-			{
-				SCENEMANAGER->changeScene("tutorial");
-			}
+			_textNum = MAINSCENE_TUTO;
+			_chooseIndex = MAINSCENE_TUTO;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_TUTO);
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_CASTLE], _ptMouse))
 	{
-		if (!_isWaitInput)
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-			{
-				_textNum = MAINSCENE_CASTLE;
-				_selectMenu = _textNum;
-				_isWaitInput = true;
-			}
+			_textNum = MAINSCENE_CASTLE;
+			_chooseIndex = MAINSCENE_CASTLE;
+			_buttonCheck.reset();
+			_buttonCheck.set(MAINSCENE_CASTLE);
 		}
-		else
+	}
+	
+	// icon w, h 110,90 (abyss)  /  90 ,70
+	if (_buttonCheck.test(MAINSCENE_ABYSS))
+	{
+		tempX = _icon[MAINSCENE_ABYSS].left +70;
+		tempY = _icon[MAINSCENE_ABYSS].top + 60;
+	}
+	else
+	{
+		tempX = _icon[_chooseIndex].left + 60;
+		tempY = _icon[_chooseIndex].top + 45;
+	}
+	fingerPointer.pos = { tempX,tempY };
+
+}
+
+void MainHall::selectMenue()
+{
+	for (int i = 0; i < MAINSCENE_END; i++)
+	{
+		if (PtInRect(&_icon[i], _ptMouse))
 		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && _buttonCheck.any())
 			{
-				SCENEMANAGER->changeScene("castle");
+				fadeOut.onOff.set(ON);
 			}
 		}
 	}
-	 
-
-
 }
 
 void MainHall::menuInfo(int textNum)

@@ -17,7 +17,6 @@ public:
 	// LPCWSTR : W -> multy char -> Unicode;
 	void drawText(HDC hdc, int destX, int destY, char* fontName, int fontSize, int fontWidth,
 		LPCWSTR printString, int length, COLORREF color);
-
 	void firstLineText(HDC hdc, LPCWSTR printString);
 	void firstLineText(HDC hdc, LPCWSTR printString,int destX, int destY);
 	void firstLineText(HDC hdc, RECT rc, string printString,int destX, int destY);

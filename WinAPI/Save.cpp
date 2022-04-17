@@ -6,18 +6,19 @@ HRESULT Save::init(void)
 	SOUNDMANAGER->addSound("save", "Resources/sounds/save.wav", true, true);
 	SOUNDMANAGER->play("save", 0.2);
 
-
-
 	//vector<string> vData = TEXTDATAMANAGER->load("Resources/player.txt");
 
-
-
-
-
-
-
-
-
+	//for (int i = 0; i < SAVETEXT_END; i++)
+	//{
+	//	char* str = new char[_slot[i].info[i].size() + 1];
+	//	copy(_slot[i].info[i].begin(), _slot[i].info[i].end(), str);
+	//	str[_slot[i].info[i].size()] = '\0';
+	//
+	//	FONTMANAGER->drawText(getMemDC(), 
+	//		260 ,40+(40*i), "µ¸¿ò", 20, 200, str, strlen(str), RGB(0, 0, 0));
+	//
+	//	delete[] str;
+	//}
 
 	for (int i = 0; i < SAVE_END; i++)
 	{
@@ -48,12 +49,10 @@ HRESULT Save::init(void)
 	
 	_selectRc = RectMakeCenter(1047,450,130,40);
 	_deleteRc = RectMakeCenter(1205,450,130,40);
-		
 
 	_buttonCheck.reset();
 	_buttonCheck.set(SAVE_ONE);
 	_chooseIndex = 0;
-	_count = 0.0f;
 	_nextScene = false;
 
 	fingerPointer.init();
@@ -82,7 +81,6 @@ void Save::update(void)
 			fadeOut.onOff.set(ON);
 		}
 	}
-	cout << fadeOut.alpha << endl;
 	fadeOut.update();
 	if (fadeOut.onOff.test(NEXT)) // ¾ÀÃ¼ÀÎÁö
 	{
@@ -106,12 +104,7 @@ void Save::update(void)
 		SCENEMANAGER->changeScene("main");
 	}
 
-	_count += TIMEMANAGER->getElapsedTime();
-	if (_count >= 5.0f)
-	{
-		_nextScene = false;
-		_count = 0;
-	}
+	
 }
 
 void Save::render(void)
