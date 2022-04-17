@@ -28,8 +28,8 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	//_mapData.enterAbyssInfo.stage = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+	_mapData.enterAbyssInfo.stage = 1; // 임시
+	//_mapData.enterAbyssInfo.stage = 4; // 보스테스트
 
 
 	_mapData.map = nullptr;
@@ -107,8 +107,8 @@ void DataManager::setStageSetting(void)
 
 			// 플레이어 정보 세팅
 			int temp = _mapData.map->getWidth()*0.5;
-			//_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
-			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-1200, PLAYERDIRECTION::UP);
+			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
+			//_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-1200, PLAYERDIRECTION::UP);
 		}
 
 		break;

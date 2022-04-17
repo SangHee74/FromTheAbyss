@@ -23,7 +23,6 @@ HRESULT MainHall::init(void)
 	_buttonCheck.reset();
 	_buttonCheck.set(MAINSCENE_ABYSS);
 	_chooseIndex = 0;
-	_nextScene = false;
 
 	fadeOut.init();
 	fingerPointer.init();

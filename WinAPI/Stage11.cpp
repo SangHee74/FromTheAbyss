@@ -22,6 +22,7 @@ HRESULT Stage11::init(void)
 	_enterInfo.alpha = 255;
 	_enterInfo.showTime = 0;
 
+	fadeOut.init();
 
 	return S_OK;
 }
@@ -103,7 +104,7 @@ void Stage11::render(void)
 
 	//if()
 	// 몬스터
-	_enemyM->render();
+	//_enemyM->render();
 
 	// 플레이어 
 	DATAMANAGER->getPlayer()->render();
@@ -184,17 +185,23 @@ void Stage11::portalOn()
 		cout << "다음 스테이지 가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
+			fadeOut.onOff.set(ON);
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
 			// 다음 스테이지를 위해 스테이지 업데이트 해줄 것 
 			DATAMANAGER->getMapData().enterAbyssInfo.stage = 4;
 			DATAMANAGER->getPlayer()->getPlayerAbyss().stage = 4;
-
-			// 씬체인지 stageChangeInit();
-			SCENEMANAGER->changeScene("stage14");
+					
 		}
 
 	}
 	else DATAMANAGER->getMapData().gate.inGateCount = 0;
+
+	fadeOut.update();
+	if (fadeOut.onOff.test(NEXT)) // 씬체인지
+	{
+		// 씬체인지 stageChangeInit();
+		SCENEMANAGER->changeScene("stage14");
+	}
 }
 
 void Stage11::collision()

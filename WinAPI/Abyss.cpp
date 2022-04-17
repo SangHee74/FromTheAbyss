@@ -107,7 +107,7 @@ void Abyss::render(void)
 	{
 
 		IMGR("stage1", getMemDC(), _buttonRc[0].left, _buttonRc[0].top);
-		//IMGR("stage2", getMemDC(), _buttonRc[1].left, _buttonRc[1].top);
+		IMGR("stage2", getMemDC(), _buttonRc[1].left, _buttonRc[1].top);
 		//IMGR("stage3", getMemDC(), _buttonRc[2].left, _buttonRc[2].top);
 		FONTMANAGER->firstLineText(getMemDC(), _index[1].text);
 

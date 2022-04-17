@@ -18,6 +18,7 @@ private:
 	
 	tagEnterStageTextImage _enterInfo;
 
+	tagSceneFadeOut fadeOut;
 public:
 	Stage11() {}
 	~Stage11() {}
