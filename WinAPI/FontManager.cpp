@@ -110,12 +110,14 @@ void FontManager::firstLineText(HDC hdc, RECT rc, string printString, int destX,
 
 
 
+
 void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fontSize, int fontWidth,
 	LPCWSTR* printStringArr, int length, COLORREF color)
 {
 	// 터짐방지
 	int arraySize = sizeof(printStringArr) / sizeof(*printStringArr);
 } // <-정의는 cpp에서 수정할 것 
+
 
 
 void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, string str, COLORREF color)
@@ -139,5 +141,3 @@ void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int f
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
 }
-
-

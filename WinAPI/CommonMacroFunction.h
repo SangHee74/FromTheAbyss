@@ -61,8 +61,8 @@ inline RECT CollisionAreaResizing(RECT &rcDest, int width, int height)
 inline POINT rcCenterPos(RECT &rc)
 {
 	int posX, posY;
-	posX = (rc.right - rc.left) *0.5;
-	posY = (rc.bottom - rc.top) *0.5;
+	posX = rc.left + ((rc.right - rc.left) *0.5);
+	posY = rc.top + ((rc.bottom - rc.top) *0.5);
 
 	return POINT{ posX, posY };
 }

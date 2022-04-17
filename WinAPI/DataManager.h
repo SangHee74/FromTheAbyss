@@ -95,7 +95,6 @@ struct tagSceneFadeOut
 		onOff.reset(); // 00
 		blackImg = IMG("black");
 	}
-
 	void update()
 	{
 		if( onOff.test(ON))
@@ -106,12 +105,58 @@ struct tagSceneFadeOut
 			onOff.flip();
 		}
 	}
-
 	void reset()
 	{
 		alpha = 0;
 		onOff.reset();
 	}
+};
 
+struct tagFingerMouse
+{
+	POINT pos;
+	Image* img;
+	int speed;
+	float reverseTime = 0;
+	bool isReturn;
+	
+	void init()
+	{
+		pos = {0,0};
+		speed = 2;
+		reverseTime = 0.0f;
+		isReturn = false;
+		img = IMG("finger");
+	}
+	void update()
+	{
+		//cout << " ¼Õ°¡¶ô ÁÂÇ¥ : "<<  pos.x << "," << pos.y << endl;
+		reverseTime += TIMEMANAGER->getElapsedTime();
+		
+		if (isReturn)
+		{
+			pos.x -= speed; pos.y -= speed;
+		}
+		else
+		{
+			pos.x += speed; pos.y += speed;
+		}
+		
+		if (reverseTime >= 0.3) isReturn = true;
+		if (reverseTime >= 0.55 && isReturn)
+		{
+			reverseTime = 0.0f;
+			isReturn = false;
+			speed = 2;
+		}
+	}
+	void reset()
+	{
+		pos = { 0,0 };
+		speed = 1;
+		reverseTime = 0.0f;
+		isReturn = false;
+		img = IMG("finger");
+	}
 };
 

@@ -30,7 +30,7 @@ void Title::update(void)
 	fadeOut.update();
 	if (fadeOut.onOff.test(NEXT)) // ¾ÀÃ¼ÀÎÁö
 	{
-		SOUNDMANAGER->stop("abyss");
+		SOUNDMANAGER->stop("title");
 		SCENEMANAGER->changeScene("save");
 	}
 
@@ -43,7 +43,7 @@ void Title::render(void)
 	IMGR("titleButton",getMemDC(), _startRc.left, _startRc.top);
 
 
-	// ÆäÀÌµå ¾Æ¿ô
+	// fadeOut
 	fadeOut.blackImg->alphaRender(getMemDC(),fadeOut.alpha);
 	//rcMake(getMemDC(),_startRc);
 }

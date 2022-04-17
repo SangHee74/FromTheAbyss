@@ -8,32 +8,40 @@ enum SAVESLOT
 
 enum SAVETEXT
 {
-	NAME, ABYSS, TIME, SAVETEXT_END
+	NAME, STAT, TIME, SAVETEXT_END
 };
 
 struct tagSlot
 {
-	tagOnlyText txet[SAVETEXT_END];
-	string info[SAVETEXT_END];
+	tagOnlyText textCaption[SAVETEXT_END];
+	tagOnlyText text[SAVETEXT_END];
 	RECT slotRc;
 	Image* newGame;
-	Image* newGameSelect;
+	Image* face;
 	bool isSaved;
-	bool isSelected;
 };
 
 class Save :public GameNode
 {
 private:
+
+	// selected Slot 001 010 100 
+	bitset<3> _buttonCheck;
 	tagSlot _slot[SAVE_END];
 	RECT _selectRc;
 	RECT _deleteRc;
 
+	float _count;
 	bool _nextScene;
+	int _chooseIndex;
+	tagOnlyText _rScreenMBox;
 	tagSceneFadeOut fadeOut;
+	tagFingerMouse fingerPointer;
 
 public:
-	Save() {}
+	Save():
+	_rScreenMBox{L"사용할 데이터를 선택하세요."}
+	{}
 	~Save() {}
 
 	HRESULT init(void);
@@ -41,5 +49,8 @@ public:
 	void update(void);
 	void render(void);
 
-	void playerInfo(RECT rc);
+	void selectSlot();
+	void selectMenu(); // next or delete
+	
+	void playerInfoRender();
 };

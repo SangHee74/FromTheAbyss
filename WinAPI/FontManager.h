@@ -29,5 +29,6 @@ public:
 	void drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth,
 		string str, COLORREF color);
 
+
 };
 
