@@ -27,14 +27,12 @@ HRESULT SceneManager::init(void)
 	_currentScene = nullptr;
 	_loadingScene = nullptr;
 	_readyScene = nullptr;
-	_fadeOut.blackImg = IMAGEMANAGER->findImage("black");
 	return S_OK;
 }
 
 void SceneManager::release(void)
 {
 	mapSceneIter miSceneList = _mSceneList.begin();
-
 	
 	// 로딩 씬 -> 교체 대기중인 씬 ->현재씬 , 많지 않다(for 사용)
 	for (; miSceneList != _mSceneList.end();)
@@ -97,8 +95,6 @@ GameNode * SceneManager::addLoadingScene(string loadingSceneName, GameNode * sce
 	return scene;
 }
 
-// 씬 변경 
-// 페이드 아웃 추가 
 // 플레이어만 인자타입(매개변수로 남기고 나머지는 싹 지운 후 체인지 씬)
 HRESULT SceneManager::changeScene(string sceneName)
 {
@@ -111,10 +107,6 @@ HRESULT SceneManager::changeScene(string sceneName)
 	// 찾는데 성공하고, 초기화가 됬다면 
 	if (SUCCEEDED(find->second->init()))
 	{
-		// 페이드 아웃
-
-
-		// 페이드 아웃 후 씬 변경
 		// 씬을 바꿔도 변수가 계속 남아있게 설계를 고민하자 
 		// 익스턴 스태틱 등등 
 		_currentScene = find->second;

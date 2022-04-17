@@ -71,7 +71,6 @@ void Minotaur::move()
 void Minotaur::atkack()
 {
 	_state = MONSTERSTATE::ATK;
-	cout << "АјАн " << endl;
 
 	//_atkCoolTime = 0;
 	_image = IMG("mino_attack");

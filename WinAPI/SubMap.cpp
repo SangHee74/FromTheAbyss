@@ -44,9 +44,6 @@ HRESULT SubMap::init(void)
 		}
 	}
 
-	cout << _vMiniMap.size() << endl;
-
-
 	return S_OK;
 }
 
@@ -258,14 +255,6 @@ void SubMap::minimapCheck()
 
 		}
 	//====================================================================================
-		if (_settingStage == 2)
-		{
-
-		}
-		if (_settingStage == 3)
-		{
-
-		}
 		if (_settingStage == 4)
 		{
 			_vMiniMap[44].OnMiniMapTile = true;

@@ -413,8 +413,6 @@ void Stage14::getPlayerAngleAndDistance(int i)
 
 	}
 
-	cout << " sMPosX : " << sMPosX << endl;
-
 	_enemyM->getMonsters()[i]->getDistance() =
 		getDistance(sMPosX, sMPosY, ePPosX, ePPosY);
 	

@@ -1,13 +1,6 @@
 #pragma once
 #include "SingletonBase.h"
 
-struct tagSceneFadeOut
-{
-	int alpha;
-	bitset<2> fadeOutOnOff;
-	Image* blackImg;
-};
-
 // 게임노드가 필요하지만, 캡슐화(정보은닉:메인프로시저 등의 기능)을 위해 전방선언사용
 class GameNode; 
 
@@ -26,9 +19,6 @@ private:
 	mapSceneList _mSceneList;
 	mapSceneList _mLoadingSceneList;
 public:
-	// 씬 전환용 페이드아웃
-	tagSceneFadeOut _fadeOut;
-	tagSceneFadeOut& getFadeOut() { return _fadeOut; }
 
 public:
 	SceneManager() {}
@@ -51,7 +41,6 @@ public:
 	// LPVOID : void* 형 (어떤 타입으로도 변환 가능)
 	friend DWORD CALLBACK loadingThread(LPVOID prc);
 
-	// ㄴ 리팩토링 시 CALLBACK을 빼고 만든다 : 왜?
-	// ㄴ 
+ 
 };
 

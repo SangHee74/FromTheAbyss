@@ -50,7 +50,7 @@ public:
 	int _dropImgNum;
 	ITEM_TYPE _type;
 	string _name;
-	string _descripton;
+	string _description;
 	int _price;
 
 	tagAbility _ability;
@@ -63,7 +63,7 @@ public:
 		_dropImgNum = other._dropImgNum;
 		_type = other._type;
 		_name = other._name;
-		_descripton = other._descripton;
+		_description = other._description;
 		_price = other._price;
 		_ability = other._ability;
 	}
@@ -76,10 +76,32 @@ public:
 		_dropImgNum = 0;
 		_type = ITEM_TYPE::NONE;
 		_name = "NONE";
-		_descripton = "NONE";
+		_description = "NONE";
 		_price = 0;
 	}
 	~Item() {}
 
+
+	void toString(void)
+	{
+		cout << "=============================================" << endl;
+		cout << "_index         :" << _index << endl;
+		cout << "_invenImgNum   :" << _invenImgNum << endl;
+		cout << "_storeImgNum   :" << _storeImgNum << endl;
+		cout << "_dropImgNum    :" << _dropImgNum << endl;
+		cout << "_type          :" << (int)_type << endl;
+		cout << "_name          :" << _name << endl;
+		cout << "_description   :" << _description << endl;
+		cout << "_price         :" << _price << endl;
+		cout << "===================================" << endl;
+		cout << "maxHp          :" << _ability.maxHp	<<endl;
+		cout << "maxSp          :" << _ability.maxSp	<<endl;
+		cout << "iAtk          :" << _ability.iAtk	<<endl;
+		cout << "iDef          :" << _ability.iDef	<<endl;
+		cout << "iInt          :" << _ability.iInt	<<endl;
+		cout << "iMen          :" << _ability.iMen	<<endl;
+		cout << "iAgi          :" << _ability.iAgi	<<endl;
+		cout << "iLuk          :" << _ability.iLuk   <<endl;
+	}
 };
 

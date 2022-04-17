@@ -56,7 +56,6 @@ void IdleState::stateUpdate(Player* player)
 		if ((player->getPlayerWeapon().type == WEAPONTYPE::SWORD) ||
 			(player->getPlayerWeapon().type == WEAPONTYPE::AX))
 		{
-			cout << "Å°ÀÔ·Â X !" << endl;
 			SetPlayerState(player, OneHandWeaponCombo::getInstance());
 		}
 		if (player->getPlayerWeapon().type == WEAPONTYPE::SPEAR)

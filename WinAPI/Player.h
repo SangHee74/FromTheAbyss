@@ -1,6 +1,6 @@
 #pragma once
 #include "GameNode.h"
-#include "Inventory.h"
+//#include "Inventory.h"
 
 enum PLAYERNUMBER
 {
@@ -161,7 +161,7 @@ private:
 	
 private:
 	// 인벤토리
-	Inventory* _inven;
+	//Inventory* _inven;
 	
 	// 아이템 임시 변수
 	int itemNum;
@@ -184,7 +184,7 @@ public:
 	void render(void);
 
 	// get/set
-	Inventory*		 getInventory()				 { return _inven; }
+	//Inventory*		 getInventory()				 { return _inven; }
 	PLAYERSTATE&	 getState()					 { return _state; }
 	PLAYERDIRECTION& getDirection()				 { return _direction; }
 	

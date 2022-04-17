@@ -42,8 +42,8 @@ HRESULT Player::init(void)
 
 	_collision.atkEffImg = IMAGEMANAGER->addImage("none2", "Resources/Images/Object/none.bmp", 25 * MAGNI, 25 * MAGNI, MGT);
 
-	_inven = new Inventory();
-	_inven->init();
+	//_inven = new Inventory();
+	//_inven->init();
 
 	return S_OK;
 }
@@ -52,8 +52,8 @@ void Player::release(void)
 {
 	//_pStatePatkern->stateRelease();
 
-	_inven->release();
-	SAFE_DELETE(_inven);
+	//_inven->release();
+	//SAFE_DELETE(_inven);
 
 }
 
@@ -100,7 +100,7 @@ void Player::update(void)
 		_status.iStatusPoint += 4;
 	}
 
-	_inven->update();
+	//_inven->update();
 }
 
 void Player::render(void)

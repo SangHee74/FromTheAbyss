@@ -3,7 +3,6 @@
 #include "ImageClass.h"
 #include "SoundClass.h"
 
-
 #pragma region noUseScene
 #include "SoundScene.h"
 #include "JsonDataScene.h"
@@ -46,7 +45,6 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("save", new Save);
 	SCENEMANAGER->addScene("main", new MainHall);
 	SCENEMANAGER->addScene("abyss", new Abyss);
-	//SCENEMANAGER->addScene("stage", new Stage);
 	SCENEMANAGER->addScene("pub", new Pub);
 	SCENEMANAGER->addScene("store", new Store);
 	SCENEMANAGER->addScene("square", new Square);
@@ -58,8 +56,9 @@ HRESULT MainGame::init(void)
 
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
-	SCENEMANAGER->changeScene("stage14");
+	//SCENEMANAGER->changeScene("stage14");
 	//SCENEMANAGER->changeScene("stage11");
+	SCENEMANAGER->changeScene("title");
 
 
 

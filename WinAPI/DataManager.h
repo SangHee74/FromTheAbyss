@@ -1,7 +1,7 @@
 #pragma once
 #include "SingletonBase.h"
 #include "Player.h"
-
+#include "Inventory.h"
 
 enum GATE
 {
@@ -42,6 +42,8 @@ private:
 	// 플레이어 데이터
 	PLAYERNUMBER _playerNumber;
 	Player* _player;		 // 현재 플레이어 데이터
+	Inventory* _inven;		 // 플레이어 인벤토리 데이터
+
 
 
 	// 던전, 맵 데이터 
@@ -62,6 +64,9 @@ public:
 	Player* getPlayer() { return _player; }
 	void setPlayer(Player* User) { _player = User; }
 	void clearPlayer() { _player = nullptr; }
+	Inventory* getInven() { return _inven; }
+
+
 
 	// 스테이지 별 맵 관리
 	tagMapSettingData& getMapData() {	return _mapData;	}
@@ -69,5 +74,44 @@ public:
 
 	// 숫자를 이미지로 보여주기
 	void showNumberImgAlignLeft(int number, POINT rightTopPos);
+};
+
+
+enum EonOff
+{
+	ON, NEXT, ONOFF_END
+};
+
+struct tagSceneFadeOut
+{
+	int alpha;
+	// 00 none, 01 fadeIn , 10 nextScene
+	bitset<ONOFF_END> onOff; 
+	Image* blackImg;
+
+	void init()
+	{
+		alpha = 0;
+		onOff.reset(); // 00
+		blackImg = IMG("black");
+	}
+
+	void update()
+	{
+		if( onOff.test(ON))
+		alpha += 2;
+		if ( alpha >= 255)
+		{
+			alpha = 255;
+			onOff.flip();
+		}
+	}
+
+	void reset()
+	{
+		alpha = 0;
+		onOff.reset();
+	}
+
 };
 

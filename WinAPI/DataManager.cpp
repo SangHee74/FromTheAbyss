@@ -25,7 +25,6 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 
 HRESULT DataManager::init(void)
 {
-
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
@@ -42,6 +41,9 @@ HRESULT DataManager::init(void)
 	
 	_player = new Player(); // 플레이어 객체 생성 
 	_player->init();
+
+	_inven = new Inventory();
+	_inven->init();
 
 
 	return S_OK;

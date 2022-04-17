@@ -286,7 +286,6 @@ void Monster::monsterMovetoPlayer(void)
 		switch (_direction)
 		{
 		case MONSTERDIRECTION::UP:
-			cout << "몬스터 방향 : UP" << endl;
 			if (_distance > _atkRange)
 			{
 				_movePosY -= _speed;
@@ -303,7 +302,6 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::DOWN:
-			cout << "몬스터 방향 : DOWN" << endl;
 			if (_distance > _atkRange)
 			{
 				_movePosY += _speed;
@@ -320,7 +318,6 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::LEFT:
-			cout << "몬스터 방향 : LEFT" << endl;
 
 			if (_distance > _atkRange)
 			{
@@ -338,7 +335,6 @@ void Monster::monsterMovetoPlayer(void)
 			break;
 
 		case MONSTERDIRECTION::RIGHT:
-			cout << "몬스터 방향 : RIGHT" << endl;
 
 			if (_distance > _atkRange)
 			{

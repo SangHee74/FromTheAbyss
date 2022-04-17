@@ -122,7 +122,6 @@ HRESULT ImageClass::init(void)
 
 #pragma endregion
 
-
 #pragma region object
 
 	IMAGEMANAGER->addImage("map_gate", "Resources/Images/Map/map_obj_gate.bmp", 0, 0, 120,50, MGT);
@@ -148,7 +147,15 @@ HRESULT ImageClass::init(void)
 
 #pragma endregion
 
-#pragma region UI	
+#pragma region UI
+
+	IMAGEMANAGER->addImage("finger", "Resources/Images/Object/finger.bmp", 0,0,21 * MAGNI, 22 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("popUpBox", "Resources/Images/Object/popUpBox.bmp", 0,0, 168 * MAGNI, 48 * MAGNI, MGT);
+	
+	IMAGEMANAGER->addImage("statUp", "Resources/Images/Object/statUp.bmp", 0, 0, 18 * MAGNI, 10 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("statDown", "Resources/Images/Object/statDown.bmp", 0, 0, 18 * MAGNI, 10 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("statSet", "Resources/Images/Object/statSet.bmp", 0, 0, 41 * MAGNI, 13 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("statReset", "Resources/Images/Object/statReset.bmp", 0, 0, 41 * MAGNI, 13 * MAGNI, MGT);
 	
 	IMAGEMANAGER->addImage("titleButton", "Resources/Images/Object/titleButton.bmp", RSCENTER_X, CENTER_Y, 98 * MAGNI, 30 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("nextButton", "Resources/Images/Object/nextButton.bmp", RSCENTER_X, CENTER_Y, 72 * MAGNI, 48 * MAGNI, MGT);
@@ -157,8 +164,8 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("ynButton2", "Resources/Images/Object/YesNoButton2.bmp", RSCENTER_X, CENTER_Y, 56 * MAGNI, 20 * MAGNI, MGT);
 	IMAGEMANAGER->addFrameImage("upDownButton", "Resources/Images/Object/upDownButton.bmp", RSCENTER_X, 0, 62 * MAGNI, 62 * MAGNI, MGT);
 
-	IMAGEMANAGER->addImage("newGame", "Resources/Images/Object/newGame.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);
-	IMAGEMANAGER->addImage("newGame0", "Resources/Images/Object/newGame0.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("newGameSelect", "Resources/Images/Object/newGame.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);
+	IMAGEMANAGER->addImage("newGame", "Resources/Images/Object/newGame0.bmp", 0, 0, 58 * MAGNI, 12 * MAGNI, MGT);
 
 	// 작은 프레임 이미지라 쪼개고 렌더할때 *비율 적용
 	IMAGEMANAGER->addFrameImage("Num_0", "Resources/Images/Object/Num_0.bmp",		  0, 0, 70 , 8  , 10, 1, MGT);
@@ -189,8 +196,6 @@ HRESULT ImageClass::init(void)
 	
 	//IMAGEMANAGER->addImage("bossHp", "Resources/Images/Object/hpBoss.bmp", 0, 0, 2 * MAGNI, 20 * MAGNI, MGT);
 	//IMAGEMANAGER->addImage("bossHpBg", "Resources/Images/Object/hpBackBoss.bmp", 0, 0, 2 * MAGNI, 20 * MAGNI, MGT);
-
-	
 	
 	IMAGEMANAGER->addImage("Item_select", "Resources/Images/Object/Item_select.bmp", 0, 0, 40 * MAGNI, 40 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("tap_1", "Resources/Images/Object/tap_1.bmp", 0, 0, 27 * MAGNI, 48 * MAGNI, MGT);

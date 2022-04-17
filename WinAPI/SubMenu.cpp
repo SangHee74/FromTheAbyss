@@ -86,6 +86,7 @@ void SubMenu::selectMenu()
 			_subMenuIdx = SUB_ITEM;
 			_subMenu.reset(); _subMenu.set(0);
 			_tapOn.reset();   _tapOn.set(0);
+			_inven->setCurrentSlot(0);
 		}
 	}
 	if (PtInRect(&_menuButton[SUB_SKILL], _ptMouse))

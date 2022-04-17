@@ -5,32 +5,38 @@ HRESULT ItemManager::init(void)
 {
 	_invenIcon = IMAGEMANAGER->addFrameImage("Inven_icon", "Resources/Images/Object/Inven_icon.bmp", 352 * MAGNI, 96 * MAGNI, 11, 3, MGT);
 	_storeIcon = IMAGEMANAGER->addFrameImage("store_icon", "Resources/Images/Object/store_icon.bmp", 240 * MAGNI, 20 * MAGNI, 15, 2, MGT);
-	_dropIcon  = IMAGEMANAGER->addFrameImage("dropItem", "Resources/Images/Object/dropItem.bmp", 150 * MAGNI, 22 * MAGNI, 6, 1, MGT);
-	
-	vector<string> vData = TEXTDATAMANAGER->load("Resources/Item1.txt");
-	for (int i = 0; i < vData.size(); i += 14)
+	_dropIcon = IMAGEMANAGER->addFrameImage("dropItem", "Resources/Images/Object/dropItem.bmp", 150 * MAGNI, 22 * MAGNI, 6, 1, MGT);
+
+	vector<string> vData = TEXTDATAMANAGER->load("Resources/Item2.txt");
+
+	int j = 0;
+	for (int i = 0; i < vData.size(); i += 13)
 	{
-		Item* item = new Item;
-		 item->_index = atoi(vData[i].c_str());
-		 item->_invenImgNum = atoi(vData[i+1].c_str());
-		 item->_storeImgNum = atoi(vData[i+2].c_str());
-		 item->_dropImgNum = atoi(vData[i+3].c_str());
-		 item->_type = static_cast<ITEM_TYPE>(atoi(vData[i+4].c_str()));
-		 item->_name = vData[i+5].c_str();
-		 item->_descripton = vData[i+7].c_str();
-		 item->_price = atoi(vData[i+6].c_str());
-		 item->_ability.maxHp = 0;
-		 item->_ability.maxSp = 0;
-		 item->_ability.iAtk = atoi(vData[i+8].c_str());
-		 item->_ability.iDef = atoi(vData[i+9].c_str());
-		 item->_ability.iInt = atoi(vData[i+10].c_str());
-		 item->_ability.iMen = atoi(vData[i+11].c_str());
-		 item->_ability.iAgi = atoi(vData[i+12].c_str());
-		 item->_ability.iLuk = atoi(vData[i+13].c_str());
+		for (int i = 0; i < vData.size(); i += 14)
+		{
+			Item* item = new Item;
+			item->_index = atoi(vData[i].c_str());
+			item->_invenImgNum = atoi(vData[i + 1].c_str());
+			item->_storeImgNum = atoi(vData[i + 2].c_str());
+			item->_dropImgNum = atoi(vData[i + 3].c_str());
+			item->_type = static_cast<ITEM_TYPE>(atoi(vData[i + 4].c_str()));
+			item->_name = vData[i + 5].c_str();
+			item->_description = vData[i + 7].c_str();
+			item->_price = atoi(vData[i + 6].c_str());
+			item->_ability.maxHp = 0;
+			item->_ability.maxSp = 0;
+			item->_ability.iAtk = atoi(vData[i + 8].c_str());
+			item->_ability.iDef = atoi(vData[i + 9].c_str());
+			item->_ability.iInt = atoi(vData[i + 10].c_str());
+			item->_ability.iMen = atoi(vData[i + 11].c_str());
+			item->_ability.iAgi = atoi(vData[i + 12].c_str());
+			item->_ability.iLuk = atoi(vData[i + 13].c_str());
 
-		 _vItem.push_back(item);
+			j++;
+			if (j > 26) break;
+			_vItem.push_back(item);
+		}
 	}
-
 	return S_OK;
 }
 
@@ -51,6 +57,7 @@ void ItemManager::render(void){
 
 Item* ItemManager::getItem(int itemIndex)
 {
+	if (itemIndex >= _vItem.size()) return nullptr; 
 	return _vItem[itemIndex];
 }
 

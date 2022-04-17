@@ -3,7 +3,7 @@
 
 enum class EFFECT_TYPE
 {
-	P_ATKACK_ATKMOTION, // 상태에서 직접 관리
+	P_ATKACK_ATKMOTION,   // 상태에서 직접 관리
 	P_ATKACK_COLLISION,	  // 플레이어->몬스터 타격성공
 
 	M_ATKACK_ATKMOTION,	  // 몬스터 공격모션

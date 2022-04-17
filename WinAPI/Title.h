@@ -1,12 +1,13 @@
 #pragma once
 #include "GameNode.h"
+
 class Title :public GameNode
 {
 private:
 	RECT _startRc;
-	int _alpha;
-	bitset<2> _fadeout;
 
+	// 씬 전환용 페이드아웃
+	tagSceneFadeOut fadeOut;
 public:
 	Title() {}
 	~Title() {}

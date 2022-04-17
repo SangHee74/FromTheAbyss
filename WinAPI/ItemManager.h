@@ -1,8 +1,8 @@
 #pragma once
-#include "SingletonBase.h"
+//#include "GemeNode.h"
 #include "ItemClass.h"
 
-class ItemManager :public SingletonBase<ItemManager>
+class ItemManager //:public GemeNode
 {
 private:
 	Image* _invenIcon;

@@ -3,8 +3,7 @@
 
 HRESULT SoundClass::init(void)
 {
-	SOUNDMANAGER->addSound("title", "Resources/sounds/abyss_title.wav", true, true);
-
+	//SOUNDMANAGER->addSound("title", "Resources/sounds/title.wav", true, true);
 
 	return S_OK;
 }

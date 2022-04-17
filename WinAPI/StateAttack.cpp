@@ -135,22 +135,14 @@ void OneHandWeaponCombo::comboOne(Player* player)
 void OneHandWeaponCombo::comboTwo(Player* player)
 {
 	player->getPlayer().image = IMG("p_oneHandCombo_02");
-
 	player->getIsStateCheck().set(2);
-
-	cout << "한손무기 2단 공격 함수" << endl;
-
 
 }
 
 void OneHandWeaponCombo::comboThree(Player* player)
 {
 	player->getPlayer().image = IMG("p_oneHandCombo_03");
-
 	player->getIsStateCheck().set(2);
-
-	cout << "한손무기 3단 공격 함수" << endl;
-
 
 }
 
@@ -256,7 +248,6 @@ void TwoHandWeaponCombo::comboOne(Player * player)
 			player->getPlayer().frameX = 0;
 		}
 	}
-	cout << _playerMotionTime << endl;
 	if (_playerMotionTime >= 2.3f)
 	{
 		_comboEnd.set(0);

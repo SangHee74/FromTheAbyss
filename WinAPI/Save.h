@@ -6,10 +6,15 @@ enum SAVESLOT
 	SAVE_ONE,SAVE_TWO,SAVE_THREE,SAVE_END
 };
 
+enum SAVETEXT
+{
+	NAME, ABYSS, TIME, SAVETEXT_END
+};
 
 struct tagSlot
 {
-	tagOnlyText txet;
+	tagOnlyText txet[SAVETEXT_END];
+	string info[SAVETEXT_END];
 	RECT slotRc;
 	Image* newGame;
 	Image* newGameSelect;
@@ -25,6 +30,7 @@ private:
 	RECT _deleteRc;
 
 	bool _nextScene;
+	tagSceneFadeOut fadeOut;
 
 public:
 	Save() {}
@@ -34,4 +40,6 @@ public:
 	void release(void);
 	void update(void);
 	void render(void);
+
+	void playerInfo(RECT rc);
 };
