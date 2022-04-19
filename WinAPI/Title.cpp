@@ -3,8 +3,8 @@
 
 HRESULT Title::init(void)
 {
-	SOUNDMANAGER->addSound("title", "Resources/sounds/title.wav", true, true);
-	SOUNDMANAGER->play("title", 0.2);
+	//SOUNDMANAGER->addSound("title", "Resources/sounds/title.wav", true, true);
+	//SOUNDMANAGER->play("title", 0.2);
 	_startRc = RectMakeCenter(RSCENTER_X, CENTER_Y, IMG("titleButton")->getWidth(), IMG("titleButton")->getHeight());
 	fadeOut.init();
 	return S_OK;
@@ -30,7 +30,7 @@ void Title::update(void)
 	fadeOut.update();
 	if (fadeOut.onOff.test(NEXT)) // ¾ÀÃ¼ÀÎÁö
 	{
-		SOUNDMANAGER->stop("title");
+		//SOUNDMANAGER->stop("title");
 		SCENEMANAGER->changeScene("save");
 	}
 

@@ -19,7 +19,7 @@ HRESULT Player::init(void)
 	_status.maxSp = _status.curSp;
 	_status.maxExp = 16;
 	_status.lv = 1;
-	_status.iAtk = 1;
+	_status.iAtk = 7;
 	_status.iDef = 12;
 	_status.iInt = 7;
 	_status.iMen = 10;
@@ -34,7 +34,7 @@ HRESULT Player::init(void)
 #pragma endregion
 
 	_shadowAlpha = 120;
-	_player.speed = 10;
+	_player.speed = 5;
 	_collision.defWidth = 40;
 	_collision.defHeight = 80;
 	_collision.atkWidth = 0;

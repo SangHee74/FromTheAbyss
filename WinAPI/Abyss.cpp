@@ -86,7 +86,7 @@ void Abyss::update(void)
 			SOUNDMANAGER->stop("abyss");
 
 			// 스위치문 추가 
-			SCENEMANAGER->changeScene("stage14");
+			SCENEMANAGER->changeScene("stage11");
 		}
 	}
 

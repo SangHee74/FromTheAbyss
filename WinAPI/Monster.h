@@ -62,7 +62,7 @@ protected:
 	bool	_atkStart;			// 플레이어와 일정거리 이하일때 공격
 	Image*  _image;				// 몬스터 이미지
 
-
+	int _count;
 
 public:
 	Monster(void);

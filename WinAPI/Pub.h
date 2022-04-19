@@ -4,12 +4,14 @@
 class Pub :public GameNode
 {
 private:
-	
-	RECT _menu[3];
+	// 나중에 이걸로 교체
+	// RECT _menu[2];
+	// RECT _category[5];
 	RECT _type[2];
+	RECT _menu[3];
 	RECT _next;
 	RECT _back;
-	tagOnlyText _index[8];
+	tagOnlyText _pubText[8];
 
 	bool _okBox;
 	
@@ -28,7 +30,7 @@ private:
 
 public:
 	Pub():
-	_index
+		_pubText
 	{
 		L"어서 오세요, 환영합니다!",
 		L"오늘은 뭘 할거니?",

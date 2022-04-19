@@ -3,8 +3,8 @@
 
 HRESULT Save::init(void)
 {
-	SOUNDMANAGER->addSound("save", "Resources/sounds/save.wav", true, true);
-	SOUNDMANAGER->play("save", 0.2);
+	//SOUNDMANAGER->addSound("save", "Resources/sounds/save.wav", true, true);
+	//SOUNDMANAGER->play("save", 0.2);
 
 	//vector<string> vData = TEXTDATAMANAGER->load("Resources/player.txt");
 

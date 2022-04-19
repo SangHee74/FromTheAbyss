@@ -9,7 +9,7 @@ Monster::Monster(): _maxHp(0), _curHp(0), _curAtt(0),
 					_frameX(0), _frameY(0), _atkRange(0),
 					_speed(0.0f), _distance(0.0f), _angle(0.0f),
 					_rndTimeCount(0.0f), _worldTimeCount(0.0f), _atkCoolTime(0.0f), _atkTimeCount(0.0f),
-					_playerCheck(false), _atkStart(false), _image(nullptr)
+					_playerCheck(false), _atkStart(false), _image(nullptr), _count(0)
 {
 }
 
@@ -136,7 +136,7 @@ void Monster::update(void)
 		_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 	}
 
-
+	_count += TIMEMANAGER->getElapsedTime();
 }
 
 void Monster::render(void)
@@ -234,12 +234,12 @@ void Monster::animation(void)
 
 
 	default:
-		if (_rndTimeCount + _worldTimeCount <= GetTickCount())
+		if (_count <= 20.0f)
 		{
-			_worldTimeCount = GetTickCount();
 			_frameX++;
 			if (_image->getMaxFrameX() < _frameX)
 			{
+				_count = 0;
 				_frameX = 0;
 			}
 		}

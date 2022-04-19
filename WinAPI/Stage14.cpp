@@ -293,7 +293,7 @@ void Stage14::collision()
 			_lastStageGate = true;
 
 			// 몬스터 죽음 이펙트
-			_enemyEff->createEff(tempRc, EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
+			//_enemyEff->createEff(tempRc, EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
 
 			// 경험치 획득 
 			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
@@ -311,7 +311,7 @@ void Stage14::collision()
 #pragma region 몬스터의 공격
 
 		// 몬스터 공격이펙트 -> 플레이어 피격박스
-		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATK)
+		//if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATK)
 		{
 			if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().atkRc,
 				&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc)
@@ -328,7 +328,7 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 
 				// 충돌위치 이펙트
-				_enemyEff->createEff(tempRc,EFFECT_TYPE::M_ATKACK_COLLISION);
+				//_enemyEff->createEff(tempRc,EFFECT_TYPE::M_ATKACK_COLLISION);
 
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
 				cout << "몬스터 데미지 : " << temp << endl;

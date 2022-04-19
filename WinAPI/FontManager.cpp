@@ -60,6 +60,9 @@ void FontManager::firstLineText(HDC hdc, LPCWSTR printString)
 
 	SetTextColor(hdc, RGB(0, 0, 0));
 	TextOutW(hdc, 35, 350, printString, wcslen(printString));
+
+	SelectObject(hdc, oldFont);
+	DeleteObject(hFont);
 }
 
 

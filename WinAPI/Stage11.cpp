@@ -123,6 +123,12 @@ void Stage11::render(void)
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
+	Rectangle(getMemDC(),
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].top - cameraTop,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].right - cameraLeft,
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
+	);
 	}
 
 	// 서브화면(UI)
@@ -133,16 +139,10 @@ void Stage11::render(void)
 
 	_subScreen->render();
 
-	Rectangle(getMemDC(),
-		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
-		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].top - cameraTop,
-		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].right - cameraLeft,
-		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
-	);
 
-	IMGAR("map_abyss", getMemDC(), LSCENTER_X,CENTER_Y-10,_enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
+	//IMGAR("map_abyss", getMemDC(), LSCENTER_X,CENTER_Y-10,_enterInfo.alpha);
+	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
+	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
 
 }
 

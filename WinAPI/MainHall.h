@@ -23,6 +23,8 @@ private:
 	bitset<6> _buttonCheck;
 	int _chooseIndex;
 
+	float _timeCount;
+
 	tagSceneFadeOut fadeOut;
 	tagFingerMouse fingerPointer;
 

@@ -38,24 +38,24 @@ void Pub::render(void)
 	{
 		IMGR("pub4", getMemDC());
 		IMGR("nextButton", getMemDC(),_next.left,_next.top);
-		FONTMANAGER->firstLineText(getMemDC(),_index[0].text);
+		FONTMANAGER->firstLineText(getMemDC(), _pubText[0].text);
 	}
 	if (PubIdx & pubMain)
 	{
 		IMGR("pub", getMemDC());
-		FONTMANAGER->firstLineText(getMemDC(), _index[1].text);
+		FONTMANAGER->firstLineText(getMemDC(), _pubText[1].text);
 	}
 	if (PubIdx & pubType)
 	{
 		if (PubIdx & storege)
 		{
 			IMGR("pub2", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[2].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[2].text);
 		}
 		if (PubIdx & takeout)
 		{
 			IMGR("pub2", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[3].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[3].text);
 		}
 	}
 	if (PubIdx & storege)
@@ -64,12 +64,12 @@ void Pub::render(void)
 		if (PubIdx & item)
 		{
 			IMGR("pub5", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[2].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[2].text);
 		}
 		if (PubIdx & skill)
 		{
 			IMGR("pub5", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[2].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[2].text);
 		}
 		
 	}
@@ -78,18 +78,18 @@ void Pub::render(void)
 		if (PubIdx & item)
 		{
 			IMGR("pub5", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[3].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[3].text);
 		}
 		if (PubIdx & skill)
 		{
 			IMGR("pub5", getMemDC());
-			FONTMANAGER->firstLineText(getMemDC(), _index[3].text);
+			FONTMANAGER->firstLineText(getMemDC(), _pubText[3].text);
 		}
 	}
 	if (PubIdx & pubSaveCheck)
 	{
 		IMGR("pub4", getMemDC());
-		FONTMANAGER->firstLineText(getMemDC(), _index[4].text);
+		FONTMANAGER->firstLineText(getMemDC(), _pubText[4].text);
 	}
 
 

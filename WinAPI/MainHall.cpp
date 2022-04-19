@@ -3,8 +3,8 @@
 
 HRESULT MainHall::init(void)
 {
-	SOUNDMANAGER->addSound("mainHall", "Resources/sounds/mainHall.wav", true, true);
-	SOUNDMANAGER->play("mainHall", 0.2);
+	//SOUNDMANAGER->addSound("mainHall", "Resources/sounds/mainHall.wav", true, true);
+	//SOUNDMANAGER->play("mainHall", 0.2);
 
 	// 메인홀 입장시 플레이어 hp,sp 회복
 	DATAMANAGER->getPlayer()->getPlayerStatus().curHp = DATAMANAGER->getPlayer()->getPlayerStatus().maxHp;
@@ -23,6 +23,8 @@ HRESULT MainHall::init(void)
 	_buttonCheck.reset();
 	_buttonCheck.set(MAINSCENE_ABYSS);
 	_chooseIndex = 0;
+
+	_timeCount = 0.0;
 
 	fadeOut.init();
 	fingerPointer.init();
@@ -70,6 +72,15 @@ void MainHall::update(void)
 		}
 	}
 	
+	if (_buttonCheck.any())
+	{
+		_timeCount += TIMEMANAGER->getElapsedTime();
+		if (_timeCount >= 5.0f)
+		{
+			_timeCount = 0;
+		}
+	}
+
 }
 
 void MainHall::render(void)
@@ -96,6 +107,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_ABYSS;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_ABYSS);
+			_timeCount = 0;
+
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_PUB], _ptMouse))
@@ -106,6 +119,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_PUB;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_PUB);
+			_timeCount = 0;
+
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_STORE], _ptMouse))
@@ -116,6 +131,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_STORE;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_STORE);
+			_timeCount = 0;
+
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_SQURE], _ptMouse))
@@ -126,6 +143,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_SQURE;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_SQURE);
+			_timeCount = 0;
+
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_TUTO], _ptMouse))
@@ -136,6 +155,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_TUTO;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_TUTO);
+			_timeCount = 0;
+
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_CASTLE], _ptMouse))
@@ -146,6 +167,8 @@ void MainHall::selectSlot()
 			_chooseIndex = MAINSCENE_CASTLE;
 			_buttonCheck.reset();
 			_buttonCheck.set(MAINSCENE_CASTLE);
+			_timeCount = 0;
+
 		}
 	}
 	
@@ -170,7 +193,7 @@ void MainHall::selectMenue()
 	{
 		if (PtInRect(&_icon[i], _ptMouse))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && _buttonCheck.any())
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && _timeCount > 2.0 )
 			{
 				fadeOut.onOff.set(ON);
 			}
