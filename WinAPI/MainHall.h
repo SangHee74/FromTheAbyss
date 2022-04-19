@@ -17,13 +17,16 @@ private:
 	tagText _menuInfoText[MAINSCENE_END];
 	int _textNum;
 
-	// selected menu
+	// selected menu (fingerMouse)
 	// 000001 abyss / 000010 pub / 000100 store 
 	// 001000 tuto / 010000 squre/  100000 castle
-	bitset<6> _buttonCheck;
-	int _chooseIndex;
+	//bitset<6> _buttonCheck;
+	int _sceneIndex;
+	//int _chooseIndex;
+	int _changeIndex;
 
 	float _timeCount;
+	bool _selectLimit;
 
 	tagSceneFadeOut fadeOut;
 	tagFingerMouse fingerPointer;

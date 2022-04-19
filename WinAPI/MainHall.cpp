@@ -18,16 +18,14 @@ HRESULT MainHall::init(void)
 	_icon[MAINSCENE_TUTO] = RectMake(1095, 354, 90, 70);
 	_icon[MAINSCENE_CASTLE] = RectMake(1155, 262, 90, 70);
 
-	_textNum = 0;
-
-	_buttonCheck.reset();
-	_buttonCheck.set(MAINSCENE_ABYSS);
-	_chooseIndex = 0;
-
+	_sceneIndex = MAINSCENE_ABYSS;
+	_changeIndex = MAINSCENE_END;
 	_timeCount = 0.0;
+	_selectLimit = false;
 
 	fadeOut.init();
 	fingerPointer.init();
+
 
 	return S_OK;
 }
@@ -49,7 +47,7 @@ void MainHall::update(void)
 	if (fadeOut.onOff.test(NEXT)) // 씬체인지
 	{
 		SOUNDMANAGER->stop("mainHall");
-		switch (_chooseIndex)
+		switch (_changeIndex)
 		{
 		case MAINSCENE_ABYSS:
 			SCENEMANAGER->changeScene("abyss");
@@ -71,16 +69,23 @@ void MainHall::update(void)
 			break;
 		}
 	}
+
 	
-	if (_buttonCheck.any())
+
+	// 메뉴선택 시 시간체크 
+	if (_selectLimit)
 	{
 		_timeCount += TIMEMANAGER->getElapsedTime();
-		if (_timeCount >= 5.0f)
+		if (_timeCount >= 10.0f) // 10 지나면 초기화
 		{
+			_changeIndex = MAINSCENE_END;
 			_timeCount = 0;
 		}
 	}
+	else _timeCount = 0; // 시간제한 초기화
 
+
+	cout << "클릭 시간 : " << _timeCount << endl;
 }
 
 void MainHall::render(void)
@@ -103,85 +108,151 @@ void MainHall::selectSlot()
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_ABYSS;
-			_chooseIndex = MAINSCENE_ABYSS;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_ABYSS);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_ABYSS;
+			_selectLimit = true;
 
+			if (_timeCount < 1.0f) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_ABYSS;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_PUB], _ptMouse))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_PUB;
-			_chooseIndex = MAINSCENE_PUB;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_PUB);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_PUB;
+			_selectLimit = true;
 
+			if (_timeCount > 2) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_PUB;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_STORE], _ptMouse))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_STORE;
-			_chooseIndex = MAINSCENE_STORE;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_STORE);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_STORE;
+			_selectLimit = true;
 
+			if (_timeCount > 5) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_STORE;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_SQURE], _ptMouse))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_SQURE;
-			_chooseIndex = MAINSCENE_SQURE;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_SQURE);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_SQURE;
+			_selectLimit = true;
 
+			if (_timeCount > 5) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_SQURE;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_TUTO], _ptMouse))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_TUTO;
-			_chooseIndex = MAINSCENE_TUTO;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_TUTO);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_TUTO;
+			_selectLimit = true;
 
+			if (_timeCount > 5) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_TUTO;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_TUTO; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	if (PtInRect(&_icon[MAINSCENE_CASTLE], _ptMouse))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			_textNum = MAINSCENE_CASTLE;
-			_chooseIndex = MAINSCENE_CASTLE;
-			_buttonCheck.reset();
-			_buttonCheck.set(MAINSCENE_CASTLE);
-			_timeCount = 0;
+			_sceneIndex = MAINSCENE_CASTLE;
+			_selectLimit = true;
 
+			if (_timeCount > 5) // 일정 시간 이상일떄
+			{
+				_changeIndex = MAINSCENE_CASTLE;
+
+				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				{
+					fadeOut.onOff.set(ON); // 페이드아웃시작
+				}
+				if (_sceneIndex != _changeIndex)
+				{
+					_changeIndex = MAINSCENE_CASTLE; // 다르면 체인지 초기화, 
+					_selectLimit = false; // 시간제한 초기화
+				}
+			}
 		}
 	}
 	
 	// icon w, h 110,90 (abyss)  /  90 ,70
-	if (_buttonCheck.test(MAINSCENE_ABYSS))
+	if (_sceneIndex == 0)
 	{
 		tempX = _icon[MAINSCENE_ABYSS].left +70;
 		tempY = _icon[MAINSCENE_ABYSS].top + 60;
 	}
 	else
 	{
-		tempX = _icon[_chooseIndex].left + 60;
-		tempY = _icon[_chooseIndex].top + 45;
+		tempX = _icon[_sceneIndex].left + 60;
+		tempY = _icon[_sceneIndex].top + 45;
 	}
 	fingerPointer.pos = { tempX,tempY };
 
@@ -206,29 +277,29 @@ void MainHall::menuInfo(int textNum)
 	IMGR("main", getMemDC());
 	SetTextAlign(getMemDC(), TA_CENTER);
 	FONTMANAGER->drawText(getMemDC(), 180, 272, "둥근모꼴", 32, FW_SEMIBOLD,
-		_menuInfoText[_textNum].name, wcslen(_menuInfoText[_textNum].name), RGB(255, 255, 255));
+		_menuInfoText[_sceneIndex].name, wcslen(_menuInfoText[_sceneIndex].name), RGB(255, 255, 255));
 
 	SetTextAlign(getMemDC(), TA_LEFT);
 	int _textBufferCnt = 150;
 	const int SCRIPT_MAX_LENGTH = 30;
 
-	FONTMANAGER->drawText(getMemDC(), 36, 351, "돋움", 21, FW_SEMIBOLD, _menuInfoText[_textNum].script,
+	FONTMANAGER->drawText(getMemDC(), 36, 351, "돋움", 21, FW_SEMIBOLD, _menuInfoText[_sceneIndex].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(100, 100, 100));
 
-	if (wcslen(_menuInfoText[_textNum].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
+	if (wcslen(_menuInfoText[_sceneIndex].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
 	{
 		FONTMANAGER->drawText(getMemDC(), 36, 381, "돋움", 21, FW_SEMIBOLD,
-			_menuInfoText[_textNum].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_textNum].script)) ?
-			wcslen(_menuInfoText[_textNum].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(100, 100, 100));
+			_menuInfoText[_sceneIndex].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_sceneIndex].script)) ?
+			wcslen(_menuInfoText[_sceneIndex].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(100, 100, 100));
 	}
 
-	FONTMANAGER->drawText(getMemDC(), 35, 350, "돋움", 21, FW_SEMIBOLD, _menuInfoText[_textNum].script,
+	FONTMANAGER->drawText(getMemDC(), 35, 350, "돋움", 21, FW_SEMIBOLD, _menuInfoText[_sceneIndex].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(0, 0, 0));
 
-	if (wcslen(_menuInfoText[_textNum].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
+	if (wcslen(_menuInfoText[_sceneIndex].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
 	{
 		FONTMANAGER->drawText(getMemDC(), 35, 380, "돋움", 21, FW_SEMIBOLD,
-			_menuInfoText[_textNum].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_textNum].script)) ?
-			wcslen(_menuInfoText[_textNum].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(0, 0, 0));
+			_menuInfoText[_sceneIndex].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_sceneIndex].script)) ?
+			wcslen(_menuInfoText[_sceneIndex].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(0, 0, 0));
 	}
 }
