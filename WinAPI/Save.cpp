@@ -101,7 +101,12 @@ void Save::update(void)
 			break;
 		}
 		SOUNDMANAGER->stop("save");
-		SCENEMANAGER->changeScene("main");
+		
+
+		if(_slot[_chooseIndex].isSaved) SCENEMANAGER->changeScene("main");
+		else  SCENEMANAGER->changeScene("castle");
+	
+		
 	}
 
 	

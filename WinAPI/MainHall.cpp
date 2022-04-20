@@ -84,8 +84,6 @@ void MainHall::update(void)
 	}
 	else _timeCount = 0; // 시간제한 초기화
 
-
-	cout << "클릭 시간 : " << _timeCount << endl;
 }
 
 void MainHall::render(void)
@@ -134,18 +132,18 @@ void MainHall::selectSlot()
 			_sceneIndex = MAINSCENE_PUB;
 			_selectLimit = true;
 
-			if (_timeCount > 2) // 일정 시간 이상일떄
+			if (_timeCount > 2)  
 			{
 				_changeIndex = MAINSCENE_PUB;
 
-				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				if (_sceneIndex == _changeIndex)  
 				{
-					fadeOut.onOff.set(ON); // 페이드아웃시작
+					fadeOut.onOff.set(ON);  
 				}
 				if (_sceneIndex != _changeIndex)
 				{
-					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
-					_selectLimit = false; // 시간제한 초기화
+					_changeIndex = MAINSCENE_END;  
+					_selectLimit = false;  
 				}
 			}
 		}
@@ -157,18 +155,18 @@ void MainHall::selectSlot()
 			_sceneIndex = MAINSCENE_STORE;
 			_selectLimit = true;
 
-			if (_timeCount > 5) // 일정 시간 이상일떄
+			if (_timeCount > 5) 
 			{
 				_changeIndex = MAINSCENE_STORE;
 
-				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				if (_sceneIndex == _changeIndex) 
 				{
-					fadeOut.onOff.set(ON); // 페이드아웃시작
+					fadeOut.onOff.set(ON); 
 				}
 				if (_sceneIndex != _changeIndex)
 				{
-					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
-					_selectLimit = false; // 시간제한 초기화
+					_changeIndex = MAINSCENE_END;   
+					_selectLimit = false;  
 				}
 			}
 		}
@@ -180,18 +178,18 @@ void MainHall::selectSlot()
 			_sceneIndex = MAINSCENE_SQURE;
 			_selectLimit = true;
 
-			if (_timeCount > 5) // 일정 시간 이상일떄
+			if (_timeCount > 5) 
 			{
 				_changeIndex = MAINSCENE_SQURE;
 
-				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				if (_sceneIndex == _changeIndex)  
 				{
-					fadeOut.onOff.set(ON); // 페이드아웃시작
+					fadeOut.onOff.set(ON); 
 				}
 				if (_sceneIndex != _changeIndex)
 				{
-					_changeIndex = MAINSCENE_END; // 다르면 체인지 초기화, 
-					_selectLimit = false; // 시간제한 초기화
+					_changeIndex = MAINSCENE_END;  
+					_selectLimit = false;  
 				}
 			}
 		}
@@ -203,18 +201,18 @@ void MainHall::selectSlot()
 			_sceneIndex = MAINSCENE_TUTO;
 			_selectLimit = true;
 
-			if (_timeCount > 5) // 일정 시간 이상일떄
+			if (_timeCount > 5)  
 			{
 				_changeIndex = MAINSCENE_TUTO;
 
-				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				if (_sceneIndex == _changeIndex)  
 				{
-					fadeOut.onOff.set(ON); // 페이드아웃시작
+					fadeOut.onOff.set(ON); 
 				}
 				if (_sceneIndex != _changeIndex)
 				{
-					_changeIndex = MAINSCENE_TUTO; // 다르면 체인지 초기화, 
-					_selectLimit = false; // 시간제한 초기화
+					_changeIndex = MAINSCENE_TUTO;  
+					_selectLimit = false;  
 				}
 			}
 		}
@@ -226,18 +224,18 @@ void MainHall::selectSlot()
 			_sceneIndex = MAINSCENE_CASTLE;
 			_selectLimit = true;
 
-			if (_timeCount > 5) // 일정 시간 이상일떄
+			if (_timeCount > 5) 
 			{
 				_changeIndex = MAINSCENE_CASTLE;
 
-				if (_sceneIndex == _changeIndex) // 선택했던 씬인덱스와 바꿀 인덱스가 같으면
+				if (_sceneIndex == _changeIndex)  
 				{
-					fadeOut.onOff.set(ON); // 페이드아웃시작
+					fadeOut.onOff.set(ON);  
 				}
 				if (_sceneIndex != _changeIndex)
 				{
-					_changeIndex = MAINSCENE_CASTLE; // 다르면 체인지 초기화, 
-					_selectLimit = false; // 시간제한 초기화
+					_changeIndex = MAINSCENE_CASTLE;  
+					_selectLimit = false; 
 				}
 			}
 		}

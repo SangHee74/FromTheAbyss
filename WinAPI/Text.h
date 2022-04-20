@@ -22,3 +22,10 @@ struct tagImageWithText
 	LPCWSTR script;
 };
 
+
+struct tagImageWithText2
+{
+	string imageVec;
+	LPCWSTR script;
+};
+

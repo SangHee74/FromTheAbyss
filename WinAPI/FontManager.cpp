@@ -123,7 +123,7 @@ void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fo
 
 
 
-void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, string str, COLORREF color)
+void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, string str, COLORREF color, bool clip)
 {
 	SetBkMode(hdc, TRANSPARENT);
 
@@ -139,8 +139,17 @@ void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int f
 	auto oldColor = GetTextColor(hdc);
 
 	SetTextColor(hdc, color);
-	DrawText(hdc,str.c_str(), strlen(str.c_str()), &rc, DT_LEFT|| DT_NOCLIP);
 
+	if (!clip) 
+	{
+		DrawText(hdc,str.c_str(), strlen(str.c_str()), &rc, DT_LEFT|| DT_NOCLIP);
+
+	}
+	else {
+
+		DrawText(hdc,str.c_str(), strlen(str.c_str()), &rc, DT_LEFT|| DT_WORDBREAK);
+	}
+	
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
 }

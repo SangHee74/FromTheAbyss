@@ -29,7 +29,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("store4", "Resources/Images/BackGround/store4.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("store5", "Resources/Images/BackGround/store5.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("tutorial", "Resources/Images/BackGround/tutorial.bmp", WINSIZE_X, WINSIZE_Y);
-	IMAGEMANAGER->addImage("castle", "Resources/Images/BackGround/castle_1.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("castle1", "Resources/Images/BackGround/castle_1.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("castle2", "Resources/Images/BackGround/castle_2.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("square", "Resources/Images/BackGround/square/square.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("square_boxTop", "Resources/Images/BackGround/square/square_boxTop.bmp", 254 * MAGNI, 68 * MAGNI, MGT);

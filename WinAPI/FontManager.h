@@ -26,7 +26,7 @@ public:
 		LPCWSTR* printStringArr, int length, COLORREF color);
 
 	void drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth,
-		string str, COLORREF color);
+		string str, COLORREF color, bool clip = false);
 
 
 };

@@ -28,7 +28,8 @@ HRESULT Player::init(void)
 	_status.iStatusPoint = 0; 
 	_status.lufia = 300;
 	// 블럭 정보 추가 필요
-	_abyss.abyss = 1;
+	// 처음 성으로 들어가서 0부터 시작
+	_abyss.abyss = 0;
 	_abyss.stage = 1;
 
 #pragma endregion
