@@ -76,3 +76,29 @@ public:
 	MonsterEffect() {}
 	~MonsterEffect() {}
 };
+
+
+class Effect
+{
+	Image* img;
+	RECT rc;
+	int count;
+	int curFrameX;
+	int curFrameY;
+	float x, y;
+	bool onEffect;
+};
+
+class MonstersEffect : public Effect
+{
+public:
+	HRESULT init(RECT rc, EFFECT_TYPE type);// 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
+	void release(void);
+	void update(void);
+	void render(void);
+
+	void centerDamageEffect(int damage, POINT pos);
+
+	MonstersEffect() {}
+	~MonstersEffect() {}
+};

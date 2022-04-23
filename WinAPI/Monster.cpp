@@ -81,14 +81,19 @@ void Monster::release(void)
 
 void Monster::update(void)
 {
-	// 이동
+
+
+
+// 수정 전 업데이트
+#if 0
+	// 랜덤이동
 	move();
 
 	// 방향전환 + 렉트 초기화
 	setDirection();
 	
 	// 플레이어 발견시 따라가기
-	if (_playerCheck && _state != MONSTERSTATE::ATK) monsterMovetoPlayer();
+	if (_playerCheck && _state == MONSTERSTATE::MOVE) monsterMovetoPlayer();
 	
 	// 픽셀충돌
 	pixelCollision();
@@ -96,11 +101,7 @@ void Monster::update(void)
 
 
 	// 공격
-	if ( _atkStart && _atkCoolTime >= 120.0f )
-	{
-		_state = MONSTERSTATE::ATK;
-		atkack();
-	}
+	if ( _atkStart && _atkCoolTime >= 120.0f ) atkack();
 	if (_state == MONSTERSTATE::ATK) _atkTimeCount++;
 	if (_state != MONSTERSTATE::ATK) _atkCoolTime++;
 	//cout << "_atkTimeCount : " << _atkTimeCount << endl;
@@ -137,13 +138,16 @@ void Monster::update(void)
 	}
 
 	_count += TIMEMANAGER->getElapsedTime();
+
+#endif
+
 }
 
 void Monster::render(void)
 {
 	draw();
 	animation();
-	drawEffect();
+	if(_state == MONSTERSTATE::ATK) drawEffect();
 
 }
 
@@ -154,12 +158,12 @@ void Monster::draw(void)
 	if (KEYMANAGER->isToggleKey(VK_F3))
 	{
 		//인식렉트
-		Rectangle(getMemDC(),
-		_recognitionRc.left - CAM->getScreenRect().left,
-		_recognitionRc.top - CAM->getScreenRect().top,
-		_recognitionRc.right - CAM->getScreenRect().left,
-		_recognitionRc.bottom - CAM->getScreenRect().top
-		);
+		//Rectangle(getMemDC(),
+		//_recognitionRc.left - CAM->getScreenRect().left,
+		//_recognitionRc.top - CAM->getScreenRect().top,
+		//_recognitionRc.right - CAM->getScreenRect().left,
+		//_recognitionRc.bottom - CAM->getScreenRect().top
+		//);
 
 		 //이동렉트
 		Rectangle(getMemDC(),
@@ -225,28 +229,15 @@ void Monster::draw(void)
 
 void Monster::animation(void) 
 {
-	switch (_state)
+	if (_count >= 20.0f)
 	{
-	case MONSTERSTATE::ATK:
-
-
-		break;
-
-
-	default:
-		if (_count <= 20.0f)
+		_frameX++;
+		if (_image->getMaxFrameX() < _frameX)
 		{
-			_frameX++;
-			if (_image->getMaxFrameX() < _frameX)
-			{
-				_count = 0;
-				_frameX = 0;
-			}
+			_count = 0;
+			_frameX = 0;
 		}
-		break;
 	}
-	
-
 }
 
 void Monster::setDirection(void)
@@ -279,8 +270,6 @@ void Monster::setDirection(void)
 
 void Monster::monsterMovetoPlayer(void)
 {
-	_state = MONSTERSTATE::MOVE;
-	
 	if (_state == MONSTERSTATE::MOVE);
 	{
 		switch (_direction)

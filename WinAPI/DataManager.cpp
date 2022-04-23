@@ -10,6 +10,7 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 		// 파일입출력. 파일이 있으면 파일읽어오기
 		// 파일없으면 기본값으로 새로 시작하기 
 		//DATAMANAGER->getPlayer()->init();
+		_storyRewardCheck.reset();
 		break;
 
 	case PLAYERNUMBER::PLAYER_TWO:
@@ -28,8 +29,8 @@ HRESULT DataManager::init(void)
 	//_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
 	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 1; // 임시
-	//_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+	//_mapData.enterAbyssInfo.stage = 1; // 임시
+	_mapData.enterAbyssInfo.stage = 4; // 보스테스트
 
 
 	_mapData.map = nullptr;
@@ -64,6 +65,8 @@ void DataManager::render(void)
 {
 }
 
+
+// setting : mapImage, mapPixelImage, Gate Position, player Position
 void DataManager::setStageSetting(void)
 {
 	int settingAbyss = _mapData.enterAbyssInfo.abyss;
@@ -92,10 +95,10 @@ void DataManager::setStageSetting(void)
 			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
+			//_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
 
 			// 보스방 테스트 용
-			//_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
+			_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
  
 		}
 		if (settingStage == 4)
@@ -106,7 +109,6 @@ void DataManager::setStageSetting(void)
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(1260, 620, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			int temp = _mapData.map->getWidth()*0.5;
 			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
 			//_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-1200, PLAYERDIRECTION::UP);
 		}

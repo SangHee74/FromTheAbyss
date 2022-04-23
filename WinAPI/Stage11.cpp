@@ -104,7 +104,7 @@ void Stage11::render(void)
 
 	//if()
 	// 몬스터
-	//_enemyM->render();
+	_enemyM->render();
 
 	// 플레이어 
 	DATAMANAGER->getPlayer()->render();

@@ -1,24 +1,27 @@
 #pragma once
 #include "GameNode.h"
 
+#pragma region textNumberList
+#define ABYSS0LAST 10
+#define ABYSS1LAST 10
+#define ABYSS8LAST 10
+
+
+#pragma endregion
+
 struct tagQueenDialogue
 {
-	tagOnlyText abyss1Text[10];
-	tagOnlyText abyss8Text[10];
-
-	bitset<8> abyssCheck;
+	tagOnlyText abyss0Text[ABYSS0LAST];
+	tagOnlyText abyss1Text[ABYSS1LAST];
+	tagOnlyText abyss8Text[ABYSS8LAST];
 };
 
 class Castle :public GameNode
 {
 private:
 
-	// 어비스마다 나오는 대사가 다르고
-	// 어떤 대사마다 얼굴(이미지가 달라짐)
-
-
 	tagQueenDialogue _castleText;
-
+	RECT _next;
 	int _textIndex;
 	bool _isQueenSmile; 
 
@@ -31,4 +34,8 @@ public:
 	void release(void);
 	void update(void);
 	void render(void);
+
+	void queenSmileCheck();
+	void showDialogue(int index);
+	void giveRewardLufia(int value);
 };

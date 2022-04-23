@@ -114,6 +114,14 @@ void Stage14::update(void)
 void Stage14::render(void)
 {
 
+	int cameraLeft = CAM->getScreenRect().left;
+	int cameraTop = CAM->getScreenRect().top;
+
+	// backGround
+	DATAMANAGER->getMapData().map->render
+	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
+
+
 	// distance view
 	LineMake(getMemDC(),
 		_enemyM->getMonsters()[0]->getMovePosX(),
@@ -122,16 +130,11 @@ void Stage14::render(void)
 		DATAMANAGER->getPlayer()->getPlayer().drawPosY
 	);
 
-	int cameraLeft = CAM->getScreenRect().left;
-	int cameraTop = CAM->getScreenRect().top;
 
-	// 배경
-	DATAMANAGER->getMapData().map->render
-	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
-
-	// 포탈(보스가 죽으면)
+	// portal(if Boss dead)
 	if (_lastStageGate) 
 	{
+		// storyReward 수정할 것!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		DATAMANAGER->getPlayer()->getPlayerAbyss().abyss = 2;
 		IMGR("map_gate", getMemDC(),
 			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
@@ -143,26 +146,14 @@ void Stage14::render(void)
 	// 이펙트 렌더 
 	_enemyEff->render();
 	_playerEff->render();
-	
 
+	cout << _tempMonsterNum << endl;
 
 	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 	}
-
-
-	// 서브화면+UI
-	_UIBar->render();
-	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
-		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
-
-
-	if (!_lastStageGate) _bossUIBar->render();
-
-	_subScreen->render();
-
 
 	Rectangle(getMemDC(),
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
@@ -171,11 +162,24 @@ void Stage14::render(void)
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
 	);
 
-	// 맵 진입 시 초반 프레임 알파렌더이미지
-	IMGAR("map_abyss", getMemDC(), LSCENTER_X, CENTER_Y - 10, _enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
-	IMGFAR("Num_UI", getMemDC(), LSCENTER_X + 70, CENTER_Y - 10, DATAMANAGER->getMapData().enterAbyssInfo.stage, 0, _enterInfo.alpha);
 
+	// ================================================================================================
+	// UI (RIGHT TOP SCREEN)
+	// ================================================================================================
+
+	_UIBar->render();
+	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
+		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
+	
+	if (!_lastStageGate) _bossUIBar->render();
+
+
+
+	// ================================================================================================
+	// MENU (LEFT SCREEN)
+	// ================================================================================================
+
+	_subScreen->render();
 
 }
 
@@ -343,19 +347,17 @@ void Stage14::collision()
 	}
 }
 
-
-
 // probeDown(발밑)를 비교해서 렌더순서 변경
 void Stage14::renderCheck()
 {
-	if (_tempMonsterNum < 0)
+	
+	if (_tempMonsterNum == -1) // 몬스터가 플레이어 인식X
 	{
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 		DATAMANAGER->getPlayer()->render();
 	}
 	else if ( _enemyM->getMonsters()[_tempMonsterNum]->getMonsterPixel().probeDown
-				<= DATAMANAGER->getPlayer()->getPlayerPixel().probeDown
-			 && (_tempMonsterNum >= 0)  )
+		<= DATAMANAGER->getPlayer()->getPlayerPixel().probeDown && (_tempMonsterNum >= 0)  )
 	{
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 		DATAMANAGER->getPlayer()->render();

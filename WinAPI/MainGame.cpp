@@ -58,7 +58,7 @@ HRESULT MainGame::init(void)
 
 	//SCENEMANAGER->changeScene("stage14");
 	//SCENEMANAGER->changeScene("stage11");
-	SCENEMANAGER->changeScene("main");
+	SCENEMANAGER->changeScene("stage14");
 
 
 

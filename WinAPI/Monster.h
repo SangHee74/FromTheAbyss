@@ -85,6 +85,9 @@ public:
 	void pixelCollision(void);
 	bool pixelColorCheck(int getPixelX, int getPixelY);
 
+	void changeState(); // 일정시간 주기로 몬스터 상태 변경
+
+
 	// get/set
 	MONSTERSTATE&	  getState()			  { return _state; }
 	MONSTERDIRECTION& getDirection()		  { return _direction; }
