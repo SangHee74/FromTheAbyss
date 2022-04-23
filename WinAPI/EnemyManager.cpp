@@ -99,7 +99,6 @@ void EnemyManager::setMoster()
 		}
 		if (currentStage == 4)
 		{
-
 			Monster* mino;
 			mino = new Minotaur;
 
@@ -107,6 +106,8 @@ void EnemyManager::setMoster()
 			//mino->init({ (long)(DATAMANAGER->getMapData().map->getWidth()*0.5) , 800 });
 			mino->init({DATAMANAGER->getPlayer()->getPlayer().drawPosX, 800});
 			_vMonster.push_back(mino);
+
+
 
 		}
 

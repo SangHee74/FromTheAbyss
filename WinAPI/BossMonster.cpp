@@ -37,11 +37,8 @@ Minotaur::Minotaur()
 	
 	_collision.defWidth = 185; 	_collision.defHeight = 168;
 
-	_moveRc			 = RectMakeCenter(_movePosX, _movePosY, 30, 30);
-	_collision.defRc = RectMakeCenter(_movePosX, _movePosY - 30, _collision.defWidth, _collision.defHeight);
-	_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
 	
-
+	cout << "미노 생성자" << endl;
 
 	_atkStart = false;
 }

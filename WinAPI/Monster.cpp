@@ -40,6 +40,13 @@ HRESULT Monster::init(POINT position)
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
+	cout << "몬스터 생성자 " << endl;
+
+	// 몬스터cpp에서 세팅된 정보로 위치 세팅
+	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
+	_collision.defRc = RectMakeCenter(_movePosX, _movePosY - 30, _collision.defWidth, _collision.defHeight);
+	_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
+
 
 
 	return S_OK;
