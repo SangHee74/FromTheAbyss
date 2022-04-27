@@ -60,9 +60,13 @@ protected:
 	float	_atkTimeCount;		// 몬스터 대기 상태로 변환 주기
 	bool	_playerCheck;		// 플레이어를 인식했는지 여부
 	bool	_atkStart;			// 플레이어와 일정거리 이하일때 공격
+	bool	_backToPos;			// 인식범위와 닿으면 무조건 소환위치로
 	Image*  _image;				// 몬스터 이미지
 
 	int _count;
+
+	// 
+	int _stateChangeTime;		// 일정 시간 이상이면 상태변경
 
 public:
 	Monster(void);
@@ -75,18 +79,20 @@ public:
 	void update(void);
 	void render(void);
 
+	void setDirection(void);		// 플레이어 바라보기
 	virtual void move(void);
-	virtual void atkack(void);
-	virtual void drawEffect(void);
-	void draw(void);
-	void animation(void);
-	void setDirection(void);
-	void monsterMovetoPlayer(void);
-	void pixelCollision(void);
+	virtual void attack(void);
+	virtual void imgUpdate(void);
+	virtual void rectUpdate(void);
+	virtual void draw(void);
+
+	// 이동관련 함수 
+	void monsterMoveToPlayer(void); // 플레이어 추적->공격으로 전환
+	void backToInitialPos(void);    // 최조 인식범위 체크->벗어나면 귀환 
+	void pixelCollision(void);		// 픽셀 충돌
 	bool pixelColorCheck(int getPixelX, int getPixelY);
 
 	void changeState(); // 일정시간 주기로 몬스터 상태 변경
-
 
 	// get/set
 	MONSTERSTATE&	  getState()			  { return _state; }
@@ -114,6 +120,7 @@ public:
 	float& getDistance()	 { return _distance; }
 	float& getAngle()		 { return _angle; }
 	bool&  getPlayerCheck()  { return _playerCheck; }
+	bool&  getAtkStart()  { return _atkStart; }
 	Image* getImage()		 { return _image; }
 
 	float timeCount = 0.0f;

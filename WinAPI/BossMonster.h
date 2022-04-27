@@ -8,16 +8,17 @@ private:
 	int _endY;
 	float _atkTimeCount;
 	bool _atkStart;
+	bool _offEff;
 
 public:
 	Minotaur();
 	~Minotaur() {}
 
-	void move();
-	void atkack();
-	void drawEffect();
-	void setCollisionAttRange();
-	void setCollisionDefRange();
+	virtual void move();
+	virtual void attack();
+	virtual void imgUpdate();
+	virtual void rectUpdate();
+	virtual void draw();
 
 	void speedUp();
 };

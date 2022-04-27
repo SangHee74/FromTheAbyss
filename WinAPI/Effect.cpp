@@ -249,8 +249,7 @@ void MonsterEffect::centerDamageEffect(int damage, POINT pos)
 
 HRESULT MonstersEffect::init(RECT rc, EFFECT_TYPE type)
 {
-
-
+	
 	return S_OK;
 }
 
@@ -265,3 +264,4 @@ void MonstersEffect::update(void)
 void MonstersEffect::render(void)
 {
 }
+
