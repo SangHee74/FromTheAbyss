@@ -1,5 +1,6 @@
 #pragma once
 #include "SingletonBase.h"
+#include <atlbase.h>
 
 class FontManager : public SingletonBase <FontManager>
 {
@@ -27,6 +28,13 @@ public:
 
 	void drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth,
 		string str, COLORREF color, bool clip = false);
+
+	void boxDrawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth,
+		LPCWSTR printString, COLORREF color, bool clip);
+
+
+
+
 
 
 };

@@ -2,8 +2,8 @@
 #include "GameNode.h"
 
 #pragma region textNumberList
-#define ABYSS0LAST 11
-#define ABYSS1LAST 10
+#define ABYSS0LAST 12
+#define ABYSS1LAST 5
 #define ABYSS8LAST 10
 
 
@@ -11,6 +11,7 @@
 
 struct tagQueenDialogue
 {
+	tagOnlyText welcomText;
 	tagOnlyText abyss0[ABYSS0LAST];
 	tagOnlyText abyss1[ABYSS1LAST];
 	tagOnlyText abyss8[ABYSS8LAST];
@@ -21,9 +22,13 @@ class Castle :public GameNode
 private:
 
 	tagQueenDialogue _castleText;
+	RECT _messageBox;
 	RECT _next;
-	int _textIndex;
-	int _maxIndex;
+	int _textIndex; // 현재 text 순서
+	int _maxIndex;  // 현재 abyss의 최대 text 
+
+	int _nextCount;
+	bool _firstBG;
 	bool _isQueenSmile; 
 
 	tagSceneFadeOut fadeOut;
@@ -38,6 +43,12 @@ public:
 	void render(void);
 
 	void queenSmileCheck();
-	void showDialogue(int index);
+	void storydCheck();
 	void giveRewardLufia(int value);
+
+
+
 };
+
+
+

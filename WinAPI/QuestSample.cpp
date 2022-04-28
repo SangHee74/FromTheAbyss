@@ -38,7 +38,30 @@ void QuestSample::questSetup(Quest* pQuest)
 	만약 변수가 NULL값을 가지고 있으면 예외 발생
 	*/
 
-	
+}
 
+
+//======================================================================
+
+
+
+void MainQuest::init(void)
+{
+	mainQuestSetup();
+}
+
+void MainQuest::mainQuestSetup(StoryQuest * pSQuest)
+{
+	Json::Value root = JSONDATAMANAGER->loadJsonFile("Quest.json");
+	for (auto it = root["StoryQuest"].begin(); it != root["StoryQuest"].end(); it++)
+	{
+		if ((*it).isObject())
+		{
+			StoryQuest* qSQuest = new StoryQuest;
+			qSQuest->init( (*it)["_storyStr"].asString() );
+			
+			_mainQuest.push(qSQuest);
+		}
+	}
 
 }

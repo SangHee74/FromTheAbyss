@@ -2,6 +2,8 @@
 #include "GameNode.h"
 //#include "Inventory.h"
 
+#pragma region playerEnumStruct
+
 enum PLAYERNUMBER
 {
 	PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_END
@@ -127,6 +129,8 @@ struct tagCollisionRc
 
 	bool atkRangeUpdate;
 };
+
+#pragma endregion
 
 class STATE;  // 상태패턴(상호참조-전방선언)
 

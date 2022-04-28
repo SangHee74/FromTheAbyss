@@ -13,3 +13,16 @@ void Quest::init(string name, int gold, int exp, string description, string item
 	_monsterName = monsterName;
 	_questStage = questStage;
 }
+
+
+void StoryQuest::init(STORY_TYPE type, string storyStr)
+{
+	_storyType = type;
+
+	_storyStr = storyStr;
+}
+
+void StoryQuest::init(string storyStr)
+{
+	_storyStr = storyStr;
+}

@@ -280,6 +280,7 @@ void MainHall::menuInfo(int textNum)
 	int _textBufferCnt = 150;
 	const int SCRIPT_MAX_LENGTH = 30;
 
+	// gray color font
 	FONTMANAGER->drawText(getMemDC(), 36, 351, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_sceneIndex].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(100, 100, 100));
 
@@ -290,6 +291,7 @@ void MainHall::menuInfo(int textNum)
 			wcslen(_menuInfoText[_sceneIndex].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(100, 100, 100));
 	}
 
+	// black color font
 	FONTMANAGER->drawText(getMemDC(), 35, 350, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_sceneIndex].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(0, 0, 0));
 

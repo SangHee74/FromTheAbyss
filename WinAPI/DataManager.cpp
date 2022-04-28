@@ -11,6 +11,7 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 		// 파일없으면 기본값으로 새로 시작하기 
 		//DATAMANAGER->getPlayer()->init();
 		_storyRewardCheck.reset();
+		_storyRewardAbyss.reset();
 		break;
 
 	case PLAYERNUMBER::PLAYER_TWO:

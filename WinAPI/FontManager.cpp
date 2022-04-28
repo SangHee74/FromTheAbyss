@@ -2,6 +2,7 @@
 #include "FontManager.h"
 
 
+
 void FontManager::drawText(HDC hdc, int destX, int destY, char* fileName, char* fontName, int fontSize, int fontWidth, char* printString, int length, COLORREF color)
 {
 }
@@ -113,7 +114,6 @@ void FontManager::firstLineText(HDC hdc, RECT rc, string printString, int destX,
 
 
 
-
 void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fontSize, int fontWidth,
 	LPCWSTR* printStringArr, int length, COLORREF color)
 {
@@ -153,5 +153,42 @@ void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int f
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
 }
+
+void FontManager::boxDrawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, LPCWSTR printString, COLORREF color, bool clip)
+{
+	
+	USES_CONVERSION;
+	LPCWSTR wChar = printString;
+	LPCSTR mChar;
+	mChar = W2A(wChar);
+
+	SetBkMode(hdc, TRANSPARENT);
+
+	HFONT hFont = CreateFont
+	(
+		21, 0, 0, 5, fontWidth,
+		0, 0, 0,
+		HANGEUL_CHARSET, 0, 0, 0,
+		VARIABLE_PITCH | FF_ROMAN, TEXT(fontName)
+	);
+
+	auto oldFont = (HFONT)SelectObject(hdc, hFont);
+	auto oldColor = GetTextColor(hdc);
+
+	SetTextColor(hdc, color);
+
+	if (!clip)
+	{
+		DrawText(hdc, mChar, strlen(mChar), &rc, DT_LEFT || DT_NOCLIP);
+	}
+	else
+	{
+		DrawText(hdc, mChar, strlen(mChar), &rc, DT_LEFT || DT_WORDBREAK);
+	}
+
+	SelectObject(hdc, oldFont);
+	DeleteObject(hFont);
+}
+
 
 

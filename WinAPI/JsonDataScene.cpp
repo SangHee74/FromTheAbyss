@@ -5,6 +5,9 @@ HRESULT JsonDataScene::init(void)
 {
 	_questSample = new QuestSample;
 	_questSample->init();
+
+	_mainQuestTest = new MainQuest;
+	_mainQuestTest->init();
 	return S_OK;
 }
 

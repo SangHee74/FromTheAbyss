@@ -7,6 +7,8 @@ class JsonDataScene : public GameNode
 private:
 	QuestSample* _questSample;
 
+	MainQuest* _mainQuestTest;
+
 public:
 	HRESULT init(void);
 	void release(void);

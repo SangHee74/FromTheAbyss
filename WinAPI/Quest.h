@@ -49,3 +49,31 @@ public:
 
 };
 
+
+//======================================================================
+
+enum STORY_TYPE
+{
+	FIRSTSTORY_STAGE = 0,
+	MINO_STAGE
+
+};
+
+class StoryQuest
+{
+protected:
+	
+	STORY_TYPE _storyType;
+	string _storyStr;
+
+
+public:
+	StoryQuest() {}
+	~StoryQuest() {}
+
+	void init(STORY_TYPE type, string storyStr);
+	void init(string storyStr);
+
+	STORY_TYPE getType() { return this->_storyType; }
+	string getStr() { return this->_storyStr; }
+};

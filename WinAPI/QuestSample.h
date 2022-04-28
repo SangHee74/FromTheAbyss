@@ -32,3 +32,24 @@ public:
 
 };
 
+
+//======================================================================
+
+class StoryQuest;
+
+class MainQuest
+{
+private:
+	queue <StoryQuest*> _mainQuest;
+
+public:
+	MainQuest() {}
+	~MainQuest() {}
+
+	void init(void);
+	void mainQuestSetup(StoryQuest* pSQuest = nullptr);
+
+	queue<StoryQuest*>* getMainQuest() { return &this->_mainQuest; }
+	
+};
+

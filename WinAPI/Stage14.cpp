@@ -345,6 +345,7 @@ void Stage14::damageSetting()
 				_enemyM->getMonsters()[i]->getFrameX() == _enemyM->getMonsters()[i]->getImage()->getMaxFrameX())
 			{
 				_lastStageGate = true;
+				DATAMANAGER->getStoryRewardAbyss().set(0);
 			}
 			// »èÁ¦ - ÅÍÁü
 			//_enemyM->removeMonster(i);
