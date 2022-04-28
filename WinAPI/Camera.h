@@ -22,13 +22,11 @@ private:
 	bool   _isShaking;
 	bool   _isShakingIncrease;
 
-
 	// camera focusing object
 	POINT  _focusCameraPt;
 	int    _focusingOffsetCount;
 	bool   _isFocusing;
 	bool   _isFocusOn;
-
 	bool   _focueEventOff;
 
 public:

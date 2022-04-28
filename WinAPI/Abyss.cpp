@@ -18,8 +18,13 @@ HRESULT Abyss::init(void)
 	
 	_abyss = 0;
 	_stage = 0;
-	_alpha = 0;
+
 	_downButtonOn = false;
+
+
+	fadeOut.init();
+	fingerPointer.init();
+
 
 	return S_OK;
 }
@@ -30,6 +35,7 @@ void Abyss::release(void)
 
 void Abyss::update(void)
 {
+
 	if (PtInRect(&_buttonRc[BUTTON_ONE], _ptMouse))
 	{
 		if (!_isWaitInput)
@@ -40,13 +46,13 @@ void Abyss::update(void)
 				DATAMANAGER->getMapData().enterAbyssInfo.stage = 1;
 				_isWaitInput = true;
 
-			}			
+			}
 		}
 		else
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 			{
-				_fadeOut.set(1);
+				fadeOut.onOff.set(ON);
 			}
 		}
 	}
@@ -75,21 +81,19 @@ void Abyss::update(void)
 
 	}
 
-	// &&getElipcedTime 해서 지연시간 약간 있으면 좋을듯
-	// 페이드아웃
-	if (_fadeOut.test(1))
+
+	// fingerMouse
+	fingerPointer.update();
+
+	// Next Scene FadeOut
+	fadeOut.update();
+	if (fadeOut.onOff.test(NEXT)) // 씬체인지
 	{
-		_alpha += 4;
-		if (_alpha >= 255)
-		{
-			_alpha = 255;
-			SOUNDMANAGER->stop("abyss");
+		SOUNDMANAGER->stop("abyss");
 
-			// 스위치문 추가 
-			SCENEMANAGER->changeScene("stage11");
-		}
+		// 스위치문 추가 
+		SCENEMANAGER->changeScene("stage11");
 	}
-
 
 }
 
@@ -113,6 +117,14 @@ void Abyss::render(void)
 
 
 	}
+
+
+	fingerPointer.img->render(getMemDC(), fingerPointer.pos.x, fingerPointer.pos.y);
+
+	// fadeOut
+	fadeOut.blackImg->alphaRender(getMemDC(), fadeOut.alpha);
+
+
 
 	//rcMake(getMemDC(), _backButton);
 }

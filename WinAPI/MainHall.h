@@ -28,8 +28,8 @@ private:
 	float _timeCount;
 	bool _selectLimit;
 
-	tagSceneFadeOut fadeOut;
 	tagFingerMouse fingerPointer;
+	tagSceneFadeOut fadeOut;
 
 public:
 	MainHall() :

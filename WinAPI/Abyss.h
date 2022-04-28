@@ -23,10 +23,10 @@ private:
 
 	int _abyss;	        // 데이터 매니저로 전달할 던전 정보 
 	int _stage;	        // 데이터 매니저로 전달할 던전 정보 
-	int _alpha;			// 페이드아웃 알파
-	bitset<2> _fadeOut; // 페이드아웃 온오프
 	bool _downButtonOn; // 내리기 버튼 활성화 유무 
 
+	tagFingerMouse fingerPointer;
+	tagSceneFadeOut fadeOut;
 
 public:
 	Abyss():
