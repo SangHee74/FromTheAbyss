@@ -1,6 +1,5 @@
 #pragma once
 #include "GameNode.h"
-#include "Stage.h"
 #include "EnemyManager.h"
 #include "Effect.h"
 #include "ProgressBar.h"
@@ -11,16 +10,20 @@ class Stage14 : public GameNode
 {
 private:
 	EnemyManager* _enemyM;
-	MonsterEffect* _enemyEff;
-	PlayerEffect* _playerEff;
 	ProgressBar* _UIBar;
 	ProgressBarBoss* _bossUIBar;
 	SubMenu* _subScreen;
+	//Effect* _enemyEff;
+	Effect* _monsterEff;
+	Effect* _playerEff;
 
-	tagEnterStageTextImage _enterInfo;
+
+	int _playerRndDmg; // Random Damage
+	int _monsterRndDmg;
+	int _tempMonsterNum; // render order check
 
 	bool _lastStageGate;
-	int _tempMonsterNum;
+	bool _dmgSettingOk;
 
 public:
 	Stage14() {}
@@ -34,6 +37,7 @@ public:
 	void enterInfoCheck();
 	void portalOn();
 	void collision();
+	void damageSetting();
 	void getPlayerAngleAndDistance(int i);
 	void renderCheck();
 

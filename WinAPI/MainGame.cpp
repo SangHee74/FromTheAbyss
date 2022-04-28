@@ -11,9 +11,9 @@
 #pragma region addScene
 #include "Title.h"
 #include "Save.h"
+#include "GameOver.h"
 #include "MainHall.h"
 #include "Abyss.h"
-#include "Stage.h"
 #include "Pub.h"
 #include "Store.h"
 #include "Square.h"
@@ -21,6 +21,9 @@
 #include "Castle.h"
 #include "Stage11.h"
 #include "Stage14.h"
+#include "StageBossIntro.h"
+
+
 
 // ¸ÊÅø 
 #include "MapTool.h"
@@ -43,6 +46,7 @@ HRESULT MainGame::init(void)
 	//SCENEMANAGER->addScene("Á¦ÀÌ½¼", new JsonDataScene);
 	SCENEMANAGER->addScene("title", new Title);
 	SCENEMANAGER->addScene("save", new Save);
+	SCENEMANAGER->addScene("gameOver", new GameOver);
 	SCENEMANAGER->addScene("main", new MainHall);
 	SCENEMANAGER->addScene("abyss", new Abyss);
 	SCENEMANAGER->addScene("pub", new Pub);
@@ -53,11 +57,13 @@ HRESULT MainGame::init(void)
 
 	SCENEMANAGER->addScene("stage11", new Stage11);
 	SCENEMANAGER->addScene("stage14", new Stage14);
+	SCENEMANAGER->addScene("bossIntro", new StageBossIntro);
 
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
-	SCENEMANAGER->changeScene("stage14");
+	SCENEMANAGER->changeScene("bossIntro");
 	//SCENEMANAGER->changeScene("stage11");
+	//SCENEMANAGER->changeScene("stage14");
 	//SCENEMANAGER->changeScene("main");
 
 
@@ -77,6 +83,7 @@ void MainGame::update(void)
 	GameNode::update();
 	
 	SCENEMANAGER->update();
+	SOUNDMANAGER->update();
 	
 }
 

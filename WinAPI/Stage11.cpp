@@ -89,11 +89,11 @@ void Stage11::render(void)
 	int cameraLeft = CAM->getScreenRect().left;
 	int cameraTop = CAM->getScreenRect().top;
 
-	// 배경
+	// backGround
 	DATAMANAGER->getMapData().map->render
 	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 
-	// 포탈
+	// portal(always)
 	IMGR("map_gate", getMemDC(),
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].left - cameraLeft,
 		DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
@@ -102,7 +102,6 @@ void Stage11::render(void)
 		DATAMANAGER->getMapData().gate.drawRc[GATE_NEXTSTAGE].top - cameraTop);
 
 
-	//if()
 	// 몬스터
 	_enemyM->render();
 
@@ -112,7 +111,16 @@ void Stage11::render(void)
 	// 오브젝트 - 렌더 순서 확인
 	//
 
-	// 이펙트 렌더 
+
+
+	//IMGAR("map_abyss", getMemDC(), LSCENTER_X,CENTER_Y-10,_enterInfo.alpha);
+	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
+	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
+
+
+	// ================================================================================================
+	// Effect (RIGHT SCREEN)
+	// ================================================================================================
 	//_effectM->render();
 
 	// 배경 탑
@@ -131,18 +139,18 @@ void Stage11::render(void)
 	);
 	}
 
-	// 서브화면(UI)
+
+	// ================================================================================================
+    // UI (RIGHT TOP SCREEN)
+    // ================================================================================================
+
 	_UIBar->render();
 	_UIBar->renderHpSpNumImg(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().curSp,
 		DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
-	//IMGR("UI_pathInfo", getMemDC(), LSCENTER_X-21, 10);
 
 	_subScreen->render();
+	_subScreen->renderUIMapInfo();
 
-
-	//IMGAR("map_abyss", getMemDC(), LSCENTER_X,CENTER_Y-10,_enterInfo.alpha);
-	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
-	//IMGFAR("Num_UI", getMemDC(), LSCENTER_X+70,CENTER_Y-10,DATAMANAGER->getMapData().enterAbyssInfo.stage,0,_enterInfo.alpha);
 
 }
 

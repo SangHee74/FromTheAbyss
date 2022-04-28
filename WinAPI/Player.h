@@ -60,7 +60,7 @@ struct tagPlayerData
 	RECT	moveRc;
 	RECT	drawRc;
 	int		movePosX, movePosY; // rc업데이트
-	int		drawPosX, drawPosY; // 이미지 렌더(LT)
+	int		drawPosX, drawPosY; // 이미지 렌더(LeftTop)
 	int		frameX, frameY;
 	int		width, height;   // 이미지 마다 맞춰 줄 가로세로
 	int		speed;

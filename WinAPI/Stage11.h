@@ -1,6 +1,5 @@
 #pragma once
 #include "GameNode.h"
-#include "Stage.h"
 #include "EnemyManager.h"
 #include "Effect.h"
 #include "ProgressBar.h"
@@ -11,8 +10,8 @@ class Stage11 : public GameNode
 {
 private:
 	EnemyManager* _enemyM;
-	//MonsterEffect* _enemyEff;
-	PlayerEffect* _playerEff;
+	//Effect* _enemyEff;
+	Effect* _playerEff;
 	ProgressBar* _UIBar;
 	SubMenu* _subScreen;
 	

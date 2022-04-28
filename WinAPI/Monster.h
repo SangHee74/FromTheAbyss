@@ -120,7 +120,7 @@ public:
 	float& getDistance()	 { return _distance; }
 	float& getAngle()		 { return _angle; }
 	bool&  getPlayerCheck()  { return _playerCheck; }
-	bool&  getAtkStart()  { return _atkStart; }
+	bool&  getAtkStart()     { return _atkStart; }
 	Image* getImage()		 { return _image; }
 
 	float timeCount = 0.0f;

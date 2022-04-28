@@ -29,7 +29,6 @@ HRESULT Monster::init(POINT position)
 	_movePosY = position.y;
 	_frameX = 0;
 	_frameY = 0;
-	_speed = 5;
 	_distance = 0;
 	_angle = 0.0f;
 
@@ -41,7 +40,6 @@ HRESULT Monster::init(POINT position)
 
 	// 몬스터의 인식범위에 플레이어가 있는지 체크 
 	_playerCheck = false;
-	cout << "몬스터 생성자 " << endl;
 
 	// 몬스터cpp에서 세팅된 정보로 위치 세팅
 	_moveRc = RectMakeCenter(_movePosX, _movePosY, 30, 30);
@@ -66,7 +64,6 @@ HRESULT Monster::init(const char* imageName, POINT position)
 	_movePosY = position.y;
 	_frameX = 0;
 	_frameY = 0;
-	_speed = 5;
 	_distance = 0;
 	_angle = 0.0f;
 
@@ -101,10 +98,10 @@ void Monster::update(void)
 	{
 		if (_playerCheck) // 인식함
 		{
-			//if ( _atkCoolTime > 0) // 쿨타임 중 으로 공격불가
-			//{
-			//	_state = MONSTERSTATE::IDLE; // 대기
-			//}
+			if ( _atkCoolTime > 0) // 쿨타임 중 으로 공격불가
+			{
+				_state = MONSTERSTATE::IDLE; // 대기
+			}
 			if (_atkCoolTime == 0)
 			{
 				changeState(); // 상태 변경
@@ -125,48 +122,41 @@ void Monster::update(void)
 	// ================================================================================================
 	// state
 	// ================================================================================================
-
-	switch (_state)
+	if (_state == MONSTERSTATE::DEF)
 	{
-	case MONSTERSTATE::IDLE:
-		if (_stateChangeTime % 30 == 0) changeState();
-	
-		cout << "mon  - IDLE" << endl;
-		break;
-	case MONSTERSTATE::MOVE:
-		move();
-		cout << "mon  - MOVE" << endl;
-
-		break;
-	case MONSTERSTATE::DEF:
-		//cout << "몬스터 피격 후 타임카운트 : " << timeCount << endl;
+		cout << "몬스터 피격 후 타임카운트 : " << timeCount << endl;
 		timeCount += TIMEMANAGER->getElapsedTime();
 
-		if (timeCount >= 1.0f)
+		if (timeCount >= 3.0f)
 		{
 			timeCount = 0;
 			_state = MONSTERSTATE::IDLE;
 		}
-		cout << "mon  - DEF" << endl;
-
-		break;
-	case MONSTERSTATE::DEAD:
-		if (_image->getFrameX() > _image->getMaxFrameX())
+	}
+	else
+	{
+		switch (_state)
 		{
-			_collision.defWidth = _collision.defHeight = 0;
-			_collision.defRc = RectMakeCenter(_movePosX, _movePosY, _collision.atkWidth, _collision.atkHeight);
+		case MONSTERSTATE::IDLE:
+			if (_stateChangeTime % 30 == 0) changeState();
+			break;
+		case MONSTERSTATE::MOVE:
+			move();
+			break;
+		case MONSTERSTATE::DEAD:
+			if (_image->getFrameX() >= _image->getMaxFrameX())
+			{
+				_collision.defWidth = _collision.defHeight = 0;
+				_collision.defRc = RectMakeCenter(_movePosX, _movePosY, _collision.atkWidth, _collision.atkHeight);
+			}
+			_collision.atkWidth = _collision.atkHeight = 0;
+			_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
+
+			break;
+		case MONSTERSTATE::ATK:
+			attack();
+			break;
 		}
-		_collision.atkWidth = _collision.atkHeight = 0;
-		_collision.atkRc = RectMakeCenter(_collision.atkPosX, _collision.atkPosY, _collision.atkWidth, _collision.atkHeight);
-		cout << "mon  - DEAD" << endl;
-
-		break;
-	case MONSTERSTATE::ATK:
-		cout << "mon  - ATK" << endl;
-
-		attack();
-		break;
-
 	}
 
 
@@ -176,7 +166,7 @@ void Monster::update(void)
 		_atkCoolTime -= TIMEMANAGER->getElapsedTime();
 		if (_atkCoolTime <= 0)_atkCoolTime = _atkCoolTime > 0;
 	}
-	cout << "monster - _atkCoolTime : " << _atkCoolTime << endl;
+	////cout << "monster - _atkCoolTime : " << _atkCoolTime << endl;
 
 
 	
@@ -190,13 +180,13 @@ void Monster::update(void)
 
 	if (! _atkStart ) 
 	{
-	//	cout << "공격 시작함 XXXXXXX " << endl;
-		if (_stateChangeTime % 20 == 0)
+		if (_stateChangeTime % 16 == 0)
 		{
 			_frameX++;
 			if (_image->getMaxFrameX() < _frameX)
 			{
-				_frameX = 0;
+				if (_state == MONSTERSTATE::DEAD)  _frameX = _image->getMaxFrameX();
+				else _frameX = 0;
 			}
 			setDirection(); // 일정 주기로 방향 변경
 		}
@@ -207,16 +197,14 @@ void Monster::update(void)
 		_frameY = static_cast<int>(_direction);
 	}
 
-		if (_atkStart) cout << "공격 시작함 " << endl;
 
 	
 }
 
 void Monster::render(void)
 {
-	draw();
+	draw(); // virtual
 }
-
 
 void Monster::setDirection(void)
 {
@@ -246,66 +234,61 @@ void Monster::monsterMoveToPlayer(void)
 
 	switch (_direction)
 	{
-	//case MONSTERDIRECTION::UP:
-	//	if (DATAMANAGER->getPlayer()->getPlayer().drawPosY >= _collision.atkRc.top)
-	//	{
-	//		if (!_atkStart) // 공격이 시작하지 않았을 때만 공격 상태로.
-	//		{
-	//			_state = MONSTERSTATE::ATK;
-	//		}
-	//	}
-	//	if (DATAMANAGER->getPlayer()->getPlayer().drawPosY < _collision.atkRc.top)
-	//	{
-	//		_state = MONSTERSTATE::MOVE;
-	//	}
-	//	break;
-
-	case MONSTERDIRECTION::DOWN:
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY <= _collision.atkRc.bottom)
+	case MONSTERDIRECTION::UP:
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY >= _collision.defRc.top-40)
 		{
-			if (!_atkStart) // 공격이 시작하지 않았을 때만 공격 상태로.
-			{
-				_state = MONSTERSTATE::ATK;
-			}
+			// 공격이 시작하지 않았을 때만 공격 상태로, 쿨타임이 있다면 대기
+			if (!_atkStart)  _state = MONSTERSTATE::ATK;
+			if (_atkCoolTime > 0)  _state = MONSTERSTATE::IDLE;
 		}
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY > _collision.atkRc.bottom)
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY < _collision.defRc.top-40)
 		{
 			_state = MONSTERSTATE::MOVE;
 		}
-
 		break;
 
-	/*case MONSTERDIRECTION::LEFT: 
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX >= _collision.atkRc.left)
+	case MONSTERDIRECTION::DOWN:
+
+
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY <= _collision.defRc.bottom+90)
 		{
-			if (!_atkStart)
-			{
-				_state = MONSTERSTATE::ATK;
-			}
+			if (!_atkStart)  _state = MONSTERSTATE::ATK;
+			if (_atkCoolTime > 0)  _state = MONSTERSTATE::IDLE;
 		}
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX < _collision.atkRc.left)
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosY > _collision.defRc.bottom+90)
+		{
+			_state = MONSTERSTATE::MOVE;
+		}
+		break;
+
+
+	case MONSTERDIRECTION::LEFT: 
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX >= _collision.defRc.left)
+		{
+			if (!_atkStart)  _state = MONSTERSTATE::ATK;
+			if (_atkCoolTime > 0)  _state = MONSTERSTATE::IDLE;
+		}
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX < _collision.defRc.left)
 		{
 			_state = MONSTERSTATE::MOVE;
 		}
 		break;
 
 	case MONSTERDIRECTION::RIGHT:
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX <= _collision.atkRc.right)
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX <= _collision.defRc.right+60)
 		{
-			if (!_atkStart)
-			{
-				_state = MONSTERSTATE::ATK;
-			}
+			if (!_atkStart)  _state = MONSTERSTATE::ATK;
+			if (_atkCoolTime > 0)  _state = MONSTERSTATE::IDLE;
 		}
-		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX > _collision.atkRc.right)
+		if (DATAMANAGER->getPlayer()->getPlayer().drawPosX > _collision.defRc.right+60)
 		{
 			_state = MONSTERSTATE::MOVE;
 		}
 		break;
-*/
+
 	}
 
-	_frameX = 0;
+	
 }
 
 void Monster::pixelCollision()
@@ -500,6 +483,8 @@ void Monster::draw(void)
 		tempPos5 = RectMakeCenter(_pixel.probeRight, _pixel.probeDown, 4, 4);
 		Rectangle(getMemDC(), tempPos5.left - CAM->getScreenRect().left, tempPos5.top - CAM->getScreenRect().top,
 			tempPos5.left - CAM->getScreenRect().left + 4, tempPos5.top - CAM->getScreenRect().top + 4);
+
+	
 	}
 
 	_image->frameRender(getMemDC(),

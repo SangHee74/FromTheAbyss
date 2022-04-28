@@ -19,86 +19,37 @@ enum class DAMAGECOLOR
 	DAMAGE_END
 };
 
-struct tagEffect
+class Effect 
 {
+public:
 	Image* img;
 	RECT rc;
 	int count;
-	int curFrameX;
-	int curFrameY;
-	float x, y;
+	int frameX;
+	int posX, posY;
 	bool onEffect;
-};
 
-class PlayerEffect :public GameNode
-{
-private:
-	vector<tagEffect> _vEffect;
-	vector<tagEffect>::iterator _viEffect;
-
-public:
-
-	HRESULT init(void);
-	void release(void);
-	void update(void);
-	void render(void);
-
-	void createEff(RECT rc, EFFECT_TYPE type); // 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
-	void draw(void);
-	void removeEffect(int arrNum);
-
-	void centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color);
-
-	PlayerEffect() {}
-	~PlayerEffect() {}
-};
-
-
-class MonsterEffect :public GameNode
-{
-private:
-	vector<tagEffect> _vEffect;
-	vector<tagEffect>::iterator _viEffect;
+	// damage 
+	Image* damageFontImg;
+	int damageNum;
+	int numPosX, numPosY;
+	bool onDmgNumEffect;
 
 public:
+	void baseEffSetting(RECT rc, EFFECT_TYPE type);
+	void dmgEffSetting(int damage, POINT pos, DAMAGECOLOR color);
+	
+	void effUpdate();
 
-	HRESULT init(void);
-	void release(void);
-	void update(void);
-	void render(void);
-
-	void createEff(RECT rc, EFFECT_TYPE type); // 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
-	void draw(void);
-	void removeEffect(int arrNum);
-
-	void centerDamageEffect(int damage, POINT pos);
-
-	MonsterEffect() {}
-	~MonsterEffect() {}
-};
+	void baseEffRender();
+	void dmgEffRender();
 
 
-class Effect
-{
-	Image* img;
-	RECT rc;
-	int count;
-	int curFrameX;
-	int curFrameY;
-	float x, y;
-	bool onEffect;
-};
-
-class MonstersEffect : public Effect
-{
-public:
-	HRESULT init(RECT rc, EFFECT_TYPE type);// 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
-	void release(void);
-	void update(void);
-	void render(void);
-
-	void centerDamageEffect(int damage, POINT pos);
-
-	MonstersEffect() {}
-	~MonstersEffect() {}
+	Effect() :img(IMG("none")), rc(RectMake(0, 0, 0, 0)),
+		count(0), frameX(0), posX(0), posY(0),
+		onEffect(false),
+		damageFontImg(IMG("none")),damageNum(0),
+		numPosX(0), numPosY(0),	onDmgNumEffect(false)
+	{}
+	~Effect() {}
 };

@@ -71,8 +71,8 @@ void DataManager::setStageSetting(void)
 {
 	int settingAbyss = _mapData.enterAbyssInfo.abyss;
 	int settingStage = _mapData.enterAbyssInfo.stage;
-	int gateInRcWidth = 60;
-	int gateInRcHeight = 20;
+	int gateInRcWidth = 80;
+	int gateInRcHeight = 30;
 
 	switch (settingAbyss)
 	{
@@ -107,7 +107,7 @@ void DataManager::setStageSetting(void)
 			_mapData.pixelMap = IMG("map_stage14_pixel");
 			_mapData.gate.drawRc[GATE_HOME] = RectMakeCenter(1260, 620, 120, 50);
 			_mapData.gate.inRc[GATE_HOME] = RectMakeCenter(1260, 620, gateInRcWidth, gateInRcHeight);
-
+			
 			// 플레이어 정보 세팅
 			_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-400, PLAYERDIRECTION::UP);
 			//_player->playerInStageSetting(_mapData.map->getWidth()*0.5, _mapData.map->getHeight()-1200, PLAYERDIRECTION::UP);

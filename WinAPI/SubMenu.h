@@ -43,9 +43,11 @@ public:
 	void renderMenu();
 	void renderTap();
 
+	void renderUIMapInfo();
 	void renderSkill();
 
 	SubMap* getSubMap() { return _map; }
+
 
 };
 

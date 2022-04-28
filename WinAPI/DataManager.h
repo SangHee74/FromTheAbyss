@@ -45,8 +45,8 @@ private:
 	Player* _player;		 // 현재 플레이어 데이터
 	Inventory* _inven;		 // 플레이어 인벤토리 데이터
 	
-	// 100 수령 000 미수령 , 000튜토리얼 001 1어비스 010 2어비스
-	bitset<3> _storyRewardCheck;  // 스토리 보상 수령 여부(성-Lufia)
+	// 1x0 수령 0x0 미수령 , 0x0튜토리얼 0x1 1어비스 0x10 2어비스
+	bitset<9> _storyRewardCheck;  // 스토리 보상 수령 여부(성-Lufia)
 	int _storyRewardLufia[3]; // 스토리 보상 금액
 
 
@@ -70,7 +70,7 @@ public:
 	void setPlayer(Player* User) { _player = User; }
 	void clearPlayer() { _player = nullptr; }
 	Inventory* getInven() { return _inven; }
-	bitset<3> getStoryRewardCheck() { return _storyRewardCheck; }
+	bitset<9> getStoryRewardCheck() { return _storyRewardCheck; }
 	int getStoryRewardLufia(int num) {return _storyRewardLufia[num];	}
 	
 	// 스테이지 별 맵 관리

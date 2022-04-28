@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 #include "EnemyManager.h"
-#include "Stage.h"
+
 
 HRESULT EnemyManager::init(void)
 {

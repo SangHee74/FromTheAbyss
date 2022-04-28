@@ -65,6 +65,8 @@ void SubMap::render(void)
 	IMGR("map_abyss",getMemDC(),CENTER_X+ 96, 326);
 	IMGR("map_stage",getMemDC(),CENTER_X+ 96, 366);
 	_abyssNum->frameRender(getMemDC(), CENTER_X + 196, 327, _settingAbyss, 0);
+
+	if (_settingStage == 4) _settingStage = 2; // 임시 수정
 	_StageNum->frameRender(getMemDC(), CENTER_X + 196, 367, _settingStage, 0);
 
 

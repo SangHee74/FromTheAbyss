@@ -70,12 +70,16 @@ void SubMenu::render(void)
 	if (_subMenuIdx == SUB_MAP)		 _map->render();
 	if (_subMenuIdx == SUB_STATUS)	 _status->render();
 
+	
+}
+
+void SubMenu::renderUIMapInfo(void)
+{
 	// Ã¼·Â¹Ù ¸Ê UI
 	IMGR("UI_pathInfo", getMemDC(), LSCENTER_X - 21, 10);
 	IMGFR("UI_path", getMemDC(), 309, 20, _map->getCurPathFrameX(), 0);
 	//IMGFR("UI_point", getMemDC(), 309, 20, _map->getCurPathFrameX(), 0);
 }
-
 
 void SubMenu::selectMenu()
 {

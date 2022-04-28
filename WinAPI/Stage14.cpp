@@ -3,17 +3,13 @@
 
 HRESULT Stage14::init(void)
 {
-	// 스테이지 세팅 (맵+플레이어 정보)
+	// stage setting (map + player Info)
 	DATAMANAGER->setStageSetting();
 
 	_enemyM = new EnemyManager();
 	_enemyM->init();
 
-	_enemyEff = new MonsterEffect();
-	_enemyEff->init();
-
-	_playerEff = new PlayerEffect();
-	_playerEff->init();
+	_playerEff = new Effect();
 
 	_UIBar = new ProgressBar();
 	_UIBar->init(DATAMANAGER->getPlayer()->getPlayerStatus().maxHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
@@ -24,16 +20,18 @@ HRESULT Stage14::init(void)
 	_subScreen = new SubMenu();
 	_subScreen->init();
 
-	_tempMonsterNum = -1;
-
+	// camera setting
 	CAM->init();
 	CAM->setLimitsX(LSCENTER_X, DATAMANAGER->getMapData().map->getWidth());
 	CAM->setLimitsY(CENTER_Y, DATAMANAGER->getMapData().map->getHeight());
 
-	_enterInfo.alpha = 255;
-	_enterInfo.showTime = 0;
+
+	_playerRndDmg = 0;
+	_monsterRndDmg = 0;
+	_tempMonsterNum = -1;
 
 	_lastStageGate = false;
+	_dmgSettingOk = false;
 
 	return S_OK;
 }
@@ -52,17 +50,13 @@ void Stage14::release(void)
 	_enemyM->release();
 	SAFE_DELETE(_enemyM);
 
-	_enemyEff->release();
-	SAFE_DELETE(_enemyEff);
-
-	_playerEff->release();
 	SAFE_DELETE(_playerEff);
 }
 
 void Stage14::update(void)
 {
-	enterInfoCheck();
 
+	enterInfoCheck(); // 미사용??
 
 	POINT cameraPos;
 	cameraPos.x = DATAMANAGER->getPlayer()->getPlayer().movePosX;
@@ -75,8 +69,8 @@ void Stage14::update(void)
 
 
 	_enemyM->update();
-	_enemyEff->update();
-	_playerEff->update();
+
+	_playerEff->effUpdate();
 
 	_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
 	_UIBar->setSpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curSp, DATAMANAGER->getPlayer()->getPlayerStatus().maxSp);
@@ -91,18 +85,20 @@ void Stage14::update(void)
 
 	_bossUIBar->update();
 
-
 	_subScreen->update();
 
-	// 죽으면 메인홀로 이동
+	// 죽으면 게임오버 화면으로 이동
 	if (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD)
 	{
-		SCENEMANAGER->changeScene("main");
+		SCENEMANAGER->changeScene("gameOver");
 	}
 
 
 	if (_lastStageGate) 	portalOn();
 	collision();
+	damageSetting();
+
+
 }
 
 void Stage14::render(void)
@@ -112,18 +108,7 @@ void Stage14::render(void)
 	int cameraTop = CAM->getScreenRect().top;
 
 	// backGround
-	DATAMANAGER->getMapData().map->render
-	(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
-
-
-	// distance view
-	LineMake(getMemDC(),
-		_enemyM->getMonsters()[0]->getMovePosX(),
-		_enemyM->getMonsters()[0]->getMovePosY(),
-		DATAMANAGER->getPlayer()->getPlayer().drawPosX,
-		DATAMANAGER->getPlayer()->getPlayer().drawPosY
-	);
-
+	DATAMANAGER->getMapData().map->render(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
 
 	// portal(if Boss dead)
 	if (_lastStageGate) 
@@ -135,25 +120,34 @@ void Stage14::render(void)
 			DATAMANAGER->getMapData().gate.drawRc[GATE_HOME].top - cameraTop);
 	}
 
+	// player + boss Render
 	renderCheck();
 
-	// 이펙트 렌더 
-	_enemyEff->render();
-	_playerEff->render();
-
-
+	// guide Key (pixelCollision + gate Rect
 	if (KEYMANAGER->isToggleKey(VK_F2))
 	{
 		DATAMANAGER->getMapData().pixelMap->render
 		(getMemDC(), 0, 0, cameraLeft, cameraTop, CENTER_X, WINSIZE_Y);
-	}
 
 	Rectangle(getMemDC(),
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].left - cameraLeft,
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].top - cameraTop,
 		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].right - cameraLeft,
-		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop
-	);
+		DATAMANAGER->getMapData().gate.inRc[GATE_HOME].bottom - cameraTop );
+	}
+
+
+	// ================================================================================================
+	// Effect (RIGHT SCREEN)
+	// ================================================================================================
+
+
+	// 이펙트 렌더 
+	if (_playerEff->onEffect) _playerEff->baseEffRender();
+
+	// 랜덤 데미지 이펙트 
+	if(_playerEff->onDmgNumEffect) _playerEff->dmgEffRender();
+
 
 
 	// ================================================================================================
@@ -166,14 +160,12 @@ void Stage14::render(void)
 	
 	if (!_lastStageGate) _bossUIBar->render();
 
-
-
 	// ================================================================================================
 	// MENU (LEFT SCREEN)
 	// ================================================================================================
 
 	_subScreen->render();
-
+	_subScreen->renderUIMapInfo();
 }
 
 void Stage14::enterInfoCheck()
@@ -231,18 +223,18 @@ void Stage14::collision()
 		}
 		else
 		{
+			cout << "for 0 - else " << endl;
 			_enemyM->getMonsters()[i]->getPlayerCheck() = false;
 			_tempMonsterNum = -1;
 
 			break;
 		}
-		//break;
 	}
 
 #pragma endregion
 
-#pragma region 플레이어의 공격
 
+	// 플레이어 공격
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
 		// 플레이어 공격이펙트 -> 몬스터 피격박스
@@ -252,68 +244,27 @@ void Stage14::collision()
 		{
 			// 몬스터 피격상태로 전환 
 			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEF;
+			_dmgSettingOk = false;
 
 			// 충돌위치 이펙트
-			_playerEff->createEff(tempRc, EFFECT_TYPE::P_ATKACK_COLLISION);
 
+			_playerEff->baseEffSetting(tempRc, EFFECT_TYPE::P_ATKACK_COLLISION);
+			_playerEff->onDmgNumEffect = true;
+			
 			break;
 		}
-	}
 
-	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
-	{
-
-		// 피격된 몬스터는 체력감소 + 이펙트.
-		if (_enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF) continue;
-		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF)
-		{
-
-			int temp = 0;
-			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
-			// 랜덤 데미지 이펙트 
-			_playerEff->centerDamageEffect(temp,
-				PointMake(DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkPosX,
-					DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkPosY)
-				, DAMAGECOLOR::DAMAGE_RED);
-
-			// 몬스터 체력 세팅
-			_enemyM->getMonsters()[i]->setHp(temp);
-			cout << "플레이어 데미지 : " << temp << endl;
-			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
-			break;
-
-		}
 	}
 
 
+	// 몬스터 공격
 	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
 	{
-		// 몬스터 체력이 없으면 
-		if (_enemyM->getMonsters()[i]->getHp() <= 0)
+		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATK
+			&& DATAMANAGER->getPlayer()->getPlayerStatus().curHp > 0 )
 		{
-			_lastStageGate = true;
 
-			// 몬스터 죽음 이펙트
-			//_enemyEff->createEff(tempRc, EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
-
-			// 경험치 획득 
-			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
-
-			// 삭제 - 터짐
-			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEAD;
-			//_enemyM->removeMonster(i);
-		}
-		else
-		{
-			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::IDLE;
-		}
-#pragma endregion 
-
-#pragma region 몬스터의 공격
-
-		// 몬스터 공격이펙트 -> 플레이어 피격박스
-		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::ATK)
-		{
+			// 몬스터 공격이펙트 -> 플레이어 피격박스 충돌 판정 
 			if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().atkRc,
 				&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc)
 				&& DATAMANAGER->getPlayer()->getState() != PLAYERSTATE::DEF)
@@ -324,23 +275,80 @@ void Stage14::collision()
 				DATAMANAGER->getPlayer()->getState() = PLAYERSTATE::DEF;
 
 				// 플레이어 체력 세팅 함수
-				int temp = 0;
-				temp = _enemyM->monsterRandomDamage(i);
-				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
+				_monsterRndDmg = _enemyM->monsterRandomDamage(i);
+				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= _monsterRndDmg;
 
 				// 충돌위치 이펙트
-				_enemyEff->createEff(tempRc, EFFECT_TYPE::M_ATKACK_COLLISION);
 
-				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
-				cout << "몬스터 데미지 : " << temp << endl;
+				cout << "몬스터 데미지 : " << _monsterRndDmg << endl;
 				cout << "플레이어 남은 HP : " << DATAMANAGER->getPlayer()->getPlayerStatus().curHp << endl;;
 
 				_enemyM->getMonsters()[i]->getAtkStart() = false;
+				_monsterRndDmg = 0;
 				break;
 
 			}
 		}
+	}
+}
 
+
+// 피격 체력 반영
+void Stage14::damageSetting()
+{
+	// 피격된 몬스터는 체력감소 + 이펙트.
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+		if (_enemyM->getMonsters()[i]->getState() != MONSTERSTATE::DEF) continue;
+		
+		if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF
+			&& !_dmgSettingOk)
+		{
+
+			// 몬스터 피격 처리 
+			if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF)
+			{
+				_playerRndDmg = DATAMANAGER->getPlayer()->playerRandomDamage();
+
+
+				// 몬스터 체력 세팅
+				_enemyM->getMonsters()[i]->setHp(_playerRndDmg);
+				_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::IDLE; // 상태 수정
+				_dmgSettingOk = true;
+				cout << "플레이어 데미지 : " << _playerRndDmg << endl;
+				cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
+				 
+				break;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
+	{
+
+		// 몬스터 체력이 없으면 
+		if (_enemyM->getMonsters()[i]->getHp() <= 0)
+		{
+			cout << "for 3 - monster Die" << endl;
+
+
+			// 몬스터 죽음 이펙트
+			//_enemyEff->createEff(tempRc, EFFECT_TYPE::M_DEFFENSE_BOSSDIE);
+
+			// 경험치 획득 
+			DATAMANAGER->getPlayer()->getPlayerStatus().curExp += _enemyM->getMonsters()[i]->getExp();
+
+			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEAD;
+			
+			if (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEAD &&
+				_enemyM->getMonsters()[i]->getFrameX() == _enemyM->getMonsters()[i]->getImage()->getMaxFrameX())
+			{
+				_lastStageGate = true;
+			}
+			// 삭제 - 터짐
+			//_enemyM->removeMonster(i);
+		}
 #pragma endregion 
 
 	}
@@ -366,6 +374,9 @@ void Stage14::renderCheck()
 		DATAMANAGER->getPlayer()->render();
 		if (_enemyM->getMonsters()[0]->getHp() >= 0) _enemyM->render();
 	}
+
+
+	cout << _enemyM->getMonsters()[0]->getMovePosY() << endl;
 
 }
 

@@ -26,7 +26,6 @@ HRESULT MainHall::init(void)
 	fadeOut.init();
 	fingerPointer.init();
 
-
 	return S_OK;
 }
 

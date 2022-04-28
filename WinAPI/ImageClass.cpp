@@ -93,9 +93,11 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 
 	IMAGEMANAGER->addFrameImage("mino_attack", "Resources/Images/Monster/Boss/mino_attack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
-	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 150 * MAGNI, 88 * MAGNI, 1, 1, MGT);
+	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 620 * MAGNI, 88 * MAGNI, 4, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
+	IMAGEMANAGER->addFrameImage("mino_idle2",   "Resources/Images/Monster/Boss/mino_idle_down.bmp", 784 * MAGNI, 118 * MAGNI, 4, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
+	IMAGEMANAGER->addImage("mino_name",		   "Resources/Images/Monster/Boss/mino_name.bmp", 640,166, MGT);
 
 #pragma endregion
 
@@ -150,6 +152,7 @@ HRESULT ImageClass::init(void)
 
 #pragma region UI
 
+	IMAGEMANAGER->addImage("gameOver", "Resources/Images/Object/GameOver.bmp", 0, 0,373,60, MGT);
 	IMAGEMANAGER->addImage("finger", "Resources/Images/Object/finger.bmp", 0,0,21 * MAGNI, 22 * MAGNI, MGT);
 	IMAGEMANAGER->addImage("popUpBox", "Resources/Images/Object/popUpBox.bmp", 0,0, 168 * MAGNI, 48 * MAGNI, MGT);
 	

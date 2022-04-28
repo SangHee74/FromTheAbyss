@@ -147,9 +147,9 @@ void Player::render(void)
 		//	_collision.defRc.left - _camera.rc.left + _collision.defWidth, _collision.defRc.top - _camera.rc.top + _collision.defHeight);
 		
 		// 무기이미지 범위 렌더
-	   //Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
-	   //	 _weapon.drawRc.left - _camera.rc.left + _weapon.width,
-	   //	 _weapon.drawRc.top - _camera.rc.top + _weapon.height);
+	   Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
+	   	 _weapon.drawRc.left - _camera.rc.left + _weapon.width,
+	   	 _weapon.drawRc.top - _camera.rc.top + _weapon.height);
 
 		
 		if (_isStateCheck.test(5))
@@ -164,9 +164,9 @@ void Player::render(void)
 		}
 
 		// 타격범위 렌더
-		//Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
-		//					    _collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
-		//					    _collision.atkRc.top  - _camera.rc.top  + _collision.atkHeight );
+		Rectangle(getMemDC(), _collision.atkRc.left - _camera.rc.left, _collision.atkRc.top - _camera.rc.top,
+							    _collision.atkRc.left - _camera.rc.left + _collision.atkWidth,
+							    _collision.atkRc.top  - _camera.rc.top  + _collision.atkHeight );
 
 
 		// 픽셀충돌 아래 - 를 좌우로 뿌리기 

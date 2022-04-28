@@ -530,8 +530,8 @@ void DefState::stateUpdate(Player* player)
 	player->getPlayerWeapon().movePosX = player->getPlayer().movePosX;
 	player->getPlayerWeapon().movePosY = player->getPlayer().movePosY;
 
-	// 0.5초 간 피격모션
-	if (timeCount % 30 == 0)
+	// 1초 간 피격모션
+	if (timeCount % 60 == 0)
 	{
 		SetPlayerState(player, IdleState::getInstance());
 	}
