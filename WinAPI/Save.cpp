@@ -3,8 +3,7 @@
 
 HRESULT Save::init(void)
 {
-	//SOUNDMANAGER->addSound("save", "Resources/sounds/save.wav", true, true);
-	//SOUNDMANAGER->play("save", 0.2);
+	SOUNDMANAGER->play("save", 0.05f);
 
 	//vector<string> vData = TEXTDATAMANAGER->load("Resources/player.txt");
 
@@ -29,9 +28,9 @@ HRESULT Save::init(void)
 		_slot[i].textCaption[NAME].text = L"NAME : ";
 		_slot[i].textCaption[STAT].text = L"STAT : ";
 		_slot[i].textCaption[TIME].text = L"TIME : ";
-		_slot[i].text[NAME].text =  L"ROSE" ;
-		_slot[i].text[STAT].text =  L"Lv 17 ABYSS-3 STAGE-1" ;
-		_slot[i].text[TIME].text =  L"02:02" ;
+		_slot[i].text[NAME].text =  L"DAHILA" ;
+		_slot[i].text[STAT].text =  L"Lv 1  ABYSS-1 STAGE-1" ;
+		_slot[i].text[TIME].text =  L"00:03" ;
 
 		_slot[i].face = IMG("none");
 		_slot[i].newGame = nullptr;

@@ -3,6 +3,8 @@
 
 HRESULT Pub::init(void)
 {
+	SOUNDMANAGER->play("village", 0.05f);
+
 	PubIdx = 1;
 
 	for (int i = 0; i < 3; i++)
@@ -159,6 +161,7 @@ void Pub::menuSelect()
 		{
 			if (PubIdx & pubMain)
 			{
+				SOUNDMANAGER->stop("village");
 				SCENEMANAGER->changeScene("main");
 			}
 			if (PubIdx & pubType) 

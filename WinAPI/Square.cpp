@@ -3,6 +3,8 @@
 
 HRESULT Square::init(void)
 {
+	SOUNDMANAGER->play("village", 0.05f);
+
 	_mugPos.x = LSCENTER_X - ((158 * MAGNI) / 2);
 	_mugPos.y = WINSIZE_Y - (178 * MAGNI);
 

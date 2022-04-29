@@ -3,7 +3,7 @@
 
 HRESULT Title::init(void)
 {
-	SOUNDMANAGER->play("title", 0.2);
+	SOUNDMANAGER->play("title", 0.05);
 	_startRc = RectMakeCenter(RSCENTER_X, CENTER_Y, IMG("titleButton")->getWidth(), IMG("titleButton")->getHeight());
 	fadeOut.init();
 	return S_OK;

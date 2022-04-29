@@ -68,50 +68,37 @@ void SoundManager::update(void)
 
 void SoundManager::addSound(string keyName, string soundName, bool backGround, bool loop)
 {
-
 	if (loop)
 	{
 		if (backGround)
 		{
-			// 파일이름, 사운드를 열기 위한 옵션(일반적인 루프 재생) , 
-			// 피드백(개발자에게 사운드가 재생되는 동안 정보를 제공할지 유무(0,NULL : 안받음), 변수의 주소
 			_system->createStream(soundName.c_str(), FMOD_LOOP_NORMAL, 0, &_sound[_mTotalSounds.size()]);
 		}
 		else
 		{
-			// 효과음(동시재생을 위해 creatSound 사용)
 			_system->createSound(soundName.c_str(), FMOD_LOOP_NORMAL, 0, &_sound[_mTotalSounds.size()]);
-
 		}
 	}
 	else
 	{
-		// FMOD_DEFAULT : 한번 재생
 		_system->createSound(soundName.c_str(), FMOD_DEFAULT, 0, &_sound[_mTotalSounds.size()]);
-
 	}
-
-	_mTotalSounds.insert(make_pair(keyName, &_sound[_mTotalSounds.size()]));
+	_mTotalSounds.insert(make_pair(keyName.c_str(), &_sound[_mTotalSounds.size()]));
 }
 
 void SoundManager::play(string keyName, float volume)
 {
 
-	arrSoundsIter iter = _mTotalSounds.begin();
-
 	int count = 0;
+
+	arrSoundsIter iter = _mTotalSounds.begin();
 
 	// 사운드를 5개  
 	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
 	{
 		if (keyName == iter->first)
 		{
-			// 사운드 플레이
-			_system->playSound(FMOD_CHANNEL_FREE, _sound[count], false, &_channel[count]); // 두번째 사운드 부터는 못찾는 문제 발생할 것. 
-			//_system->playSound(FMOD_CHANNEL_FREE, *iter->second, false, &_channel[count]);// 이터의 세컨드를 찾고 넘기는 것이 답. 포인터 유무는 고민할 것 .
-
-
-			// 볼륨 설정
+			_system->playSound(FMOD_CHANNEL_FREE, *iter->second, false, &_channel[count]);
 			_channel[count]->setVolume(volume);
 			break;
 		}
@@ -122,9 +109,9 @@ void SoundManager::play(string keyName, float volume)
 
 void SoundManager::stop(string keyName)
 {
-	arrSoundsIter iter = _mTotalSounds.begin();
-
 	int count = 0;
+
+	arrSoundsIter iter = _mTotalSounds.begin();
 
 	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
 	{

@@ -27,11 +27,11 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 
 HRESULT DataManager::init(void)
 {
-	//_mapData.enterAbyssInfo.abyss = 0;
+	_mapData.enterAbyssInfo.abyss = 0;
 	//_mapData.enterAbyssInfo.stage = 0;
-	_mapData.enterAbyssInfo.abyss = 1; // 임시
-	//_mapData.enterAbyssInfo.stage = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+	//_mapData.enterAbyssInfo.abyss = 1; // 임시
+	_mapData.enterAbyssInfo.stage = 1; // 임시
+	//_mapData.enterAbyssInfo.stage = 4; // 보스테스트
 
 
 	_mapData.map = nullptr;

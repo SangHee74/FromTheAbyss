@@ -3,6 +3,8 @@
 
 HRESULT Stage14::init(void)
 {
+	SOUNDMANAGER->play("stage14", 0.05f);
+
 	// stage setting (map + player Info)
 	DATAMANAGER->setStageSetting();
 
@@ -32,6 +34,9 @@ HRESULT Stage14::init(void)
 
 	_lastStageGate = false;
 	_dmgSettingOk = false;
+
+
+	fadeOut.init();
 
 	return S_OK;
 }
@@ -90,7 +95,7 @@ void Stage14::update(void)
 	// 죽으면 게임오버 화면으로 이동
 	if (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD)
 	{
-		SCENEMANAGER->changeScene("gameOver");
+		fadeOut.onOff.set(ON);
 	}
 
 
@@ -98,6 +103,12 @@ void Stage14::update(void)
 	collision();
 	damageSetting();
 
+
+	fadeOut.update();
+	if (fadeOut.onOff.test(NEXT) && DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD) // 씬체인지
+	{
+		SCENEMANAGER->changeScene("gameOver");
+	}
 
 }
 
@@ -174,6 +185,7 @@ void Stage14::enterInfoCheck()
 
 void Stage14::portalOn()
 {
+	int  gateIndex = 0;
 	RECT tempRc;
 	RECT playerTempRc;
 	playerTempRc = RectMakeCenter(
@@ -189,11 +201,19 @@ void Stage14::portalOn()
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
-			SCENEMANAGER->changeScene("main");
+			fadeOut.onOff.set(ON);
+			gateIndex = 1;
 		}
 
 	}
 	else DATAMANAGER->getMapData().gate.inGateCount = 0;
+
+
+	if (fadeOut.onOff.test(NEXT)) // 씬체인지
+	{
+		SOUNDMANAGER->stop("stage14");
+		if (gateIndex == 1) SCENEMANAGER->changeScene("main");
+	}
 }
 
 void Stage14::collision()

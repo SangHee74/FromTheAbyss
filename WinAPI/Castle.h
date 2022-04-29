@@ -1,13 +1,12 @@
 #pragma once
 #include "GameNode.h"
 
-#pragma region textNumberList
+#pragma region text 
+
 #define ABYSS0LAST 12
-#define ABYSS1LAST 5
+#define ABYSS1LAST 9
 #define ABYSS8LAST 10
 
-
-#pragma endregion
 
 struct tagQueenDialogue
 {
@@ -16,6 +15,8 @@ struct tagQueenDialogue
 	tagOnlyText abyss1[ABYSS1LAST];
 	tagOnlyText abyss8[ABYSS8LAST];
 };
+
+#pragma endregion
 
 class Castle :public GameNode
 {
@@ -44,6 +45,9 @@ public:
 
 	void queenSmileCheck();
 	void storydCheck();
+	void storydRender();
+
+
 	void giveRewardLufia(int value);
 
 

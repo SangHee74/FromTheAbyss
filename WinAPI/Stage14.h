@@ -25,6 +25,8 @@ private:
 	bool _lastStageGate;
 	bool _dmgSettingOk;
 
+	tagSceneFadeOut fadeOut;
+
 public:
 	Stage14() {}
 	~Stage14() {}

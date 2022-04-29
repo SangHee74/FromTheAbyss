@@ -5,6 +5,9 @@ int tempCount = 0;
 
 HRESULT Store::init(void)
 {
+
+	SOUNDMANAGER->play("village", 0.05f);
+
 	int w = 150;
 	int h = 110;
 	_menu[0] = RectMakeCenter(820,250,w,h);
@@ -50,7 +53,7 @@ void Store::update(void)
 	fadeOut.update();
 	if (fadeOut.onOff.test(NEXT)) // 씬체인지
 	{
-		//SOUNDMANAGER->stop("");
+		SOUNDMANAGER->stop("village");
 		SCENEMANAGER->changeScene("main");
 	}
 }
@@ -89,8 +92,8 @@ void Store::render(void)
 
 	if(_storeMenu.test(0)) //메뉴선택에서 사기/팔기 체크
 	{
-	rcMake(getMemDC(), _menu[STORE_BUY]   );
-	rcMake(getMemDC(), _menu[STORE_SELL]  );
+	//rcMake(getMemDC(), _menu[STORE_BUY]   );
+	//rcMake(getMemDC(), _menu[STORE_SELL]  );
 	}
 	if (_storeMenu.test(3))
 	{

@@ -3,6 +3,9 @@
 
 HRESULT Stage11::init(void)
 {
+
+	SOUNDMANAGER->play("stage11", 0.05f);
+
 	// 스테이지 세팅 (맵+플레이어 정보)
 	DATAMANAGER->setStageSetting();
 
@@ -75,6 +78,8 @@ void Stage11::update(void)
 	// 죽으면 메인홀로 이동
 	if (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEAD)
 	{
+		SOUNDMANAGER->stop("stage11");
+		fadeOut.onOff.set(ON);
 		SCENEMANAGER->changeScene("main");
 	}
 
@@ -82,6 +87,7 @@ void Stage11::update(void)
 	portalOn();
 	collision();
 
+	fadeOut.update();
 }
 
 void Stage11::render(void)
@@ -168,6 +174,7 @@ void Stage11::enterInfoCheck()
 
 void Stage11::portalOn()
 {
+	int  gateIndex = 0;
 	RECT tempRc;
 	RECT playerTempRc;
 	playerTempRc = RectMakeCenter(
@@ -183,7 +190,8 @@ void Stage11::portalOn()
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
-			SCENEMANAGER->changeScene("main");
+			fadeOut.onOff.set(ON);
+			gateIndex = 1;
 		}
 
 	}
@@ -193,22 +201,25 @@ void Stage11::portalOn()
 		cout << "다음 스테이지 가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
-			fadeOut.onOff.set(ON);
+
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
+			fadeOut.onOff.set(ON);
+			gateIndex = 2;
+
 			// 다음 스테이지를 위해 스테이지 업데이트 해줄 것 
 			DATAMANAGER->getMapData().enterAbyssInfo.stage = 4;
 			DATAMANAGER->getPlayer()->getPlayerAbyss().stage = 4;
-					
 		}
 
 	}
 	else DATAMANAGER->getMapData().gate.inGateCount = 0;
 
-	fadeOut.update();
+
 	if (fadeOut.onOff.test(NEXT)) // 씬체인지
 	{
-		// 씬체인지 stageChangeInit();
-		SCENEMANAGER->changeScene("stage14");
+		SOUNDMANAGER->stop("stage11");
+		if ( gateIndex == 1) SCENEMANAGER->changeScene("main");
+		if ( gateIndex == 2) SCENEMANAGER->changeScene("stage14");
 	}
 }
 

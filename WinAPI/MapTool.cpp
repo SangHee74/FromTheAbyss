@@ -58,7 +58,7 @@ void MapTool::update(void)
 	ptInTileCheck();
 
 	// 맵툴 기능
-	if (KEYOKD(VK_LBUTTON))
+	if (KEYSKD(VK_LBUTTON))
 	{
 		selectSampleTile();
 		selectTile();
@@ -431,11 +431,11 @@ void MapTool::save()
 		{
 			if (_curStage == 1)
 			{
-				//file = CreateFile("1-1.txt", GENERIC_WRITE, NULL, NULL,
-				//	CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-				//
-				//WriteFile(file, _tile, sizeof(_tile) * TILEMAX_X * TILEMAX_Y, &write, NULL);
-				//CloseHandle(file);
+				file = CreateFile("1-1.txt", GENERIC_WRITE, NULL, NULL,
+					CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				
+				WriteFile(file, _tile, sizeof(_tile) * TILEMAX_X * TILEMAX_Y, &write, NULL);
+				CloseHandle(file);
 				cout <<  "1-1 파일 저장 클릭 " <<endl;
 			}
 		}
@@ -446,6 +446,24 @@ void MapTool::save()
 
 void MapTool::load()
 {
+	if (PtInRect(&_save, _ptMouse))
+	{
+		HANDLE file;
+		DWORD read;
+
+		if (_curAbyss == 1)
+		{
+			if (_curStage == 1)
+			{
+				file = CreateFile("1-1.txt", GENERIC_WRITE, NULL, NULL,
+					CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+				WriteFile(file, _tile, sizeof(_tile) * TILEMAX_X * TILEMAX_Y, &read, NULL);
+				CloseHandle(file);
+				cout << "1-1 파일 저장 클릭 " << endl;
+			}
+		}
+	}
 }
 
 #pragma endregion

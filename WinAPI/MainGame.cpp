@@ -61,7 +61,7 @@ HRESULT MainGame::init(void)
 
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
-	SCENEMANAGER->changeScene("castle");
+	SCENEMANAGER->changeScene("title");
 	//SCENEMANAGER->changeScene("stage11");
 	//SCENEMANAGER->changeScene("stage14");
 	//SCENEMANAGER->changeScene("main");

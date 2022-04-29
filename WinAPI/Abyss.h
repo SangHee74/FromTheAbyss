@@ -1,7 +1,7 @@
 #pragma once
 #include "GameNode.h"
 
-enum BUTTONNUM
+enum BUTTON_NUM
 {
 	BUTTON_ONE,
 	BUTTON_TWO,
@@ -13,18 +13,18 @@ class Abyss :public GameNode
 {
 private:
 
+	tagOnlyText _index[3];		// npc 대화
 	
 	RECT _buttonRc[BUTTON_END]; // 어비스/스테이지 선택버튼
 	RECT _backButton;		    // 뒤로가기
 	RECT _upButton;				// 위로 올리기
 	RECT _downButton;			// 아래로 내리기 
-	bool _isWaitInput;			// 더블클릭 대기
-	tagOnlyText _index[3];		// npc 대화
 
-	int _abyss;	        // 데이터 매니저로 전달할 던전 정보 
-	int _stage;	        // 데이터 매니저로 전달할 던전 정보 
-	bool _downButtonOn; // 내리기 버튼 활성화 유무 
-
+	bool _mainHall;			    // 메인홀로 돌아가기 
+	bool _isWaitDubbleClick;	// 더블클릭 대기
+	bool _selectAbyss;			// 처음엔 어비스, 두번째는 스테이지 선택
+	BUTTON_NUM  _selectButton; 
+	
 	tagFingerMouse fingerPointer;
 	tagSceneFadeOut fadeOut;
 
@@ -43,5 +43,7 @@ public:
 	void release(void);
 	void update(void);
 	void render(void);
+
+	void selectStage();
 
 };

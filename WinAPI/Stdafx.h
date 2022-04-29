@@ -105,18 +105,6 @@ using namespace MY_UTIL;
 
 //#define MAPTOOL
 
-//#define FULLSCREEN
-/*
-#ifdef FULLSCREEN
-#define WINSTART_X	 1920 // 모니터에 따라 다름 
-#define WINSTART_Y	 0
-// GetSystemMetrics 인자로 전달되는 시스템 설정 정보 현황
-// ㄴSM_CXSCREEN / SM_CYSCREEN :  현재 화면 해상도 X, Y축 반환 
-#define WINSIZE_X	 GetSystemMetrics(SM_CXSCREEN)
-#define WINSIZE_Y	 GetSystemMetrics(SM_CYSCREEN)
-#define WINSTYLE	 WS_POPUPWINDOW | WS_MAXWIZE
-*/
-
 #ifdef MAPTOOL
 #define WINSTART_X	 50
 #define WINSTART_Y	 20
