@@ -6,7 +6,7 @@ enum MAINSCENE
 	//MAINSCENE_NONE,
 	MAINSCENE_ABYSS, MAINSCENE_PUB,   MAINSCENE_STORE, 
 	MAINSCENE_SQURE, MAINSCENE_TUTO,  MAINSCENE_CASTLE, 
-	MAINSCENE_END
+	MAINSCENE_END, MAINSCENE_TEMP
 };
 
 class MainHall:public GameNode
@@ -17,16 +17,10 @@ private:
 	tagText _menuInfoText[MAINSCENE_END];
 	int _textNum;
 
-	// selected menu (fingerMouse)
-	// 000001 abyss / 000010 pub / 000100 store 
-	// 001000 tuto / 010000 squre/  100000 castle
-	//bitset<6> _buttonCheck;
-	int _sceneIndex;
-	//int _chooseIndex;
-	int _changeIndex;
+	bool _isWaitDubbleClick;
 
-	float _timeCount;
-	bool _selectLimit;
+	MAINSCENE _selectScene;
+	MAINSCENE _curScene;
 
 	tagFingerMouse fingerPointer;
 	tagSceneFadeOut fadeOut;
@@ -52,7 +46,6 @@ public:
 	void render(void);
 
 	void selectSlot();
-	void selectMenue();
-	void menuInfo(int textNum);
+	void menuInfo();
 };
 

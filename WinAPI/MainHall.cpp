@@ -16,12 +16,10 @@ HRESULT MainHall::init(void)
 	_icon[MAINSCENE_TUTO] = RectMake(1095, 354, 90, 70);
 	_icon[MAINSCENE_CASTLE] = RectMake(1155, 262, 90, 70);
 
-	_timeCount = 0.0;
-	_selectLimit = false;
 	_isWaitDubbleClick = true; // ´õºíÅ¬¸¯ ´ë±â 
 
 	_selectScene = MAINSCENE_ABYSS;
-
+	_curScene = MAINSCENE_TEMP;
 	fadeOut.init();
 	fingerPointer.init();
 
@@ -36,7 +34,6 @@ void MainHall::release(void)
 void MainHall::update(void)
 {
 	selectSlot();
-	selectMenue();
 
 	// fingerMouse
 	fingerPointer.update();
@@ -68,13 +65,11 @@ void MainHall::update(void)
 			break;
 		}
 	}
-
-
 }
 
 void MainHall::render(void)
 {
-	menuInfo(_textNum);
+	menuInfo();
 
 	fingerPointer.img->render(getMemDC(), fingerPointer.pos.x, fingerPointer.pos.y);
 
@@ -89,8 +84,6 @@ void MainHall::selectSlot()
 	int tempX = 0;
 	int tempY = 0;
 	
-	MAINSCENE curScene;
-
 #pragma region Scene Click
 
 	if (PtInRect(&_icon[MAINSCENE_ABYSS], _ptMouse))
@@ -105,7 +98,12 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_ABYSS;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_ABYSS;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
 
@@ -122,7 +120,12 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_PUB;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_PUB;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
 
@@ -140,7 +143,12 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_STORE;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_STORE;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
 	
@@ -157,7 +165,12 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_SQURE;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_SQURE;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
 
@@ -173,7 +186,12 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_TUTO;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_TUTO;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
 
@@ -189,21 +207,22 @@ void MainHall::selectSlot()
 		}
 		else
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) curScene = MAINSCENE_CASTLE;
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				_curScene = MAINSCENE_CASTLE;
+				if (_selectScene == _curScene) fadeOut.onOff.set(ON);
+				else _isWaitDubbleClick = true;
+			}
 		}
 	}
-
-
-	if (_selectScene == curScene) fadeOut.onOff.set(ON);
-	else _isWaitDubbleClick = true;
 
 #pragma endregion
 	
 	// icon w, h 110,90 (abyss)  /  90 ,70
 	if (_selectScene == MAINSCENE_ABYSS)
 	{
-		tempX = _icon[MAINSCENE_ABYSS].left +70;
-		tempY = _icon[MAINSCENE_ABYSS].top + 60;
+		tempX = _icon[_selectScene].left +70;
+		tempY = _icon[_selectScene].top + 60;
 	}
 	else
 	{
@@ -215,36 +234,36 @@ void MainHall::selectSlot()
 }
 
 
-void MainHall::menuInfo(int textNum)
+void MainHall::menuInfo()
 {
 	IMGR("main", getMemDC());
 	SetTextAlign(getMemDC(), TA_CENTER);
 	FONTMANAGER->drawText(getMemDC(), 180, 272, "µÕ±Ù¸ð²Ã", 32, FW_SEMIBOLD,
-		_menuInfoText[_selectLimit].name, wcslen(_menuInfoText[_selectLimit].name), RGB(255, 255, 255));
+		_menuInfoText[_selectScene].name, wcslen(_menuInfoText[_selectScene].name), RGB(255, 255, 255));
 
 	SetTextAlign(getMemDC(), TA_LEFT);
 	int _textBufferCnt = 150;
 	const int SCRIPT_MAX_LENGTH = 30;
 
 	// gray color font
-	FONTMANAGER->drawText(getMemDC(), 36, 351, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_selectLimit].script,
+	FONTMANAGER->drawText(getMemDC(), 36, 351, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_selectScene].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(100, 100, 100));
 
-	if (wcslen(_menuInfoText[_selectLimit].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
+	if (wcslen(_menuInfoText[_selectScene].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
 	{
 		FONTMANAGER->drawText(getMemDC(), 36, 381, "µ¸¿ò", 21, FW_SEMIBOLD,
-			_menuInfoText[_selectLimit].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_selectLimit].script)) ?
-			wcslen(_menuInfoText[_selectLimit].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(100, 100, 100));
+			_menuInfoText[_selectScene].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_selectScene].script)) ?
+			wcslen(_menuInfoText[_selectScene].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(100, 100, 100));
 	}
 
 	// black color font
-	FONTMANAGER->drawText(getMemDC(), 35, 350, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_selectLimit].script,
+	FONTMANAGER->drawText(getMemDC(), 35, 350, "µ¸¿ò", 21, FW_SEMIBOLD, _menuInfoText[_selectScene].script,
 		((_textBufferCnt) > SCRIPT_MAX_LENGTH ? SCRIPT_MAX_LENGTH : (_textBufferCnt)), RGB(0, 0, 0));
 
-	if (wcslen(_menuInfoText[_selectLimit].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
+	if (wcslen(_menuInfoText[_selectScene].script) > SCRIPT_MAX_LENGTH && _textBufferCnt > SCRIPT_MAX_LENGTH)
 	{
 		FONTMANAGER->drawText(getMemDC(), 35, 380, "µ¸¿ò", 21, FW_SEMIBOLD,
-			_menuInfoText[_selectLimit].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_selectLimit].script)) ?
-			wcslen(_menuInfoText[_selectLimit].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(0, 0, 0));
+			_menuInfoText[_selectScene].script + SCRIPT_MAX_LENGTH, (_textBufferCnt > wcslen(_menuInfoText[_selectScene].script)) ?
+			wcslen(_menuInfoText[_selectScene].script) - SCRIPT_MAX_LENGTH : _textBufferCnt - SCRIPT_MAX_LENGTH, RGB(0, 0, 0));
 	}
 }
