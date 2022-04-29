@@ -109,7 +109,7 @@ void Stage11::render(void)
 
 
 	// 몬스터
-	_enemyM->render();
+	//_enemyM->render();
 
 	// 플레이어 
 	DATAMANAGER->getPlayer()->render();
@@ -219,71 +219,12 @@ void Stage11::portalOn()
 	{
 		SOUNDMANAGER->stop("stage11");
 		if ( gateIndex == 1) SCENEMANAGER->changeScene("main");
-		if ( gateIndex == 2) SCENEMANAGER->changeScene("stage14");
+		if ( gateIndex == 2) SCENEMANAGER->changeScene("bossIntro");
 	}
 }
 
 void Stage11::collision()
 {
-	RECT tempRc;
-	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
-	{
-		// 플레이어 공격이펙트 -> 몬스터 피격박스
-		if (IntersectRect(&tempRc, &DATAMANAGER->getPlayer()->getPlayerCollisionRc().atkRc,
-			&_enemyM->getMonsters()[i]->getMonsterCollisionRc().defRc)
-			&& ! (_enemyM->getMonsters()[i]->getState() == MONSTERSTATE::DEF))
-		{
+	
 
-			// 몬스터 피격상태로 전환 + 체력감소
-			_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::DEF;
-			int temp = 0;
-			temp = DATAMANAGER->getPlayer()->playerRandomDamage();
-			cout << "플레이어 데미지 : " << temp << endl;
-			//EFFECTMANAGER->getPlayerEff().show(tempRc); //이펙트 수정중!!!!
-
-			_enemyM->getMonsters()[i]->setHp(temp);
-			cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
-			break;
-
-		}
-		// 몬스터 체력이 없으면 
-		if (_enemyM->getMonsters()[i]->getHp() <= 0)
-		{
-			// 몬스터 죽음 이펙트 출력, //이펙트 수정중!!!!
-			//EFFECTMANAGER->getMonsterEff()->show(_enemyM->getMonsters()[i]->getMonster().moveRc);
-			// 몬스터 데이터 플레이어에 적용,
-
-			// 삭제 
-			_enemyM->removeMonster(i);
-		}
-
-	}
-
-
-	for (int i = 0; i < _enemyM->getMonsters().size(); i++)
-	{
-		// 몬스터 공격이펙트 -> 플레이어 피격박스
-		if (IntersectRect(&tempRc, &_enemyM->getMonsters()[i]->getMonsterCollisionRc().atkRc,
-			&DATAMANAGER->getPlayer()->getPlayerCollisionRc().defRc )
-			&& ! (DATAMANAGER->getPlayer()->getState() == PLAYERSTATE::DEF))
-		{
-			// 플레이어 피격상태로 전환 + 체력감소
-			DATAMANAGER->getPlayer()->getState() = PLAYERSTATE::DEF;
-
-			// 플레이어 체력 세팅 함수
-			int temp = 0;
-			temp = _enemyM->monsterRandomDamage(i);
-			cout << "몬스터의 데미지 : " << temp << endl;
-
-
-			DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= temp;
-			_UIBar->setHpGauge(DATAMANAGER->getPlayer()->getPlayerStatus().curHp, DATAMANAGER->getPlayer()->getPlayerStatus().maxHp);
-			//EFFECTMANAGER->getPlayer()->show(tempRc);
-
-			_enemyM->getMonsters()[i]->setHp(temp);
-			cout << "플레이어 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
-			break;
-		}
-	}
 }
-

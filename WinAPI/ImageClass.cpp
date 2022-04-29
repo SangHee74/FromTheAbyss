@@ -94,7 +94,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addFrameImage("Kobold_skill", "Resources/Images/Monster/Kobold_skill.bmp", 88 * MAGNI, 168 * MAGNI, 2, 4, MGT);
 
 	IMAGEMANAGER->addFrameImage("mino_attack", "Resources/Images/Monster/Boss/mino_attack.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
-	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 620 * MAGNI, 88 * MAGNI, 4, 1, MGT);
+	IMAGEMANAGER->addFrameImage("mino_skill",  "Resources/Images/Monster/Boss/mino_skill.bmp", 640 * MAGNI, 88 * MAGNI, 4, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_idle",   "Resources/Images/Monster/Boss/mino_idle.bmp", 196 * MAGNI, 472 * MAGNI, 1, 4, MGT);
 	IMAGEMANAGER->addFrameImage("mino_idle2",   "Resources/Images/Monster/Boss/mino_idle_down.bmp", 784 * MAGNI, 118 * MAGNI, 4, 1, MGT);
 	IMAGEMANAGER->addFrameImage("mino_move",   "Resources/Images/Monster/Boss/mino_move.bmp", 392 * MAGNI, 472 * MAGNI, 2, 4, MGT);
@@ -122,7 +122,7 @@ HRESULT ImageClass::init(void)
 	IMAGEMANAGER->addImage("eff_bossAttLeft",			"Resources/Images/Effect/eff_bossAttLeft.bmp", 108, 278, MGT);
 	IMAGEMANAGER->addImage("eff_bossAttRight",          "Resources/Images/Effect/eff_bossAttRight.bmp", 108, 278, MGT);
 	IMAGEMANAGER->addFrameImage("monsterDie",           "Resources/Images/Effect/monsterDie.bmp", 160 * MAGNI, 32 * MAGNI, 5, 1, MGT);
-	IMAGEMANAGER->addFrameImage("bossDie",	            "Resources/Images/Effect/BossDie.bmp", 160 * MAGNI, 30 * MAGNI, 5, 1, MGT);
+	IMAGEMANAGER->addFrameImage("bossDie",	            "Resources/Images/Effect/BossDie.bmp", 470 * MAGNI, 88 * MAGNI, 5, 1, MGT);
 
 #pragma endregion
 

@@ -6,8 +6,8 @@
 //Text(보안에 굉장히 취약), XML, INI, JSON
 
 
-#define SAVE_BUFFER 5000
-#define LOAD_BUFFER 5000
+#define SAVE_BUFFER 30000
+#define LOAD_BUFFER 30000
 
 class TextDataManager : public SingletonBase<TextDataManager>
 {

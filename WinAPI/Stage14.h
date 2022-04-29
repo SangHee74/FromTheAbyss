@@ -13,10 +13,10 @@ private:
 	ProgressBar* _UIBar;
 	ProgressBarBoss* _bossUIBar;
 	SubMenu* _subScreen;
-	//Effect* _enemyEff;
+	
 	Effect* _monsterEff;
 	Effect* _playerEff;
-
+	PlayerEffect* _playerEff2;
 
 	int _playerRndDmg; // Random Damage
 	int _monsterRndDmg;

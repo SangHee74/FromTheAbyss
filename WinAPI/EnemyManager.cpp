@@ -65,10 +65,9 @@ void EnemyManager::setMoster()
 		// ex :  11(0~19) 12(20~39) 13(40~59) 14(60~79)
 		//		 21(80~99) 22(100~119) 23(120~139) 24(140~159)
 	case 1:
-		if (currentStage == 1)
+		if (currentStage == 3)
 		{
 
-			// 피격 테스트 용 
 			Monster* dionaea;
 			dionaea = new Dionaea;
 

@@ -53,3 +53,42 @@ public:
 	{}
 	~Effect() {}
 };
+
+
+// ================================================================================================
+// before Player Effect
+// ================================================================================================
+
+struct tagEffect
+{
+	Image* img;
+	RECT rc;
+	int count;
+	int curFrameX;
+	int curFrameY;
+	float x, y;
+	bool onEffect;
+};
+
+class PlayerEffect :public GameNode
+{
+private:
+	vector<tagEffect> _vEffect;
+	vector<tagEffect>::iterator _viEffect;
+
+public:
+
+	HRESULT init(void);
+	void release(void);
+	void update(void);
+	void render(void);
+
+	void createEff(RECT rc, EFFECT_TYPE type); // 이펙트 이미지, 범위렉트(+카메라조정) 업데이트 
+	void draw(void);
+	void removeEffect(int arrNum);
+
+	void centerDamageEffect(int damage, POINT pos, DAMAGECOLOR color);
+
+	PlayerEffect() {}
+	~PlayerEffect() {}
+};

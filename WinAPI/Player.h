@@ -64,22 +64,22 @@ struct tagPlayerData
 	int		movePosX, movePosY; // rc업데이트
 	int		drawPosX, drawPosY; // 이미지 렌더(LeftTop)
 	int		frameX, frameY;
-	int		width, height;   // 이미지 마다 맞춰 줄 가로세로
+	int		width, height;      // 이미지 마다 맞춰 줄 가로세로
 	int		speed;
-	Image*  face;	 // 플레이어 얼굴 이미지
-	Image*  image;	 // 플레이어 이미지
+	Image*  face;				// 플레이어 얼굴 이미지
+	Image*  image;				// 플레이어 이미지
 };
 
 // player Weapon
 struct tagWeaponData
 {
-	WEAPONTYPE type;			  // 플레이어 무기타입
+	WEAPONTYPE type;			// 플레이어 무기타입
 	RECT moveRc;
 	RECT drawRc;
-	int movePosX, movePosY;		  // 이동 좌표
-	int drawPosX, drawPosY;		  // 렌더 좌표
+	int movePosX, movePosY;		// 이동 좌표
+	int drawPosX, drawPosY;		// 렌더 좌표
 	int frameX, frameY;
-	int width, height;			  // 이미지 마다 맞춰 줄 가로세로
+	int width, height;			// 이미지 마다 맞춰 줄 가로세로
 	Image* image;
 };
 

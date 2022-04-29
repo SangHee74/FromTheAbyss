@@ -431,12 +431,28 @@ void MapTool::save()
 		{
 			if (_curStage == 1)
 			{
-				file = CreateFile("1-1.txt", GENERIC_WRITE, NULL, NULL,
-					CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-				
-				WriteFile(file, _tile, sizeof(_tile) * TILEMAX_X * TILEMAX_Y, &write, NULL);
-				CloseHandle(file);
-				cout <<  "1-1 파일 저장 클릭 " <<endl;
+				cout << "TILEMAX_X*TILEMAX_Y : " << TILEMAX_X * TILEMAX_Y << endl;
+
+				vector<string> vSaveStr;
+				for (int i = 0; i < TILEMAX_X*TILEMAX_Y; ++i)
+				{
+					//11
+					vSaveStr.push_back( to_string(_tile[i].rc.left));
+					vSaveStr.push_back( to_string(_tile[i].rc.top));
+					vSaveStr.push_back( to_string(_tile[i].rc.right));
+					vSaveStr.push_back( to_string(_tile[i].rc.bottom));
+					vSaveStr.push_back( to_string(_tile[i].pos.x));
+					vSaveStr.push_back( to_string(_tile[i].pos.y));
+					vSaveStr.push_back( to_string(_tile[i].fX));
+					vSaveStr.push_back( to_string(_tile[i].fY));
+					vSaveStr.push_back( to_string(_tile[i].ptInRect));
+					vSaveStr.push_back( to_string(_tile[i]._abyssType));
+					vSaveStr.push_back( to_string(_tile[i]._moveCheck));
+					cout << "i : "<<i << endl;
+				}
+				TEXTDATAMANAGER->save("stage11.csv",vSaveStr);
+					//
+					cout <<  "1-1 파일 저장 클릭 " <<endl;
 			}
 		}
 	}
@@ -446,7 +462,7 @@ void MapTool::save()
 
 void MapTool::load()
 {
-	if (PtInRect(&_save, _ptMouse))
+	if (PtInRect(&_load, _ptMouse))
 	{
 		HANDLE file;
 		DWORD read;
@@ -455,12 +471,42 @@ void MapTool::load()
 		{
 			if (_curStage == 1)
 			{
-				file = CreateFile("1-1.txt", GENERIC_WRITE, NULL, NULL,
-					CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				vector<string> loadStr;
+				loadStr.resize(40000);
+				loadStr = TEXTDATAMANAGER->load("stage11.csv");
 
-				WriteFile(file, _tile, sizeof(_tile) * TILEMAX_X * TILEMAX_Y, &read, NULL);
-				CloseHandle(file);
-				cout << "1-1 파일 저장 클릭 " << endl;
+				vector<string>::iterator viLoadStr;
+				viLoadStr = loadStr.begin();
+				int k = 0;
+				for (; viLoadStr != loadStr.end(); )
+				{
+					cout << k << endl;
+					k++;
+					if (k == 0)
+					{
+						_tile[k].rc.left = atoi((*viLoadStr).c_str());
+					}
+					else
+					{ 
+						_tile[k].rc.left = atoi((*++viLoadStr).c_str()); 
+					}
+					_tile[k].rc.top = atoi((*++viLoadStr).c_str());
+					_tile[k].rc.right = atoi((*++viLoadStr).c_str());
+					_tile[k].rc.bottom = atoi((*++viLoadStr).c_str());
+					_tile[k].pos.x = atoi((*++viLoadStr).c_str());
+					_tile[k].pos.y = atoi((*++viLoadStr).c_str());
+					_tile[k].fX = atoi((*++viLoadStr).c_str());
+					_tile[k].fY = atoi((*++viLoadStr).c_str());
+					_tile[k].ptInRect = atoi((*++viLoadStr).c_str());
+					_tile[k]._abyssType = static_cast<abyssType>(atoi((*++viLoadStr).c_str()));
+					_tile[k]._moveCheck = static_cast<groundType>(atoi((*++viLoadStr).c_str()));
+					
+
+					_tile[k].toString();
+				}
+
+		
+				
 			}
 		}
 	}

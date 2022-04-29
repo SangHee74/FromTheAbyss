@@ -102,29 +102,32 @@ public:
 	tagPixel&		  getMonsterPixel()		  { return _pixel; }
 	tagCollisionRc&   getMonsterCollisionRc() { return _collision; }
 
-	void setHp(int hp) { _curHp-=hp; }
-	int	 getHp()	   { return _curHp; }
-	int	 getMaxHp()	   { return _maxHp; }
-	int  getAtt()	   { return _curAtt; }
-	int  getExp()	   { return _dropExp; }
-	int  getLufia()	   { return _dropLufia; }
-	int  getItem()	   { return _dropItemIndex; }
+	void setHp(int hp)   { _curHp-=hp; }
+	int	 getHp()	     { return _curHp; }
+	int	 getMaxHp()	     { return _maxHp; }
+	int  getAtt()	     { return _curAtt; }
+	int  getExp()	     { return _dropExp; }
+	int  getLufia()	     { return _dropLufia; }
+	int  getItem()	     { return _dropItemIndex; }
 
-	RECT&  getMoveRc()		 { return _moveRc; }
-	RECT&  getReconitionRc() { return _recognitionRc; }
-	int&   getMovePosX()	 { return _movePosX; }
-	int&   getMovePosY()	 { return _movePosY; }
-	int&   getFrameX()		 { return _frameX; }
-	int&   getFrameY()		 { return _frameY; }
-	float& getSpeed()		 { return _speed; }
-	float& getDistance()	 { return _distance; }
-	float& getAngle()		 { return _angle; }
-	bool&  getPlayerCheck()  { return _playerCheck; }
-	bool&  getAtkStart()     { return _atkStart; }
-	Image* getImage()		 { return _image; }
+	RECT&  getMoveRc()		  { return _moveRc; }
+	RECT&  getReconitionRc()  { return _recognitionRc; }
+	int&   getMovePosX()	  { return _movePosX; }
+	int&   getMovePosY()	  { return _movePosY; }
+	int&   getFrameX()		  { return _frameX; }
+	int&   getFrameY()		  { return _frameY; }
+	float& getSpeed()		  { return _speed; }
+	float& getDistance()	  { return _distance; }
+	float& getAngle()		  { return _angle; }
+	Image* getImage()		  { return _image; }
+
+	void   setExp(int num)			  { _dropExp = num; }
+	void   setPlayerCheck(bool state) { _playerCheck = state; }
+	void   setAtkStart(bool state)    { _atkStart = state; }
 
 	float timeCount = 0.0f;
 };
+
 
 
 

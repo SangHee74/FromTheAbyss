@@ -11,7 +11,6 @@ HRESULT Player::init(void)
 	//IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40 * MAGNI, 40 * MAGNI, MGT);
 	//_player.face = IMAGEMANAGER->findImage("p_face"); 
 
-	// 제이슨 로더에서 가져오면 좋을거같은데..
 	_status.curHp = 100;
 	_status.curSp = 100;
 	_status.curExp = 0;
@@ -27,8 +26,8 @@ HRESULT Player::init(void)
 	_status.iLuk = 9;
 	_status.iStatusPoint = 0; 
 	_status.lufia = 300;
-	// 블럭 정보 추가 필요
-	// 처음 성으로 들어가서 0부터 시작
+
+	// castle start
 	_abyss.abyss = 0;
 	_abyss.stage = 1;
 
@@ -51,10 +50,6 @@ HRESULT Player::init(void)
 
 void Player::release(void)
 {
-	//_pStatePatkern->stateRelease();
-
-	//_inven->release();
-	//SAFE_DELETE(_inven);
 
 }
 
