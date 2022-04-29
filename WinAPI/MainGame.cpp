@@ -61,7 +61,7 @@ HRESULT MainGame::init(void)
 
 	SCENEMANAGER->addScene("맵툴", new MapTool);
 
-	SCENEMANAGER->changeScene("title");
+	SCENEMANAGER->changeScene("abyss");
 	//SCENEMANAGER->changeScene("stage11");
 	//SCENEMANAGER->changeScene("stage14");
 	//SCENEMANAGER->changeScene("main");
@@ -94,7 +94,7 @@ void MainGame::render(void)
 	PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, WHITENESS);
 	   	 
 	SCENEMANAGER->render();
-	TIMEMANAGER->render(getMemDC());
+	//TIMEMANAGER->render(getMemDC());
 
 
 	//백버퍼의 내용을 HDC에 그린다

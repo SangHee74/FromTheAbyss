@@ -96,10 +96,10 @@ void DataManager::setStageSetting(void)
 			_mapData.gate.inRc[GATE_NEXTSTAGE] = RectMakeCenter(2160,685, gateInRcWidth, gateInRcHeight);
 
 			// 플레이어 정보 세팅
-			//_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
+			_player->playerInStageSetting(162, 330, PLAYERDIRECTION::RIGHTDOWN);
 
 			// 보스방 테스트 용
-			_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
+			//_player->playerInStageSetting(2436,867, PLAYERDIRECTION::LEFTUP);
  
 		}
 		if (settingStage == 4)
