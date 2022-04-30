@@ -8,8 +8,7 @@ HRESULT TimeManager::init(void)
 	return S_OK;
 }
 
-// 전역에서 사용하는 타이머 기능이기 때문에 
-// 프로그램에서 터지지 않게 확인하는것이 중요하다.
+
 void TimeManager::release(void)
 {
 	if (_timer != nullptr)
@@ -34,13 +33,6 @@ void TimeManager::render(HDC hdc)
 	SetBkMode(hdc, TRANSPARENT);
 	SetTextColor(hdc, RGB(0,0,255));
 
-	/*
-	// 타이머 중 프로그래머에게 필요한 정보(경과시간 ... 등을 확인하기 위해)
-	_DEBUG
-	Release Mode가 아닌 디버그일때만 실행
-	ㄴ 개발을 하면서 테스트의 용도가 강하다.
-	ㄴ _DEBUG는 절대 밖으로 공개되지 않아야 하므로 assert로 강력하게 확인한다.
-	*/
 #ifdef _DEBUG
 
 	//assert();

@@ -200,8 +200,6 @@ public:
 	tagCamera&		 getPlayerCAM()				 { return _camera; }
 	tagPixel&		 getPlayerPixel()			 { return _pixel; }
 	tagCollisionRc&  getPlayerCollisionRc()		 { return _collision; }
-	//char			 getName()					 { return name[128];}
-	//string		 getName2()					 { return _name;}
 
 	// function
 	void playerInStageSetting(int playerX, int playerY, PLAYERDIRECTION direction);

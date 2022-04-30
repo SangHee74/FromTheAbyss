@@ -50,16 +50,6 @@ void SceneManager::release(void)
 	}
 	_mSceneList.clear();
 
-	// 포인터는 메모리에 직접 접근이기 때문에 항상 예외처리로 신경 써줘야 한다.
-	// 이를 위한 라인 수에 연연하지 말것.
-	// for each 사용 시 .( 권장  X)  
-	/*
-	for each(auto scene in _mSceneList)
-	{
-		scene.second->release();
-		SAFE_DELETE(scene.second);
-	}
-	*/
 }
 
 void SceneManager::update(void)
@@ -107,8 +97,6 @@ HRESULT SceneManager::changeScene(string sceneName)
 	// 찾는데 성공하고, 초기화가 됬다면 
 	if (SUCCEEDED(find->second->init()))
 	{
-		// 씬을 바꿔도 변수가 계속 남아있게 설계를 고민하자 
-		// 익스턴 스태틱 등등 
 		_currentScene = find->second;
 		return S_OK;
 	}

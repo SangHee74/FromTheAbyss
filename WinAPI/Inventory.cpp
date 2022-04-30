@@ -3,8 +3,6 @@
 
 HRESULT Inventory::init(void)
 {
-	cout << "포션 하나 넣기 " << endl;
-
 	_im = new ItemManager();
 	_im->init();
 
@@ -23,7 +21,6 @@ void Inventory::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_F8))
 	{
 		_im->getItem(15);
-		cout << "getItem : 15 " << endl;
 	}
 }
 
@@ -37,7 +34,6 @@ void Inventory::render(void)
 	}
 	else
 	{
-		cout << "인벤안열림" << endl;
  	}
 }
 

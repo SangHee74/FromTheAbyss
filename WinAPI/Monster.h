@@ -33,7 +33,6 @@ protected:
 	MONSTERSTATE _state;
 	MONSTERDIRECTION _direction;
 
-	//tagMonsterData	_monster;	// 몬스터 정보
 	tagPixel		_pixel;		// 몬스터 픽셀충돌
 	tagCollisionRc  _collision; // 몬스터 렉트충돌
 	
@@ -98,7 +97,6 @@ public:
 	MONSTERSTATE&	  getState()			  { return _state; }
 	MONSTERDIRECTION& getDirection()		  { return _direction; }
 
-	//tagMonsterData&	  getMonster()			  { return _monster; }
 	tagPixel&		  getMonsterPixel()		  { return _pixel; }
 	tagCollisionRc&   getMonsterCollisionRc() { return _collision; }
 

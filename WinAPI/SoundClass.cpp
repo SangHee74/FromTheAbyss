@@ -13,10 +13,6 @@ HRESULT SoundClass::init(void)
 	SOUNDMANAGER->addSound("village",  "Resources/sounds/village.wav", true, true);
 
 
-
-
-
-
 	return S_OK;
 }
 

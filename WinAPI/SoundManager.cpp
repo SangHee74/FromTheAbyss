@@ -61,8 +61,6 @@ void SoundManager::release(void)
 
 void SoundManager::update(void)
 {
-	// 사운드 시스템 업데이트
-	// ㄴ 볼륨이 바뀌거나 재생이 끝난 사운드를 채널에서 빼는 등 다양한 작업을 자동으로 실행.
 	_system->update();
 }
 

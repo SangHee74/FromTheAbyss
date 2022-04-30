@@ -7,9 +7,6 @@
 HRESULT Player::init(void)
 {
 #pragma region 플레이어 데이터 입출력 영역 
-	// 로드 데이터 하기.....
-	//IMAGEMANAGER->addImage("p_face", "Resources/Images/Player/p_face.bmp", 40 * MAGNI, 40 * MAGNI, MGT);
-	//_player.face = IMAGEMANAGER->findImage("p_face"); 
 
 	_status.curHp = 100;
 	_status.curSp = 100;
@@ -138,8 +135,8 @@ void Player::render(void)
 			tempPos.left - _camera.rc.left + 4, tempPos.top - _camera.rc.top + 4);
 
 		// 피격범위 렌더 
-		//Rectangle(getMemDC(), _collision.defRc.left - _camera.rc.left, _collision.defRc.top - _camera.rc.top,
-		//	_collision.defRc.left - _camera.rc.left + _collision.defWidth, _collision.defRc.top - _camera.rc.top + _collision.defHeight);
+		Rectangle(getMemDC(), _collision.defRc.left - _camera.rc.left, _collision.defRc.top - _camera.rc.top,
+			_collision.defRc.left - _camera.rc.left + _collision.defWidth, _collision.defRc.top - _camera.rc.top + _collision.defHeight);
 		
 		// 무기이미지 범위 렌더
 	   Rectangle(getMemDC(), _camera.weaponLeft, _camera.weaponTop,
@@ -181,8 +178,6 @@ void Player::render(void)
 		Rectangle(getMemDC(), tempPos5.left - _camera.rc.left, tempPos5.top - _camera.rc.top,
 			tempPos5.left - _camera.rc.left + 4, tempPos5.top - _camera.rc.top + 4);
 
-		//rcMake(getMemDC(), _player.defRc);
-		//rcMake(getMemDC(), _weapon.atkRc);
 	}
 
 

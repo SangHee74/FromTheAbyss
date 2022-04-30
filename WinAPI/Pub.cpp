@@ -169,7 +169,7 @@ void Pub::menuSelect()
 				PubIdx |= pubMain;
 				PubIdx &= ~(pubType| storege| takeout);
 			}
-			if (PubIdx & storege) // 스토리지에서 뒤로갈건데 
+			if (PubIdx & storege)
 			{
 				if (!_okBox)
 				{

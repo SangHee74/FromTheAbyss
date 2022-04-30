@@ -119,8 +119,7 @@ void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fo
 {
 	// 터짐방지
 	int arraySize = sizeof(printStringArr) / sizeof(*printStringArr);
-} // <-정의는 cpp에서 수정할 것 
-
+}
 
 
 void FontManager::drawText(HDC hdc, RECT rc, char* fontName, int fontSize, int fontWidth, string str, COLORREF color, bool clip)

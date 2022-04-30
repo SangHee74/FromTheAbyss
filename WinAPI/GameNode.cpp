@@ -112,9 +112,6 @@ void GameNode::release(void)
 
 void GameNode::update(void)
 {
-	//새로고침
-	//버퍼링이 추가되면 고민이 필요하다
-	//InvalidateRect(_hWnd, NULL, FALSE);
 }
 
 void GameNode::render(void)
@@ -129,17 +126,14 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT imessage, WPARAM wParam, LPARAM lPara
 	switch (imessage)
 	{
 	case WM_TIMER:
-		//this->update();
 		break;
 	case WM_CREATE:  //생성자
 		break;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		//this->render();
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_MOUSEMOVE:
-		//20211230 마우스좌표 
 		_ptMouse.x = LOWORD(lParam);
 		_ptMouse.y = HIWORD(lParam);
 		break;
@@ -149,10 +143,10 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT imessage, WPARAM wParam, LPARAM lPara
 		{
 
 		case VK_ESCAPE:
-			PostMessage(hWnd, WM_DESTROY, 0, 0); //esc누르면 소멸자 부르기
+			PostMessage(hWnd, WM_DESTROY, 0, 0);
 			break;
 		}
-		InvalidateRect(hWnd, NULL, false);  // 화면이 계속 반짝거린다면 false 로 수정해야함 (지금 고쳐진상태임)
+		InvalidateRect(hWnd, NULL, false); 
 		break;
 
 	case WM_DESTROY:    //소멸자

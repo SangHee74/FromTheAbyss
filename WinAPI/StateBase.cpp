@@ -64,25 +64,6 @@ void IdleState::stateUpdate(Player* player)
 		}
 	}
 
-	/*
-	// 스킬
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		//SetPlayerState(player, SoulCapture::getInstance());
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		// 창을 장착하고 있으면 스킬로
-		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
-		{
-			//SetPlayerState(player, SpearStrike::getInstance());
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		cout << "get 3rd Skill Instance" << endl;
-	}
-	*/
 
 	// 피격
 	if (player->getIsStateCheck().test(3))
@@ -134,11 +115,7 @@ void IdleState::stateUpdate(Player* player)
 
 void IdleState::stateRelease()
 {
-	//if (instance )
-	//{
-	//	delete instance;
-	//	instance = 0;	
-	//}
+
 }
 
 void IdleState::stateRender(Player* player)
@@ -315,26 +292,6 @@ void MoveState::stateUpdate(Player* player)
 			SetPlayerState(player, TwoHandWeaponCombo::getInstance());
 		}
 	}
-	/*
-	// 스킬
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		//SetPlayerState(player, SoulCapture::getInstance());
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		// 창을 장착하고 있으면 스킬로
-		if (player->getPlayerWeapon() == WEAPONTYPE::SPEAR)
-		{
-		//	SetPlayerState(player, SpearStrike::getInstance());
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		cout << "get 3rd Skill Instance" << endl;
-	}
-
-	*/
 
 	// 피격
 	if (player->getIsStateCheck().test(3))
@@ -375,11 +332,7 @@ void MoveState::stateUpdate(Player* player)
 
 void MoveState::stateRelease()
 {
-	//if (instance)
-	//{
-	//	delete instance;
-	//	instance = 0;
-	//}
+
 }
 
 void MoveState::stateRender(Player* player)
@@ -599,11 +552,7 @@ void DeadState::stateRelease()
 {
 	cout << "DeadState::release" << endl;
 
-	//if (instance)
-	//{
-	//	delete instance;
-	//	instance = 0;
-	//}
+
 }
 
 void DeadState::stateRender(Player* player)

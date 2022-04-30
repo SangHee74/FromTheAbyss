@@ -52,24 +52,6 @@
     <ClCompile Include="ProgressBar.cpp">
       <Filter>API\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="JsonSaveLoader.cpp">
-      <Filter>API\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Quest.cpp">
-      <Filter>API\Json\code</Filter>
-    </ClCompile>
-    <ClCompile Include="QuestSample.cpp">
-      <Filter>API\Json\code</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>API\Json\code</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonDataScene.cpp">
-      <Filter>API\ExamClass\noUse</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundScene.cpp">
-      <Filter>API\ExamClass\noUse</Filter>
-    </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>FromTheAbyss\Scene</Filter>
     </ClCompile>
@@ -123,9 +105,6 @@
     </ClCompile>
     <ClCompile Include="STATE.cpp">
       <Filter>FromTheAbyss\Player\STATE</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonState.cpp">
-      <Filter>API\Utility</Filter>
     </ClCompile>
     <ClCompile Include="StateBase.cpp">
       <Filter>FromTheAbyss\Player\STATE</Filter>
@@ -246,24 +225,6 @@
     <ClInclude Include="ProgressBar.h">
       <Filter>API\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="JsonSaveLoader.h">
-      <Filter>API\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Quest.h">
-      <Filter>API\Json\code</Filter>
-    </ClInclude>
-    <ClInclude Include="QuestSample.h">
-      <Filter>API\Json\code</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>API\Json\code</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonDataScene.h">
-      <Filter>API\ExamClass\noUse</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundScene.h">
-      <Filter>API\ExamClass\noUse</Filter>
-    </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>FromTheAbyss\Scene</Filter>
     </ClInclude>
@@ -317,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="STATE.h">
       <Filter>FromTheAbyss\Player\STATE</Filter>
-    </ClInclude>
-    <ClInclude Include="CButtonState.h">
-      <Filter>API\Utility</Filter>
     </ClInclude>
     <ClInclude Include="StateBase.h">
       <Filter>FromTheAbyss\Player\STATE</Filter>
@@ -413,20 +371,8 @@
     <Filter Include="API\Animation">
       <UniqueIdentifier>{2d83bac2-39e2-4d1b-8176-b19312f56e30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="API\Json">
-      <UniqueIdentifier>{c567fe51-0060-4933-a313-b2f839a7066f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="API\Json\Sckema">
-      <UniqueIdentifier>{fc2d7446-2e7d-47c1-83d9-52c29e3cd925}</UniqueIdentifier>
-    </Filter>
     <Filter Include="API\GameNode">
       <UniqueIdentifier>{67442a1c-806f-41ef-813c-0de14b734860}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="API\Json\code">
-      <UniqueIdentifier>{a4959739-8564-4076-8f7b-5e3f3d40fbc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="API\ExamClass\noUse">
-      <UniqueIdentifier>{c71332a2-75c7-465f-b4a3-7d652b8b08d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="FromTheAbyss">
       <UniqueIdentifier>{59d5bee3-5116-483a-b659-ad55f413af55}</UniqueIdentifier>
@@ -461,21 +407,5 @@
     <Filter Include="FromTheAbyss\Scene\Place\ABYSS\SubScreen">
       <UniqueIdentifier>{6e18599b-0d9d-47ad-87b0-271ce24e6ee9}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\MatricFunction.txt">
-      <Filter>API\Utility</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Character.json">
-      <Filter>API\Json\Sckema</Filter>
-    </None>
-    <None Include="Item.json">
-      <Filter>API\Json\Sckema</Filter>
-    </None>
-    <None Include="Quest.json">
-      <Filter>API\Json\Sckema</Filter>
-    </None>
   </ItemGroup>
 </Project>

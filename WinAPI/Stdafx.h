@@ -12,10 +12,10 @@
 
 //! 라이브러리
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console")
-#pragma comment(lib,"Winmm.lib") // 플레이 사운드를 사용하기 위해 추가했던 라이브러리. + 0209 timeGetTime
-#pragma comment (lib,"msimg32.lib") // 알파 블렌드를 사용하기 위한 라이브러리
-#pragma comment (lib,"lib/FMOD/fmodex_vc.lib") // 사운드를 사용하기 위한 라이브러리
-#pragma comment (lib,"lib/Jsoncpp/json_vc71_libmtd.lib") // Json을 사용하기 위한 라이브러리
+#pragma comment(lib,"Winmm.lib") 
+#pragma comment (lib,"msimg32.lib")
+#pragma comment (lib,"lib/FMOD/fmodex_vc.lib") 
+#pragma comment (lib,"lib/Jsoncpp/json_vc71_libmtd.lib")
 
 
 //! 외부 헤더 파일
@@ -41,9 +41,9 @@
 #include <map>
 #include <cassert>
 #include <algorithm>
-#include <functional> // 알고리즘에 따라오는 : 보이드 포인터를 변수처럼 던진다
-#include <fstream> // 파일 입출력
-#include <queue> // 큐
+#include <functional>
+#include <fstream> 
+
 
 
 

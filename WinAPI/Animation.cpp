@@ -18,15 +18,12 @@ _loop(false)
 
 HRESULT Animation::init(int totalW, int totalH, int frameW, int frameH)
 {
-	// 가로 프레임 수 
 	_frameWidth = frameW;
 	_frameNumWidth = totalW / _frameWidth;
 
-	// 세로 프레임 수 
 	_frameHeight = frameH;
 	_frameNumHeight = totalH/ _frameHeight;
 
-	// 총 프레임 수 계산
 	_frameNum = _frameNumWidth * _frameNumHeight;
 	_frameList.clear();
 
@@ -42,7 +39,6 @@ HRESULT Animation::init(int totalW, int totalH, int frameW, int frameH)
 		}
 	}
 
-	// 기본 프레임으로 셋팅
 	setDefPlayFrame();
 
 	return S_OK;
@@ -51,10 +47,8 @@ HRESULT Animation::init(int totalW, int totalH, int frameW, int frameH)
 void Animation::release(void){
 }
 
-// 기본 프레임 세팅
 void Animation::setDefPlayFrame(bool reverse, bool loop)
 {
-	// 루프 돌건지?
 	_loop = loop;
 
 	_playList.clear(); 
@@ -63,40 +57,32 @@ void Animation::setDefPlayFrame(bool reverse, bool loop)
 	{
 		if (_loop)
 		{
-			// 갈때 프레임
 			for (int i = 0; i < _frameNum; i++)
 			{
 				_playList.push_back(i);
 			}
 
-			// 올때 프레임
 			for (int i = _frameNum - 2; i > 0; i--)
 			{
-				// 자연스러움을 위해 -2
 				_playList.push_back(i);
 			}
 		}
 		else
 		{
-				// 갈때 프레임
 				for (int i = 0; i < _frameNum; i++)
 				{
 					_playList.push_back(i);
 				}
 
-				// 올때 프레임(루프가 아니기 때문에 >= 
 				for (int i = _frameNum - 2; i >= 0; i--)
 				{
-					// 자연스러움을 위해 -2
 					_playList.push_back(i);
 				}
 		}
 
 	}
-	// 편도
 	else
 	{
-		// 갈때 프레임
 		for (int i = 0; i < _frameNum; i++)
 		{
 			_playList.push_back(i);
@@ -105,28 +91,23 @@ void Animation::setDefPlayFrame(bool reverse, bool loop)
 
 }
 
-// 원하는 프레임만 재생 
 void Animation::setPlayTime(int* playArr, int arrLen, bool loop)
 {
 }
 
-// 구간을 잘라서 재생 
 void Animation::setPlayFrame(int start, int end, bool reverse, bool loop)
 {
 }
 
-// 초당 프레임 갱신 횟수
 void Animation::setFPS(int framePerSec)
 {
 }
 
-// 프레임 업데이트
 void Animation::frameUpdate(float elpasedTime)
 {
 	if (_isPlay)
 	{
 		_elapsedSec += elpasedTime;
-		// 프레임 업데이트 시간이 되었으면
 		if (_elapsedSec >= _frameUpdateSec)
 		{
 			_elapsedSec -= _frameUpdateSec;

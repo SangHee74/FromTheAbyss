@@ -2,10 +2,8 @@
 class Animation
 {
 private:
-	// 프레임 리스트
 	typedef vector <POINT> _vFrameList;
 
-	// 프레임 플레이 리스트
 	typedef vector <INT> _vPlayList;
 
 private:
@@ -47,13 +45,10 @@ public:
 		void AniPause(void) ;
 		void AniResume(void);
 
-		// 플레이 중?
 		inline bool isPlay(void) { return _isPlay; }
 
-		// 프레임 위치 얻어옴
 		inline POINT getFramePos(void) { return _frameList[_playList[_nowPlayIdx]]; }
 
-		// 현재 에니메이션의 프레임 위치 순서 얻기
 		inline int getFrameIdx(void)
 		{
 			POINT ptPOS = getFramePos();
@@ -63,7 +58,6 @@ public:
 			return frameX + frameY * _frameNumWidth;
 		}
 
-		//프레임 가로 세로 크기를 얻어온다
 		inline int getFrameWidth(void) { return _frameWidth; }
 		inline int getFrameHeight(void) { return _frameHeight; }
 		inline DWORD getNowPlayIdx(void) { return _nowPlayIdx; }

@@ -87,10 +87,6 @@ void Monster::release(void)
 void Monster::update(void)
 {
 	_stateChangeTime++;
-	//cout << "_stateChangeTime : "<< _stateChangeTime << endl;
-	//cout << "_distance : " << _distance << endl;
-	//cout << "_atkRange : " << _atkRange << endl;
-	
 	
 
 	// state Update
@@ -166,8 +162,6 @@ void Monster::update(void)
 		_atkCoolTime -= TIMEMANAGER->getElapsedTime();
 		if (_atkCoolTime <= 0)_atkCoolTime = _atkCoolTime > 0;
 	}
-	////cout << "monster - _atkCoolTime : " << _atkCoolTime << endl;
-
 
 	
 	pixelCollision(); // ÇÈ¼¿Ãæµ¹

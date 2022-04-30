@@ -1,36 +1,12 @@
 #pragma once
 
-// 전방 선언 - 컴파일러가 오류를 검사하지 않는다.
-// 잘 써야 한다 - > 판단을 잘 하자. 
-// 1. #include "class.h"     2. class className 
 class Animation;
-
-/*
-클래스 전방선언(Class Forward Declaration)
-전방 선언, 전처리문 #include
-
-1. is a 관계		: 제네시스는 차 다. -> #include
-2. has a 관계	: 제네시스는 바퀴를 가지고 있다(객체의 일부를 참조할 때)  -> 전방선언 
-
-- 클래스 전방선언은 함수 전방선언과 비슷하면서도 다른 점이 있다.
-- #include 전처리기를 많이 사용 할 경우에는 전처리기 단계가 길어지게 된다.
- ㄴ 컴파일 시간 또한 증가
-
-- 이를 해결하기 위해 전방선언을 이용할 수도 있다.
-1. 클래스 포인터 / 참조 형식으로 이름만 참조 할 경우
-2. 매개 변수나 리턴 타입을 위한 이름만 참조 할 경우 
-3. 메모리 절약
-*/
 
 
 class Image
 {
 public:
 
-	// 자주 사용하는 API 자료형
-	// DWORD : Unsigened long
-	// WORD : Unsigened short
-	// BYTE : Unsigend char : 음수없이 256 (char = 128 -> *2)
 	enum IMAGE_LOAD_KIND
 	{
 		LOAD_RESOURCE = 0, // 리소스 필터에서 가져오기
@@ -77,14 +53,13 @@ public:
 		}
 
 	}	IMAGE_INFO, *LPIMAGE_INFO; 
-	// 구조체의 이름을 두가지 중에 사용함, 포인터를 사용함(사용전에 if로 물어볼 것.)
 
 private:
 	LPIMAGE_INFO _imageInfo; //이미지 정보 , 구조체의 주소값 
 	CHAR* _fileName; // 파일명
 	BOOL _isTrans; // 배경색을 없앨건지 여부
-	COLORREF _transColor; // 배경색을 없앨  RGB값 (각각 1바이트 0~255 농도로 표현 가능)
-						  // 더 쪼개려면 바이트 사용
+	COLORREF _transColor; // 배경색을 없앨  RGB값 
+						 
 	BLENDFUNCTION _blendFunc;
 	LPIMAGE_INFO _blendImage;
 

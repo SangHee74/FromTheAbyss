@@ -7,10 +7,8 @@
 class PlayerMoveAni : public GameNode
 {
 private:
-	// 이동 이미지 _aI
 	Image* _aIPlayerMove;		// p_move
 
-	// 이동 에니메이션 _aM
 	Animation* _aMPlayerMove;
 
 

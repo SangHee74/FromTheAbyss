@@ -149,7 +149,6 @@
     <ClCompile Include="BossMonster.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Castle.cpp" />
-    <ClCompile Include="CButtonState.cpp" />
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -162,11 +161,8 @@
     <ClCompile Include="ImageClass.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemClass.cpp" />
     <ClCompile Include="ItemManager.cpp" />
-    <ClCompile Include="JsonDataScene.cpp" />
-    <ClCompile Include="JsonSaveLoader.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="MainGame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -178,13 +174,10 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="Pub.cpp" />
-    <ClCompile Include="Quest.cpp" />
-    <ClCompile Include="QuestSample.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundClass.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="SoundScene.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Stage11.cpp" />
     <ClCompile Include="Stage14.cpp" />
@@ -220,7 +213,6 @@
     <ClInclude Include="BossMonster.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Castle.h" />
-    <ClInclude Include="CButtonState.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="CommonMacroFunction.h" />
     <ClInclude Include="DataManager.h" />
@@ -234,11 +226,8 @@
     <ClInclude Include="ImageClass.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="ItemClass.h" />
     <ClInclude Include="ItemManager.h" />
-    <ClInclude Include="JsonDataScene.h" />
-    <ClInclude Include="JsonSaveLoader.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -250,15 +239,12 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="Pub.h" />
-    <ClInclude Include="Quest.h" />
-    <ClInclude Include="QuestSample.h" />
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="SoundClass.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="SoundScene.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Stage11.h" />
     <ClInclude Include="Stage14.h" />
@@ -280,14 +266,6 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tutorial.h" />
     <ClInclude Include="Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\MatricFunction.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Character.json" />
-    <None Include="Item.json" />
-    <None Include="Quest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

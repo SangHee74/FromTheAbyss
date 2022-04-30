@@ -186,7 +186,6 @@ void Stage11::portalOn()
 	if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_HOME], &playerTempRc))
 	{
 		DATAMANAGER->getMapData().gate.inGateCount++;
-		cout << "집가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
@@ -198,7 +197,6 @@ void Stage11::portalOn()
 	else if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_NEXTSTAGE], &playerTempRc))
 	{
 		DATAMANAGER->getMapData().gate.inGateCount++;
-		cout << "다음 스테이지 가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
 

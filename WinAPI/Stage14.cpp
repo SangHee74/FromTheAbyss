@@ -203,7 +203,6 @@ void Stage14::portalOn()
 	if (IntersectRect(&tempRc, &DATAMANAGER->getMapData().gate.inRc[GATE_HOME], &playerTempRc))
 	{
 		DATAMANAGER->getMapData().gate.inGateCount++;
-		cout << "집가는 게이트 로딩 중 :" << DATAMANAGER->getMapData().gate.inGateCount << endl;
 		if (DATAMANAGER->getMapData().gate.inGateCount > 90)
 		{
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
@@ -299,16 +298,10 @@ void Stage14::collision()
 
 				// 플레이어 피격상태로 전환 + 체력감소 + 이펙트
 				DATAMANAGER->getPlayer()->getState() = PLAYERSTATE::DEF;
-				cout << "몬스터 타격렉트와 플레이어 피격렉트 충돌+피격상태로 " << endl;
 
 				// 플레이어 체력 세팅 함수
 				_monsterRndDmg = _enemyM->monsterRandomDamage(i);
 				DATAMANAGER->getPlayer()->getPlayerStatus().curHp -= _monsterRndDmg;
-
-				// 충돌위치 이펙트
-
-				cout << "몬스터 데미지 : " << _monsterRndDmg << endl;
-				cout << "플레이어 남은 HP : " << DATAMANAGER->getPlayer()->getPlayerStatus().curHp << endl;;
 
 				_enemyM->getMonsters()[i]->setAtkStart(false);
 				_monsterRndDmg = 0;
@@ -341,8 +334,6 @@ void Stage14::damageSetting()
 				_enemyM->getMonsters()[i]->setHp(_playerRndDmg);
 				_enemyM->getMonsters()[i]->getState() = MONSTERSTATE::IDLE; // 상태 수정
 				_dmgSettingOk = true;
-				cout << "플레이어 데미지 : " << _playerRndDmg << endl;
-				cout << "몬스터 남은 HP : " << _enemyM->getMonsters()[i]->getHp() << endl;;
 				 
 				break;
 			}
@@ -379,9 +370,6 @@ void Stage14::damageSetting()
 			}
 
 			
-			
-			// 삭제 - 터짐
-			//_enemyM->removeMonster(i);
 		}
 #pragma endregion 
 

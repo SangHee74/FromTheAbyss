@@ -1,10 +1,8 @@
 #include "Stdafx.h"
-#include "Image.h" // 그려주기 위한 셋팅, 추상화만 진행하고 상속을 해줄 예정. 
-#include "Animation.h" // 전방선언 - cpp include
+#include "Image.h" 
+#include "Animation.h" 
 
 
-// 동적할당을 통해 상속받은 클래스에서 생성자 호출할때 
-// 이니셜라이저 초기화를 통해 최우선적으로 초기화를 하라는 의미 . 
 Image::Image() : _imageInfo(NULL)
 				,_fileName(NULL)
 				,_isTrans(FALSE)
@@ -14,17 +12,12 @@ Image::Image() : _imageInfo(NULL)
 {
 }
 
-// 이미지 초기화
 HRESULT Image::init(int width, int height)
 {
-	// 포인터를 사용하기때문에 if로 한번 더 확인한다. 
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
 	_imageInfo->loadType = LOAD_EMPTY;
 	_imageInfo->resID = 0;
@@ -34,19 +27,16 @@ HRESULT Image::init(int width, int height)
 	_imageInfo->width = width;
 	_imageInfo->height = height;
 
-	// 파일 이름
 	_fileName = NULL;
 	_isTrans = FALSE;
 	_transColor = RGB(0, 0, 0);
 
-	// 리소스를 얻어오는데 실패했으면
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 
 	return S_OK;
@@ -54,51 +44,42 @@ HRESULT Image::init(int width, int height)
 
 HRESULT Image::init(const DWORD resID, int width, int height, BOOL isTrans, COLORREF transColor)
 {
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
 	_imageInfo->loadType = LOAD_RESOURCE; //
 	_imageInfo->resID = resID; // 사용할 리소스ID
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
-	_imageInfo->hBit = (HBITMAP)LoadBitmap(_hInstance,MAKEINTRESOURCE(_imageInfo)); // _imageInfo res에서 변경
+	_imageInfo->hBit = (HBITMAP)LoadBitmap(_hInstance,MAKEINTRESOURCE(_imageInfo));
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
 	_imageInfo->width = width;
 	_imageInfo->height = height;
 
-	// 파일 이름 - 리소스 사용으로 없음. 
 	_fileName = NULL;
 	_isTrans = isTrans;
 	_transColor = transColor;
 
-	// 리소스를 얻어오는데 실패했으면
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 }
 
 HRESULT Image::init(const char* fileName, int width, int height, BOOL isTrans, COLORREF transColor)
 {
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
-	_imageInfo->loadType = LOAD_FILE; // 파일로드 
-	_imageInfo->resID = 0; // 리소스 아이디는 없음
+	_imageInfo->loadType = LOAD_FILE;
+	_imageInfo->resID = 0; 
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName,IMAGE_BITMAP,
 		width,height,LR_LOADFROMFILE);
@@ -106,43 +87,35 @@ HRESULT Image::init(const char* fileName, int width, int height, BOOL isTrans, C
 	_imageInfo->width = width;
 	_imageInfo->height = height;
 
-	// 파일 이름 - 문자/문자열 확인 
-	// _fileName = fileName; ->const로 그대로 사용할 수 없기때문에, 아래처럼 기재.
 
 	int len = strlen(fileName);
-	_fileName = new CHAR[len + 1]; // 파일 경로 뒤 공백 1칸 실수 방지용
+	_fileName = new CHAR[len + 1]; 
 	strcpy_s(_fileName, len + 1, fileName);
 
 	_isTrans = isTrans;
 	_transColor = transColor;
 
-	// 리소스를 얻어오는데 실패했으면
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 }
 
 
-// 프레임 이미지 초기화
 HRESULT Image::init(const char * fileName, float x, float y, int width, int height, BOOL isTrans, COLORREF transColor)
 {
 
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
-	_imageInfo->loadType = LOAD_FILE; // 파일로드 
-	_imageInfo->resID = 0; // 리소스 아이디는 없음
+	_imageInfo->loadType = LOAD_FILE;  
+	_imageInfo->resID = 0; 
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP,
 		width, height, LR_LOADFROMFILE);
@@ -152,24 +125,21 @@ HRESULT Image::init(const char * fileName, float x, float y, int width, int heig
 	_imageInfo->width = width;
 	_imageInfo->height = height;
 
-	// 파일 이름 - 문자/문자열 확인 
-	// _fileName = fileName; ->const로 그대로 사용할 수 없기때문에, 아래처럼 기재.
-
 	int len = strlen(fileName);
-	_fileName = new CHAR[len + 1]; // 파일 경로 뒤 공백 1칸 실수 방지용
+	_fileName = new CHAR[len + 1]; 
 	strcpy_s(_fileName, len + 1, fileName);
 
 	_isTrans = isTrans;
 	_transColor = transColor;
 
-	// 리소스를 얻어오는데 실패했으면
+	
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
+
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 	
@@ -177,16 +147,13 @@ HRESULT Image::init(const char * fileName, float x, float y, int width, int heig
 
 HRESULT Image::init(const char * fileName, int width, int height, int maxFrameX, int maxFrameY, BOOL isTrans, COLORREF transColor)
 {
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
-	_imageInfo->loadType = LOAD_FILE; // 파일로드 
-	_imageInfo->resID = 0; // 리소스 아이디는 없음
+	_imageInfo->loadType = LOAD_FILE; 
+	_imageInfo->resID = 0; 
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP,
 		width, height, LR_LOADFROMFILE);
@@ -200,40 +167,32 @@ HRESULT Image::init(const char * fileName, int width, int height, int maxFrameX,
 	_imageInfo->frameWidth = width / maxFrameX;
 	_imageInfo->frameHeight = height / maxFrameY;
 
-	// 파일 이름 - 문자/문자열 확인 
-	// _fileName = fileName; ->const로 그대로 사용할 수 없기때문에, 아래처럼 기재.
-
 	int len = strlen(fileName);
-	_fileName = new CHAR[len + 1]; // 파일 경로 뒤 공백 1칸 실수 방지용
+	_fileName = new CHAR[len + 1]; 
 	strcpy_s(_fileName, len + 1, fileName);
 
 	_isTrans = isTrans;
 	_transColor = transColor;
 
-	// 리소스를 얻어오는데 실패했으면
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 }
 
 HRESULT Image::init(const char * fileName, float x, float y, int width, int height, int maxFrameX, int maxFrameY, BOOL isTrans, COLORREF transColor)
 {
-	// 재초기화 방지 -> 이미지 정보에 값이 들어있다면 릴리즈부터 하겠다.
 	if (_imageInfo != NULL) this->release();
 
-	// DC 가져오기
 	HDC hdc = GetDC(_hWnd);
 
-	// 이미지 정보 새로 생성 후 초기화
 	_imageInfo = new IMAGE_INFO;
-	_imageInfo->loadType = LOAD_FILE; // 파일로드 
-	_imageInfo->resID = 0; // 리소스 아이디는 없음
+	_imageInfo->loadType = LOAD_FILE; 
+	_imageInfo->resID = 0;
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	_imageInfo->hBit = (HBITMAP)LoadImage(_hInstance, fileName, IMAGE_BITMAP,
 		width, height, LR_LOADFROMFILE);
@@ -249,29 +208,23 @@ HRESULT Image::init(const char * fileName, float x, float y, int width, int heig
 	_imageInfo->frameWidth = width / maxFrameX;
 	_imageInfo->frameHeight = height / maxFrameY;
 
-	// 파일 이름 - 문자/문자열 확인 
-	// _fileName = fileName; ->const로 그대로 사용할 수 없기때문에, 아래처럼 기재.
-
 	int len = strlen(fileName);
-	_fileName = new CHAR[len + 1]; // 파일 경로 뒤 공백 1칸 실수 방지용
+	_fileName = new CHAR[len + 1];
 	strcpy_s(_fileName, len + 1, fileName);
 
 	_isTrans = isTrans;
 	_transColor = transColor;
 
-	// 리소스를 얻어오는데 실패했으면
 	if (_imageInfo->hBit == 0)
 	{
 		release();
 		return E_FAIL;
 	}
 
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 }
 
-// 알파블렌드 초기화
 HRESULT Image::initForAlphaBlend(void)
 {
 
@@ -293,7 +246,6 @@ HRESULT Image::initForAlphaBlend(void)
 	_blendImage->height = WINSIZE_Y;
 
 	
-	// DC해제
 	ReleaseDC(_hWnd, hdc);
 	return S_OK;
 }
@@ -305,12 +257,10 @@ void Image::setTransColor(BOOL isTrans, COLORREF transColor)
 	_transColor = transColor;
 }
 
-// 해제 
-void Image::release(void) // 포인터를 사용한다면 해제(release)를 신경쓰자.
+void Image::release(void) 
 {
-	if (_imageInfo) // 이미지가 있으면
+	if (_imageInfo) 
 	{
-		// 이미지 삭제
 		SelectObject(_imageInfo->hMemDC, _imageInfo->hOBit);
 		DeleteObject(_imageInfo->hBit);
 		DeleteDC(_imageInfo->hMemDC);
@@ -332,13 +282,12 @@ void Image::release(void) // 포인터를 사용한다면 해제(release)를 신경쓰자.
 	}
 }
 
-// 렌더 (0.0에 그려짐)
 void Image::render(HDC hdc)
 {
-	if (_isTrans) // 색이 빠질 것들. 플레이어, 오브젝트 등등...
+	if (_isTrans)
 	{
-		// 비트맵을 불러올때 특정색상을 제외하고 복사해주는 함수 
-		GdiTransparentBlt // 해제전까지 메모리에 상주함.
+		
+		GdiTransparentBlt 
 		(
 			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
 			0, 0,					// 복사될 좌표 시작 : X, Y
@@ -354,11 +303,8 @@ void Image::render(HDC hdc)
 		);
 	}
 
-	// 복사로 인한 컴퓨터 구조(메모리)의 병목현상을 방지하기 위해 , else를 사용함
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else 
 	{
-		// DC간의 영역끼리 서로 고속복사 해주는 함수
-		// SRCCOPY : 소스 영역을 대상영역에 복사한다.
 		BitBlt(hdc, 0, 0, _imageInfo->width, _imageInfo->height,
 			_imageInfo->hMemDC, 0, 0, SRCCOPY);
 	}
@@ -368,10 +314,9 @@ void Image::render(HDC hdc)
 // 렌더 (내가 설정한 좌표 x,y 에 그려짐)
 void Image::render(HDC hdc, int destX, int destY)
 {
-	if (_isTrans) // 색이 빠질 것들. 플레이어, 오브젝트 등등...
+	if (_isTrans) 
 	{
-		// 비트맵을 불러올때 특정색상을 제외하고 복사해주는 함수 
-		GdiTransparentBlt // 해제전까지 메모리에 상주함.
+		GdiTransparentBlt 
 		(
 			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
 			destX, destY,			// 복사될 좌표 시작 : X, Y
@@ -387,14 +332,13 @@ void Image::render(HDC hdc, int destX, int destY)
 		);
 	}
 
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else
 	{
 		BitBlt(hdc, destX, destY, _imageInfo->width, _imageInfo->height,
 			_imageInfo->hMemDC, 0, 0, SRCCOPY);
 	}
 }
 
-//클리핑 렌더
 void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight)
 {
 	if (_isTrans) 
@@ -415,7 +359,7 @@ void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sour
 		);
 	}
 
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else
 	{
 		BitBlt(hdc, destX, destY, sourWidth, sourHeight,
 			_imageInfo->hMemDC, sourX, sourY, SRCCOPY);
@@ -427,14 +371,12 @@ void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sour
 // 알파렌더(배경)
 void Image::alphaRender(HDC hdc, BYTE alpha)
 {
-	// 알파블랜드를 처음 사용하는지 확인
 	if (!_blendImage) initForAlphaBlend();
 	
 	_blendFunc.SourceConstantAlpha = alpha;
 
 	if (_isTrans)
 	{
-		// 1 출력해야할 DC에 그려져 있는 내용을 블렌드 이미지에 그린다. 
 		BitBlt
 		(
 			_blendImage->hMemDC,
@@ -444,7 +386,6 @@ void Image::alphaRender(HDC hdc, BYTE alpha)
 			hdc, 0, 0, SRCCOPY);
 
 
-		// 2 원본 이미지 배경을 없앤 후 블랜드 이미지에 그린다.
 		GdiTransparentBlt
 		(
 			_blendImage->hMemDC,
@@ -460,21 +401,20 @@ void Image::alphaRender(HDC hdc, BYTE alpha)
 			_transColor
 		);
 
-		// 3 블렌드 이미지를 화면에 그린다 
 		AlphaBlend
 		(
 		hdc,
 			0,0,
 			_imageInfo->width,
 			_imageInfo->height,
-			_blendImage->hMemDC, // 지뢰조심
+			_blendImage->hMemDC,
 			0,0,
 			_imageInfo->width,
 			_imageInfo->height,
-			_blendFunc // 지뢰조심
+			_blendFunc 
 		);
 	}
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else 
 	{
 		AlphaBlend
 		(
@@ -482,26 +422,23 @@ void Image::alphaRender(HDC hdc, BYTE alpha)
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
-			_imageInfo->hMemDC, // 지뢰조심
+			_imageInfo->hMemDC,
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
-			_blendFunc // 지뢰조심
+			_blendFunc 
 		);
 	}
 }
 
-// 알파렌더(플레이어)
 void Image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 {
-	// 알파블랜드를 처음 사용하는지 확인
 	if (!_blendImage) initForAlphaBlend();
 
 	_blendFunc.SourceConstantAlpha = alpha;
 
 	if (_isTrans)
 	{
-		// 1 출력해야할 DC에 그려져 있는 내용을 블렌드 이미지에 그린다. 
 		BitBlt
 		(
 			_blendImage->hMemDC,
@@ -513,7 +450,6 @@ void Image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 		);
 
 
-		// 2 원본 이미지 배경을 없앤 후 블랜드 이미지에 그린다.
 		GdiTransparentBlt
 		(
 			hdc,
@@ -529,14 +465,13 @@ void Image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 			_transColor
 		);
 
-		// 3 블렌드 이미지를 화면에 그린다 
 		AlphaBlend
 		(
 			hdc,
 			destX, destY,
 			_imageInfo->width,
 			_imageInfo->height,
-			_blendImage->hMemDC, // 지뢰조심
+			_blendImage->hMemDC,
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
@@ -584,7 +519,7 @@ void Image::frameRender(HDC hdc, int destX, int destY)
 		);
 	}
 
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else 
 	{
 		BitBlt(hdc, destX, destY, 
 			_imageInfo->frameWidth, 
@@ -629,7 +564,7 @@ void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 		);
 	}
 
-	else // 맵, 화면 전체적으로 들어가는 이미지 등 ...
+	else 
 	{
 		BitBlt(hdc, destX, destY,
 			_imageInfo->frameWidth,

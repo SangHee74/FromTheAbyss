@@ -58,13 +58,11 @@ void Minotaur::attack()
 	int temp = 0;
 
 	_atkStart = true;
-	//_image = IMG("bossDie");
 	_image = IMG("mino_attack");
 
 	timePlus: // 시간 더해주는 goto
 	cout << "_frameX : " << _frameX << endl;
 	_atkTimeCount += TIMEMANAGER->getElapsedTime(); // 공격 시간 체크 
-	//cout << "미노 프레임 넘기기 : " << _atkTimeCount << endl;
 	if (_atkTimeCount >= 0.5f)
 	{
 		_frameX++;

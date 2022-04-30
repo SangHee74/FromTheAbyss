@@ -3,11 +3,10 @@
 #include "StateAttack.h"
 #include "Player.h"
 
-// 무기별 콤보, 스킬공격 2종 
+// 무기별 콤보,
 OneHandWeaponCombo* OneHandWeaponCombo::instance;
 TwoHandWeaponCombo* TwoHandWeaponCombo::instance;
-//SoulCapture* SoulCapture::instance;
-//SpearStrike* SpearStrike::instance;
+
 
 // 공격
 OneHandWeaponCombo* OneHandWeaponCombo::getInstance()
@@ -74,11 +73,7 @@ void OneHandWeaponCombo::stateUpdate(Player* player)
 
 void OneHandWeaponCombo::stateRelease()
 {
-	//if (instance)
-	//{
-	//	delete instance;
-	//	instance = 0;
-	//}
+
 }
 
 void OneHandWeaponCombo::stateRender(Player* player)
@@ -254,84 +249,3 @@ void TwoHandWeaponCombo::comboOne(Player * player)
 		player->getIsStateCheck().reset(2);
 	}
 }
-
-#if 0
-// 스킬 =========================================================
-SoulCapture* SoulCapture::getInstance()
-{
-	if (instance == nullptr) instance = new SoulCapture();
-	return instance;
-}
-
-void SoulCapture::stateInit(Player * player)
-{
-	// 비트셋 초기화 + 공격으로 전환
-	player->getIsStateCheck().reset(0);
-	player->getIsStateCheck().set(2);
-
-	player->setPlayerImg(IMG("p_skill_soulCapture"));
-
-}
-
-void SoulCapture::stateUpdate(Player * player)
-{
-	// 30카운트(0.5초)지나기 전 재입력하면 다음콤보
-	timeCount++;
-
-	cout << "스킬 : 소울캡쳐 시작 " << endl;
-	if (KEYMANAGER->isOnceKeyDown('X'))
-	{
-		// X키 연타시 소울캡쳐 데미지 바 조정
-	}
-
-	// 소울 캡쳐 종료시(수정필요)
-	if (KEYOKU('X') && timeCount >= 30)
-	{
-		SetPlayerState(player, IdleState::getInstance());
-	}
-	//	if (_player.frameX > 1 ) _player.frameX = 0;
-
-}
-
-void SoulCapture::stateRelease()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
-}
-
-
-
-SpearStrike * SpearStrike::getInstance()
-{
-	if (instance == nullptr) instance = new SpearStrike();
-	return instance;
-}
-
-void SpearStrike::stateInit(Player * player)
-{
-	// 수정필요~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// 비트셋 초기화 + 공격으로 전환
-	player->getIsStateCheck().reset(0);
-	player->getIsStateCheck().set(2);
-
-	player->setPlayerImg(IMG("p_skill_soulCapture"));
-	//	if (_player.frameX > 1) _player.frameX = 0;
-
-}
-
-void SpearStrike::stateUpdate(Player * player)
-{
-}
-
-void SpearStrike::stateRelease()
-{
-	if (instance)
-	{
-		delete instance;
-		instance = 0;
-	}
-}
-#endif 

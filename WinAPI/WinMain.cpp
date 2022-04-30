@@ -41,7 +41,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 #ifdef FULLSCREEN
 
-	// 디바이스 모드 구조체 : 화면 디스플레이 관련 기능
 	DEVMODE dm;
 
 	ZeroMemory(&dm, sizeof(DEVMODE));
@@ -50,16 +49,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	dm.dmPelsHeight = 1020;
 	dm.dmDisplayFrequency = 80;	// 재생빈도 
 
-	// 다양한 디스플레이 정보 중 우리가 사용한 정보값만 넘겨준다.
 	dm.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYFREQUENCY;
-	// 화면이 종료되면 자동으로 원래 화면의 해상도로 돌린다.
 	if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
 	{
 		ChangeDisplaySettings(&dm, 0);
 	}
 
 #else
-	_hWnd = CreateWindow //크리에이트로 셋팅
+	_hWnd = CreateWindow
 	(
 		WINNAME,					  //윈도우 클래스 식별자
 		WINNAME,					  //윈도우 타이틀 바 이름
@@ -68,21 +65,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		WINSTART_Y,					  //윈도우 화면 Y좌표
 		WINSIZE_X,					  //윈도우 화면 가로크기
 		WINSIZE_Y,					  //윈도우 화면 세로크기
-		NULL,//확장성을 위해 널		  //부모 윈도우 //GetDesktopWindow() 이걸 많이 줌
+		NULL,						  //확장성을 위해 NULL
 		(HMENU)NULL,				  //메뉴 핸들
 		hInstance,					  //인스턴스 지정
 		NULL						  //윈도우의 자식 윈도우를 생성하면 지정, 그렇지 않으면 NULL
-									  // ㄴ필요에 의해서 사용하지만 지금은 NULL
+									 
 	);
 
 
-	//클라이언트 영역의 사이즈를 정확히 잡아준다.
 	setWindowSize(WINSTART_X, WINSTART_Y, WINSIZE_X, WINSIZE_Y);
 
 #endif
 
-	ShowWindow(_hWnd, nCmdShow); //화면에 부르기! 뿌린다
-
+	ShowWindow(_hWnd, nCmdShow); 
 
 	//메인게임 클래스 초기화 실패시 종료
 	if (FAILED(_mg->init()))
@@ -92,7 +87,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 	MSG message;
 
-	while (true) // 게임 - 핸들을 넣으면 while문에 종속됨. 
+	while (true) 
 	{
 		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) //
 		{
@@ -113,32 +108,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	_mg->release();
 	delete _mg;
 
-	//! 윈도우 클래스 등록 해제
 	UnregisterClass(WINNAME, hInstance);
 
 	return message.wParam;
 }
 
-//!윈도우 프로시저
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	return _mg->MainProc(hWnd, iMessage, wParam, lParam);
 }
 
 
-//클라이언트 사이즈 맞추는 작업
 void setWindowSize(int x, int y, int width, int height)
 {
 	RECT rc = { 0, 0, width, height };
-	//클라이언트 사이즈를 잡아줌
 
-
-	//실제 윈도우 크기 조정
 	AdjustWindowRect(&rc, WINSTYLE, false);
 
 
-	//얻어온 렉트의 정보로 윈도우 사이즈 셋팅
-	//마우스 가따대면 인자값 보임
 	SetWindowPos
 	(
 		_hWnd, NULL, x, y,

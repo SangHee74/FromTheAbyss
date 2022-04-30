@@ -3,11 +3,6 @@
 #include "ImageClass.h"
 #include "SoundClass.h"
 
-#pragma region noUseScene
-#include "SoundScene.h"
-#include "JsonDataScene.h"
-#pragma endregion
-
 #pragma region addScene
 #include "Title.h"
 #include "Save.h"
@@ -42,8 +37,6 @@ HRESULT MainGame::init(void)
 	SoundClass soundClass = SoundClass();
 	soundClass.init();
 
-	//SCENEMANAGER->addScene("»ç¿îµå", new SoundScene);
-	//SCENEMANAGER->addScene("Á¦ÀÌ½¼", new JsonDataScene);
 	SCENEMANAGER->addScene("title", new Title);
 	SCENEMANAGER->addScene("save", new Save);
 	SCENEMANAGER->addScene("gameOver", new GameOver);
@@ -62,11 +55,6 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("¸ÊÅø", new MapTool);
 
 	SCENEMANAGER->changeScene("title");
-	//SCENEMANAGER->changeScene("stage11");
-	//SCENEMANAGER->changeScene("stage14");
-	//SCENEMANAGER->changeScene("main");
-
-
 
 	return S_OK;
 }
