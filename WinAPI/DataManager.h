@@ -76,6 +76,7 @@ public:
 	int getStoryRewardLufia(int num)	{ return _storyRewardLufia[num]; }
 	bitset<3> getStoryRewardCheck()		{ return _storyRewardCheck; }
 	bitset<8> getStoryRewardAbyss()		{ return _storyRewardAbyss; }
+	void setStoryRewardAbyss(int story) { _storyRewardAbyss.set(story); }
 	
 	// 스테이지 별 맵 관리
 	tagMapSettingData& getMapData()		{ return _mapData; }

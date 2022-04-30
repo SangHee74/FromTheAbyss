@@ -3,6 +3,8 @@
 
 HRESULT StageBossIntro::init(void)
 {
+	SOUNDMANAGER->play("stage14", 0.05f);
+
 	// stage setting (map + player Info)
 	DATAMANAGER->setStageSetting();
 
@@ -102,6 +104,9 @@ void StageBossIntro::update(void)
 	fadeOut.update();
 	if (fadeOut.onOff.test(NEXT)) // scene change
 	{
+
+		SOUNDMANAGER->play("stage14", 0.05f);
+
 		switch (DATAMANAGER->getMapData().enterAbyssInfo.abyss)
 		{
 		case 1:

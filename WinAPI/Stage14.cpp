@@ -209,6 +209,7 @@ void Stage14::portalOn()
 			DATAMANAGER->getMapData().gate.inGateCount = 0;
 			fadeOut.onOff.set(ON);
 			gateIndex = 1;
+			DATAMANAGER->setStoryRewardAbyss(0);
 		}
 
 	}

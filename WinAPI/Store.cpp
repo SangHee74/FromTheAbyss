@@ -97,11 +97,11 @@ void Store::render(void)
 	}
 	if (_storeMenu.test(3))
 	{
-	rcMake(getMemDC(), _category[STORE_WEAPON]);
-	rcMake(getMemDC(), _category[STORE_ARMOR] );
-	rcMake(getMemDC(), _category[STORE_ACC]	  );
-	rcMake(getMemDC(), _category[STORE_POTION]);
-	rcMake(getMemDC(), _category[STORE_SKILL] );
+	//rcMake(getMemDC(), _category[STORE_WEAPON]);
+	//rcMake(getMemDC(), _category[STORE_ARMOR] );
+	//rcMake(getMemDC(), _category[STORE_ACC]	  );
+	//rcMake(getMemDC(), _category[STORE_POTION]);
+	//rcMake(getMemDC(), _category[STORE_SKILL] );
 	}
 	//rcMake(getMemDC(), _back );
 

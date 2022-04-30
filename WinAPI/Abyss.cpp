@@ -74,14 +74,20 @@ void Abyss::render(void)
 
 	if(_selectAbyss)
 	{
+		if(DATAMANAGER->getPlayer()->getPlayerAbyss().abyss == 2)  IMGR("abyss2", getMemDC(), _buttonRc[1].left, _buttonRc[1].top);
+
 		IMGR("abyss1", getMemDC(), _buttonRc[0].left, _buttonRc[0].top);
+
+
 		FONTMANAGER->firstLineText(getMemDC(), _index[0].text);
 	}
 	else
 	{
 		IMGR("stage1", getMemDC(), _buttonRc[BUTTON_ONE].left, _buttonRc[BUTTON_ONE].top);
-		IMGR("stage2", getMemDC(), _buttonRc[BUTTON_TWO].left, _buttonRc[BUTTON_TWO].top);
-		//IMGR("stage3", getMemDC(), _buttonRc[BUTTON_THREE].left, _buttonRc[BUTTON_THREE].top);
+		if (DATAMANAGER->getPlayer()->getPlayerAbyss().stage >= 2)
+		{
+			IMGR("stage2", getMemDC(), _buttonRc[BUTTON_TWO].left, _buttonRc[BUTTON_TWO].top);
+		}
 
 		FONTMANAGER->firstLineText(getMemDC(), _index[1].text);
 	}
@@ -103,6 +109,8 @@ void Abyss::selectStage()
 
 	if (_selectAbyss)
 	{
+		_selectButton = BUTTON_ONE;
+
 		// abyss select ==============================================================
 		if (PtInRect(&_buttonRc[BUTTON_ONE], _ptMouse))
 		{
@@ -112,6 +120,8 @@ void Abyss::selectStage()
 				{
 					DATAMANAGER->getMapData().enterAbyssInfo.abyss = 1;
 					_isWaitDubbleClick = false;
+					_selectButton = BUTTON_ONE;
+
 				}
 			}
 			else
@@ -124,11 +134,37 @@ void Abyss::selectStage()
 				}
 			}
 		}
+		// abyss select ==============================================================
+		if (PtInRect(&_buttonRc[BUTTON_TWO], _ptMouse))
+		{
+			if (_isWaitDubbleClick)
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+				{
+					DATAMANAGER->getMapData().enterAbyssInfo.abyss = 2;
+					_isWaitDubbleClick = false;
+					_selectButton = BUTTON_TWO;
+
+				}
+			}
+			else
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+				{
+					curButton = BUTTON_TWO;
+					_selectAbyss = false;     
+					_isWaitDubbleClick = true;
+					_selectButton = BUTTON_ONE;
+				}
+			}
+		}
 		
 	
 	}
 	else // stage select ==========================================================
 	{
+		
+
 		if (PtInRect(&_buttonRc[BUTTON_ONE], _ptMouse))
 		{
 			if (_isWaitDubbleClick)
@@ -193,8 +229,6 @@ void Abyss::selectStage()
 				{
 					_mainHall = true;
 					fadeOut.onOff.set(ON);
-					cout << "백투홈   페이드아웃 온 " << endl;
-
 				}
 			}
 		}

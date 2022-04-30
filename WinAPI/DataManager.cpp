@@ -12,9 +12,13 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 		//DATAMANAGER->getPlayer()->init();
 		_storyRewardCheck.reset();
 		_storyRewardAbyss.reset();
+		getPlayer()->getPlayerAbyss().stage = 2;
 		break;
 
 	case PLAYERNUMBER::PLAYER_TWO:
+		_storyRewardCheck.reset();
+		_storyRewardAbyss.reset();
+		getPlayer()->getPlayerAbyss().stage = 1;
 		break;
 
 	case PLAYERNUMBER::PLAYER_THREE:
@@ -22,16 +26,16 @@ HRESULT DataManager::init(PLAYERNUMBER playerNum)
 
 	}
 
+	DATAMANAGER->setStoryRewardAbyss(0);
+
+
 	return S_OK;
 }
 
 HRESULT DataManager::init(void)
 {
 	_mapData.enterAbyssInfo.abyss = 0;
-	//_mapData.enterAbyssInfo.stage = 0;
-	//_mapData.enterAbyssInfo.abyss = 1; // 임시
-	_mapData.enterAbyssInfo.stage = 1; // 임시
-	//_mapData.enterAbyssInfo.stage = 4; // 보스테스트
+	_mapData.enterAbyssInfo.stage = 1;
 
 
 	_mapData.map = nullptr;

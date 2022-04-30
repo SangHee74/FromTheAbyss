@@ -25,8 +25,12 @@ void GameOver::update(void)
 	}
 
 	fadeOut.update();
-	if (fadeOut.onOff.test(NEXT)) SCENEMANAGER->changeScene("title");
-}
+	if (fadeOut.onOff.test(NEXT))
+	{
+		SOUNDMANAGER->stop("stage14");
+		SCENEMANAGER->changeScene("main");
+	}
+	}
 
 void GameOver::render(void)
 {

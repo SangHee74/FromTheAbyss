@@ -1,10 +1,10 @@
 #pragma once
 #include "GameNode.h"
 
-#pragma region text 
+#pragma region textMax
 
 #define ABYSS0LAST 12
-#define ABYSS1LAST 9
+#define ABYSS1LAST 6
 #define ABYSS8LAST 10
 
 

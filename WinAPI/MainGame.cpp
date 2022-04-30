@@ -94,9 +94,8 @@ void MainGame::render(void)
 	PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, WHITENESS);
 	   	 
 	SCENEMANAGER->render();
-	//TIMEMANAGER->render(getMemDC());
+	TIMEMANAGER->render(getMemDC());
 
 
-	//백버퍼의 내용을 HDC에 그린다
 	this->getBackBuffer()->render(getHDC());
 }

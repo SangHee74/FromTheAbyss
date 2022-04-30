@@ -9,7 +9,7 @@ Minotaur::Minotaur()
 	_maxHp = 300;
 	_curHp = 300;
 	_curAtt = 10;
-	_dropExp = 50;
+	_dropExp = 10;
 	_dropLufia = RND->getFromIntTo(80,100);
 	_dropItemIndex = 0; // юс╫ц
 
