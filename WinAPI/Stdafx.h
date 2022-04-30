@@ -79,7 +79,6 @@ using namespace MY_UTIL;
 #define TEXTDATAMANAGER TextDataManager::getSingleton()
 #define SCENEMANAGER SceneManager::getSingleton()
 #define SOUNDMANAGER SoundManager::getSingleton()
-#define JSONDATAMANAGER JsonSaveLoader::getSingleton()
 #define CAM Camera::getSingleton()
 
 

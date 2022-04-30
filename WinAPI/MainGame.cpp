@@ -82,7 +82,7 @@ void MainGame::render(void)
 	PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, WHITENESS);
 	   	 
 	SCENEMANAGER->render();
-	TIMEMANAGER->render(getMemDC());
+	//TIMEMANAGER->render(getMemDC());
 
 
 	this->getBackBuffer()->render(getHDC());

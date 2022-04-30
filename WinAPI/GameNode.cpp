@@ -92,10 +92,6 @@ void GameNode::release(void)
 		SOUNDMANAGER->release();
 		SOUNDMANAGER->releaseSingleton();
 
-		// 제이슨 데이터 매니저 해제 
-		JSONDATAMANAGER->release();
-		JSONDATAMANAGER->releaseSingleton();
-
 		// 카메라 해제, 싱글톤 해제
 		CAM->release();
 		CAM->releaseSingleton();
