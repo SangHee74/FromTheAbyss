@@ -13,7 +13,6 @@ HRESULT Timer::init(void)
 
 		_timeScale = 1.0f / _periodFrequency;
 	}
-	// 고성능 타이머 지원을 안한다면
 	else
 	{
 		_isHardware = false;
