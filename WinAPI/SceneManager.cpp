@@ -18,7 +18,6 @@ DWORD CALLBACK loadingThread(LPVOID prc)
 	SceneManager::_loadingScene->release();
 	SceneManager::_loadingScene = nullptr;
 	SceneManager::_readyScene = nullptr;
-	// 로딩클래스를 만들어 로딩씬과 연결 필요
 	return 0;
 }
 
@@ -34,7 +33,6 @@ void SceneManager::release(void)
 {
 	mapSceneIter miSceneList = _mSceneList.begin();
 	
-	// 로딩 씬 -> 교체 대기중인 씬 ->현재씬 , 많지 않다(for 사용)
 	for (; miSceneList != _mSceneList.end();)
 	{
 		if (miSceneList->second != nullptr)
@@ -85,7 +83,6 @@ GameNode * SceneManager::addLoadingScene(string loadingSceneName, GameNode * sce
 	return scene;
 }
 
-// 플레이어만 인자타입(매개변수로 남기고 나머지는 싹 지운 후 체인지 씬)
 HRESULT SceneManager::changeScene(string sceneName)
 {
 	// 변경하려는 씬을 찾는다.

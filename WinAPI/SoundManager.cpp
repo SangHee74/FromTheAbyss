@@ -91,7 +91,7 @@ void SoundManager::play(string keyName, float volume)
 
 	arrSoundsIter iter = _mTotalSounds.begin();
 
-	// 사운드를 5개  
+	// five sound
 	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
 	{
 		if (keyName == iter->first)

@@ -49,8 +49,8 @@ HRESULT Image::init(const DWORD resID, int width, int height, BOOL isTrans, COLO
 	HDC hdc = GetDC(_hWnd);
 
 	_imageInfo = new IMAGE_INFO;
-	_imageInfo->loadType = LOAD_RESOURCE; //
-	_imageInfo->resID = resID; // 사용할 리소스ID
+	_imageInfo->loadType = LOAD_RESOURCE;
+	_imageInfo->resID = resID; 
 	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	_imageInfo->hBit = (HBITMAP)LoadBitmap(_hInstance,MAKEINTRESOURCE(_imageInfo));
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
@@ -230,15 +230,14 @@ HRESULT Image::initForAlphaBlend(void)
 
 	HDC hdc = GetDC(_hWnd);
 
-	_blendFunc.BlendFlags = 0; // 혼합비율 사용안함
-	_blendFunc.AlphaFormat = 0; // 이미지 + 소스 제어 or 이미지 제어 여부
-	_blendFunc.BlendOp = AC_SRC_OVER; // 비트맵 이미지 비트 수 24 or 32 사용함
+	_blendFunc.BlendFlags = 0; 
+	_blendFunc.AlphaFormat = 0; 
+	_blendFunc.BlendOp = AC_SRC_OVER;
 	
 
-	// 이미지 정보 새로 생성 후 초기화
 	_blendImage = new IMAGE_INFO;
-	_blendImage->loadType = LOAD_FILE; // 파일로드 
-	_blendImage->resID = 0; // 리소스 아이디는 없음
+	_blendImage->loadType = LOAD_FILE;
+	_blendImage->resID = 0; 
 	_blendImage->hMemDC = CreateCompatibleDC(hdc);
 	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap	(hdc,_imageInfo->width, _imageInfo->height);
 	_blendImage->hOBit = (HBITMAP)SelectObject(_blendImage->hMemDC, _blendImage->hBit);
@@ -250,7 +249,7 @@ HRESULT Image::initForAlphaBlend(void)
 	return S_OK;
 }
 
-// 투명 컬러키 셋팅
+
 void Image::setTransColor(BOOL isTrans, COLORREF transColor)
 {
 	_isTrans = isTrans;
@@ -289,17 +288,15 @@ void Image::render(HDC hdc)
 		
 		GdiTransparentBlt 
 		(
-			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
-			0, 0,					// 복사될 좌표 시작 : X, Y
-			_imageInfo->width,		// 복사할 이미지 크기 : 가로, 세로
+			hdc,					
+			0, 0,					
+			_imageInfo->width,		
 			_imageInfo->height,
-		//------------------------------------------------------------------
-			_imageInfo->hMemDC,		// 복사될 대상의 메모리DC
-			0,0,					// 복사 시작 지점 : X, Y
-			_imageInfo->width,		// 복사 영역 크기 : 가로, 세로 
+			_imageInfo->hMemDC,		
+			0,0,					
+			_imageInfo->width,		 
 			_imageInfo->height,
-		//------------------------------------------------------------------
-			_transColor				// 복사할 때 제외할 색상
+			_transColor				
 		);
 	}
 
@@ -311,24 +308,21 @@ void Image::render(HDC hdc)
 
 }
 
-// 렌더 (내가 설정한 좌표 x,y 에 그려짐)
 void Image::render(HDC hdc, int destX, int destY)
 {
 	if (_isTrans) 
 	{
 		GdiTransparentBlt 
 		(
-			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
-			destX, destY,			// 복사될 좌표 시작 : X, Y
-			_imageInfo->width,		// 복사할 이미지 크기 : 가로, 세로
+			hdc,					
+			destX, destY,			
+			_imageInfo->width,		
 			_imageInfo->height,
-		//------------------------------------------------------------------
-			_imageInfo->hMemDC,		// 복사될 대상의 메모리DC
-			0, 0,					// 복사 시작 지점 : X, Y
-			_imageInfo->width,		// 복사 영역 크기 : 가로, 세로 
+			_imageInfo->hMemDC,		
+			0, 0,					
+			_imageInfo->width,		
 			_imageInfo->height,
-		//------------------------------------------------------------------
-			_transColor				// 복사할 때 제외할 색상
+			_transColor				
 		);
 	}
 
@@ -345,17 +339,15 @@ void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sour
 	{
 		GdiTransparentBlt 
 		(
-			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
-			destX, destY,			// 복사될 좌표 시작 : X, Y
-			sourWidth,				// 복사할 이미지 크기 : 가로, 세로
+			hdc,					
+			destX, destY,			
+			sourWidth,				
 			sourHeight,
-			//------------------------------------------------------------------
-			_imageInfo->hMemDC,		// 복사될 대상의 메모리DC
-			sourX, sourY,			// 복사 시작 지점 : X, Y
-			sourWidth,				// 복사 영역 크기 : 가로, 세로 
+			_imageInfo->hMemDC,		
+			sourX, sourY,			
+			sourWidth,				
 			sourHeight,
-			//------------------------------------------------------------------
-			_transColor				// 복사할 때 제외할 색상
+			_transColor				
 		);
 	}
 
@@ -368,7 +360,6 @@ void Image::render(HDC hdc, int destX, int destY, int sourX, int sourY, int sour
 
 }
 
-// 알파렌더(배경)
 void Image::alphaRender(HDC hdc, BYTE alpha)
 {
 	if (!_blendImage) initForAlphaBlend();
@@ -392,12 +383,10 @@ void Image::alphaRender(HDC hdc, BYTE alpha)
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
-			//------------------
 			_imageInfo->hMemDC,
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
-			//------------------
 			_transColor
 		);
 
@@ -456,12 +445,10 @@ void Image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
 			destX, destY,
 			_imageInfo->width,
 			_imageInfo->height,
-			//------------------
 			_imageInfo->hMemDC,
 			0, 0,
 			_imageInfo->width,
 			_imageInfo->height,
-			//------------------
 			_transColor
 		);
 
@@ -504,18 +491,16 @@ void Image::frameRender(HDC hdc, int destX, int destY)
 	{
 		GdiTransparentBlt
 		(
-			hdc,						// 복사할 장소의 DC(화면DC(화면에 보여줄))
-			destX, destY,				// 복사될 좌표 시작 : X, Y
-			_imageInfo->frameWidth,		// 복사할 이미지 크기 : 가로, 세로
+			hdc,						
+			destX, destY,				
+			_imageInfo->frameWidth,		
 			_imageInfo->frameHeight,
-			//------------------------------------------------------------------
-			_imageInfo->hMemDC,			// 복사될 대상의 메모리DC
-			_imageInfo->currentFrameX * _imageInfo->frameWidth,			// 복사 시작 지점 : X, Y
+			_imageInfo->hMemDC,			
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,			
 			_imageInfo->currentFrameY * _imageInfo->frameHeight,
-			_imageInfo->frameWidth,		// 복사 영역 크기 : 가로, 세로 
+			_imageInfo->frameWidth,		
 			_imageInfo->frameHeight,
-			//------------------------------------------------------------------
-			_transColor					// 복사할 때 제외할 색상
+			_transColor					
 		);
 	}
 
@@ -533,7 +518,6 @@ void Image::frameRender(HDC hdc, int destX, int destY)
 
 void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY)
 {
-	// 이미지 예외처리
 	_imageInfo->currentFrameX = currentFrameX;
 	_imageInfo->currentFrameY = currentFrameY;
 	if (currentFrameX > _imageInfo->maxFrameX)
@@ -549,18 +533,16 @@ void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 	{
 		GdiTransparentBlt
 		(
-			hdc,					// 복사할 장소의 DC(화면DC(화면에 보여줄))
-			destX, destY,			// 복사될 좌표 시작 : X, Y
-			_imageInfo->frameWidth,				// 복사할 이미지 크기 : 가로, 세로
+			hdc,					
+			destX, destY,			
+			_imageInfo->frameWidth,	
 			_imageInfo->frameHeight,
-			//------------------------------------------------------------------
-			_imageInfo->hMemDC,		// 복사될 대상의 메모리DC
-			_imageInfo->currentFrameX * _imageInfo->frameWidth,			// 복사 시작 지점 : X, Y
+			_imageInfo->hMemDC,		
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,			
 			_imageInfo->currentFrameY * _imageInfo->frameHeight,
-			_imageInfo->frameWidth,				// 복사 영역 크기 : 가로, 세로 
+			_imageInfo->frameWidth,			
 			_imageInfo->frameHeight,
-			//------------------------------------------------------------------
-			_transColor				// 복사할 때 제외할 색상
+			_transColor				
 		);
 	}
 
@@ -578,46 +560,36 @@ void Image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 
 void Image::loopRender(HDC hdc, const LPRECT dramArea, int offsetX, int offsetY)
 {
-	//offset 값이 음수인 경우 보정 한다.
 	if (offsetX < 0)offsetX = _imageInfo->width + (offsetX % _imageInfo->width);
 	if (offsetY < 0)offsetY = _imageInfo->height + (offsetY % _imageInfo->height);
 
-	// 그려지는 영역 세팅
 	RECT rcSour;
 	int sourWidth;
 	int sourHeight;
 
-	// 그려지는  DC 영역 (화면크기)
 	RECT rcDest;
 
-	// 그려야 할 전체 영역
 	int dramAreaX = dramArea->left;
 	int dramAreaY = dramArea->top;
 	int dramAreaW = dramArea->right - dramArea->left;
 	int dramAreaH = dramArea->bottom - dramArea->top;
 
-	// 세로 루프
 	for (int y = 0; y < dramAreaH; y += sourHeight)
 	{
-		// 소스 영역의 높이 계산
 		rcSour.top = (y + offsetY) % _imageInfo->height;
 		rcSour.bottom = _imageInfo->height;
 		sourHeight = rcSour.bottom - rcSour.top;
 
-		// 소스 영역이 그리는 화면을 넘어갔다면(화면밖으로 나갔을때)
 		if (y + sourHeight > dramAreaH)
 		{
-			// 넘어간 그림의 값만큼 올려준다.
 			rcSour.bottom -= (y + sourHeight) - dramAreaH;
 			sourHeight = rcSour.bottom - rcSour.top;
 		}
 
-		// 그려지는 영역
 		rcDest.top = y + dramAreaY;
 		rcDest.bottom = rcDest.top + sourHeight;
 
 
-		// 가로 루프
 		for (int x = 0; x < dramAreaW; x += sourWidth)
 		{
 			rcSour.left = (x + offsetX) % _imageInfo->width;
@@ -633,14 +605,11 @@ void Image::loopRender(HDC hdc, const LPRECT dramArea, int offsetX, int offsetY)
 			rcDest.left = x + dramAreaX;
 			rcDest.right = rcDest.left + sourWidth;
 
-			// 클리핑
 
 			render(hdc, rcDest.left, rcDest.top, rcSour.left, rcSour.top,
 				sourWidth, sourHeight);
-
-		}//end of second
-		
-	}//end of for
+		}
+	}
 
 }
 
@@ -659,15 +628,12 @@ void Image::aniRender(HDC hdc, int destX, int destY, Animation * ani)
 }
 
 
-// 프레임 알파렌더 수정중
 void Image::frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha)
 {
-	// 알파블랜드를 처음 사용하는지 확인
 	if (!_blendImage) initForAlphaBlend();
 
 	_blendFunc.SourceConstantAlpha = alpha;
 
-	// 이미지 예외처리
 	_imageInfo->currentFrameX = currentFrameX;
 	_imageInfo->currentFrameY = currentFrameY;
 	if (currentFrameX > _imageInfo->maxFrameX)
@@ -681,7 +647,6 @@ void Image::frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, i
 
 	if (_isTrans)
 	{
-		// 1 출력해야할 DC에 그려져 있는 내용을 블렌드 이미지에 그린다. 
 		BitBlt
 		(
 			_blendImage->hMemDC,
@@ -693,32 +658,28 @@ void Image::frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, i
 		);
 
 
-		// 2 원본 이미지 배경을 없앤 후 블랜드 이미지에 그린다.
 		GdiTransparentBlt
 		(
 			hdc,
 			destX, destY,
 			_imageInfo->frameWidth,	
 			_imageInfo->frameHeight,
-			//------------------
 			_imageInfo->hMemDC,
 			_imageInfo->currentFrameX * _imageInfo->frameWidth,		
 			_imageInfo->currentFrameY * _imageInfo->frameHeight,
 			_imageInfo->frameWidth,				
 			_imageInfo->frameHeight,
-			//------------------
 			_transColor
 		);
 
 
-		// 3 블렌드 이미지를 화면에 그린다 
 		AlphaBlend
 		(
 			hdc,
 			destX, destY,
 			_imageInfo->frameWidth,
 			_imageInfo->frameHeight, 
-			_blendImage->hMemDC, // 지뢰조심
+			_blendImage->hMemDC, 
 			0, 0,
 			_imageInfo->frameWidth,
 			_imageInfo->frameHeight, 

@@ -9,29 +9,29 @@ public:
 
 	enum IMAGE_LOAD_KIND
 	{
-		LOAD_RESOURCE = 0, // 리소스 필터에서 가져오기
-		LOAD_FILE, // 디렉토리로 파일읽기
-		LOAD_EMPTY, // 빈 비트맵
-		LOAD_END // 아무것도
+		LOAD_RESOURCE = 0, 
+		LOAD_FILE,
+		LOAD_EMPTY, 
+		LOAD_END
 	};
 
 	typedef struct tagImage
 	{
-		DWORD resID; // 리소스 ID
-		HDC hMemDC; // 메모리 DC : 맵 나오면 메모리
-		HBITMAP hBit; // 비트맵 가져옴
-		HBITMAP hOBit; // 올드 비트맵 : 데이터 병목현상 방지용
+		DWORD resID;
+		HDC hMemDC; 
+		HBITMAP hBit;
+		HBITMAP hOBit;
 		int x;
 		int y;
-		int width; // 이미지 가로 
-		int height; // 이미지 세로 
+		int width; 
+		int height; 
 		int maxFrameX;
 		int maxFrameY;
 		int currentFrameX;
 		int currentFrameY;
 		int frameWidth;
 		int frameHeight;
-		BYTE loadType; // 이미지 로드 타입 정의함
+		BYTE loadType; 
 
 		tagImage()
 		{
@@ -55,16 +55,15 @@ public:
 	}	IMAGE_INFO, *LPIMAGE_INFO; 
 
 private:
-	LPIMAGE_INFO _imageInfo; //이미지 정보 , 구조체의 주소값 
-	CHAR* _fileName; // 파일명
-	BOOL _isTrans; // 배경색을 없앨건지 여부
-	COLORREF _transColor; // 배경색을 없앨  RGB값 
+	LPIMAGE_INFO _imageInfo; 
+	CHAR* _fileName; 
+	BOOL _isTrans; 
+	COLORREF _transColor;
 						 
 	BLENDFUNCTION _blendFunc;
 	LPIMAGE_INFO _blendImage;
 
 public:
-    // ==> 세가지가 LOAD_KIND에 있음
 	// 빈 비트맵으로 초기화
 	HRESULT init(int width, int height);
 

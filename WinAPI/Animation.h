@@ -10,14 +10,14 @@ private:
 	_vFrameList _frameList;
 	_vPlayList _playList;
 
-	int _frameNum;			// 프레임 번호
-	int _frameWidth;		// 프레임 가로
-	int _frameHeight;		// 프레임 세로 
-	int _frameNumWidth;		// 프레임 가로숫자
-	int _frameNumHeight;	// 프레임 세로숫자
+	int _frameNum;			
+	int _frameWidth;		
+	int _frameHeight;		
+	int _frameNumWidth;		
+	int _frameNumHeight;	
 							
-	float _frameUpdateSec;	// 초당 프레임 업데이트 수 
-	float _elapsedSec;		// 프레임과 프레임 사이의 시간
+	float _frameUpdateSec;	
+	float _elapsedSec;		
 
 	bool _isPlay;
 	bool _loop;
@@ -34,10 +34,8 @@ public:
 	void setPlayTime(int* playArr = nullptr, int arrLen = 0, bool loop = false);
 	void setPlayFrame(int start, int end, bool reverse = false, bool loop = false);
 
-	// 초당 프레임 갱신 횟수
 	void setFPS(int framePerSec);
 
-	// 프레임 업데이트 
 	void frameUpdate(float elpasedTime);
 
 	void AniStart(void);

@@ -117,7 +117,6 @@ void FontManager::firstLineText(HDC hdc, RECT rc, string printString, int destX,
 void FontManager::drawText(HDC hdc, int destX, int destY, char* fontName, int fontSize, int fontWidth,
 	LPCWSTR* printStringArr, int length, COLORREF color)
 {
-	// ≈Õ¡¸πÊ¡ˆ
 	int arraySize = sizeof(printStringArr) / sizeof(*printStringArr);
 }
 

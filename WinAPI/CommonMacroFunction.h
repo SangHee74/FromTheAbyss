@@ -1,6 +1,6 @@
 #pragma once
 //===========================================================
-// # commomMacroFunction # (필요한 함수는 직접 만들어 추가하자)
+// # commomMacroFunction #
 //===========================================================
 
 inline POINT PointMake(int x, int y)
